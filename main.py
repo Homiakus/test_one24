@@ -558,6 +558,7 @@ class MainWindow(QMainWindow):
         self.buttons_config = {}
         self.button_groups = {}  # Группы кнопок, инициализируем пустым словарем
         self.sequence_commands = {}  # Для хранения последовательностей команд
+        self.is_fullscreen = False  # Флаг для отслеживания полноэкранного режима
         
         # Загружаем сохраненные настройки Serial порта или используем значения по умолчанию
         self.serial_settings = self.load_serial_settings()
@@ -596,6 +597,10 @@ class MainWindow(QMainWindow):
             
             # Проверяем обновления при запуске
             QTimer.singleShot(5000, self.check_for_updates)
+            
+        # Запуск в полноэкранном режиме
+        self.showFullScreen()
+        self.is_fullscreen = True
     
     def load_update_settings(self):
         """Загрузка настроек обновления программы"""
@@ -902,6 +907,13 @@ class MainWindow(QMainWindow):
         self.toggle_theme_action = QAction("Светлая тема", self)
         self.toggle_theme_action.triggered.connect(self.toggle_theme)
         view_menu.addAction(self.toggle_theme_action)
+        
+        # Действие "Полноэкранный режим"
+        self.toggle_fullscreen_action = QAction("Выйти из полноэкранного режима", self)
+        self.toggle_fullscreen_action.setShortcut("F11")
+        self.toggle_fullscreen_action.setStatusTip("Переключить полноэкранный режим")
+        self.toggle_fullscreen_action.triggered.connect(self.toggle_fullscreen)
+        view_menu.addAction(self.toggle_fullscreen_action)
         
         # Меню "Помощь"
         help_menu = menubar.addMenu('Помощь')
@@ -3014,6 +3026,21 @@ comment = "Выключение мотора 1"
             # Восстанавливаем подключение, если оно было
             if reconnect:
                 QTimer.singleShot(2000, self.connect_serial)
+
+    def toggle_fullscreen(self):
+        """Переключение между полноэкранным и оконным режимами"""
+        if self.is_fullscreen:
+            self.showNormal()
+            self.is_fullscreen = False
+            self.toggle_fullscreen_action.setText("Полноэкранный режим")
+        else:
+            self.showFullScreen()
+            self.is_fullscreen = True
+            self.toggle_fullscreen_action.setText("Выйти из полноэкранного режима")
+        
+        # Обновляем статусную строку
+        mode = "полноэкранного" if self.is_fullscreen else "оконного"
+        self.status_bar.showMessage(f"Переключение в режим {mode} отображения", 3000)
 
 
 class SequenceThread(QThread):
