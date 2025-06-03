@@ -1,0 +1,148 @@
+[buttons]
+
+#прижим правого ротора
+"Right Rotor Press" = "clamp 6000"
+"Right Rotor Press off" = "clamp 0"
+"Rotor Press" = "clamp -20000"
+
+# Настройка нулевого положения
+"Zero Multi" = "zero_multi"
+"Zero Pump" = "zero_pump"
+"Zero RRight" = "zero_rright"
+"Zero RLeft" = "zero_rleft"
+
+# сервоприводы
+"Servo1 50" = "servo1 50"
+"Servo1 100" = "servo1 100"
+"Servo1 0" = "servo1 0"
+
+# Управление клапанами
+"Клапан KL1 включить" = "kl1_on"
+"Клапан KL2 включить" = "kl2_on"
+"Клапан KL3 включить" = "kl3_on"
+
+"Клапан KL1 выключить" = "kl1_off"
+"Клапан KL2 выключить" = "kl2_off"
+"Клапан KL3 выключить" = "kl3_off"
+
+# Дополнительные клапаны
+"Valve 1 ON" = "valve1_on"
+"Valve 2 ON" = "valve2_on"
+"Valve 3 ON" = "valve3_on"
+"Valve 4 ON" = "valve4_on"
+"Valve 1 OFF" = "valve1_off"
+"Valve 2 OFF" = "valve2_off"
+"Valve 3 OFF" = "valve3_off"
+"Valve 4 OFF" = "valve4_off"
+
+# Чтение датчиков
+"Вес" = "weight"
+"Состояние ротора" = "staterotor"
+"Датчик отходов" = "waste"
+
+# Команды первого ротора (Left)
+"L → налив OG" = "moveL_2"
+"L → налив EA" = "moveL_3"
+"L → налив Gemo" = "moveL_4"
+"L → налив Alco" = "moveL_10"
+"L → налив Water" = "moveL_1"
+"L → налив Chlor" = "moveL_12"
+"L → слив" = "moveL_90"
+"L → экспозиция" = "moveL_180"
+"L → загрузка пробирок" = "moveL_40"
+"L → извлечение пробирок" = "moveL_60"
+"L → установка стекол" = "moveL_180"
+"L → извлечение стекол" = "moveL_180"
+
+# Команды второго ротора (Right)
+"R → налив OG" = "moveR_2"
+"R → налив EA" = "moveR_3"
+"R → налив Gemo" = "moveR_4"
+"R → налив Alco" = "moveR_10"
+"R → налив Water" = "moveR_1"
+"R → налив Chlor" = "moveR_12"
+"R → слив" = "moveR_90"
+"R → экспозиция" = "moveR_180"
+"R → загрузка пробирок" = "moveR_40"
+"R → извлечение пробирок" = "moveR_60"
+"R → установка стекол" = "moveR_180"
+"R → извлечение стекол" = "moveR_180"
+
+# Переключающий клапан
+"Valve → OG" = "mvalve_0"
+"Valve → продувка OG" = "mvalve_1"
+"Valve → EA" = "mvalve_2"
+"Valve → продувка EA" = "mvalve_3"
+"Valve → Gemo" = "mvalve_4"
+"Valve → продувка Gemo" = "mvalve_5"
+"Valve → Alco" = "mvalve_6"
+"Valve → продувка Alco" = "mvalve_7"
+"Valve → Water" = "mvalve_8"
+"Valve → продувка Water" = "mvalve_9"
+"Valve → Chlor" = "mvalve_10"
+"Valve → продувка Chlor" = "mvalve_11"
+
+# Блочный переключающий клапан
+"Zone 1" = "bvalve_1"
+"Zone 2" = "bvalve_2"
+"Zone 3" = "bvalve_3"
+"Zone 4" = "bvalve_4"
+
+# насос вакуумный
+"Pump on" = "pump_on"
+"Pump off" = "pump_off"
+
+# Настройки Serial по умолчанию
+[serial_default]
+port = "COM4"
+baudrate = 115200
+bytesize = 8
+parity = "N"
+stopbits = 1
+timeout = 1.0
+
+# Последовательности команд для автоматического выполнения
+
+[sequences]
+# Последовательность команд для окраски
+coloring = [
+    "Клапан KL2 включить", 
+    "Клапан KL3 включить",
+    "wait 1",
+    "Pump on",            
+    "wait 5",           
+    "Pump off"
+]
+
+# Последовательность команд для осаждения
+precipitation = [
+    "valve2_on",           # Открываем клапан 2
+    "wait 2",              # Ждем 2 секунды
+    "pump_on",             # Включаем насос
+    "wait 8",              # Ждем 8 секунд
+    "pump_off",            # Отключаем насос
+    "wait 1",              # Ждем 1 секунду
+    "valve2_off",          # Закрываем клапан 2
+    "rotor1_on",           # Включаем ротор 1
+    "wait 15",             # Ждем 15 секунд
+    "rotor1_off"           # Отключаем ротор 1
+]
+
+# Последовательность команд для промывки
+washing = [
+    "valve3_on",           # Открываем клапан 3
+    "wait 2",              # Ждем 2 секунды
+    "pump_on",             # Включаем насос
+    "wait 5",              # Ждем 5 секунд
+    "pump_off",            # Отключаем насос
+    "valve3_off",          # Закрываем клапан 3
+    "valve4_on",           # Открываем клапан 4
+    "wait 2",              # Ждем 2 секунды
+    "pump_on",             # Включаем насос
+    "wait 3",              # Ждем 3 секунды
+    "pump_off",            # Отключаем насос
+    "valve4_off",          # Закрываем клапан 4
+    "rotor1_on",           # Включаем ротор 1
+    "wait 5",              # Ждем 5 секунд
+    "rotor1_off"           # Отключаем ротор 1
+]
