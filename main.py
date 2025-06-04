@@ -1467,9 +1467,12 @@ class MainWindow(QMainWindow):
         self.splitter.addWidget(left_panel)
         self.splitter.addWidget(right_panel)
         
-        # Устанавливаем начальные размеры в соотношении 3:1 (уменьшаем ширину правой панели)
+        # Устанавливаем начальные размеры в соотношении 7:1 (уменьшаем ширину правой панели в 2 раза)
         total_width = self.width()
-        self.splitter.setSizes([int(total_width * 3/4), int(total_width * 1/4)])
+        self.splitter.setSizes([int(total_width * 4/5), int(total_width * 1/5)])
+        
+        # Устанавливаем максимальную ширину для правой панели
+        right_panel.setMaximumWidth(300)
         
         # Добавляем разделитель в основную компоновку
         main_layout.addWidget(self.splitter)
@@ -2365,16 +2368,11 @@ class MainWindow(QMainWindow):
         current_layout.addLayout(control_layout)
         layout.addWidget(current_group)
         
-        # Терминал для вывода информации о выполнении последовательности
-        terminal_group = QGroupBox("Лог выполнения")
-        terminal_layout = QVBoxLayout(terminal_group)
-        
+        # Убираем терминал для вывода информации о выполнении последовательности
+        # так как он дублирует основной терминал справа
+        # Создаем скрытый терминал для совместимости с существующим кодом
         self.sequence_terminal = QTextEdit()
-        self.sequence_terminal.setReadOnly(True)
-        self.sequence_terminal.setMinimumHeight(200)
-        terminal_layout.addWidget(self.sequence_terminal)
-        
-        layout.addWidget(terminal_group)
+        self.sequence_terminal.setVisible(False)
         
         self.sequences_page.setLayout(layout)
     
