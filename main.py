@@ -29,13 +29,45 @@ from qt_material import apply_stylesheet
 from datetime import datetime
 
 # Настройка логирования
-LOG_FILE = 'app.log'
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
+LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
+
+# Создаем директорию для логов, если она не существует
+os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+# Настраиваем формат логов и запись в файл
+try:
+    logging.basicConfig(
+        filename=LOG_FILE,
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        filemode='a'  # Режим добавления, а не перезаписи
+    )
+    # Добавляем вывод логов в консоль для отладки
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(console_handler)
+    
+    logging.info("Логирование инициализировано успешно")
+except Exception as e:
+    print(f"Ошибка при настройке логирования: {str(e)}")
+    # Создаем базовый logger, который выводит только в консоль
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    logging.error(f"Не удалось настроить запись логов в файл: {str(e)}")
+
+# Проверка возможности записи в файл логов
+try:
+    with open(LOG_FILE, 'a') as f:
+        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - TEST - Проверка доступа к файлу логов\n")
+    logging.info(f"Файл логов доступен для записи: {LOG_FILE}")
+except Exception as e:
+    logging.error(f"Невозможно записать в файл логов {LOG_FILE}: {str(e)}")
 
 # Темная тема в стиле QSS (на случай если qt-material не установлен)
 DARK_STYLE = """
@@ -3284,8 +3316,13 @@ if __name__ == "__main__":
     try:
         logging.info("=" * 80)
         logging.info("Запуск приложения")
+        # Выводим информацию о системе
+        logging.info(f"Операционная система: {sys.platform}")
+        logging.info(f"Версия Python: {sys.version}")
+        logging.info(f"Текущая директория: {os.getcwd()}")
+        logging.info(f"Файл логов: {LOG_FILE}")
     except Exception as e:
-        print(f"Ошибка инициализации логирования: {str(e)}")
+        print(f"Ошибка при логировании запуска: {str(e)}")
     
     app = QApplication(sys.argv)
     window = MainWindow()
