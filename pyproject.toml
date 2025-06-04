@@ -1,0 +1,61 @@
+[tool.ruff]
+# Поддерживаемая версия Python
+target-version = "py39"
+
+# Длина строки
+line-length = 100
+
+[tool.ruff.lint]
+# Набор правил для проверки
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "W",   # pycodestyle warnings
+    "C90", # mccabe complexity
+    "N",   # pep8-naming
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+
+# Игнорируемые правила
+ignore = [
+    "E501",  # line too long (хотя рекомендуется держать строки короткими, в GUI-приложениях это не всегда удобно)
+    "B008",  # do not perform function calls in argument defaults (часто используется с QT)
+    "B006",  # do not use mutable data structures for argument defaults (тоже часто с QT)
+    "N802",  # function name should be lowercase (несовместимо с QT-соглашениями)
+    "N803",  # argument name should be lowercase (несовместимо с QT-соглашениями)
+    "N806",  # variable in function should be lowercase (несовместимо с QT-соглашениями)
+    "C901",  # function is too complex (сложные методы в GUI)
+]
+
+# Игнорируемые пути
+exclude = [
+    ".git",
+    ".eggs",
+    "__pycache__",
+    "build",
+    "dist",
+    "venv",
+    "env",
+    ".venv",
+    ".env",
+]
+
+# Сортировка импортов
+[tool.ruff.lint.isort]
+case-sensitive = true
+force-single-line = false
+known-first-party = ["gui", "app"]
+
+# Правила именования
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+
+# Настройки форматирования
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto" 
