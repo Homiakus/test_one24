@@ -10,6 +10,7 @@ import subprocess
 import git
 import shutil
 import tempfile
+import logging
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QPushButton, QTextEdit,
     QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QLabel,
@@ -26,6 +27,15 @@ from PyQt5.QtCore import (
 from PyQt5.QtGui import QFont, QIcon
 from qt_material import apply_stylesheet
 from datetime import datetime
+
+# Настройка логирования
+LOG_FILE = 'app.log'
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 # Темная тема в стиле QSS (на случай если qt-material не установлен)
 DARK_STYLE = """
@@ -583,6 +593,9 @@ class MainWindow(QMainWindow):
         # Применение темы
         self.apply_theme()
         
+        # Переключаемся на страницу "Главное меню" (бывшая "Работа")
+        self.switch_page("sequences")
+        
         # Автоматическое подключение, если это указано в настройках
         if self.update_settings.get('auto_connect', True):
             QTimer.singleShot(1000, self.auto_connect)
@@ -601,6 +614,8 @@ class MainWindow(QMainWindow):
         # Запуск в полноэкранном режиме
         self.showFullScreen()
         self.is_fullscreen = True
+        
+        logging.info("Приложение запущено")
     
     def load_update_settings(self):
         """Загрузка настроек обновления программы"""
@@ -1192,11 +1207,36 @@ class MainWindow(QMainWindow):
         
         # Создаем таблицу команд вместо вкладок
         commands_group = QGroupBox("Команды управления")
+        commands_group.setStyleSheet("""
+            QGroupBox {
+                border: 2px solid #3F51B5;
+                border-radius: 8px;
+                margin-top: 1em;
+                font-weight: bold;
+                color: #3F51B5;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px;
+                background-color: palette(window);
+            }
+        """)
         commands_group_layout = QVBoxLayout(commands_group)
+        
+        # Создаем прокручиваемую область для команд
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QScrollArea.Shape.NoFrame)
+        
+        command_container = QWidget()
+        container_layout = QVBoxLayout(command_container)
+        container_layout.setContentsMargins(5, 5, 5, 5)
+        container_layout.setSpacing(10)
         
         # Создаем таблицу для команд
         self.commands_table = QTableWidget()
-        self.commands_table.setColumnCount(4)  # 4 колонки для кнопок
+        self.commands_table.setColumnCount(6)  # 6 колонок для кнопок (больше кнопок в строке)
         self.commands_table.horizontalHeader().setVisible(False)  # Скрываем горизонтальные заголовки
         self.commands_table.verticalHeader().setVisible(False)  # Скрываем вертикальные заголовки
         self.commands_table.setShowGrid(False)  # Скрываем сетку
@@ -1208,7 +1248,7 @@ class MainWindow(QMainWindow):
             if not button_names:  # Пропускаем пустые группы
                 continue
             # +1 для заголовка группы и +1 для пустой строки после группы
-            total_rows += 1 + (len(button_names) + 3) // 4 + 1
+            total_rows += 1 + (len(button_names) + 5) // 6 + 1  # 6 кнопок в строке
         
         self.commands_table.setRowCount(total_rows)
         
@@ -1220,9 +1260,9 @@ class MainWindow(QMainWindow):
             
             # Добавляем заголовок группы
             group_label = QLabel(group_name)
-            group_label.setStyleSheet("font-weight: bold; font-size: 14px; color: #007ACC;")
+            group_label.setStyleSheet("font-weight: bold; font-size: 14px; color: #3F51B5;")
             group_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            self.commands_table.setSpan(current_row, 0, 1, 4)  # Объединяем ячейки для заголовка
+            self.commands_table.setSpan(current_row, 0, 1, 6)  # Объединяем ячейки для заголовка (6 колонок)
             self.commands_table.setCellWidget(current_row, 0, group_label)
             current_row += 1
             
@@ -1245,9 +1285,11 @@ class MainWindow(QMainWindow):
                     # Пропускаем, если button_data неизвестного типа
                     continue
                 
-                # Создаем кнопку
+                # Создаем кнопку с меньшими размерами
                 btn = QPushButton(button_name)
-                btn.setMinimumSize(120, 40)
+                btn.setMinimumSize(100, 40)
+                btn.setMaximumSize(180, 40)
+                btn.setFont(QFont("Segoe UI", 12))  # Уменьшаем шрифт
                 
                 # Настройка стиля кнопки в зависимости от группы
                 if "двигател" in group_name.lower():
@@ -1263,17 +1305,19 @@ class MainWindow(QMainWindow):
                     QPushButton {{
                         background-color: {color};
                         color: white;
-                        border: 2px solid #333333;
-                        border-radius: 5px;
+                        border: 1px solid #333333;
+                        border-radius: 4px;
                         font-weight: bold;
+                        padding: 2px;
+                        text-align: center;
                     }}
                     QPushButton:hover {{
                         background-color: {color}CC;
-                        border: 2px solid #555555;
+                        border: 1px solid #555555;
                     }}
                     QPushButton:pressed {{
                         background-color: {color}99;
-                        border: 2px solid #777777;
+                        border: 1px solid #777777;
                     }}
                 """)
                 
@@ -1289,7 +1333,7 @@ class MainWindow(QMainWindow):
                 
                 # Перемещение к следующей позиции в сетке
                 col += 1
-                if col >= 4:  # Максимум 4 кнопки в строке
+                if col >= 6:  # Максимум 6 кнопок в строке
                     col = 0
                     current_row += 1
             
@@ -1302,10 +1346,15 @@ class MainWindow(QMainWindow):
         
         # Устанавливаем высоту строк
         for row in range(self.commands_table.rowCount()):
-            self.commands_table.setRowHeight(row, 50)
+            self.commands_table.setRowHeight(row, 42)  # Уменьшаем высоту строк
         
-        # Добавляем таблицу в группу
-        commands_group_layout.addWidget(self.commands_table)
+        container_layout.addWidget(self.commands_table)
+        
+        # Добавляем контейнер в scroll area
+        scroll.setWidget(command_container)
+        
+        # Добавляем scroll area в группу
+        commands_group_layout.addWidget(scroll)
         
         # Добавляем группу на страницу команд
         commands_layout.addWidget(commands_group)
@@ -1400,7 +1449,8 @@ class MainWindow(QMainWindow):
         
         self.command_input = QComboBox()
         self.command_input.setEditable(True)
-        self.command_input.setMinimumWidth(180)
+        self.command_input.setMinimumWidth(120)  # Уменьшаем минимальную ширину
+        self.command_input.setMaximumWidth(300)  # Ограничиваем максимальную ширину
         self.command_input.lineEdit().setPlaceholderText("Введите команду...")
         
         self.send_button = QPushButton("Отправить")
@@ -1417,9 +1467,9 @@ class MainWindow(QMainWindow):
         self.splitter.addWidget(left_panel)
         self.splitter.addWidget(right_panel)
         
-        # Устанавливаем начальные размеры в соотношении 2:1
+        # Устанавливаем начальные размеры в соотношении 3:1 (уменьшаем ширину правой панели)
         total_width = self.width()
-        self.splitter.setSizes([int(total_width * 2/3), int(total_width * 1/3)])
+        self.splitter.setSizes([int(total_width * 3/4), int(total_width * 1/4)])
         
         # Добавляем разделитель в основную компоновку
         main_layout.addWidget(self.splitter)
@@ -2142,22 +2192,24 @@ class MainWindow(QMainWindow):
         sidebar_layout = QVBoxLayout(self.sidebar)
         sidebar_layout.setContentsMargins(0, 0, 0, 0)
         sidebar_layout.setSpacing(0)
-        
+
+        # Кнопка для страницы последовательностей
+        self.sequences_btn = QPushButton("Главное меню")
+        self.sequences_btn.setCheckable(True)
+        self.sequences_btn.setChecked(True)
+        self.sequences_btn.clicked.connect(lambda: self.switch_page("sequences"))
+        self.category_buttons["sequences"] = self.sequences_btn
+        sidebar_layout.addWidget(self.sequences_btn)
+
         # Создание кнопок для страниц
         # Кнопка для страницы команд (основная страница)
         self.commands_btn = QPushButton("Команды")
         self.commands_btn.setCheckable(True)
-        self.commands_btn.setChecked(True)
+        self.commands_btn.setChecked(False)
         self.commands_btn.clicked.connect(lambda: self.switch_page("commands"))
         self.category_buttons["commands"] = self.commands_btn
         sidebar_layout.addWidget(self.commands_btn)
         
-        # Кнопка для страницы последовательностей
-        self.sequences_btn = QPushButton("Работа")
-        self.sequences_btn.setCheckable(True)
-        self.sequences_btn.clicked.connect(lambda: self.switch_page("sequences"))
-        self.category_buttons["sequences"] = self.sequences_btn
-        sidebar_layout.addWidget(self.sequences_btn)
         
         # Кнопка для страницы настроек
         self.settings_btn = QPushButton("Настройки")
@@ -2826,6 +2878,8 @@ comment = "Выключение мотора 1"
         
         upload_port = self.update_settings.get('upload_port', '')
         
+        logging.info(f"Подготовка к загрузке прошивки. Путь: {platformio_path}, Порт: {upload_port}")
+        
         # Проверяем существование директории прошивки
         if not os.path.exists(platformio_path):
             # Предлагаем создать директорию
@@ -2840,11 +2894,14 @@ comment = "Выключение мотора 1"
                 try:
                     os.makedirs(platformio_path, exist_ok=True)
                     self.status_bar.showMessage(f"Создана директория прошивки: {platformio_path}", 3000)
+                    logging.info(f"Создана директория прошивки: {platformio_path}")
                 except Exception as e:
+                    error_msg = f"Не удалось создать директорию: {str(e)}"
+                    logging.error(error_msg)
                     QMessageBox.critical(
                         self,
                         "Ошибка создания директории",
-                        f"Не удалось создать директорию:\n{str(e)}"
+                        error_msg
                     )
                     return
             else:
@@ -2852,11 +2909,12 @@ comment = "Выключение мотора 1"
         
         # Проверяем, содержит ли директория файлы прошивки
         if not self.check_firmware_files(platformio_path):
+            error_msg = f"В указанной директории не найдены файлы прошивки Arduino/PlatformIO: {platformio_path}"
+            logging.error(error_msg)
             QMessageBox.warning(
                 self,
                 "Файлы прошивки не найдены",
-                f"В указанной директории не найдены файлы прошивки Arduino/PlatformIO:\n{platformio_path}\n\n"
-                "Убедитесь, что в этой директории содержится корректный проект."
+                f"{error_msg}\n\nУбедитесь, что в этой директории содержится корректный проект."
             )
             return
         
@@ -2869,12 +2927,47 @@ comment = "Выключение мотора 1"
             time.sleep(1)
         
         try:
+            # Проверяем доступность PlatformIO
+            try:
+                check_result = subprocess.run(
+                    ["platformio", "--version"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    shell=True,
+                    check=False
+                )
+                
+                if check_result.returncode != 0:
+                    error_msg = f"PlatformIO не установлен или недоступен: {check_result.stderr}"
+                    logging.error(error_msg)
+                    QMessageBox.critical(
+                        self,
+                        "PlatformIO не доступен",
+                        f"{error_msg}\n\nУстановите PlatformIO или проверьте PATH."
+                    )
+                    return
+                
+                logging.info(f"PlatformIO доступен: {check_result.stdout.strip()}")
+            except Exception as e:
+                error_msg = f"Ошибка при проверке PlatformIO: {str(e)}"
+                logging.error(error_msg)
+                QMessageBox.critical(
+                    self,
+                    "Ошибка проверки PlatformIO",
+                    error_msg
+                )
+                return
+            
             # Создаем команду для загрузки прошивки
             cmd = ["platformio", "run", "--target", "upload"]
             
             # Если указан порт, добавляем его в команду
             if upload_port:
                 cmd.extend(["--upload-port", upload_port])
+            
+            # Логируем команду
+            logging.info(f"Запуск команды: {' '.join(cmd)} в директории {platformio_path}")
             
             # Показываем прогресс
             self.status_bar.showMessage("Загрузка прошивки...", 0)
@@ -2902,10 +2995,12 @@ comment = "Выключение мотора 1"
             upload_thread.start()
             
         except Exception as e:
+            error_msg = f"Ошибка при загрузке прошивки: {str(e)}"
+            logging.error(error_msg)
             QMessageBox.critical(
                 self,
                 "Ошибка загрузки прошивки",
-                f"Произошла ошибка при загрузке прошивки:\n{str(e)}"
+                error_msg
             )
             self.status_bar.showMessage("Ошибка загрузки прошивки", 5000)
             
@@ -2915,27 +3010,47 @@ comment = "Выключение мотора 1"
     
     def check_firmware_files(self, directory):
         """Проверка наличия файлов прошивки в указанной директории"""
-        # Проверяем наличие файла platformio.ini (для PlatformIO проектов)
-        if os.path.exists(os.path.join(directory, 'platformio.ini')):
-            return True
-        
-        # Проверяем наличие .ino файлов (для Arduino проектов)
-        for file in os.listdir(directory):
-            if file.endswith('.ino'):
+        try:
+            logging.info(f"Проверка наличия файлов прошивки в директории: {directory}")
+            
+            # Проверяем наличие файла platformio.ini (для PlatformIO проектов)
+            platformio_ini = os.path.join(directory, 'platformio.ini')
+            if os.path.exists(platformio_ini):
+                logging.info(f"Найден файл platformio.ini: {platformio_ini}")
                 return True
-        
-        # Проверяем наличие директории src с .cpp или .h файлами
-        src_dir = os.path.join(directory, 'src')
-        if os.path.exists(src_dir) and os.path.isdir(src_dir):
-            for file in os.listdir(src_dir):
-                if file.endswith('.cpp') or file.endswith('.h'):
+            
+            # Проверяем наличие .ino файлов (для Arduino проектов)
+            for file in os.listdir(directory):
+                if file.endswith('.ino'):
+                    logging.info(f"Найден Arduino файл: {os.path.join(directory, file)}")
                     return True
-        
-        return False
+            
+            # Проверяем наличие директории src с .cpp или .h файлами
+            src_dir = os.path.join(directory, 'src')
+            if os.path.exists(src_dir) and os.path.isdir(src_dir):
+                for file in os.listdir(src_dir):
+                    if file.endswith('.cpp') or file.endswith('.h'):
+                        logging.info(f"Найдены исходные файлы в директории src: {os.path.join(src_dir, file)}")
+                        return True
+            
+            # Проверяем наличие директории include с .h файлами
+            include_dir = os.path.join(directory, 'include')
+            if os.path.exists(include_dir) and os.path.isdir(include_dir):
+                for file in os.listdir(include_dir):
+                    if file.endswith('.h'):
+                        logging.info(f"Найдены заголовочные файлы в директории include: {os.path.join(include_dir, file)}")
+                        return True
+            
+            logging.warning(f"Файлы прошивки не найдены в директории: {directory}")
+            return False
+        except Exception as e:
+            logging.error(f"Ошибка при проверке файлов прошивки: {str(e)}")
+            return False
 
     def run_upload_process(self, cmd, platformio_path, progress_dialog, reconnect=False):
         """Выполнение процесса загрузки прошивки в отдельном потоке"""
         try:
+            logging.info(f"Запуск процесса загрузки прошивки: {' '.join(cmd)}")
             # Запускаем процесс
             process = subprocess.Popen(
                 cmd,
@@ -2949,10 +3064,12 @@ comment = "Выключение мотора 1"
             # Читаем вывод процесса и обновляем интерфейс
             output = []
             for line in process.stdout:
-                output.append(line.strip())
+                line = line.strip()
+                output.append(line)
+                logging.info(f"PlatformIO: {line}")
                 # Передаем сообщение для обновления интерфейса через сигнал-слот
                 QApplication.processEvents()
-                progress_dialog.setLabelText(f"Загрузка прошивки...\n{line.strip()}")
+                progress_dialog.setLabelText(f"Загрузка прошивки...\n{line}")
             
             # Ждем завершения процесса
             process.wait()
@@ -2961,6 +3078,7 @@ comment = "Выключение мотора 1"
             if process.returncode == 0:
                 # Успешная загрузка
                 success_message = "Прошивка успешно загружена"
+                logging.info(success_message)
                 QMetaObject.invokeMethod(
                     self.status_bar, "showMessage",
                     Qt.ConnectionType.QueuedConnection,
@@ -2974,7 +3092,10 @@ comment = "Выключение мотора 1"
                 progress_dialog.setValue(1)
             else:
                 # Ошибка загрузки
-                error_message = "Ошибка загрузки прошивки"
+                error_message = f"Ошибка загрузки прошивки (код {process.returncode})"
+                logging.error(error_message)
+                logging.error("\n".join(output))
+                
                 QMetaObject.invokeMethod(
                     self.status_bar, "showMessage",
                     Qt.ConnectionType.QueuedConnection,
@@ -3003,6 +3124,7 @@ comment = "Выключение мотора 1"
         except Exception as e:
             # Обрабатываем ошибки
             error_message = f"Ошибка при выполнении процесса: {str(e)}"
+            logging.error(error_message)
             QMetaObject.invokeMethod(
                 self.status_bar, "showMessage",
                 Qt.ConnectionType.QueuedConnection,
@@ -3026,7 +3148,7 @@ comment = "Выключение мотора 1"
             # Восстанавливаем подключение, если оно было
             if reconnect:
                 QTimer.singleShot(2000, self.connect_serial)
-
+                
     def toggle_fullscreen(self):
         """Переключение между полноэкранным и оконным режимами"""
         if self.is_fullscreen:
@@ -3160,8 +3282,20 @@ class SequenceThread(QThread):
 
 
 if __name__ == "__main__":
+    # Инициализация логирования
+    try:
+        logging.info("=" * 80)
+        logging.info("Запуск приложения")
+    except Exception as e:
+        print(f"Ошибка инициализации логирования: {str(e)}")
+    
     app = QApplication(sys.argv)
     window = MainWindow()
     window.app = app  # Передаем ссылку на объект приложения для стилизации
     window.show()
-    sys.exit(app.exec()) 
+    
+    try:
+        sys.exit(app.exec())
+    except Exception as e:
+        logging.error(f"Критическая ошибка при выполнении приложения: {str(e)}")
+        print(f"Ошибка: {str(e)}") 
