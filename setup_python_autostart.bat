@@ -1,65 +1,42 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 
 set BASE_DIR=C:\test_one24
 set PYTHON_SCRIPT=main.py
 
-set FAST_BAT=%BASE_DIR%\fast_python.bat
-set MINIMAL_VBS=%BASE_DIR%\launcher.vbs
-
-if not exist "%BASE_DIR%" (
-    echo ERROR: Folder %BASE_DIR% does not exist!
-    pause & exit /b 1
-)
-if not exist "%BASE_DIR%\%PYTHON_SCRIPT%" (
-    echo ERROR: File %PYTHON_SCRIPT% not found!
-    pause & exit /b 1
-)
-
-echo Step 1: Creating optimized bat file...
+echo Step 1: Creating instant launcher...
 (
-echo @echo off
-echo cd /d "%BASE_DIR%" ^>nul 2^>^&1
-echo start /min /b pythonw.exe "%PYTHON_SCRIPT%"
-echo exit /b
-) > "%FAST_BAT%"
+echo CreateObject^("WScript.Shell"^).Run "pythonw.exe ""%BASE_DIR%\%PYTHON_SCRIPT%""",0,0
+) > "%BASE_DIR%\instant.vbs"
 
-echo Step 2: Creating minimal VBS launcher...
-(
-echo CreateObject^("WScript.Shell"^).Run """%FAST_BAT%""",0,0
-) > "%MINIMAL_VBS%"
-
-echo Step 3: Removing all existing autostart entries...
-for %%i in (FastPythonStartup PythonAutoStart QuickPython InstantPython UltraFastPython DelayedPython) do (
+echo Step 2: Removing all old autostart entries...
+for %%i in (FastPythonStartup PythonAutoStart QuickPython InstantPython UltraFastPython DelayedPython FastestPython) do (
     schtasks /delete /tn "%%i" /f >nul 2>&1
 )
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "PythonAutoStart" /f >nul 2>&1
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "PythonQuickStart" /f >nul 2>&1
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "PythonSystemStart" /f >nul 2>&1
 
-echo Step 4: Creating SINGLE fastest autostart method...
-schtasks /create ^
-    /tn "FastestPython" ^
-    /tr "wscript.exe \"%MINIMAL_VBS%\"" ^
-    /sc onstart ^
-    /ru "%USERNAME%" ^
-    /rl HIGHEST ^
-    /f
+echo Step 3: Adding to registry autostart (fastest method)...
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "InstantPython" /t REG_SZ /d "wscript.exe \"%BASE_DIR%\instant.vbs\"" /f
 
 if %errorlevel%==0 (
-    echo SUCCESS: Single fastest task created!
-    echo Testing launch...
-    schtasks /run /tn "FastestPython" >nul 2>&1
-    timeout /t 2 /nobreak >nul
-    echo Test completed.
+    echo SUCCESS: Added to system registry autostart
+    echo This is the fastest possible method - launches immediately
 ) else (
-    echo ERROR: Failed to create task!
+    echo Trying user registry...
+    reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "InstantPython" /t REG_SZ /d "wscript.exe \"%BASE_DIR%\instant.vbs\"" /f
+    if !errorlevel!==0 (
+        echo SUCCESS: Added to user registry autostart
+    ) else (
+        echo ERROR: Failed to add autostart
+    )
 )
 
 echo.
-echo RESULT: Single autostart method configured
-echo Your Python script will launch instantly on Windows boot
+echo RESULT: Zero-delay autostart configured
+echo Python will launch instantly when Windows starts
 echo.
-echo To disable: schtasks /delete /tn "FastestPython" /f
-echo To check status: schtasks /query /tn "FastestPython"
+echo To remove: reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "InstantPython" /f
+echo Or: reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "InstantPython" /f
 pause
