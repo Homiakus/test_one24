@@ -106,6 +106,7 @@ void handleCheckMultiEndstop();
 void handleCheckMultizoneEndstop();
 void handleCheckRRightEndstop();
 void handleCheckAllEndstops();
+void handleCheckEnablePins();
 
 // Обработчики команд clamp
 void handleClamp();

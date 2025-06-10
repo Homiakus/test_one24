@@ -6,8 +6,8 @@
 "Rotor Press" = "clamp -20000"
 
 # Настройка нулевого положения
-"Zero Multi" = "zero_move_multi 20"
-"Zero RRight" = "zero_move_rright 20"
+"Zero Multi" = "zero_multi"
+"Zero RRight" = "zero_rright"
 
 
 
@@ -25,32 +25,32 @@
 
 
 # Команды второго ротора (Right)
-"R → налив OG" = "moveR_2"
-"R → налив EA" = "moveR_3"
-"R → налив Gemo" = "moveR_4"
-"R → налив Alco" = "moveR_10"
-"R → налив Water" = "moveR_1"
-"R → налив Chlor" = "moveR_12"
-"R → слив" = "moveR_90"
-"R → экспозиция" = "moveR_180"
-"R → загрузка пробирок" = "moveR_40"
-"R → извлечение пробирок" = "moveR_60"
-"R → установка стекол" = "moveR_180"
-"R → извлечение стекол" = "moveR_180"
+"R → налив OG" = "move_rright 2"
+"R → налив EA" = "move_rright 3"
+"R → налив Gemo" = "move_rright 4"
+"R → налив Alco" = "move_rright 10"
+"R → налив Water" = "move_rright 1"
+"R → налив Chlor" = "move_rright 12"
+"R → слив" = "move_rright 90"
+"R → экспозиция" = "move_rright 180"
+"R → загрузка пробирок" = "move_rright 40"
+"R → извлечение пробирок" = "move_rright 60"
+"R → установка стекол" = "move_rright 180"
+"R → извлечение стекол" = "move_rright 180"
 
 # Переключающий клапан
-"Valve → OG" = "multi_pos 0"
-"Valve → продувка OG" = "multi_pos 1"
-"Valve → EA" = "multi_pos 2"
-"Valve → продувка EA" = "multi_pos 3"
-"Valve → Gemo" = "multi_pos 4"
-"Valve → продувка Gemo" = "multi_pos 5"
-"Valve → Alco" = "multi_pos 6"
-"Valve → продувка Alco" = "multi_pos 7"
-"Valve → Water" = "multi_pos 8"
-"Valve → продувка Water" = "multi_pos 9"
-"Valve → Chlor" = "multi_pos 10"
-"Valve → продувка Chlor" = "multi_pos 11"
+"Valve → OG" = "move_multi 0"
+"Valve → продувка OG" = "move_multi 1"
+"Valve → EA" = "move_multi 2"
+"Valve → продувка EA" = "move_multi 3"
+"Valve → Gemo" = "move_multi 4"
+"Valve → продувка Gemo" = "move_multi 5"
+"Valve → Alco" = "move_multi 6"
+"Valve → продувка Alco" = "move_multi 7"
+"Valve → Water" = "move_multi 8"
+"Valve → продувка Water" = "move_multi 9"
+"Valve → Chlor" = "move_multi 10"
+"Valve → продувка Chlor" = "move_multi 11"
 
 
 

@@ -98,6 +98,7 @@ void setupCommandHandlers() {
   sCmd.addCommand("check_multizone_endstop", handleCheckMultizoneEndstop);
   sCmd.addCommand("check_rright_endstop", handleCheckRRightEndstop);
   sCmd.addCommand("check_all_endstops", handleCheckAllEndstops);
+  sCmd.addCommand("check_enable_pins", handleCheckEnablePins);
 
   // Тестовая команда
   sCmd.addCommand("test", testCommand);
@@ -458,6 +459,38 @@ void handleCheckAllEndstops() {
   Serial.println(multizoneState ? "TRIGGERED" : "NOT TRIGGERED");
   Serial.print("RRight: ");
   Serial.println(rrightState ? "TRIGGERED" : "NOT TRIGGERED");
+  
+  sendCompleted();
+}
+
+void handleCheckEnablePins() {
+  sendReceived();
+  Serial.println(F("Проверка состояния enable пинов:"));
+  
+  Serial.print(F("Multi enable pin "));
+  Serial.print(MULTI_ENABLE_PIN);
+  Serial.print(F(": "));
+  Serial.println(digitalRead(MULTI_ENABLE_PIN) ? "HIGH" : "LOW");
+  
+  Serial.print(F("Multizone enable pin "));
+  Serial.print(MULTIZONE_ENABLE_PIN);
+  Serial.print(F(": "));
+  Serial.println(digitalRead(MULTIZONE_ENABLE_PIN) ? "HIGH" : "LOW");
+  
+  Serial.print(F("RRight enable pin "));
+  Serial.print(RRIGHT_ENABLE_PIN);
+  Serial.print(F(": "));
+  Serial.println(digitalRead(RRIGHT_ENABLE_PIN) ? "HIGH" : "LOW");
+  
+  Serial.print(F("E0 enable pin "));
+  Serial.print(E0_ENABLE_PIN);
+  Serial.print(F(": "));
+  Serial.println(digitalRead(E0_ENABLE_PIN) ? "HIGH" : "LOW");
+  
+  Serial.print(F("E1 enable pin "));
+  Serial.print(E1_ENABLE_PIN);
+  Serial.print(F(": "));
+  Serial.println(digitalRead(E1_ENABLE_PIN) ? "HIGH" : "LOW");
   
   sendCompleted();
 }

@@ -1,11 +1,12 @@
 /**
  * @file: sensors.cpp
  * @description: Модуль для работы с датчиками системы (ротор, отходы, концевые выключатели)
- * @dependencies: Arduino.h, config.h
+ * @dependencies: Arduino.h, config.h, stepper_control.h
  * @created: 2024-12-19
  */
 
 #include "sensors.h"
+#include "stepper_control.h"
 #include <Arduino.h>
 
 // Массив пинов ротора
@@ -35,7 +36,21 @@ bool readWasteSensor() {
   return digitalRead(WASTE_PIN);
 }
 
-// Чтение состояния концевых выключателей
+// Чтение состояния концевых выключателей с учетом индивидуальных настроек
 bool readEndstopState(int endstopPin) {
-  return !digitalRead(endstopPin); // Инвертировано, так как INPUT_PULLUP
+  // Определяем тип датчика на основе пина
+  bool isNPN = true; // По умолчанию NPN
+  
+  if (endstopPin == MULTI_ENDSTOP_PIN) {
+    isNPN = MULTI_ENDSTOP_TYPE_NPN;
+  } else if (endstopPin == MULTIZONE_ENDSTOP_PIN) {
+    isNPN = MULTIZONE_ENDSTOP_TYPE_NPN;
+  } else if (endstopPin == RRIGHT_ENDSTOP_PIN) {
+    isNPN = RRIGHT_ENDSTOP_TYPE_NPN;
+  } else if (endstopPin == CLAMP_SENSOR_PIN) {
+    isNPN = E0_ENDSTOP_TYPE_NPN; // Используем настройки E0 для clamp датчика
+  }
+  
+  // Используем функцию из stepper_control для корректного чтения
+  return readEndstopWithType(endstopPin, isNPN);
 } 

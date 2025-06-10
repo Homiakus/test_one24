@@ -23,7 +23,7 @@
 #define RRIGHT_STEP_PIN 46
 #define RRIGHT_DIR_PIN 48
 #define RRIGHT_ENABLE_PIN A8
-#define RRIGHT_ENDSTOP_PIN 3   // Z+ на плате
+#define RRIGHT_ENDSTOP_PIN 2   // Z+ на плате
 
 // Stepper E0 (E0 на схеме распиновки)
 #define E0_STEP_PIN 26
@@ -50,12 +50,49 @@
 #define WASTE_PIN 19
 #define ROTOR_PINS {27, 29, 23, 25}
 
-// ============== CONSTANTS ==============
-const int HOMING_SPEED = 300;     // steps/sec
-const int HOMING_TIMEOUT = 10000; // ms
-const int CLAMP_SPEED = 2000;      // steps/sec для функции clamp
-const int CLAMP_ZERO_SPEED = 2000; // steps/sec для функции clamp_zero
-const int CLAMP_ACCELERATION = 2000; // steps/sec^2 для функций clamp и clamp_zero
+// ============== STEPPER MOTOR CONFIGURATIONS ==============
+
+// Stepper Multi (X) Configuration
+#define MULTI_STEPS_PER_REVOLUTION 200    // шагов на оборот
+#define MULTI_MAX_SPEED 6000               // steps/sec
+#define MULTI_ACCELERATION 5000           // steps/sec^2
+#define MULTI_HOMING_SPEED 6000            // steps/sec для хоминга (увеличено)
+#define MULTI_ENDSTOP_TYPE_NPN false       // true = NPN, false = PNP
+
+// Stepper Multizone (Y) Configuration
+#define MULTIZONE_STEPS_PER_REVOLUTION 200  // шагов на оборот
+#define MULTIZONE_MAX_SPEED 600             // steps/sec
+#define MULTIZONE_ACCELERATION 800          // steps/sec^2
+#define MULTIZONE_HOMING_SPEED 400          // steps/sec для хоминга (увеличено)
+#define MULTIZONE_ENDSTOP_TYPE_NPN true     // true = NPN, false = PNP
+
+// Stepper RRight (Z) Configuration
+#define RRIGHT_STEPS_PER_REVOLUTION 200     // шагов на оборот
+#define RRIGHT_MAX_SPEED 30000                // steps/sec (временно увеличено для диагностики)
+#define RRIGHT_ACCELERATION 2000             // steps/sec^2 (временно увеличено для диагностики)
+#define RRIGHT_HOMING_SPEED 2000             // steps/sec для хоминга (увеличено)
+#define RRIGHT_ENDSTOP_TYPE_NPN true        // true = NPN, false = PNP
+
+// Stepper E0 Configuration
+#define E0_STEPS_PER_REVOLUTION 200         // шагов на оборот
+#define E0_MAX_SPEED 2000                   // steps/sec
+#define E0_ACCELERATION 2000                // steps/sec^2
+#define E0_HOMING_SPEED 1000                // steps/sec для хоминга (если будет использоваться)
+#define E0_ENDSTOP_TYPE_NPN true            // true = NPN, false = PNP (для clamp_zero датчика)
+
+// Stepper E1 Configuration
+#define E1_STEPS_PER_REVOLUTION 200         // шагов на оборот
+#define E1_MAX_SPEED 2000                   // steps/sec
+#define E1_ACCELERATION 2000                // steps/sec^2
+#define E1_HOMING_SPEED 1000                // steps/sec для хоминга (если будет использоваться)
+#define E1_ENDSTOP_TYPE_NPN true            // true = NPN, false = PNP (для clamp_zero датчика)
+
+// ============== LEGACY CONSTANTS (для обратной совместимости) ==============
+const int HOMING_SPEED = 300;               // Общий хоминг (устарело, используйте индивидуальные настройки)
+const int HOMING_TIMEOUT = 30000;           // ms - увеличен для более медленных двигателей
+const int CLAMP_SPEED = 2000;               // steps/sec для функции clamp (устарело)
+const int CLAMP_ZERO_SPEED = 2000;          // steps/sec для функции clamp_zero (устарело)
+const int CLAMP_ACCELERATION = 2000;        // steps/sec^2 для функций clamp и clamp_zero (устарело)
 
 // ============== RESPONSE MESSAGES ==============
 #define MSG_OK "OK"

@@ -19,9 +19,12 @@ typedef struct {
   int stepPin;
   int dirPin;
   int enablePin;
-  int endstopPin;  // -1, если нет концевика
-  int maxSpeed;
-  int acceleration;
+  int endstopPin;         // -1, если нет концевика
+  int stepsPerRevolution; // шагов на оборот
+  int maxSpeed;           // максимальная скорость
+  int acceleration;       // ускорение
+  int homingSpeed;        // скорость хоминга
+  bool endstopTypeNPN;    // true = NPN, false = PNP
 } StepperConfig;
 
 // Объявления шаговых двигателей
@@ -44,6 +47,12 @@ GStepper2<STEPPER2WIRE>* getStepperByType(StepperType type);
 // Получение конфигурации двигателя по типу
 StepperConfig getStepperConfig(StepperType type);
 
+// Применение конфигурации к двигателю
+void applyStepperConfig(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config);
+
+// Чтение концевого выключателя с учетом типа (NPN/PNP)
+bool readEndstopWithType(int endstopPin, bool isNPN);
+
 // Универсальные функции управления двигателями
 bool moveStepper(StepperType type, long position);
 bool homeStepper(StepperType type);
@@ -52,6 +61,7 @@ bool zeroAndMoveStepper(StepperType type, long position);
 // Базовые функции для работы с двигателями
 bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position);
 bool homeStepperMotor(GStepper2<STEPPER2WIRE>& stepper, int endstopPin);
+bool homeStepperMotorWithConfig(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config);
 
 // Синхронное вращение двигателей E0 и E1
 bool clampMotors(long steps);
