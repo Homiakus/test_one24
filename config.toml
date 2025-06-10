@@ -5,7 +5,7 @@
 "Right Rotor Press off" = "clamp 0"
 "Rotor Press" = "clamp -20000"
 
-# Настройка нулевого положения
+# обнуление
 "Zero Multi" = "zero_multi"
 "Zero RRight" = "zero_rright"
 

@@ -2,5 +2,7 @@
     "enable_auto_update": true,
     "repository_url": "https://github.com/yourusername/yourrepository.git",
     "update_check_interval": 3600,
-    "auto_connect": true
+    "auto_connect": true,
+    "platformio_path": "C:\\base_2\\projects\\1pap24\\program\\test_one24\\arduino",
+    "theme": "dark"
 }
