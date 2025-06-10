@@ -66,11 +66,14 @@ void setup() {
   Serial.println(F("  - move_multi <позиция>"));
   Serial.println(F("  - move_multizone <позиция>"));
   Serial.println(F("  - move_rright <позиция>"));
+  Serial.println(F("  - move_e0 <позиция> (индивидуальное управление)"));
+  Serial.println(F("  - move_e1 <позиция> (индивидуальное управление)"));
   Serial.println(F("Хоминг:"));
   Serial.println(F("  - zero_multi, zero_multizone, zero_rright"));
-  Serial.println(F("Clamp (E0/E1):"));
-  Serial.println(F("  - clamp <позиция>"));
-  Serial.println(F("  - clamp_zero"));
+  Serial.println(F("  - zero_e0, zero_e1 (индивидуальный хоминг)"));
+  Serial.println(F("Clamp (E0/E1 синхронно):"));
+  Serial.println(F("  - clamp <позиция> (временное питание)"));
+  Serial.println(F("  - clamp_zero (временное питание)"));
   Serial.println(F("  - clamp_stop"));
   Serial.println(F("Клапаны:"));
   Serial.println(F("  - kl1 <время>, kl2 <время>"));
@@ -85,6 +88,7 @@ void setup() {
   Serial.println(F("  - staterotor, waste"));
   Serial.println(F("Диагностика:"));
   Serial.println(F("  - check_all_endstops"));
+  Serial.println(F("  - check_enable_pins"));
   Serial.println(F("  - test"));
   Serial.println();
   Serial.println(F("Ожидание команд..."));

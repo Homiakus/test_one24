@@ -1,62 +1,104 @@
 [buttons]
 
-#прижим правого ротора
-"Right Rotor Press" = "clamp 6000"
-"Right Rotor Press off" = "clamp 0"
-"Rotor Press" = "clamp -20000"
+# Команды движения Multi
+"Multi → OG" = "move_multi 0"
+"Multi → продувка OG" = "move_multi 1"
+"Multi → EA" = "move_multi 2"
+"Multi → продувка EA" = "move_multi 3"
+"Multi → Gemo" = "move_multi 4"
+"Multi → продувка Gemo" = "move_multi 5"
+"Multi → Alco" = "move_multi 6"
+"Multi → продувка Alco" = "move_multi 7"
+"Multi → Water" = "move_multi 8"
+"Multi → продувка Water" = "move_multi 9"
+"Multi → Chlor" = "move_multi 10"
+"Multi → продувка Chlor" = "move_multi 11"
 
-# обнуление
-"Zero Multi" = "zero_multi"
-"Zero RRight" = "zero_rright"
+# Команды движения Multizone
+"Multizone → позиция 0" = "move_multizone 0"
+"Multizone → позиция 1" = "move_multizone 1"
+"Multizone → позиция 2" = "move_multizone 2"
+"Multizone → позиция 3" = "move_multizone 3"
+"Multizone → позиция 4" = "move_multizone 4"
+"Multizone → позиция 5" = "move_multizone 5"
 
+# Команды движения RRight
+"RRight → налив OG" = "move_rright 2"
+"RRight → налив EA" = "move_rright 3"
+"RRight → налив Gemo" = "move_rright 4"
+"RRight → налив Alco" = "move_rright 10"
+"RRight → налив Water" = "move_rright 1"
+"RRight → налив Chlor" = "move_rright 12"
+"RRight → слив" = "move_rright 90"
+"RRight → экспозиция" = "move_rright 180"
+"RRight → загрузка пробирок" = "move_rright 40"
+"RRight → извлечение пробирок" = "move_rright 60"
+"RRight → установка стекол" = "move_rright 180"
+"RRight → извлечение стекол" = "move_rright 180"
 
+# Команды движения E0 (индивидуальные)
+"E0 → позиция 0" = "move_e0 0"
+"E0 → позиция 1000" = "move_e0 1000"
+"E0 → позиция 2000" = "move_e0 2000"
+"E0 → позиция 3000" = "move_e0 3000"
+"E0 → позиция 5000" = "move_e0 5000"
 
-# Управление клапанами
-"Клапан KL1 включить" = "kl1_on"
-"Клапан KL1 выключить" = "kl1_off"
+# Команды движения E1 (индивидуальные)
+"E1 → позиция 0" = "move_e1 0"
+"E1 → позиция 1000" = "move_e1 1000"
+"E1 → позиция 2000" = "move_e1 2000"
+"E1 → позиция 3000" = "move_e1 3000"
+"E1 → позиция 5000" = "move_e1 5000"
 
-"Клапан KL2 включить" = "kl2_on"
-"Клапан KL2 выключить" = "kl2_off"
+# Команды хоминга (обнуления)
+"Хоминг Multi" = "zero_multi"
+"Хоминг Multizone" = "zero_multizone"
+"Хоминг RRight" = "zero_rright"
+"Хоминг E0" = "zero_e0"
+"Хоминг E1" = "zero_e1"
+
+# Команды Clamp (синхронные E0/E1)
+"Clamp → сжать 2000" = "clamp 2000"
+"Clamp → сжать 4000" = "clamp 4000"
+"Clamp → сжать 6000" = "clamp 6000"
+"Clamp → разжать" = "clamp 0"
+"Clamp → реверс" = "clamp -2000"
+"Clamp → обнуление" = "clamp_zero"
+"Clamp → СТОП" = "clamp_stop"
+
+# Управление клапанами KL1
+"KL1 включить" = "kl1_on"
+"KL1 выключить" = "kl1_off"
+"KL1 → 50ms" = "kl1 50"
+"KL1 → 100ms" = "kl1 100"
+"KL1 → 200ms" = "kl1 200"
+"KL1 → 500ms" = "kl1 500"
+
+# Управление клапанами KL2
+"KL2 включить" = "kl2_on"
+"KL2 выключить" = "kl2_off"
+"KL2 → 50ms" = "kl2 50"
+"KL2 → 100ms" = "kl2 100"
+"KL2 → 200ms" = "kl2 200"
+"KL2 → 500ms" = "kl2 500"
+
+# Управление насосом
+"Насос включить" = "pump_on"
+"Насос выключить" = "pump_off"
+
 # Чтение датчиков
-"Вес" = "weight"
+"Показать вес" = "weight"
+"Сырой вес" = "raw_weight"
+"Тарировать весы" = "calibrate_weight"
+"Калибровка (фактор 1.0)" = "calibrate_weight_factor 1.0"
+"Калибровка (фактор 0.1)" = "calibrate_weight_factor 0.1"
 "Состояние ротора" = "staterotor"
 "Датчик отходов" = "waste"
 
-
-
-# Команды второго ротора (Right)
-"R → налив OG" = "move_rright 2"
-"R → налив EA" = "move_rright 3"
-"R → налив Gemo" = "move_rright 4"
-"R → налив Alco" = "move_rright 10"
-"R → налив Water" = "move_rright 1"
-"R → налив Chlor" = "move_rright 12"
-"R → слив" = "move_rright 90"
-"R → экспозиция" = "move_rright 180"
-"R → загрузка пробирок" = "move_rright 40"
-"R → извлечение пробирок" = "move_rright 60"
-"R → установка стекол" = "move_rright 180"
-"R → извлечение стекол" = "move_rright 180"
-
-# Переключающий клапан
-"Valve → OG" = "move_multi 0"
-"Valve → продувка OG" = "move_multi 1"
-"Valve → EA" = "move_multi 2"
-"Valve → продувка EA" = "move_multi 3"
-"Valve → Gemo" = "move_multi 4"
-"Valve → продувка Gemo" = "move_multi 5"
-"Valve → Alco" = "move_multi 6"
-"Valve → продувка Alco" = "move_multi 7"
-"Valve → Water" = "move_multi 8"
-"Valve → продувка Water" = "move_multi 9"
-"Valve → Chlor" = "move_multi 10"
-"Valve → продувка Chlor" = "move_multi 11"
-
-
-
-# насос вакуумный
-"Pump on" = "pump_on"
-"Pump off" = "pump_off"
+# Диагностические команды
+"Проверка концевиков" = "check_all_endstops"
+"Проверка enable пинов" = "check_enable_pins"
+"Тестовая команда" = "test"
 
 # Настройки Serial по умолчанию
 [serial_default]
@@ -68,47 +110,67 @@ stopbits = 1
 timeout = 1.0
 
 # Последовательности команд для автоматического выполнения
-
 [sequences]
 # Последовательность команд для окраски
 coloring = [
-    "Клапан KL2 включить", 
-    "Клапан KL3 включить",
+    "KL2 включить", 
     "wait 1",
-    "Pump on",            
+    "Насос включить",            
     "wait 5",           
-    "Pump off"
+    "Насос выключить",
+    "KL2 выключить"
 ]
 
 # Последовательность команд для осаждения
 precipitation = [
-    "valve2_on",           # Открываем клапан 2
-    "wait 2",              # Ждем 2 секунды
-    "pump_on",             # Включаем насос
-    "wait 8",              # Ждем 8 секунд
-    "pump_off",            # Отключаем насос
-    "wait 1",              # Ждем 1 секунду
-    "valve2_off",          # Закрываем клапан 2
-    "rotor1_on",           # Включаем ротор 1
-    "wait 15",             # Ждем 15 секунд
-    "rotor1_off"           # Отключаем ротор 1
+    "KL1 включить",
+    "wait 2",
+    "Насос включить",
+    "wait 8",
+    "Насос выключить",
+    "wait 1",
+    "KL1 выключить",
+    "wait 15"
 ]
 
 # Последовательность команд для промывки
 washing = [
-    "valve3_on",           # Открываем клапан 3
-    "wait 2",              # Ждем 2 секунды
-    "pump_on",             # Включаем насос
-    "wait 5",              # Ждем 5 секунд
-    "pump_off",            # Отключаем насос
-    "valve3_off",          # Закрываем клапан 3
-    "valve4_on",           # Открываем клапан 4
-    "wait 2",              # Ждем 2 секунды
-    "pump_on",             # Включаем насос
-    "wait 3",              # Ждем 3 секунды
-    "pump_off",            # Отключаем насос
-    "valve4_off",          # Закрываем клапан 4
-    "rotor1_on",           # Включаем ротор 1
-    "wait 5",              # Ждем 5 секунд
-    "rotor1_off"           # Отключаем ротор 1
+    "KL1 включить",
+    "wait 2",
+    "Насос включить",
+    "wait 5",
+    "Насос выключить",
+    "KL1 выключить",
+    "KL2 включить",
+    "wait 2",
+    "Насос включить",
+    "wait 3",
+    "Насос выключить",
+    "KL2 выключить",
+    "wait 5"
+]
+
+# Последовательность полного хоминга
+full_homing = [
+    "Хоминг Multi",
+    "wait 3",
+    "Хоминг Multizone", 
+    "wait 3",
+    "Хоминг RRight",
+    "wait 3",
+    "Хоминг E0",
+    "wait 2",
+    "Хоминг E1",
+    "wait 2"
+]
+
+# Последовательность инициализации системы
+system_init = [
+    "Проверка концевиков",
+    "wait 1",
+    "Проверка enable пинов",
+    "wait 1",
+    "Тарировать весы",
+    "wait 2",
+    "Тестовая команда"
 ]

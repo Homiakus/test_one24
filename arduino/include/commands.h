@@ -68,6 +68,8 @@ void testCommand();
 void handleMoveMulti();
 void handleMoveMultizone();
 void handleMoveRRight();
+void handleMoveE0();
+void handleMoveE1();
 
 // Новые обработчики команд для Multi и RRight
 void handleMultiPos();
@@ -79,6 +81,8 @@ void handleZeroAndMoveRRight();
 void handleZeroMulti();
 void handleZeroMultizone();
 void handleZeroRRight();
+void handleZeroE0();
+void handleZeroE1();
 
 // Обработчики команд насоса
 void handlePumpOn();

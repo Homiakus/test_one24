@@ -43,6 +43,7 @@ StepperConfig getStepperConfig(StepperType type) {
       config.acceleration = MULTI_ACCELERATION;
       config.homingSpeed = MULTI_HOMING_SPEED;
       config.endstopTypeNPN = MULTI_ENDSTOP_TYPE_NPN;
+      config.powerAlwaysOn = MULTI_POWER_ALWAYS_ON;
       break;
       
     case STEPPER_MULTIZONE:
@@ -55,6 +56,7 @@ StepperConfig getStepperConfig(StepperType type) {
       config.acceleration = MULTIZONE_ACCELERATION;
       config.homingSpeed = MULTIZONE_HOMING_SPEED;
       config.endstopTypeNPN = MULTIZONE_ENDSTOP_TYPE_NPN;
+      config.powerAlwaysOn = MULTIZONE_POWER_ALWAYS_ON;
       break;
       
     case STEPPER_RRIGHT:
@@ -67,6 +69,7 @@ StepperConfig getStepperConfig(StepperType type) {
       config.acceleration = RRIGHT_ACCELERATION;
       config.homingSpeed = RRIGHT_HOMING_SPEED;
       config.endstopTypeNPN = RRIGHT_ENDSTOP_TYPE_NPN;
+      config.powerAlwaysOn = RRIGHT_POWER_ALWAYS_ON;
       break;
       
     case STEPPER_E0:
@@ -79,6 +82,7 @@ StepperConfig getStepperConfig(StepperType type) {
       config.acceleration = E0_ACCELERATION;
       config.homingSpeed = E0_HOMING_SPEED;
       config.endstopTypeNPN = E0_ENDSTOP_TYPE_NPN;
+      config.powerAlwaysOn = E0_POWER_ALWAYS_ON;
       break;
       
     case STEPPER_E1:
@@ -91,6 +95,7 @@ StepperConfig getStepperConfig(StepperType type) {
       config.acceleration = E1_ACCELERATION;
       config.homingSpeed = E1_HOMING_SPEED;
       config.endstopTypeNPN = E1_ENDSTOP_TYPE_NPN;
+      config.powerAlwaysOn = E1_POWER_ALWAYS_ON;
       break;
   }
   
@@ -220,7 +225,20 @@ bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position) {
     return false;
   }
   
-  // Определяем какой это двигатель для диагностики
+  // Определяем какой это двигатель и получаем его конфигурацию
+  StepperType stepperType;
+  if (&stepper == &multiStepper) stepperType = STEPPER_MULTI;
+  else if (&stepper == &multizoneSteper) stepperType = STEPPER_MULTIZONE;
+  else if (&stepper == &rRightStepper) stepperType = STEPPER_RRIGHT;
+  else if (&stepper == &e0Stepper) stepperType = STEPPER_E0;
+  else if (&stepper == &e1Stepper) stepperType = STEPPER_E1;
+  else {
+    Serial.println(F("Ошибка: Неизвестный двигатель"));
+    return false;
+  }
+  
+  StepperConfig config = getStepperConfig(stepperType);
+  
   String motorName = "UNKNOWN";
   if (&stepper == &multiStepper) motorName = "Multi";
   else if (&stepper == &multizoneSteper) motorName = "Multizone";
@@ -237,6 +255,9 @@ bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position) {
   Serial.print(position);
   Serial.print(F(", расстояние="));
   Serial.println(abs(position - currentPos));
+  
+  // Включаем питание двигателя
+  enableStepper(stepper, config);
   
   Serial.print(F("Движение к позиции: "));
   Serial.println(position);
@@ -263,6 +284,9 @@ bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position) {
       Serial.println(stepper.getTarget());
       Serial.println(F("Ошибка: Таймаут движения"));
       stepper.brake();
+      
+      // Выключаем питание в случае ошибки
+      disableStepper(stepper, config);
       return false;
     }
     
@@ -286,6 +310,10 @@ bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position) {
   
   Serial.print(F("Движение завершено. Текущая позиция: "));
   Serial.println(stepper.getCurrent());
+  
+  // Выключаем питание для двигателей с временным питанием
+  disableStepper(stepper, config);
+  
   return true;
 }
 
@@ -452,11 +480,15 @@ bool clampMotors(long targetPosition) {
   }
   
   clampInProgress = true;
-  Serial.println(F("Начало выполнения команды clamp с индивидуальными настройками"));
+  Serial.println(F("Начало выполнения команды clamp с временным питанием"));
   
   // Получение конфигураций для E0 и E1
   StepperConfig e0Config = getStepperConfig(STEPPER_E0);
   StepperConfig e1Config = getStepperConfig(STEPPER_E1);
+  
+  // Включаем питание двигателей
+  enableStepper(e0Stepper, e0Config);
+  enableStepper(e1Stepper, e1Config);
   
   // Получение текущих позиций
   long currentE0 = e0Stepper.getCurrent();
@@ -506,6 +538,11 @@ bool clampMotors(long targetPosition) {
       Serial.println(F("Ошибка: Таймаут выполнения команды clamp"));
       e0Stepper.brake();
       e1Stepper.brake();
+      
+      // Выключаем питание
+      disableStepper(e0Stepper, e0Config);
+      disableStepper(e1Stepper, e1Config);
+      
       clampInProgress = false;
       return false;
     }
@@ -535,6 +572,10 @@ bool clampMotors(long targetPosition) {
   Serial.print(F(", E1: "));
   Serial.println(e1Stepper.getCurrent());
   
+  // Выключаем питание двигателей
+  disableStepper(e0Stepper, e0Config);
+  disableStepper(e1Stepper, e1Config);
+  
   clampInProgress = false;
   return true;
 }
@@ -546,11 +587,15 @@ bool clampZeroMotors() {
   }
   
   clampInProgress = true;
-  Serial.println(F("Начало процедуры clamp_zero с индивидуальными настройками"));
+  Serial.println(F("Начало процедуры clamp_zero с временным питанием"));
   
   // Получение конфигураций для E0 и E1
   StepperConfig e0Config = getStepperConfig(STEPPER_E0);
   StepperConfig e1Config = getStepperConfig(STEPPER_E1);
+  
+  // Включаем питание двигателей
+  enableStepper(e0Stepper, e0Config);
+  enableStepper(e1Stepper, e1Config);
   
   // Остановка двигателей
   e0Stepper.brake();
@@ -567,13 +612,13 @@ bool clampZeroMotors() {
   if (readEndstopWithType(CLAMP_SENSOR_PIN, e0Config.endstopTypeNPN)) {
     Serial.println(F("Датчик уже активен, начинаю отъезд"));
     // Если датчик уже нажат, сначала отъезжаем
-    e0Stepper.setSpeed(e0Config.homingSpeed);
-    e1Stepper.setSpeed(e1Config.homingSpeed);
+    e0Stepper.setTarget(e0Stepper.getCurrent() + 200);
+    e1Stepper.setTarget(e1Stepper.getCurrent() + 200);
     
     unsigned long escapeStart = millis();
-    while (readEndstopWithType(CLAMP_SENSOR_PIN, e0Config.endstopTypeNPN) && (millis() - escapeStart < 5000)) {
-      e0Stepper.tickManual();
-      e1Stepper.tickManual();
+    while ((!e0Stepper.ready() || !e1Stepper.ready()) && (millis() - escapeStart < 5000)) {
+      e0Stepper.tick();
+      e1Stepper.tick();
       yield();
     }
     
@@ -587,8 +632,10 @@ bool clampZeroMotors() {
   Serial.print(e0Config.endstopTypeNPN ? "NPN" : "PNP");
   Serial.println(F(")..."));
   
-  e0Stepper.setSpeed(-e0Config.homingSpeed);
-  e1Stepper.setSpeed(-e1Config.homingSpeed);
+  long startE0 = e0Stepper.getCurrent();
+  long startE1 = e1Stepper.getCurrent();
+  e0Stepper.setTarget(startE0 - 5000);
+  e1Stepper.setTarget(startE1 - 5000);
   
   unsigned long startTime = millis();
   
@@ -597,12 +644,17 @@ bool clampZeroMotors() {
       Serial.println(F("Ошибка: Таймаут при движении к датчику"));
       e0Stepper.brake();
       e1Stepper.brake();
+      
+      // Выключаем питание
+      disableStepper(e0Stepper, e0Config);
+      disableStepper(e1Stepper, e1Config);
+      
       clampInProgress = false;
       return false;
     }
     
-    e0Stepper.tickManual();
-    e1Stepper.tickManual();
+    e0Stepper.tick();
+    e1Stepper.tick();
     yield();
   }
   
@@ -629,6 +681,11 @@ bool clampZeroMotors() {
       Serial.println(F("Ошибка: Таймаут отъезда от датчика"));
       e0Stepper.brake();
       e1Stepper.brake();
+      
+      // Выключаем питание
+      disableStepper(e0Stepper, e0Config);
+      disableStepper(e1Stepper, e1Config);
+      
       clampInProgress = false;
       return false;
     }
@@ -650,8 +707,35 @@ bool clampZeroMotors() {
     e1Stepper.setCurrent(100);
   }
   
+  // Выключаем питание двигателей
+  disableStepper(e0Stepper, e0Config);
+  disableStepper(e1Stepper, e1Config);
+  
   clampInProgress = false;
   return true;
+}
+
+// ============== ИНДИВИДУАЛЬНЫЕ ФУНКЦИИ ДЛЯ E0 И E1 ==============
+bool moveE0(long position) {
+  Serial.print(F("Индивидуальное движение E0 к позиции: "));
+  Serial.println(position);
+  return setStepperPosition(e0Stepper, position);
+}
+
+bool moveE1(long position) {
+  Serial.print(F("Индивидуальное движение E1 к позиции: "));
+  Serial.println(position);
+  return setStepperPosition(e1Stepper, position);
+}
+
+bool homeE0() {
+  Serial.println(F("Индивидуальный хоминг E0..."));
+  return homeStepperMotor(e0Stepper, CLAMP_SENSOR_PIN);
+}
+
+bool homeE1() {
+  Serial.println(F("Индивидуальный хоминг E1..."));
+  return homeStepperMotor(e1Stepper, CLAMP_SENSOR_PIN);
 }
 
 // ============== ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ ==============
@@ -683,4 +767,27 @@ bool zeroAndMoveRRight(long position) {
   Serial.print(F("Перемещение RRight в позицию "));
   Serial.println(position);
   return setStepperPosition(rRightStepper, position);
+}
+
+// ============== УПРАВЛЕНИЕ ПИТАНИЕМ ДВИГАТЕЛЕЙ ==============
+void enableStepper(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config) {
+  stepper.enable();
+  Serial.print(F("Enable pin "));
+  Serial.print(config.enablePin);
+  Serial.print(F(": ВКЛЮЧЕН (режим: "));
+  Serial.print(config.powerAlwaysOn ? "постоянный" : "временный");
+  Serial.println(F(")"));
+}
+
+void disableStepper(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config) {
+  if (!config.powerAlwaysOn) {
+    stepper.disable();
+    Serial.print(F("Enable pin "));
+    Serial.print(config.enablePin);
+    Serial.println(F(": ВЫКЛЮЧЕН (временный режим)"));
+  } else {
+    Serial.print(F("Enable pin "));
+    Serial.print(config.enablePin);
+    Serial.println(F(": ОСТАЕТСЯ ВКЛЮЧЕННЫМ (постоянный режим)"));
+  }
 } 

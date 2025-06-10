@@ -58,6 +58,7 @@
 #define MULTI_ACCELERATION 5000           // steps/sec^2
 #define MULTI_HOMING_SPEED 6000            // steps/sec для хоминга (увеличено)
 #define MULTI_ENDSTOP_TYPE_NPN false       // true = NPN, false = PNP
+#define MULTI_POWER_ALWAYS_ON true         // true = питание постоянно, false = только при движении
 
 // Stepper Multizone (Y) Configuration
 #define MULTIZONE_STEPS_PER_REVOLUTION 200  // шагов на оборот
@@ -65,6 +66,7 @@
 #define MULTIZONE_ACCELERATION 800          // steps/sec^2
 #define MULTIZONE_HOMING_SPEED 400          // steps/sec для хоминга (увеличено)
 #define MULTIZONE_ENDSTOP_TYPE_NPN true     // true = NPN, false = PNP
+#define MULTIZONE_POWER_ALWAYS_ON true      // true = питание постоянно, false = только при движении
 
 // Stepper RRight (Z) Configuration
 #define RRIGHT_STEPS_PER_REVOLUTION 200     // шагов на оборот
@@ -72,6 +74,7 @@
 #define RRIGHT_ACCELERATION 2000             // steps/sec^2 (временно увеличено для диагностики)
 #define RRIGHT_HOMING_SPEED 2000             // steps/sec для хоминга (увеличено)
 #define RRIGHT_ENDSTOP_TYPE_NPN true        // true = NPN, false = PNP
+#define RRIGHT_POWER_ALWAYS_ON true         // true = питание постоянно, false = только при движении
 
 // Stepper E0 Configuration
 #define E0_STEPS_PER_REVOLUTION 200         // шагов на оборот
@@ -79,6 +82,7 @@
 #define E0_ACCELERATION 2000                // steps/sec^2
 #define E0_HOMING_SPEED 1000                // steps/sec для хоминга (если будет использоваться)
 #define E0_ENDSTOP_TYPE_NPN true            // true = NPN, false = PNP (для clamp_zero датчика)
+#define E0_POWER_ALWAYS_ON false            // true = питание постоянно, false = только при движении
 
 // Stepper E1 Configuration
 #define E1_STEPS_PER_REVOLUTION 200         // шагов на оборот
@@ -86,6 +90,7 @@
 #define E1_ACCELERATION 2000                // steps/sec^2
 #define E1_HOMING_SPEED 1000                // steps/sec для хоминга (если будет использоваться)
 #define E1_ENDSTOP_TYPE_NPN true            // true = NPN, false = PNP (для clamp_zero датчика)
+#define E1_POWER_ALWAYS_ON false            // true = питание постоянно, false = только при движении
 
 // ============== LEGACY CONSTANTS (для обратной совместимости) ==============
 const int HOMING_SPEED = 300;               // Общий хоминг (устарело, используйте индивидуальные настройки)

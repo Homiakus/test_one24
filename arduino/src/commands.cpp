@@ -62,6 +62,8 @@ void setupCommandHandlers() {
   sCmd.addCommand("move_multi", handleMoveMulti);
   sCmd.addCommand("move_multizone", handleMoveMultizone);
   sCmd.addCommand("move_rright", handleMoveRRight);
+  sCmd.addCommand("move_e0", handleMoveE0);
+  sCmd.addCommand("move_e1", handleMoveE1);
 
   // Команды двигателей E0 и E1 (clamp)
   sCmd.addCommand("clamp", handleClamp);
@@ -72,6 +74,8 @@ void setupCommandHandlers() {
   sCmd.addCommand("zero_multi", handleZeroMulti);
   sCmd.addCommand("zero_multizone", handleZeroMultizone);
   sCmd.addCommand("zero_rright", handleZeroRRight);
+  sCmd.addCommand("zero_e0", handleZeroE0);
+  sCmd.addCommand("zero_e1", handleZeroE1);
   
   // Команды насоса
   sCmd.addCommand("pump_on", handlePumpOn);
@@ -181,6 +185,54 @@ void handleMoveRRight() {
   }
 }
 
+void handleMoveE0() {
+  sendReceived();
+  char* arg = sCmd.next();
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  long position = atol(arg);
+  if (position == 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Индивидуальное движение E0 к позиции: "));
+  Serial.println(position);
+  
+  if (moveE0(position)) {
+    sendCompleted();
+  } else {
+    sendError("MOVE_FAILED");
+  }
+}
+
+void handleMoveE1() {
+  sendReceived();
+  char* arg = sCmd.next();
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  long position = atol(arg);
+  if (position == 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Индивидуальное движение E1 к позиции: "));
+  Serial.println(position);
+  
+  if (moveE1(position)) {
+    sendCompleted();
+  } else {
+    sendError("MOVE_FAILED");
+  }
+}
+
 // ============== ОБРАБОТЧИКИ КОМАНД ХОМИНГА ==============
 void handleZeroMulti() {
   sendReceived();
@@ -212,6 +264,30 @@ void handleZeroRRight() {
   
   if (homeStepperMotor(rRightStepper, RRIGHT_ENDSTOP_PIN)) {
     Serial.println(F("Хоминг RRight завершен"));
+    sendCompleted();
+  } else {
+    sendError(MSG_HOMING_TIMEOUT);
+  }
+}
+
+void handleZeroE0() {
+  sendReceived();
+  Serial.println(F("Начало индивидуального хоминга E0..."));
+  
+  if (homeE0()) {
+    Serial.println(F("Хоминг E0 завершен"));
+    sendCompleted();
+  } else {
+    sendError(MSG_HOMING_TIMEOUT);
+  }
+}
+
+void handleZeroE1() {
+  sendReceived();
+  Serial.println(F("Начало индивидуального хоминга E1..."));
+  
+  if (homeE1()) {
+    Serial.println(F("Хоминг E1 завершен"));
     sendCompleted();
   } else {
     sendError(MSG_HOMING_TIMEOUT);
