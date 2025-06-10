@@ -1,2 +1,301 @@
 2025-06-04 13:45:30 - TEST - Проверка доступа к файлу логов
 2025-06-04 14:00:49 - TEST - Проверка доступа к файлу логов
+2025-06-05 18:26:36 - INFO - Логирование инициализировано успешно
+2025-06-05 18:26:36 - TEST - Проверка доступа к файлу логов
+2025-06-05 18:26:36 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-05 18:26:36 - INFO - ================================================================================
+2025-06-05 18:26:36 - INFO - Запуск приложения
+2025-06-05 18:26:36 - INFO - Операционная система: win32
+2025-06-05 18:26:36 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-05 18:26:36 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-05 18:26:36 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-05 18:26:37 - INFO - Приложение запущено
+2025-06-05 18:27:02 - INFO - Подготовка к загрузке прошивки. Путь: C:\base_2\projects\1pap24\program\test_one24\arduino, Порт: 
+2025-06-05 18:27:02 - INFO - Проверка наличия файлов прошивки в директории: C:\base_2\projects\1pap24\program\test_one24\arduino
+2025-06-05 18:27:02 - INFO - Найден файл platformio.ini: C:\base_2\projects\1pap24\program\test_one24\arduino\platformio.ini
+2025-06-05 18:27:02 - INFO - PlatformIO доступен: PlatformIO Core, version 6.1.18
+2025-06-05 18:27:02 - INFO - Запуск команды: platformio run --target upload в директории C:\base_2\projects\1pap24\program\test_one24\arduino
+2025-06-05 18:27:02 - INFO - Запуск процесса загрузки прошивки: platformio run --target upload
+2025-06-05 18:27:03 - INFO - PlatformIO: Processing mega (platform: atmelavr; board: megaatmega2560; framework: arduino)
+2025-06-05 18:27:03 - INFO - PlatformIO: --------------------------------------------------------------------------------
+2025-06-05 18:27:03 - INFO - PlatformIO: Verbose mode can be enabled via `-v, --verbose` option
+2025-06-05 18:27:03 - INFO - PlatformIO: CONFIGURATION: https://docs.platformio.org/page/boards/atmelavr/megaatmega2560.html
+2025-06-05 18:27:03 - INFO - PlatformIO: PLATFORM: Atmel AVR (5.1.0) > Arduino Mega or Mega 2560 ATmega2560 (Mega 2560)
+2025-06-05 18:27:03 - INFO - PlatformIO: HARDWARE: ATMEGA2560 16MHz, 8KB RAM, 248KB Flash
+2025-06-05 18:27:03 - INFO - PlatformIO: DEBUG: Current (avr-stub) External (avr-stub, simavr)
+2025-06-05 18:27:03 - INFO - PlatformIO: PACKAGES:
+2025-06-05 18:27:03 - INFO - PlatformIO: - framework-arduino-avr @ 5.2.0
+2025-06-05 18:27:03 - INFO - PlatformIO: - tool-avrdude @ 1.60300.200527 (6.3.0)
+2025-06-05 18:27:03 - INFO - PlatformIO: - toolchain-atmelavr @ 1.70300.191015 (7.3.0)
+2025-06-05 18:27:03 - INFO - PlatformIO: Converting main.ino
+2025-06-05 18:27:03 - INFO - PlatformIO: LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+2025-06-05 18:27:03 - INFO - PlatformIO: LDF Modes: Finder ~ chain, Compatibility ~ off
+2025-06-05 18:27:03 - INFO - PlatformIO: Found 11 compatible libraries
+2025-06-05 18:27:03 - INFO - PlatformIO: Scanning dependencies...
+2025-06-05 18:27:03 - INFO - PlatformIO: Dependency Graph
+2025-06-05 18:27:03 - INFO - PlatformIO: |-- GyverStepper @ 2.7.0
+2025-06-05 18:27:03 - INFO - PlatformIO: |-- SerialCommand
+2025-06-05 18:27:03 - INFO - PlatformIO: |-- Non-Blocking HX711 Library @ 1.0.1
+2025-06-05 18:27:03 - INFO - PlatformIO: |-- Bounce2 @ 2.72
+2025-06-05 18:27:03 - INFO - PlatformIO: Building in release mode
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\src\commands.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\src\main.ino.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\src\sensors.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\src\stepper_control.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\src\valves.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\lib082\SerialCommand\SerialCommand.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\lib126\NBHX711\NBHX711.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\libbcc\Bounce2\Bounce2.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Archiving .pio\build\mega\libbcc\libBounce2.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Archiving .pio\build\mega\lib082\libSerialCommand.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Archiving .pio\build\mega\lib126\libNBHX711.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Archiving .pio\build\mega\libFrameworkArduinoVariant.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\CDC.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\HardwareSerial.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\HardwareSerial0.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Indexing .pio\build\mega\libbcc\libBounce2.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Indexing .pio\build\mega\lib082\libSerialCommand.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Indexing .pio\build\mega\libFrameworkArduinoVariant.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Indexing .pio\build\mega\lib126\libNBHX711.a
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\HardwareSerial1.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\HardwareSerial2.cpp.o
+2025-06-05 18:27:03 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\HardwareSerial3.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\IPAddress.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\PluggableUSB.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\Print.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\Stream.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\Tone.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\USBCore.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\WInterrupts.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\WMath.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\WString.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\abi.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\hooks.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\main.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\new.cpp.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\wiring.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\wiring_analog.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\wiring_digital.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\wiring_pulse.S.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\wiring_pulse.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Compiling .pio\build\mega\FrameworkArduino\wiring_shift.c.o
+2025-06-05 18:27:04 - INFO - PlatformIO: Archiving .pio\build\mega\libFrameworkArduino.a
+2025-06-05 18:27:04 - INFO - PlatformIO: Indexing .pio\build\mega\libFrameworkArduino.a
+2025-06-05 18:27:04 - INFO - PlatformIO: Linking .pio\build\mega\firmware.elf
+2025-06-05 18:27:04 - INFO - PlatformIO: Checking size .pio\build\mega\firmware.elf
+2025-06-05 18:27:04 - INFO - PlatformIO: Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+2025-06-05 18:27:04 - INFO - PlatformIO: RAM:   [==        ]  15.9% (used 1300 bytes from 8192 bytes)
+2025-06-05 18:27:04 - INFO - PlatformIO: Flash: [=         ]   8.8% (used 22332 bytes from 253952 bytes)
+2025-06-05 18:27:04 - INFO - PlatformIO: Building .pio\build\mega\firmware.hex
+2025-06-05 18:27:04 - INFO - PlatformIO: Configuring upload protocol...
+2025-06-05 18:27:04 - INFO - PlatformIO: AVAILABLE: wiring
+2025-06-05 18:27:04 - INFO - PlatformIO: CURRENT: upload_protocol = wiring
+2025-06-05 18:27:04 - INFO - PlatformIO: Looking for upload port...
+2025-06-05 18:27:06 - INFO - PlatformIO: Auto-detected: COM4
+2025-06-05 18:27:06 - INFO - PlatformIO: Uploading .pio\build\mega\firmware.hex
+2025-06-05 18:27:07 - INFO - PlatformIO: 
+2025-06-05 18:27:07 - INFO - PlatformIO: avrdude: AVR device initialized and ready to accept instructions
+2025-06-05 18:27:07 - INFO - PlatformIO: 
+2025-06-05 18:27:07 - INFO - PlatformIO: Reading | ################################################## | 100% 0.01s
+2025-06-05 18:27:07 - INFO - PlatformIO: 
+2025-06-05 18:27:07 - INFO - PlatformIO: avrdude: Device signature = 0x1e9801 (probably m2560)
+2025-06-05 18:27:07 - INFO - PlatformIO: avrdude: reading input file ".pio\build\mega\firmware.hex"
+2025-06-05 18:27:07 - INFO - PlatformIO: avrdude: writing flash (22332 bytes):
+2025-06-05 18:27:07 - INFO - PlatformIO: 
+2025-06-05 18:27:11 - INFO - PlatformIO: Writing | ################################################## | 100% 3.33s
+2025-06-05 18:27:11 - INFO - PlatformIO: 
+2025-06-05 18:27:11 - INFO - PlatformIO: avrdude: 22332 bytes of flash written
+2025-06-05 18:27:11 - INFO - PlatformIO: avrdude: verifying flash memory against .pio\build\mega\firmware.hex:
+2025-06-05 18:27:11 - INFO - PlatformIO: avrdude: load data flash data from input file .pio\build\mega\firmware.hex:
+2025-06-05 18:27:11 - INFO - PlatformIO: avrdude: input file .pio\build\mega\firmware.hex contains 22332 bytes
+2025-06-05 18:27:11 - INFO - PlatformIO: avrdude: reading on-chip flash data:
+2025-06-05 18:27:11 - INFO - PlatformIO: 
+2025-06-05 18:27:13 - INFO - PlatformIO: Reading | ################################################## | 100% 2.58s
+2025-06-05 18:27:13 - INFO - PlatformIO: 
+2025-06-05 18:27:13 - INFO - PlatformIO: avrdude: verifying ...
+2025-06-05 18:27:13 - INFO - PlatformIO: avrdude: 22332 bytes of flash verified
+2025-06-05 18:27:13 - INFO - PlatformIO: 
+2025-06-05 18:27:13 - INFO - PlatformIO: avrdude: safemode: Fuses OK (E:FD, H:D8, L:FF)
+2025-06-05 18:27:13 - INFO - PlatformIO: 
+2025-06-05 18:27:13 - INFO - PlatformIO: avrdude done.  Thank you.
+2025-06-05 18:27:13 - INFO - PlatformIO: 
+2025-06-05 18:27:13 - INFO - PlatformIO: ========================= [SUCCESS] Took 10.77 seconds =========================
+2025-06-05 18:27:15 - INFO - Прошивка успешно загружена
+2025-06-05 18:33:24 - INFO - Логирование инициализировано успешно
+2025-06-05 18:33:24 - TEST - Проверка доступа к файлу логов
+2025-06-05 18:33:24 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-05 18:33:24 - INFO - ================================================================================
+2025-06-05 18:33:24 - INFO - Запуск приложения
+2025-06-05 18:33:24 - INFO - Операционная система: win32
+2025-06-05 18:33:24 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-05 18:33:24 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-05 18:33:24 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-05 18:33:24 - INFO - Приложение запущено
+2025-06-05 18:33:34 - INFO - Подготовка к загрузке прошивки. Путь: C:\base_2\projects\1pap24\program\test_one24\arduino, Порт: 
+2025-06-05 18:33:34 - INFO - Проверка наличия файлов прошивки в директории: C:\base_2\projects\1pap24\program\test_one24\arduino
+2025-06-05 18:33:34 - INFO - Найден файл platformio.ini: C:\base_2\projects\1pap24\program\test_one24\arduino\platformio.ini
+2025-06-05 18:33:35 - INFO - PlatformIO доступен: PlatformIO Core, version 6.1.18
+2025-06-05 18:33:35 - INFO - Запуск команды: platformio run --target upload в директории C:\base_2\projects\1pap24\program\test_one24\arduino
+2025-06-05 18:33:35 - INFO - Запуск процесса загрузки прошивки: platformio run --target upload
+2025-06-05 18:33:35 - INFO - PlatformIO: Processing mega (platform: atmelavr; board: megaatmega2560; framework: arduino)
+2025-06-05 18:33:35 - INFO - PlatformIO: --------------------------------------------------------------------------------
+2025-06-05 18:33:36 - INFO - PlatformIO: Verbose mode can be enabled via `-v, --verbose` option
+2025-06-05 18:33:36 - INFO - PlatformIO: CONFIGURATION: https://docs.platformio.org/page/boards/atmelavr/megaatmega2560.html
+2025-06-05 18:33:36 - INFO - PlatformIO: PLATFORM: Atmel AVR (5.1.0) > Arduino Mega or Mega 2560 ATmega2560 (Mega 2560)
+2025-06-05 18:33:36 - INFO - PlatformIO: HARDWARE: ATMEGA2560 16MHz, 8KB RAM, 248KB Flash
+2025-06-05 18:33:36 - INFO - PlatformIO: DEBUG: Current (avr-stub) External (avr-stub, simavr)
+2025-06-05 18:33:36 - INFO - PlatformIO: PACKAGES:
+2025-06-05 18:33:36 - INFO - PlatformIO: - framework-arduino-avr @ 5.2.0
+2025-06-05 18:33:36 - INFO - PlatformIO: - tool-avrdude @ 1.60300.200527 (6.3.0)
+2025-06-05 18:33:36 - INFO - PlatformIO: - toolchain-atmelavr @ 1.70300.191015 (7.3.0)
+2025-06-05 18:33:36 - INFO - PlatformIO: Converting main.ino
+2025-06-05 18:33:36 - INFO - PlatformIO: LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+2025-06-05 18:33:36 - INFO - PlatformIO: LDF Modes: Finder ~ chain, Compatibility ~ off
+2025-06-05 18:33:36 - INFO - PlatformIO: Found 11 compatible libraries
+2025-06-05 18:33:36 - INFO - PlatformIO: Scanning dependencies...
+2025-06-05 18:33:36 - INFO - PlatformIO: Dependency Graph
+2025-06-05 18:33:36 - INFO - PlatformIO: |-- GyverStepper @ 2.7.0
+2025-06-05 18:33:36 - INFO - PlatformIO: |-- SerialCommand
+2025-06-05 18:33:36 - INFO - PlatformIO: |-- Non-Blocking HX711 Library @ 1.0.1
+2025-06-05 18:33:36 - INFO - PlatformIO: |-- Bounce2 @ 2.72
+2025-06-05 18:33:36 - INFO - PlatformIO: Building in release mode
+2025-06-05 18:33:36 - INFO - PlatformIO: Compiling .pio\build\mega\src\main.ino.cpp.o
+2025-06-05 18:33:36 - INFO - PlatformIO: Linking .pio\build\mega\firmware.elf
+2025-06-05 18:33:36 - INFO - PlatformIO: Checking size .pio\build\mega\firmware.elf
+2025-06-05 18:33:36 - INFO - PlatformIO: Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+2025-06-05 18:33:36 - INFO - PlatformIO: RAM:   [==        ]  15.9% (used 1300 bytes from 8192 bytes)
+2025-06-05 18:33:36 - INFO - PlatformIO: Flash: [=         ]   8.8% (used 22332 bytes from 253952 bytes)
+2025-06-05 18:33:36 - INFO - PlatformIO: Configuring upload protocol...
+2025-06-05 18:33:36 - INFO - PlatformIO: AVAILABLE: wiring
+2025-06-05 18:33:36 - INFO - PlatformIO: CURRENT: upload_protocol = wiring
+2025-06-05 18:33:36 - INFO - PlatformIO: Looking for upload port...
+2025-06-05 18:33:38 - INFO - PlatformIO: Auto-detected: COM4
+2025-06-05 18:33:38 - INFO - PlatformIO: Uploading .pio\build\mega\firmware.hex
+2025-06-05 18:33:39 - INFO - PlatformIO: 
+2025-06-05 18:33:39 - INFO - PlatformIO: avrdude: AVR device initialized and ready to accept instructions
+2025-06-05 18:33:39 - INFO - PlatformIO: 
+2025-06-05 18:33:39 - INFO - PlatformIO: Reading | ################################################## | 100% 0.01s
+2025-06-05 18:33:39 - INFO - PlatformIO: 
+2025-06-05 18:33:39 - INFO - PlatformIO: avrdude: Device signature = 0x1e9801 (probably m2560)
+2025-06-05 18:33:39 - INFO - PlatformIO: avrdude: reading input file ".pio\build\mega\firmware.hex"
+2025-06-05 18:33:39 - INFO - PlatformIO: avrdude: writing flash (22332 bytes):
+2025-06-05 18:33:39 - INFO - PlatformIO: 
+2025-06-05 18:33:42 - INFO - PlatformIO: Writing | ################################################## | 100% 3.33s
+2025-06-05 18:33:42 - INFO - PlatformIO: 
+2025-06-05 18:33:42 - INFO - PlatformIO: avrdude: 22332 bytes of flash written
+2025-06-05 18:33:42 - INFO - PlatformIO: avrdude: verifying flash memory against .pio\build\mega\firmware.hex:
+2025-06-05 18:33:42 - INFO - PlatformIO: avrdude: load data flash data from input file .pio\build\mega\firmware.hex:
+2025-06-05 18:33:42 - INFO - PlatformIO: avrdude: input file .pio\build\mega\firmware.hex contains 22332 bytes
+2025-06-05 18:33:42 - INFO - PlatformIO: avrdude: reading on-chip flash data:
+2025-06-05 18:33:42 - INFO - PlatformIO: 
+2025-06-05 18:33:45 - INFO - PlatformIO: Reading | ################################################## | 100% 2.58s
+2025-06-05 18:33:45 - INFO - PlatformIO: 
+2025-06-05 18:33:45 - INFO - PlatformIO: avrdude: verifying ...
+2025-06-05 18:33:45 - INFO - PlatformIO: avrdude: 22332 bytes of flash verified
+2025-06-05 18:33:45 - INFO - PlatformIO: 
+2025-06-05 18:33:45 - INFO - PlatformIO: avrdude: safemode: Fuses OK (E:FD, H:D8, L:FF)
+2025-06-05 18:33:45 - INFO - PlatformIO: 
+2025-06-05 18:33:45 - INFO - PlatformIO: avrdude done.  Thank you.
+2025-06-05 18:33:45 - INFO - PlatformIO: 
+2025-06-05 18:33:45 - INFO - PlatformIO: ========================= [SUCCESS] Took 9.90 seconds =========================
+2025-06-05 18:33:45 - INFO - Прошивка успешно загружена
+2025-06-09 17:11:31 - INFO - Логирование инициализировано успешно
+2025-06-09 17:11:31 - TEST - Проверка доступа к файлу логов
+2025-06-09 17:11:31 - INFO - Файл логов доступен для записи: c:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 17:11:31 - INFO - ================================================================================
+2025-06-09 17:11:31 - INFO - Запуск приложения
+2025-06-09 17:11:31 - INFO - Операционная система: win32
+2025-06-09 17:11:31 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 17:11:31 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 17:11:31 - INFO - Файл логов: c:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 17:11:32 - INFO - Приложение запущено
+2025-06-09 17:14:32 - INFO - Логирование инициализировано успешно
+2025-06-09 17:14:32 - TEST - Проверка доступа к файлу логов
+2025-06-09 17:14:32 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 17:14:32 - INFO - ================================================================================
+2025-06-09 17:14:32 - INFO - Запуск приложения
+2025-06-09 17:14:32 - INFO - Операционная система: win32
+2025-06-09 17:14:32 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 17:14:32 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 17:14:32 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 17:14:32 - INFO - Приложение запущено
+2025-06-09 17:41:27 - INFO - Логирование инициализировано успешно
+2025-06-09 17:41:27 - TEST - Проверка доступа к файлу логов
+2025-06-09 17:41:27 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 17:41:27 - INFO - ================================================================================
+2025-06-09 17:41:27 - INFO - Запуск приложения
+2025-06-09 17:41:27 - INFO - Операционная система: win32
+2025-06-09 17:41:27 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 17:41:27 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 17:41:27 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 17:41:27 - INFO - Приложение запущено
+2025-06-09 18:02:28 - INFO - Логирование инициализировано успешно
+2025-06-09 18:02:28 - TEST - Проверка доступа к файлу логов
+2025-06-09 18:02:28 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 18:02:28 - INFO - ================================================================================
+2025-06-09 18:02:28 - INFO - Запуск приложения
+2025-06-09 18:02:28 - INFO - Операционная система: win32
+2025-06-09 18:02:28 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 18:02:28 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 18:02:28 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 18:02:29 - INFO - Приложение запущено
+2025-06-09 18:23:58 - INFO - Логирование инициализировано успешно
+2025-06-09 18:23:58 - TEST - Проверка доступа к файлу логов
+2025-06-09 18:23:58 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 18:23:58 - INFO - ================================================================================
+2025-06-09 18:23:58 - INFO - Запуск приложения
+2025-06-09 18:23:58 - INFO - Операционная система: win32
+2025-06-09 18:23:58 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 18:23:58 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 18:23:58 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 18:23:58 - INFO - Приложение запущено
+2025-06-09 18:27:38 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 18:27:38 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 18:33:53 - INFO - Логирование инициализировано успешно
+2025-06-09 18:33:53 - TEST - Проверка доступа к файлу логов
+2025-06-09 18:33:53 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 18:33:53 - INFO - ================================================================================
+2025-06-09 18:33:53 - INFO - Запуск приложения
+2025-06-09 18:33:53 - INFO - Операционная система: win32
+2025-06-09 18:33:53 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 18:33:53 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 18:33:53 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 18:33:54 - INFO - Приложение запущено
+2025-06-09 18:57:42 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 18:57:42 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 19:15:56 - INFO - Логирование инициализировано успешно
+2025-06-09 19:15:56 - TEST - Проверка доступа к файлу логов
+2025-06-09 19:15:56 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 19:15:56 - INFO - ================================================================================
+2025-06-09 19:15:56 - INFO - Запуск приложения
+2025-06-09 19:15:56 - INFO - Операционная система: win32
+2025-06-09 19:15:56 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 19:15:56 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 19:15:56 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 19:15:57 - INFO - Приложение запущено
+2025-06-09 19:20:43 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 19:20:43 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 19:24:46 - INFO - Логирование инициализировано успешно
+2025-06-09 19:24:46 - TEST - Проверка доступа к файлу логов
+2025-06-09 19:24:46 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 19:24:46 - INFO - ================================================================================
+2025-06-09 19:24:46 - INFO - Запуск приложения
+2025-06-09 19:24:46 - INFO - Операционная система: win32
+2025-06-09 19:24:46 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 19:24:46 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 19:24:46 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 19:24:47 - INFO - Приложение запущено
+2025-06-09 19:26:26 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 19:26:26 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 19:28:15 - INFO - Логирование инициализировано успешно
+2025-06-09 19:28:15 - TEST - Проверка доступа к файлу логов
+2025-06-09 19:28:15 - INFO - Файл логов доступен для записи: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 19:28:15 - INFO - ================================================================================
+2025-06-09 19:28:15 - INFO - Запуск приложения
+2025-06-09 19:28:15 - INFO - Операционная система: win32
+2025-06-09 19:28:15 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-09 19:28:15 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-09 19:28:15 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-09 19:28:15 - INFO - Приложение запущено
+2025-06-09 19:33:48 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)
+2025-06-09 19:33:48 - INFO - Ignored error after process had died: OSError(9, 'Неверный дескриптор', None, 6, None)

@@ -1,107 +1,101 @@
+/**
+ * @file: main.ino
+ * @description: Главный модуль системы управления с синхронной обработкой команд
+ * @dependencies: GyverStepper2, NBHX711, stepper_control, valves, commands
+ * @created: 2024-12-19
+ */
+
 #include <Arduino.h>
-#include <Bounce2.h>
 #include <NBHX711.h>
 #include "config.h"
 #include "stepper_control.h"
+#include "sensors.h"
 #include "valves.h"
 #include "commands.h"
 
-// Объект для работы с датчиком веса
+// ============== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==============
 NBHX711 scale(WEIGHT_SENSOR_DT, WEIGHT_SENSOR_SCK, 16);
-Bounce tara;
 
-// Флаг для включения/выключения периодической отправки веса
-bool autoReportWeight = false;
 
-// Включить автоматический отчет о весе
-void enableWeightReport() {
-  autoReportWeight = true;
-  Serial.println(F("Автоматический отчет о весе ВКЛЮЧЕН"));
-}
+// Таймеры для автоматического отчета (используется только если включен)
+unsigned long lastWeightReportTime = 0;
+const unsigned long WEIGHT_REPORT_INTERVAL = 1000;  // 1 секунда
 
-// Выключить автоматический отчет о весе
-void disableWeightReport() {
-  autoReportWeight = false;
-  Serial.println(F("Автоматический отчет о весе ВЫКЛЮЧЕН"));
-}
 
-// ============== SETUP ==============
+// ============== ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ==============
 void setup() {
   // Инициализация последовательного порта
   Serial.begin(115200);
-  
-  // Задержка для стабилизации порта
   delay(1000);
   
-  Serial.println(F("======== CИСТЕМА ЗАПУСКАЕТСЯ ========"));
-  Serial.println(F("Версия: 1.0"));
+  Serial.println(F("======== СИСТЕМА ЗАПУСКАЕТСЯ ========"));
+  Serial.println(F("Версия: 2.1 (синхронная)"));
+  Serial.println(F("Дата: 2024-12-19"));
   
   // Инициализация шаговых двигателей
+  Serial.println(F("Инициализация шаговых двигателей..."));
   initializeSteppers();
   
+  // Инициализация датчиков
+  Serial.println(F("Инициализация датчиков..."));
+  initializeSensors();
+  
   // Инициализация датчика веса
+  Serial.println(F("Инициализация датчика веса..."));
   scale.begin();
-  scale.setScale(2230.0); // Установить калибровочный коэффициент
-  scale.tare(); // Тарируем весы при запуске
-  Serial.println(F("Датчик веса инициализирован и тарирован."));
+  scale.setScale(2230.0);
+  scale.tare();
+  Serial.println(F("Датчик веса инициализирован и тарирован"));
   
-  // Кнопка тарирования весов (переназначим пин, если KL1_PIN используется)
-  // Убедитесь, что TARA_BUTTON_PIN не конфликтует с другими пинами!
-  #define TARA_BUTTON_PIN 9 // Пример: используем пин 9 для кнопки тары
-  tara.attach(TARA_BUTTON_PIN, INPUT_PULLUP); 
-  Serial.print(F("Кнопка тарирования подключена к пину: ")); Serial.println(TARA_BUTTON_PIN);
-  
-  // Инициализация клапанов
+  // Инициализация клапанов и насоса
+  Serial.println(F("Инициализация клапанов и насоса..."));
   initializeValves();
   
   // Настройка обработчиков команд
+  Serial.println(F("Настройка обработчиков команд..."));
   setupCommandHandlers();
   
-  // Отправляем тестовое сообщение, чтобы убедиться, что все работает
+  // Вывод доступных команд
   Serial.println();
   Serial.println(F("======== СИСТЕМА ГОТОВА ========"));
-  // Обновим список команд, если команды серво были добавлены
+  Serial.println(F("РЕЖИМ: Синхронная обработка команд"));
+  Serial.println(F("Каждая команда выполняется полностью до завершения"));
+  Serial.println();
   Serial.println(F("Доступные команды:"));
-  Serial.println(F("- test: проверка связи"));
-  Serial.println(F("- move_multi <шаги>, move_multizone <шаги>, move_rright <шаги>"));
-  Serial.println(F("- zero_multi, zero_multizone, zero_rright"));
-  Serial.println(F("- clamp <позиция>: движение моторов E0 и E1 в указанную абсолютную позицию"));
-  Serial.println(F("- clamp_zero: обнуление моторов E0 и E1 по датчику (оба получают позицию 100)"));
-  Serial.println(F("- clamp_stop: аварийная остановка моторов E0 и E1"));
-  Serial.println(F("- kl1_on/off, kl2_on/off, kl3_on/off"));
-  Serial.println(F("- pump_on/off"));
-  Serial.println(F("- weight: получить вес"));
-  Serial.println(F("- raw_weight: получить сырое значение"));
-  Serial.println(F("- calibrate_weight: тарировать весы"));
-  Serial.println(F("- calibrate_weight_factor <число>: установить калибровочный коэффициент"));
-  // Добавим команды серво, если они есть в commands.cpp
-  // Serial.println(F("- servo1 <проценты>, servo2 <проценты>"));
-  // Serial.println(F("- reset_servos")); 
-  // Serial.println(F("- servo_test_on/off"));
+  Serial.println(F("Движение:"));
+  Serial.println(F("  - move_multi <позиция>"));
+  Serial.println(F("  - move_multizone <позиция>"));
+  Serial.println(F("  - move_rright <позиция>"));
+  Serial.println(F("Хоминг:"));
+  Serial.println(F("  - zero_multi, zero_multizone, zero_rright"));
+  Serial.println(F("Clamp (E0/E1):"));
+  Serial.println(F("  - clamp <позиция>"));
+  Serial.println(F("  - clamp_zero"));
+  Serial.println(F("  - clamp_stop"));
+  Serial.println(F("Клапаны:"));
+  Serial.println(F("  - kl1 <время>, kl2 <время>"));
+  Serial.println(F("  - kl1_on/off, kl2_on/off"));
+  Serial.println(F("Насос:"));
+  Serial.println(F("  - pump_on/off"));
+  Serial.println(F("Датчики:"));
+  Serial.println(F("  - weight, raw_weight"));
+  Serial.println(F("  - calibrate_weight"));
+  Serial.println(F("  - calibrate_weight_factor <коэффициент>"));
+  Serial.println(F("  - weight_report_on/off"));
+  Serial.println(F("  - staterotor, waste"));
+  Serial.println(F("Диагностика:"));
+  Serial.println(F("  - check_all_endstops"));
+  Serial.println(F("  - test"));
   Serial.println();
   Serial.println(F("Ожидание команд..."));
 }
 
-// ============== MAIN LOOP ==============
+// ============== ОСНОВНОЙ ЦИКЛ ==============
 void loop() {
-  // УДАЛЕНО: static unsigned long lastWeightReportTime = 0;
-  // УДАЛЕНО: static bool firstTime = true;
-  // УДАЛЕНО: static byte initialCount = 0;
-  
-  // Обработка входящих команд
+  // Только обработка входящих команд
+  // Каждая команда является блокирующей и выполняется полностью
   if (Serial.available() > 0) {
     sCmd.readSerial();
   }
   
-  // УДАЛЕНО: Обработка кнопки тарирования
-  // if (tara.update() && tara.fell()) { ... }
-  
-  // УДАЛЕНО: Обновление состояния датчика веса
-  // scale.update(); 
-
-  // УДАЛЕНО: Логика автоматической отправки веса
-  // if (autoReportWeight && (millis() - lastWeightReportTime >= 1000)) { ... }
-  
-  // УДАЛЕНО: Обновление состояния шаговых двигателей
-  // updateSteppers(); 
-} 
+}

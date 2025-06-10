@@ -3113,93 +3113,90 @@ comment = "Выключение мотора 1"
                 stderr=subprocess.STDOUT,
                 text=True,
                 shell=True,
-                cwd=platformio_path
+                cwd=platformio_path,
+                creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0 # Скрываем консольное окно на Windows
             )
-
+            
             # Читаем вывод процесса и обновляем интерфейс
             output = []
-            for line in process.stdout:
+            for line in iter(process.stdout.readline, ''):
+                if not line: # Пропускаем пустые строки, которые могут возникнуть при завершении потока
+                    break
                 line = line.strip()
                 output.append(line)
                 logging.info(f"PlatformIO: {line}")
-                # Передаем сообщение для обновления интерфейса через сигнал-слот
-                QApplication.processEvents()
-                progress_dialog.setLabelText(f"Загрузка прошивки...\n{line}")
-
+                # Безопасное обновление LabelText через QMetaObject.invokeMethod
+                QMetaObject.invokeMethod(progress_dialog, "setLabelText", 
+                                       Qt.ConnectionType.QueuedConnection, 
+                                       Q_ARG(str, f"Загрузка прошивки...\n{line}"))
+            
+            process.stdout.close()
             # Ждем завершения процесса
-            process.wait()
-
+            return_code = process.wait()
+            
             # Проверяем код возврата
-            if process.returncode == 0:
+            if return_code == 0:
                 # Успешная загрузка
                 success_message = "Прошивка успешно загружена"
                 logging.info(success_message)
-                QMetaObject.invokeMethod(
-                    self.status_bar, "showMessage",
-                    Qt.ConnectionType.QueuedConnection,
-                    Q_ARG(str, success_message),
-                    Q_ARG(int, 5000)
-                )
+                QMetaObject.invokeMethod(self.status_bar, "showMessage",
+                                       Qt.ConnectionType.QueuedConnection,
+                                       Q_ARG(str, success_message),
+                                       Q_ARG(int, 5000))
                 # Обновляем диалог прогресса
-                progress_dialog.setLabelText("Прошивка успешно загружена")
-                progress_dialog.setCancelButtonText("Закрыть")
-                progress_dialog.setMaximum(1)
-                progress_dialog.setValue(1)
+                QMetaObject.invokeMethod(progress_dialog, "setLabelText", Qt.ConnectionType.QueuedConnection, Q_ARG(str, "Прошивка успешно загружена"))
+                QMetaObject.invokeMethod(progress_dialog, "setCancelButtonText", Qt.ConnectionType.QueuedConnection, Q_ARG(str, "Закрыть"))
+                QMetaObject.invokeMethod(progress_dialog, "setMaximum", Qt.ConnectionType.QueuedConnection, Q_ARG(int, 1))
+                QMetaObject.invokeMethod(progress_dialog, "setValue", Qt.ConnectionType.QueuedConnection, Q_ARG(int, 1))
             else:
                 # Ошибка загрузки
-                error_message = f"Ошибка загрузки прошивки (код {process.returncode})"
+                error_message = f"Ошибка загрузки прошивки (код {return_code})"
                 logging.error(error_message)
                 logging.error("\n".join(output))
-
-                QMetaObject.invokeMethod(
-                    self.status_bar, "showMessage",
-                    Qt.ConnectionType.QueuedConnection,
-                    Q_ARG(str, error_message),
-                    Q_ARG(int, 5000)
-                )
+                
+                QMetaObject.invokeMethod(self.status_bar, "showMessage",
+                                       Qt.ConnectionType.QueuedConnection,
+                                       Q_ARG(str, error_message),
+                                       Q_ARG(int, 5000))
                 # Показываем диалог с ошибкой
                 error_output = "\n".join(output)
-                QMetaObject.invokeMethod(
-                    QMessageBox, "critical",
-                    Qt.ConnectionType.QueuedConnection,
-                    Q_ARG(QWidget, self),
-                    Q_ARG(str, "Ошибка загрузки прошивки"),
-                    Q_ARG(str, f"Процесс загрузки завершился с ошибкой (код {process.returncode}):\n\n{error_output}")
-                )
+                QMetaObject.invokeMethod(QMessageBox, "critical",
+                                       Qt.ConnectionType.QueuedConnection, # Важно использовать QueuedConnection для диалогов из потоков
+                                       Q_ARG(QWidget, self), 
+                                       Q_ARG(str, "Ошибка загрузки прошивки"),
+                                       Q_ARG(str, f"Процесс загрузки завершился с ошибкой (код {return_code}):\n\n{error_output}"))
                 # Обновляем диалог прогресса
-                progress_dialog.setLabelText("Ошибка загрузки прошивки")
-                progress_dialog.setCancelButtonText("Закрыть")
-                progress_dialog.setMaximum(1)
-                progress_dialog.setValue(1)
-
+                QMetaObject.invokeMethod(progress_dialog, "setLabelText", Qt.ConnectionType.QueuedConnection, Q_ARG(str, "Ошибка загрузки прошивки"))
+                QMetaObject.invokeMethod(progress_dialog, "setCancelButtonText", Qt.ConnectionType.QueuedConnection, Q_ARG(str, "Закрыть"))
+                QMetaObject.invokeMethod(progress_dialog, "setMaximum", Qt.ConnectionType.QueuedConnection, Q_ARG(int, 1))
+                QMetaObject.invokeMethod(progress_dialog, "setValue", Qt.ConnectionType.QueuedConnection, Q_ARG(int, 1))
+            
             # Восстанавливаем подключение, если оно было
             if reconnect:
                 QTimer.singleShot(2000, self.connect_serial)
-
+                
         except Exception as e:
             # Обрабатываем ошибки
             error_message = f"Ошибка при выполнении процесса: {str(e)}"
             logging.error(error_message)
-            QMetaObject.invokeMethod(
-                self.status_bar, "showMessage",
-                Qt.ConnectionType.QueuedConnection,
-                Q_ARG(str, error_message),
-                Q_ARG(int, 5000)
-            )
+            QMetaObject.invokeMethod(self.status_bar, "showMessage",
+                                   Qt.ConnectionType.QueuedConnection,
+                                   Q_ARG(str, error_message),
+                                   Q_ARG(int, 5000))
             # Показываем диалог с ошибкой
-            QMetaObject.invokeMethod(
-                QMessageBox, "critical",
-                Qt.ConnectionType.QueuedConnection,
-                Q_ARG(QWidget, self),
-                Q_ARG(str, "Ошибка загрузки прошивки"),
-                Q_ARG(str, error_message)
-            )
+            QMetaObject.invokeMethod(QMessageBox, "critical",
+                                   Qt.ConnectionType.QueuedConnection,
+                                   Q_ARG(QWidget, self), 
+                                   Q_ARG(str, "Ошибка загрузки прошивки"),
+                                   Q_ARG(str, error_message))
             # Обновляем диалог прогресса
-            progress_dialog.setLabelText("Ошибка загрузки прошивки")
-            progress_dialog.setCancelButtonText("Закрыть")
-            progress_dialog.setMaximum(1)
-            progress_dialog.setValue(1)
-
+            # Убедимся, что progress_dialog существует перед тем, как вызывать его методы
+            if progress_dialog:
+                QMetaObject.invokeMethod(progress_dialog, "setLabelText", Qt.ConnectionType.QueuedConnection, Q_ARG(str, "Ошибка загрузки прошивки"))
+                QMetaObject.invokeMethod(progress_dialog, "setCancelButtonText", Qt.ConnectionType.QueuedConnection, Q_ARG(str, "Закрыть"))
+                QMetaObject.invokeMethod(progress_dialog, "setMaximum", Qt.ConnectionType.QueuedConnection, Q_ARG(int, 1))
+                QMetaObject.invokeMethod(progress_dialog, "setValue", Qt.ConnectionType.QueuedConnection, Q_ARG(int, 1))
+            
             # Восстанавливаем подключение, если оно было
             if reconnect:
                 QTimer.singleShot(2000, self.connect_serial)

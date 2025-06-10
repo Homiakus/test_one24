@@ -1,4 +1,12 @@
+/**
+ * @file: stepper_control.cpp
+ * @description: Модуль управления шаговыми двигателями с оптимизированными алгоритмами
+ * @dependencies: GyverStepper2, config.h
+ * @created: 2024-12-19
+ */
+
 #include "stepper_control.h"
+#include <Arduino.h>
 
 // Создание экземпляров шаговых двигателей (используем GStepper2)
 GStepper2<STEPPER2WIRE> multiStepper(200, MULTI_STEP_PIN, MULTI_DIR_PIN, MULTI_ENABLE_PIN);
@@ -8,20 +16,23 @@ GStepper2<STEPPER2WIRE> e0Stepper(200, E0_STEP_PIN, E0_DIR_PIN, E0_ENABLE_PIN);
 GStepper2<STEPPER2WIRE> e1Stepper(200, E1_STEP_PIN, E1_DIR_PIN, E1_ENABLE_PIN);
 
 // Флаг для предотвращения одновременного запуска команд, влияющих на E0/E1
-bool clampInProgress = false;
+static bool clampInProgress = false;
 
-// Функции для управления флагом clampInProgress
+// ============== УПРАВЛЕНИЕ ФЛАГОМ ЗАНЯТОСТИ ==============
 void resetClampFlag() {
   clampInProgress = false;
+  Serial.println(F("Флаг занятости clamp сброшен"));
 }
 
 bool isClampInProgress() {
   return clampInProgress;
 }
 
-// Инициализация шаговых двигателей
+// ============== ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ==============
 void initializeSteppers() {
-  // Проверяем пины для E0 и E1, чтобы убедиться, что они правильно определены
+  Serial.println(F("Инициализация шаговых двигателей..."));
+  
+  // Настройка пинов для двигателей E0 и E1
   pinMode(E0_STEP_PIN, OUTPUT);
   pinMode(E0_DIR_PIN, OUTPUT);
   pinMode(E0_ENABLE_PIN, OUTPUT);
@@ -29,348 +40,346 @@ void initializeSteppers() {
   pinMode(E1_DIR_PIN, OUTPUT);
   pinMode(E1_ENABLE_PIN, OUTPUT);
   
-  // Включаем двигатели (активный LOW)
-  // digitalRead(E0_ENABLE_PIN); // Не нужно читать, просто устанавливаем
+  // Активация двигателей (активный LOW для enable)
   digitalWrite(E0_ENABLE_PIN, LOW);
   digitalWrite(E1_ENABLE_PIN, LOW);
   
-  // Настройка общих параметров для всех двигателей
-  auto config = [](GStepper2<STEPPER2WIRE>& stepper) {
-    stepper.enable(); // Включаем enable пин (если есть)
-    // stepper.autoPower(true); // В GStepper2 этого метода нет, enable управляется явно
-    // stepper.setRunMode(FOLLOW_POS); // В GStepper2 это режим по умолчанию при setTarget
-    stepper.setMaxSpeed(500); // Устанавливаем максимальную скорость для движения к цели
+  // Настройка датчика для функции clamp_zero
+  pinMode(CLAMP_SENSOR_PIN, INPUT_PULLUP);
+  
+  // Универсальная конфигурация для всех двигателей
+  auto configureMotor = [](GStepper2<STEPPER2WIRE>& stepper, const char* name) {
+    stepper.enable();
+    stepper.setMaxSpeed(500);
     stepper.setAcceleration(800);
+    Serial.print(F("Двигатель "));
+    Serial.print(name);
+    Serial.println(F(" настроен"));
   };
 
-  config(multiStepper);
-  config(multizoneSteper);
-  config(rRightStepper);
-  config(e0Stepper);
-  config(e1Stepper);
+  configureMotor(multiStepper, "Multi");
+  configureMotor(multizoneSteper, "Multizone");
+  configureMotor(rRightStepper, "RRight");
+  configureMotor(e0Stepper, "E0");
+  configureMotor(e1Stepper, "E1");
   
-  // Настроим пин датчика для функции clamp_zero
-  pinMode(CLAMP_SENSOR_PIN, INPUT_PULLUP);
+  Serial.println(F("Инициализация шаговых двигателей завершена"));
 }
 
-// Установка позиции для двигателя (блокирующая, с GyverStepper2)
+// ============== БАЗОВЫЕ ФУНКЦИИ УПРАВЛЕНИЯ ==============
 bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position) {
   if (position == 0) {
-    Serial.println(F("Ошибка: Нулевая позиция не допускается.")); 
-    return false; 
+    Serial.println(F("Ошибка: Нулевая позиция не допускается"));
+    return false;
   }
   
-  // Проверка для E0 и E1, если они заняты командой clamp
+  // Проверка занятости двигателей E0 и E1
   if ((&stepper == &e0Stepper || &stepper == &e1Stepper) && clampInProgress) {
-      Serial.println(F("Ошибка: Двигатели E0/E1 заняты командой clamp."));
-      return false;
+    Serial.println(F("Ошибка: Двигатели E0/E1 заняты командой clamp"));
+    return false;
   }
   
-  stepper.setTarget(position); // Устанавливаем цель (абсолютную по умолчанию)
+  Serial.print(F("Движение к позиции: "));
+  Serial.println(position);
   
-  // Блокирующий цикл ожидания завершения движения (используем ready() и tick())
-  while (!stepper.ready()) { // Ждем, пока ready() не вернет true
+  stepper.setTarget(position);
+  
+  // Блокирующее ожидание завершения движения
+  unsigned long startTime = millis();
+  const unsigned long moveTimeout = 30000; // 30 секунд таймаут
+  
+  while (!stepper.ready()) {
+    if (millis() - startTime > moveTimeout) {
+      Serial.println(F("Ошибка: Таймаут движения"));
+      stepper.brake();
+      return false;
+    }
     stepper.tick();
-    yield(); 
-  } 
+    yield();
+  }
   
+  Serial.print(F("Движение завершено. Текущая позиция: "));
+  Serial.println(stepper.getCurrent());
   return true;
 }
 
-// Выполнение хоминга для двигателя (блокирующее, с GyverStepper2)
 bool homeStepperMotor(GStepper2<STEPPER2WIRE>& stepper, int endstopPin) {
-  
-  // Проверка для E0 и E1, если они заняты командой clamp
+  // Проверка занятости двигателей E0 и E1
   if ((&stepper == &e0Stepper || &stepper == &e1Stepper) && clampInProgress) {
-      Serial.println(F("Ошибка: Двигатели E0/E1 заняты командой clamp."));
-      return false;
+    Serial.println(F("Ошибка: Двигатели E0/E1 заняты командой clamp"));
+    return false;
   }
-    
-  // stepper.setRunMode(KEEP_SPEED); // В GStepper2 нет setRunMode, используем setSpeed для вращения
-  stepper.setSpeed(-HOMING_SPEED); // Запускаем вращение с постоянной скоростью
+  
+  Serial.println(F("Начало процедуры хоминга..."));
+  
+  // Установка скорости для хоминга
+  stepper.setSpeed(-HOMING_SPEED);
   
   unsigned long startTime = millis();
-  // Блокирующий цикл ожидания срабатывания концевика
+  
+  // Движение к концевику
   while (digitalRead(endstopPin)) {
     if (millis() - startTime >= HOMING_TIMEOUT) {
-       stepper.brake(); // Останавливаем двигатель при таймауте
-       Serial.println(F("Ошибка: Таймаут хоминга!"));
-       return false; // Ошибка таймаута
+      stepper.brake();
+      Serial.println(F("Ошибка: Таймаут хоминга"));
+      return false;
     }
-    stepper.tickManual(); // Используем tickManual, так как tick() остановит мотор после setSpeed()
-    yield(); 
+    stepper.tickManual();
+    yield();
   }
   
   // Концевик сработал
-  stepper.brake(); // Останавливаем вращение
-  stepper.reset(); // Сбрасываем текущую позицию в 0
-  delay(50); // Небольшая пауза
+  stepper.brake();
+  stepper.reset(); // Сброс позиции в 0
+  Serial.println(F("Концевик сработал, позиция сброшена"));
   
-  // Отъезжаем от концевика на 100 шагов
-  // stepper.setRunMode(FOLLOW_POS); // Режим по умолчанию
-  stepper.setTarget(100); // Устанавливаем цель для отъезда
+  delay(100); // Стабилизация
   
-  // Блокирующий цикл ожидания завершения отъезда
+  // Отъезд от концевика
+  stepper.setTarget(100);
+  startTime = millis();
+  
   while (!stepper.ready()) {
-      stepper.tick(); // Используем tick() для движения к цели
-      yield();
-  } 
+    if (millis() - startTime > 10000) { // 10 секунд на отъезд
+      stepper.brake();
+      Serial.println(F("Ошибка: Таймаут отъезда от концевика"));
+      return false;
+    }
+    stepper.tick();
+    yield();
+  }
   
-  stepper.reset(); // Снова сбрасываем позицию в 0 после отъезда - теперь это наша нулевая точка
-  
+  stepper.reset(); // Устанавливаем новую нулевую точку
+  Serial.println(F("Хоминг завершен успешно"));
   return true;
 }
 
-// Синхронное вращение двигателей E0 и E1 на заданную абсолютную позицию (блокирующее, с GyverStepper2)
+// ============== ФУНКЦИИ ДЛЯ ДВИГАТЕЛЕЙ E0/E1 ==============
 bool clampMotors(long targetPosition) {
   if (clampInProgress) {
-    Serial.println(F("Ошибка: Команда clamp уже выполняется."));
-    return false; 
+    Serial.println(F("Ошибка: Команда clamp уже выполняется"));
+    return false;
   }
   
-  clampInProgress = true; // Устанавливаем флаг занятости
+  clampInProgress = true;
+  Serial.println(F("Начало выполнения команды clamp"));
   
-  // Получаем текущие позиции
-  long currentPositionE0 = e0Stepper.getCurrent();
-  long currentPositionE1 = e1Stepper.getCurrent();
+  // Получение текущих позиций
+  long currentE0 = e0Stepper.getCurrent();
+  long currentE1 = e1Stepper.getCurrent();
   
-  Serial.print(F("Текущие позиции: E0=")); 
-  Serial.print(currentPositionE0);
-  Serial.print(F(", E1="));
-  Serial.println(currentPositionE1);
+  Serial.print(F("Текущие позиции - E0: "));
+  Serial.print(currentE0);
+  Serial.print(F(", E1: "));
+  Serial.println(currentE1);
   
-  // Вычисляем относительное смещение, которое нужно сделать
-  long relativeMove = targetPosition - currentPositionE0;
+  // Остановка двигателей перед движением
+  e0Stepper.brake();
+  e1Stepper.brake();
+  delay(50);
   
-  Serial.print(F("Целевая позиция: "));
-  Serial.print(targetPosition);
-  Serial.print(F(", относительное смещение: "));
-  Serial.println(relativeMove);
-  
-  // Если нет смещения, нечего делать
-  if (relativeMove == 0) {
-    Serial.println(F("Двигатели уже в заданной позиции."));
-    clampInProgress = false;
-    return true;
-  }
-  
-  // Настраиваем параметры движения
-  e0Stepper.setMaxSpeed(CLAMP_SPEED); 
+  // Настройка параметров движения
+  e0Stepper.setMaxSpeed(CLAMP_SPEED);
   e1Stepper.setMaxSpeed(CLAMP_SPEED);
   e0Stepper.setAcceleration(CLAMP_ACCELERATION);
   e1Stepper.setAcceleration(CLAMP_ACCELERATION);
   
-  // Остановка двигателей перед новым движением
-  e0Stepper.brake();
-  e1Stepper.brake();
+  // Установка целевых позиций
+  e0Stepper.setTarget(targetPosition);
+  e1Stepper.setTarget(targetPosition);
   
-  // Устанавливаем целевые позиции ОТНОСИТЕЛЬНО текущих
-  // Это ключевое изменение - используем RELATIVE вместо ABSOLUTE
-  e0Stepper.setTarget(relativeMove, RELATIVE);
-  e1Stepper.setTarget(relativeMove, RELATIVE);
+  Serial.print(F("Целевая позиция: "));
+  Serial.println(targetPosition);
   
-  Serial.print(F("Установлены новые целевые позиции: E0="));
-  Serial.print(e0Stepper.getTarget());
-  Serial.print(F(", E1="));
-  Serial.println(e1Stepper.getTarget());
+  // Расчет динамического таймаута
+  long maxDistance = max(abs(targetPosition - currentE0), abs(targetPosition - currentE1));
+  unsigned long dynamicTimeout = HOMING_TIMEOUT + (maxDistance / 10) * 100;
   
-  // Рассчитываем таймаут в зависимости от расстояния
-  unsigned long dynamicTimeout = HOMING_TIMEOUT + (abs(relativeMove) / 10) * 100;
-  Serial.print(F("Расстояние: "));
-  Serial.print(abs(relativeMove));
-  Serial.print(F(", Расчетный таймаут: "));
+  Serial.print(F("Максимальное расстояние: "));
+  Serial.print(maxDistance);
+  Serial.print(F(", таймаут: "));
   Serial.println(dynamicTimeout);
   
-  // Добавляем таймаут для предотвращения зависания
+  // Синхронное движение обоих двигателей
   unsigned long startTime = millis();
-  unsigned long lastUpdateTime = 0;
+  unsigned long lastProgressTime = 0;
   
-  // Блокирующий цикл ожидания завершения движения ОБОИХ двигателей
-  bool e0Moving = true;
-  bool e1Moving = true;
-  
-  while (e0Moving || e1Moving) {
+  while (!e0Stepper.ready() || !e1Stepper.ready()) {
     unsigned long currentTime = millis();
     
-    // Проверяем таймаут
+    // Проверка таймаута
     if (currentTime - startTime >= dynamicTimeout) {
-      Serial.println(F("Ошибка: Таймаут при выполнении команды clamp!"));
+      Serial.println(F("Ошибка: Таймаут выполнения команды clamp"));
       e0Stepper.brake();
       e1Stepper.brake();
       clampInProgress = false;
       return false;
     }
     
-    // Выполняем шаг для каждого двигателя
-    e0Moving = e0Stepper.tick();
-    e1Moving = e1Stepper.tick();
+    // Обновление двигателей
+    e0Stepper.tick();
+    e1Stepper.tick();
     
-    // Периодически выводим информацию о прогрессе
-    if (currentTime - lastUpdateTime >= 1000) {
-      lastUpdateTime = currentTime;
-      Serial.print(F("Прогресс: E0="));
+    // Периодический вывод прогресса
+    if (currentTime - lastProgressTime >= 2000) {
+      lastProgressTime = currentTime;
+      Serial.print(F("Прогресс - E0: "));
       Serial.print(e0Stepper.getCurrent());
       Serial.print(F("/"));
       Serial.print(e0Stepper.getTarget());
-      Serial.print(F(" (движется: "));
-      Serial.print(e0Moving ? "да" : "нет");
-      Serial.print(F("), E1="));
+      Serial.print(F(", E1: "));
       Serial.print(e1Stepper.getCurrent());
       Serial.print(F("/"));
-      Serial.print(e1Stepper.getTarget());
-      Serial.print(F(" (движется: "));
-      Serial.print(e1Moving ? "да" : "нет");
-      Serial.println(F(")"));
+      Serial.println(e1Stepper.getTarget());
     }
     
-    // Небольшая задержка для предотвращения зависания
     yield();
   }
   
-  Serial.print(F("Движение завершено. Новые позиции: E0="));
+  Serial.print(F("Движение завершено - E0: "));
   Serial.print(e0Stepper.getCurrent());
-  Serial.print(F(", E1="));
+  Serial.print(F(", E1: "));
   Serial.println(e1Stepper.getCurrent());
   
   clampInProgress = false;
   return true;
 }
 
-// Обнуление двигателей E0 и E1 по датчику CLAMP_SENSOR_PIN (блокирующее, с GyverStepper2)
 bool clampZeroMotors() {
   if (clampInProgress) {
-    Serial.println(F("Ошибка: Команда clamp уже выполняется."));
-    return false; 
+    Serial.println(F("Ошибка: Команда clamp уже выполняется"));
+    return false;
   }
   
-  clampInProgress = true; // Устанавливаем флаг занятости
+  clampInProgress = true;
+  Serial.println(F("Начало процедуры clamp_zero"));
   
-  // Остановка двигателей перед началом хоминга
+  // Остановка двигателей
   e0Stepper.brake();
   e1Stepper.brake();
+  delay(100);
   
-  Serial.println(F("Начало процедуры обнуления по датчику..."));
-  
-  // Устанавливаем параметры движения
-  e0Stepper.setMaxSpeed(CLAMP_SPEED); 
-  e1Stepper.setMaxSpeed(CLAMP_SPEED);
+  // Настройка параметров
+  e0Stepper.setMaxSpeed(CLAMP_ZERO_SPEED);
+  e1Stepper.setMaxSpeed(CLAMP_ZERO_SPEED);
   e0Stepper.setAcceleration(CLAMP_ACCELERATION);
   e1Stepper.setAcceleration(CLAMP_ACCELERATION);
   
-  // Настраиваем режим и скорость для хоминга
-  e0Stepper.setSpeed(-CLAMP_ZERO_SPEED); 
+  // Начальная проверка датчика
+  if (!digitalRead(CLAMP_SENSOR_PIN)) {
+    Serial.println(F("Датчик уже активен, начинаю отъезд"));
+    // Если датчик уже нажат, сначала отъезжаем
+    e0Stepper.setSpeed(CLAMP_ZERO_SPEED);
+    e1Stepper.setSpeed(CLAMP_ZERO_SPEED);
+    
+    unsigned long escapeStart = millis();
+    while (!digitalRead(CLAMP_SENSOR_PIN) && (millis() - escapeStart < 5000)) {
+      e0Stepper.tickManual();
+      e1Stepper.tickManual();
+      yield();
+    }
+    
+    e0Stepper.brake();
+    e1Stepper.brake();
+    delay(100);
+  }
+  
+  // Движение к датчику
+  Serial.println(F("Движение к датчику..."));
+  e0Stepper.setSpeed(-CLAMP_ZERO_SPEED);
   e1Stepper.setSpeed(-CLAMP_ZERO_SPEED);
   
   unsigned long startTime = millis();
   
-  // Движение к датчику
-  Serial.println(F("ClampZero: Движение к датчику..."));
-  while (digitalRead(CLAMP_SENSOR_PIN)) { // Движемся, пока датчик НЕ нажат (HIGH)
+  while (digitalRead(CLAMP_SENSOR_PIN)) {
     if (millis() - startTime >= HOMING_TIMEOUT) {
-      Serial.println(F("Ошибка: Таймаут ClampZero при движении к датчику!"));
+      Serial.println(F("Ошибка: Таймаут при движении к датчику"));
       e0Stepper.brake();
       e1Stepper.brake();
       clampInProgress = false;
       return false;
     }
     
-    // Используем tickManual для движения с постоянной скоростью
-    e0Stepper.tickManual(); 
+    e0Stepper.tickManual();
     e1Stepper.tickManual();
-    
-    // Периодически сообщаем о текущем положении
-    if ((millis() - startTime) % 1000 < 10) {
-      Serial.print(F("Движение к датчику: E0="));
-      Serial.print(e0Stepper.getCurrent());
-      Serial.print(F(", E1="));
-      Serial.println(e1Stepper.getCurrent());
-    }
-    
     yield();
   }
   
-  // Датчик сработал - останавливаемся
-  Serial.println(F("ClampZero: Датчик сработал. Остановка."));
+  // Датчик сработал
+  Serial.println(F("Датчик сработал"));
   e0Stepper.brake();
   e1Stepper.brake();
   
-  // Устанавливаем текущую позицию как "0" - это важно!
-  // Теперь библиотека будет считать, что мы находимся в позиции 0
+  // Установка нулевой позиции
   e0Stepper.setCurrent(0);
   e1Stepper.setCurrent(0);
   
-  Serial.println(F("ClampZero: Позиции установлены в 0."));
+  delay(200); // Стабилизация
   
-  delay(100); // Пауза для стабилизации
+  // Отъезд от датчика на позицию 100
+  Serial.println(F("Отъезд от датчика..."));
+  e0Stepper.setTarget(100);
+  e1Stepper.setTarget(100);
   
-  // Отъезжаем от датчика на 100 шагов
-  Serial.println(F("ClampZero: Отъезд от датчика..."));
-  
-  // Устанавливаем целевую позицию 100 ОТНОСИТЕЛЬНО текущей позиции (которая сейчас 0)
-  e0Stepper.setTarget(100, RELATIVE);
-  e1Stepper.setTarget(100, RELATIVE);
-  
-  // Обновляем startTime для нового таймаута
   startTime = millis();
-  unsigned long lastUpdateTime = 0;
   
-  // Блокирующий цикл ожидания завершения отъезда
-  bool e0Moving = true;
-  bool e1Moving = true;
-  
-  while (e0Moving || e1Moving) {
-    unsigned long currentTime = millis();
-    
-    // Проверяем таймаут для отъезда
-    if (currentTime - startTime >= HOMING_TIMEOUT) {
-      Serial.println(F("Ошибка: Таймаут ClampZero при отъезде от датчика!"));
+  while (!e0Stepper.ready() || !e1Stepper.ready()) {
+    if (millis() - startTime >= 10000) {
+      Serial.println(F("Ошибка: Таймаут отъезда от датчика"));
       e0Stepper.brake();
       e1Stepper.brake();
       clampInProgress = false;
       return false;
     }
     
-    // Выполняем шаг для каждого двигателя
-    e0Moving = e0Stepper.tick();
-    e1Moving = e1Stepper.tick();
-    
-    // Периодически выводим информацию о прогрессе
-    if (currentTime - lastUpdateTime >= 1000) {
-      lastUpdateTime = currentTime;
-      Serial.print(F("Отъезд от датчика: E0="));
-      Serial.print(e0Stepper.getCurrent());
-      Serial.print(F("/"));
-      Serial.print(e0Stepper.getTarget());
-      Serial.print(F(" (движется: "));
-      Serial.print(e0Moving ? "да" : "нет");
-      Serial.print(F("), E1="));
-      Serial.print(e1Stepper.getCurrent());
-      Serial.print(F("/"));
-      Serial.print(e1Stepper.getTarget());
-      Serial.print(F(" (движется: "));
-      Serial.print(e1Moving ? "да" : "нет");
-      Serial.println(F(")"));
-    }
-    
+    e0Stepper.tick();
+    e1Stepper.tick();
     yield();
   }
   
-  // Движение завершено, теперь мы должны быть в позиции 100
-  Serial.print(F("ClampZero: Обнуление завершено, текущие позиции: E0="));
+  Serial.print(F("Обнуление завершено - E0: "));
   Serial.print(e0Stepper.getCurrent());
-  Serial.print(F(", E1="));
+  Serial.print(F(", E1: "));
   Serial.println(e1Stepper.getCurrent());
   
-  // После обнуления текущая позиция двигателей должна быть 100
-  // Убедимся, что это так
+  // Проверка корректности позиций
   if (e0Stepper.getCurrent() != 100 || e1Stepper.getCurrent() != 100) {
-    Serial.println(F("ВНИМАНИЕ: Позиции после обнуления не 100! Исправляем..."));
+    Serial.println(F("Коррекция позиций до 100"));
     e0Stepper.setCurrent(100);
     e1Stepper.setCurrent(100);
   }
   
-  Serial.println(F("ClampZero: Базовая позиция 100 установлена для обоих двигателей."));
-  
   clampInProgress = false;
   return true;
+}
+
+// ============== ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ ==============
+bool moveMultiToPosition(long position) {
+  return setStepperPosition(multiStepper, position);
+}
+
+bool moveRRightToPosition(long position) {
+  return setStepperPosition(rRightStepper, position);
+}
+
+bool zeroAndMoveMulti(long position) {
+  if (!homeStepperMotor(multiStepper, MULTI_ENDSTOP_PIN)) {
+    Serial.println(F("Ошибка: не удалось выполнить обнуление Multi"));
+    return false;
+  }
+  
+  Serial.print(F("Перемещение Multi в позицию "));
+  Serial.println(position);
+  return setStepperPosition(multiStepper, position);
+}
+
+bool zeroAndMoveRRight(long position) {
+  if (!homeStepperMotor(rRightStepper, RRIGHT_ENDSTOP_PIN)) {
+    Serial.println(F("Ошибка: не удалось выполнить обнуление RRight"));
+    return false;
+  }
+  
+  Serial.print(F("Перемещение RRight в позицию "));
+  Serial.println(position);
+  return setStepperPosition(rRightStepper, position);
 } 

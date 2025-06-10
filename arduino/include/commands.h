@@ -7,6 +7,7 @@
 #include "stepper_control.h"
 #include "sensors.h"
 #include "valves.h"
+#include <stdint.h>
 
 // Объявление внешних переменных
 extern SerialCommand sCmd;
@@ -68,37 +69,37 @@ void handleMoveMulti();
 void handleMoveMultizone();
 void handleMoveRRight();
 
-// Обработчики команд для новых двигателей E0 и E1
-void handleClamp();
-void handleClampZero();
+// Новые обработчики команд для Multi и RRight
+void handleMultiPos();
+void handleRRightPos();
+void handleZeroAndMoveMulti();
+void handleZeroAndMoveRRight();
 
 // Обработчики команд хоминга
 void handleZeroMulti();
 void handleZeroMultizone();
 void handleZeroRRight();
 
-// Обработчики команд управления насосом
+// Обработчики команд насоса
 void handlePumpOn();
 void handlePumpOff();
 
-// Обработчики команд управления клапанами
+// Обработчики команд клапанов
+void handleKl1();
+void handleKl2();
 void handleKl1On();
 void handleKl2On();
-void handleKl3On();
 void handleKl1Off();
 void handleKl2Off();
-void handleKl3Off();
 
-// Обработчики команд чтения датчиков
+// Обработчики команд датчиков
 void handleWeight();
 void handleRawWeight();
 void handleWeightDebug();
-void handleStateRotor();
-void handleWaste();
 void handleCalibrateWeight();
 void handleCalibrateWeightFactor();
-void handleWeightReportOn();
-void handleWeightReportOff();
+void handleStateRotor();
+void handleWaste();
 
 // Обработчики диагностических команд
 void handleCheckMultiEndstop();
@@ -106,19 +107,9 @@ void handleCheckMultizoneEndstop();
 void handleCheckRRightEndstop();
 void handleCheckAllEndstops();
 
-
-// Обработчики команд для клапанов
-void handleKl1Toggle();
-void handleKl2Toggle();
-void handleKl3Toggle();
-void handleKl1Off();
-void handleKl2Off();
-void handleKl3Off();
-
-// Обработчики команд для насоса
-void handlePumpToggle();
-void handlePumpOn();
-void handlePumpOff();
+// Обработчики команд clamp
+void handleClamp();
+void handleClampZero();
 
 // Обработчики команд для роторов
 void handleRotorForward();
@@ -127,5 +118,8 @@ void handleRotorStop();
 
 // Обработчик команд для весов
 void handleGetWeight();
+
+// Обработка входящих команд
+void processCommands();
 
 #endif // COMMANDS_H 

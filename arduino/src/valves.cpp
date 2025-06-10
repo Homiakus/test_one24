@@ -1,3 +1,10 @@
+/**
+ * @file: valves.cpp
+ * @description: Модуль управления клапанами и насосом
+ * @dependencies: Arduino.h, config.h
+ * @created: 2024-12-19
+ */
+
 #include "valves.h"
 #include <Arduino.h>
 
@@ -10,11 +17,9 @@ void initializeValves() {
   // Клапаны
   pinMode(KL1_PIN, OUTPUT);
   pinMode(KL2_PIN, OUTPUT);
-  pinMode(KL3_PIN, OUTPUT);
   
   digitalWrite(KL1_PIN, LOW);
   digitalWrite(KL2_PIN, LOW);
-  digitalWrite(KL3_PIN, LOW);
 }
 
 // Управление насосом
@@ -40,4 +45,11 @@ void turnValveOn(int valvePin) {
 // Выключение клапана
 void turnValveOff(int valvePin) {
   setValveState(valvePin, LOW);
+}
+
+// Открытие клапана на указанное время (в сотых долях секунды)
+void openValveForTime(int valvePin, int timeInCentiseconds) {
+  turnValveOn(valvePin);
+  delay(timeInCentiseconds * 10); // Переводим сотые доли секунды в миллисекунды (1/100 сек = 10 мс)
+  turnValveOff(valvePin);
 } 

@@ -1,3 +1,10 @@
+/**
+ * @file: sensors.cpp
+ * @description: Модуль для работы с датчиками системы (ротор, отходы, концевые выключатели)
+ * @dependencies: Arduino.h, config.h
+ * @created: 2024-12-19
+ */
+
 #include "sensors.h"
 #include <Arduino.h>
 

@@ -8,7 +8,7 @@
 #define MULTI_STEP_PIN A0
 #define MULTI_DIR_PIN A1
 #define MULTI_ENABLE_PIN 38
-#define MULTI_ENDSTOP_PIN 3    // X+ на плате
+#define MULTI_ENDSTOP_PIN 14    // X+ на плате
 
 // Pump (digital output)
 #define PUMP_PIN 18
@@ -23,7 +23,7 @@
 #define RRIGHT_STEP_PIN 46
 #define RRIGHT_DIR_PIN 48
 #define RRIGHT_ENABLE_PIN A8
-#define RRIGHT_ENDSTOP_PIN 14    // Z+ на плате
+#define RRIGHT_ENDSTOP_PIN 3   // Z+ на плате
 
 // Stepper E0 (E0 на схеме распиновки)
 #define E0_STEP_PIN 26
@@ -41,7 +41,6 @@
 // Valves (используем свободные пины)
 #define KL1_PIN 8
 #define KL2_PIN 10
-#define KL3_PIN 7
 
 // Sensors
 // HX711 датчик веса - используем доступные пины для MKS Gen L v1

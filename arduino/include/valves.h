@@ -22,4 +22,7 @@ void turnValveOn(int valvePin);
 // Выключение клапана
 void turnValveOff(int valvePin);
 
+// Открытие клапана на указанное время (в сотых долях секунды)
+void openValveForTime(int valvePin, int timeInCentiseconds);
+
 #endif // VALVES_H 

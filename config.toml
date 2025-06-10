@@ -6,53 +6,23 @@
 "Rotor Press" = "clamp -20000"
 
 # Настройка нулевого положения
-"Zero Multi" = "zero_multi"
-"Zero Pump" = "zero_pump"
-"Zero RRight" = "zero_rright"
-"Zero RLeft" = "zero_rleft"
+"Zero Multi" = "zero_move_multi 20"
+"Zero RRight" = "zero_move_rright 20"
 
-# сервоприводы
-"Servo1 50" = "servo1 50"
-"Servo1 100" = "servo1 100"
-"Servo1 0" = "servo1 0"
+
 
 # Управление клапанами
 "Клапан KL1 включить" = "kl1_on"
-"Клапан KL2 включить" = "kl2_on"
-"Клапан KL3 включить" = "kl3_on"
-
 "Клапан KL1 выключить" = "kl1_off"
+
+"Клапан KL2 включить" = "kl2_on"
 "Клапан KL2 выключить" = "kl2_off"
-"Клапан KL3 выключить" = "kl3_off"
-
-# Дополнительные клапаны
-"Valve 1 ON" = "valve1_on"
-"Valve 2 ON" = "valve2_on"
-"Valve 3 ON" = "valve3_on"
-"Valve 4 ON" = "valve4_on"
-"Valve 1 OFF" = "valve1_off"
-"Valve 2 OFF" = "valve2_off"
-"Valve 3 OFF" = "valve3_off"
-"Valve 4 OFF" = "valve4_off"
-
 # Чтение датчиков
 "Вес" = "weight"
 "Состояние ротора" = "staterotor"
 "Датчик отходов" = "waste"
 
-# Команды первого ротора (Left)
-"L → налив OG" = "moveL_2"
-"L → налив EA" = "moveL_3"
-"L → налив Gemo" = "moveL_4"
-"L → налив Alco" = "moveL_10"
-"L → налив Water" = "moveL_1"
-"L → налив Chlor" = "moveL_12"
-"L → слив" = "moveL_90"
-"L → экспозиция" = "moveL_180"
-"L → загрузка пробирок" = "moveL_40"
-"L → извлечение пробирок" = "moveL_60"
-"L → установка стекол" = "moveL_180"
-"L → извлечение стекол" = "moveL_180"
+
 
 # Команды второго ротора (Right)
 "R → налив OG" = "moveR_2"
@@ -69,24 +39,20 @@
 "R → извлечение стекол" = "moveR_180"
 
 # Переключающий клапан
-"Valve → OG" = "mvalve_0"
-"Valve → продувка OG" = "mvalve_1"
-"Valve → EA" = "mvalve_2"
-"Valve → продувка EA" = "mvalve_3"
-"Valve → Gemo" = "mvalve_4"
-"Valve → продувка Gemo" = "mvalve_5"
-"Valve → Alco" = "mvalve_6"
-"Valve → продувка Alco" = "mvalve_7"
-"Valve → Water" = "mvalve_8"
-"Valve → продувка Water" = "mvalve_9"
-"Valve → Chlor" = "mvalve_10"
-"Valve → продувка Chlor" = "mvalve_11"
+"Valve → OG" = "multi_pos 0"
+"Valve → продувка OG" = "multi_pos 1"
+"Valve → EA" = "multi_pos 2"
+"Valve → продувка EA" = "multi_pos 3"
+"Valve → Gemo" = "multi_pos 4"
+"Valve → продувка Gemo" = "multi_pos 5"
+"Valve → Alco" = "multi_pos 6"
+"Valve → продувка Alco" = "multi_pos 7"
+"Valve → Water" = "multi_pos 8"
+"Valve → продувка Water" = "multi_pos 9"
+"Valve → Chlor" = "multi_pos 10"
+"Valve → продувка Chlor" = "multi_pos 11"
 
-# Блочный переключающий клапан
-"Zone 1" = "bvalve_1"
-"Zone 2" = "bvalve_2"
-"Zone 3" = "bvalve_3"
-"Zone 4" = "bvalve_4"
+
 
 # насос вакуумный
 "Pump on" = "pump_on"

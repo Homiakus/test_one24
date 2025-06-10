@@ -1,3 +1,10 @@
+/**
+ * @file: commands.cpp
+ * @description: Модуль обработки команд с улучшенной архитектурой и обработкой ошибок
+ * @dependencies: SerialCommand, NBHX711, stepper_control, sensors, valves
+ * @created: 2024-12-19
+ */
+
 #include "commands.h"
 #include <Arduino.h>
 #include <NBHX711.h>
@@ -8,105 +15,93 @@
 #include "valves.h"
 #include <SerialCommand.h>
 
-// Объявления внешних переменных для работы с весами
+// ============== ВНЕШНИЕ ПЕРЕМЕННЫЕ ==============
 extern NBHX711 scale;
 extern bool autoReportWeight;
 extern void enableWeightReport();
 extern void disableWeightReport();
-
-// Объявление внешней функции для управления шаговыми двигателями
 extern void resetClampFlag();
 
-// Объявления обработчиков команд
+// Обработчики команд
 void handleClampStop();
 
-// Создание экземпляра обработчика команд
+// Экземпляр обработчика команд
 SerialCommand sCmd;
 
-// Отправка сообщения о получении команды
+// ============== СЛУЖЕБНЫЕ ФУНКЦИИ ==============
 void sendReceived() {
   Serial.println(MSG_RECEIVED);
 }
 
-// Отправка сообщения о завершении команды
 void sendCompleted() {
   Serial.println(MSG_COMPLETED);
 }
 
-// Отправка сообщения об ошибке
 void sendError(const char* errorMsg) {
   Serial.print(MSG_ERROR);
   Serial.print(": ");
   Serial.println(errorMsg);
 }
 
-// Обработка неизвестной команды
 void handleUnrecognized(const char* command) {
   Serial.print("Unknown command: ");
   Serial.println(command);
 }
 
-// Тестовая функция для проверки связи
 void testCommand() {
   Serial.println(F("RECEIVED"));
   Serial.println(F("Test command successful!"));
   Serial.println(F("COMPLETED"));
 }
 
-// Настройка обработчиков команд
+// ============== РЕГИСТРАЦИЯ КОМАНД ==============
 void setupCommandHandlers() {
   Serial.println(F("Регистрация обработчиков команд..."));
   
-  // Movement commands
+  // Команды движения шаговых двигателей
   sCmd.addCommand("move_multi", handleMoveMulti);
   sCmd.addCommand("move_multizone", handleMoveMultizone);
   sCmd.addCommand("move_rright", handleMoveRRight);
 
-  // Clamp commands для двигателей E0 и E1
+  // Команды двигателей E0 и E1 (clamp)
   sCmd.addCommand("clamp", handleClamp);
   sCmd.addCommand("clamp_zero", handleClampZero);
   sCmd.addCommand("clamp_stop", handleClampStop);
 
-  // Homing commands
+  // Команды хоминга
   sCmd.addCommand("zero_multi", handleZeroMulti);
   sCmd.addCommand("zero_multizone", handleZeroMultizone);
   sCmd.addCommand("zero_rright", handleZeroRRight);
   
-  // Pump commands
-  Serial.println(F("Регистрация команд насоса..."));
+  // Команды насоса
   sCmd.addCommand("pump_on", handlePumpOn);
   sCmd.addCommand("pump_off", handlePumpOff);
 
-  // Valve commands
-  Serial.println(F("Регистрация команд клапанов..."));
+  // Команды клапанов
+  sCmd.addCommand("kl1", handleKl1);
+  sCmd.addCommand("kl2", handleKl2);
   sCmd.addCommand("kl1_on", handleKl1On);
   sCmd.addCommand("kl2_on", handleKl2On);
-  sCmd.addCommand("kl3_on", handleKl3On);
   sCmd.addCommand("kl1_off", handleKl1Off);
   sCmd.addCommand("kl2_off", handleKl2Off);
-  sCmd.addCommand("kl3_off", handleKl3Off);
 
-  // Sensor commands
-  Serial.println(F("Регистрация команд датчиков..."));
+  // Команды датчиков
   sCmd.addCommand("weight", handleWeight);
   sCmd.addCommand("raw_weight", handleRawWeight);
   sCmd.addCommand("calibrate_weight", handleCalibrateWeight);
   sCmd.addCommand("calibrate_weight_factor", handleCalibrateWeightFactor);
-  sCmd.addCommand("weight_report_on", handleWeightReportOn);
-  sCmd.addCommand("weight_report_off", handleWeightReportOff);
   sCmd.addCommand("staterotor", handleStateRotor);
   sCmd.addCommand("waste", handleWaste);
   
-  // Diagnostic commands
+  // Диагностические команды
   sCmd.addCommand("check_multi_endstop", handleCheckMultiEndstop);
   sCmd.addCommand("check_multizone_endstop", handleCheckMultizoneEndstop);
   sCmd.addCommand("check_rright_endstop", handleCheckRRightEndstop);
   sCmd.addCommand("check_all_endstops", handleCheckAllEndstops);
 
-  // Добавляем тестовую команду
+  // Тестовая команда
   sCmd.addCommand("test", testCommand);
 
-  Serial.println(F("Установка обработчика для неизвестных команд..."));
   sCmd.setDefaultHandler(handleUnrecognized);
   
   Serial.println(F("Регистрация обработчиков завершена."));
@@ -116,50 +111,82 @@ void setupCommandHandlers() {
 void handleMoveMulti() {
   sendReceived();
   char* arg = sCmd.next();
-  if (arg) {
-    if (setStepperPosition(multiStepper, atol(arg))) {
-      sendCompleted();
-    } else {
-      sendError(MSG_NO_POSITION);
-    }
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  long position = atol(arg);
+  if (position == 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Движение Multi к позиции: "));
+  Serial.println(position);
+  
+  if (setStepperPosition(multiStepper, position)) {
+    sendCompleted();
   } else {
-    sendError(MSG_NO_POSITION);
+    sendError("MOVE_FAILED");
   }
 }
 
 void handleMoveMultizone() {
   sendReceived();
   char* arg = sCmd.next();
-  if (arg) {
-    if (setStepperPosition(multizoneSteper, atol(arg))) {
-      sendCompleted();
-    } else {
-      sendError(MSG_NO_POSITION);
-    }
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  long position = atol(arg);
+  if (position == 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Движение Multizone к позиции: "));
+  Serial.println(position);
+  
+  if (setStepperPosition(multizoneSteper, position)) {
+    sendCompleted();
   } else {
-    sendError(MSG_NO_POSITION);
+    sendError("MOVE_FAILED");
   }
 }
 
 void handleMoveRRight() {
   sendReceived();
   char* arg = sCmd.next();
-  if (arg) {
-    if (setStepperPosition(rRightStepper, atol(arg))) {
-      sendCompleted();
-    } else {
-      sendError(MSG_NO_POSITION);
-    }
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  long position = atol(arg);
+  if (position == 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Движение RRight к позиции: "));
+  Serial.println(position);
+  
+  if (setStepperPosition(rRightStepper, position)) {
+    sendCompleted();
   } else {
-    sendError(MSG_NO_POSITION);
+    sendError("MOVE_FAILED");
   }
 }
-
 
 // ============== ОБРАБОТЧИКИ КОМАНД ХОМИНГА ==============
 void handleZeroMulti() {
   sendReceived();
+  Serial.println(F("Начало хоминга Multi..."));
+  
   if (homeStepperMotor(multiStepper, MULTI_ENDSTOP_PIN)) {
+    Serial.println(F("Хоминг Multi завершен"));
     sendCompleted();
   } else {
     sendError(MSG_HOMING_TIMEOUT);
@@ -168,7 +195,10 @@ void handleZeroMulti() {
 
 void handleZeroMultizone() {
   sendReceived();
+  Serial.println(F("Начало хоминга Multizone..."));
+  
   if (homeStepperMotor(multizoneSteper, MULTIZONE_ENDSTOP_PIN)) {
+    Serial.println(F("Хоминг Multizone завершен"));
     sendCompleted();
   } else {
     sendError(MSG_HOMING_TIMEOUT);
@@ -177,13 +207,15 @@ void handleZeroMultizone() {
 
 void handleZeroRRight() {
   sendReceived();
+  Serial.println(F("Начало хоминга RRight..."));
+  
   if (homeStepperMotor(rRightStepper, RRIGHT_ENDSTOP_PIN)) {
+    Serial.println(F("Хоминг RRight завершен"));
     sendCompleted();
   } else {
     sendError(MSG_HOMING_TIMEOUT);
   }
 }
-
 
 // ============== ОБРАБОТЧИКИ КОМАНД НАСОСА ==============
 void handlePumpOn() {
@@ -194,7 +226,7 @@ void handlePumpOn() {
   
   setPumpState(true);
   
-  Serial.println(F("Насос включен."));
+  Serial.println(F("Насос включен"));
   sendCompleted();
 }
 
@@ -206,20 +238,68 @@ void handlePumpOff() {
   
   setPumpState(false);
   
-  Serial.println(F("Насос выключен."));
+  Serial.println(F("Насос выключен"));
   sendCompleted();
 }
 
 // ============== ОБРАБОТЧИКИ КОМАНД КЛАПАНОВ ==============
+void handleKl1() {
+  sendReceived();
+  char* arg = sCmd.next();
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  int time = atoi(arg);
+  if (time <= 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Открытие клапана KL1 на "));
+  Serial.print(time);
+  Serial.println(F(" сотых секунды"));
+  
+  openValveForTime(KL1_PIN, time);
+  
+  Serial.println(F("Клапан KL1 закрыт"));
+  sendCompleted();
+}
+
+void handleKl2() {
+  sendReceived();
+  char* arg = sCmd.next();
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  int time = atoi(arg);
+  if (time <= 0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Открытие клапана KL2 на "));
+  Serial.print(time);
+  Serial.println(F(" сотых секунды"));
+  
+  openValveForTime(KL2_PIN, time);
+  
+  Serial.println(F("Клапан KL2 закрыт"));
+  sendCompleted();
+}
+
 void handleKl1On() {
   sendReceived();
   Serial.print(F("Включение клапана KL1 (пин "));
   Serial.print(KL1_PIN);
-  Serial.println(F(")..."));
+  Serial.println(F(")"));
   
   turnValveOn(KL1_PIN);
   
-  Serial.println(F("Клапан включен."));
+  Serial.println(F("Клапан KL1 включен"));
   sendCompleted();
 }
 
@@ -227,23 +307,11 @@ void handleKl2On() {
   sendReceived();
   Serial.print(F("Включение клапана KL2 (пин "));
   Serial.print(KL2_PIN);
-  Serial.println(F(")..."));
+  Serial.println(F(")"));
   
   turnValveOn(KL2_PIN);
   
-  Serial.println(F("Клапан включен."));
-  sendCompleted();
-}
-
-void handleKl3On() {
-  sendReceived();
-  Serial.print(F("Включение клапана KL3 (пин "));
-  Serial.print(KL3_PIN);
-  Serial.println(F(")..."));
-  
-  turnValveOn(KL3_PIN);
-  
-  Serial.println(F("Клапан включен."));
+  Serial.println(F("Клапан KL2 включен"));
   sendCompleted();
 }
 
@@ -251,11 +319,11 @@ void handleKl1Off() {
   sendReceived();
   Serial.print(F("Выключение клапана KL1 (пин "));
   Serial.print(KL1_PIN);
-  Serial.println(F(")..."));
+  Serial.println(F(")"));
   
   turnValveOff(KL1_PIN);
   
-  Serial.println(F("Клапан выключен."));
+  Serial.println(F("Клапан KL1 выключен"));
   sendCompleted();
 }
 
@@ -263,73 +331,36 @@ void handleKl2Off() {
   sendReceived();
   Serial.print(F("Выключение клапана KL2 (пин "));
   Serial.print(KL2_PIN);
-  Serial.println(F(")..."));
+  Serial.println(F(")"));
   
   turnValveOff(KL2_PIN);
   
-  Serial.println(F("Клапан выключен."));
-  sendCompleted();
-}
-
-void handleKl3Off() {
-  sendReceived();
-  Serial.print(F("Выключение клапана KL3 (пин "));
-  Serial.print(KL3_PIN);
-  Serial.println(F(")..."));
-  
-  turnValveOff(KL3_PIN);
-  
-  Serial.println(F("Клапан выключен."));
+  Serial.println(F("Клапан KL2 выключен"));
   sendCompleted();
 }
 
 // ============== ОБРАБОТЧИКИ КОМАНД ДАТЧИКОВ ==============
 void handleWeight() {
   sendReceived();
+  Serial.println(F("Чтение веса..."));
   float weight = scale.getUnits(5);
   Serial.println(weight, 2);
   sendCompleted();
 }
 
-// Обработчик команды для получения сырого (необработанного) значения датчика веса
 void handleRawWeight() {
   sendReceived();
+  Serial.println(F("Чтение сырого значения датчика веса..."));
   long raw = scale.getRaw();
   Serial.println(raw);
   sendCompleted();
 }
 
-// Обработчик команды для получения расширенной отладочной информации о датчике веса
-void handleWeightDebug() {
-  sendReceived();
-  
-  long raw_value = scale.getRaw();
-  float weight = scale.getUnits(5);
-  long offset = scale.getOffset();
-  float scale_factor = scale.getScale();
-  
-  Serial.print(F("Отладка датчика веса:\n"));
-  Serial.print(F("Сырое значение: "));
-  Serial.print(raw_value);
-  Serial.print(F("\nТара (смещение): "));
-  Serial.print(offset);
-  Serial.print(F("\nКалибровочный коэффициент: "));
-  Serial.print(scale_factor);
-  Serial.print(F("\nВес в граммах: "));
-  Serial.print(weight, 2);
-  Serial.print(F("\nСреднее из 10 измерений: "));
-  Serial.println(scale.getUnits(10), 2);
-  
-  sendCompleted();
-}
-
-// Обработчик команды обнуления весов
 void handleCalibrateWeight() {
   sendReceived();
   Serial.println(F("Запуск процедуры обнуления датчика веса..."));
-  
-  // Выполняем тарирование
   Serial.println(F("Убедитесь, что на весах ничего нет"));
+  
   delay(2000);
   Serial.println(F("Начинаю обнуление..."));
   scale.tare();
@@ -338,7 +369,29 @@ void handleCalibrateWeight() {
   sendCompleted();
 }
 
-// Чтение состояния ротора
+void handleCalibrateWeightFactor() {
+  sendReceived();
+  
+  char* arg = sCmd.next();
+  if (!arg) {
+    sendError(MSG_MISSING_PARAMETER);
+    return;
+  }
+  
+  float factor = atof(arg);
+  if (factor == 0.0) {
+    sendError(MSG_INVALID_PARAMETER);
+    return;
+  }
+  
+  Serial.print(F("Установка калибровочного коэффициента: "));
+  Serial.println(factor);
+  
+  scale.setScale(factor);
+  
+  sendCompleted();
+}
+
 void handleStateRotor() {
   sendReceived();
   char state[5];
@@ -347,10 +400,22 @@ void handleStateRotor() {
   sendCompleted();
 }
 
-// Чтение состояния датчика отходов
 void handleWaste() {
   sendReceived();
-  Serial.println(readWasteSensor() ? "1" : "0");
+  bool wasteState = readWasteSensor();
+  Serial.println(wasteState ? "1" : "0");
+  sendCompleted();
+}
+
+void handleWeightReportOn() {
+  sendReceived();
+  enableWeightReport();
+  sendCompleted();
+}
+
+void handleWeightReportOff() {
+  sendReceived();
+  disableWeightReport();
   sendCompleted();
 }
 
@@ -368,6 +433,7 @@ void handleCheckMultizoneEndstop() {
   bool state = readEndstopState(MULTIZONE_ENDSTOP_PIN);
   Serial.print("Multizone endstop: ");
   Serial.println(state ? "TRIGGERED" : "NOT TRIGGERED");
+  sendCompleted();
 }
 
 void handleCheckRRightEndstop() {
@@ -375,108 +441,75 @@ void handleCheckRRightEndstop() {
   bool state = readEndstopState(RRIGHT_ENDSTOP_PIN);
   Serial.print("RRight endstop: ");
   Serial.println(state ? "TRIGGERED" : "NOT TRIGGERED");
+  sendCompleted();
 }
-
 
 void handleCheckAllEndstops() {
   sendReceived();
-  handleCheckMultiEndstop();
-  handleCheckMultizoneEndstop();
-  handleCheckRRightEndstop();
-}
-
-// Обработчик команды для включения автоматического отчета о весе
-void handleWeightReportOn() {
-  sendReceived();
-  enableWeightReport();
-  sendCompleted();
-}
-
-// Обработчик команды для выключения автоматического отчета о весе
-void handleWeightReportOff() {
-  sendReceived();
-  disableWeightReport();
-  sendCompleted();
-}
-
-void handleDisableWeightReport() {
-  disableWeightReport();
-  Serial.println(F("WEIGHT_REPORT:DISABLED"));
-}
-
-// Обработчик команды для установки калибровочного коэффициента
-void handleCalibrateWeightFactor() {
-  sendReceived();
+  Serial.println(F("Проверка всех концевых выключателей:"));
   
-  char* arg = sCmd.next();
-  if (arg) {
-    float factor = atof(arg);
-    Serial.print(F("Установка калибровочного коэффициента: "));
-    Serial.println(factor);
-    
-    // Установка калибровочного коэффициента
-    scale.setScale(factor);
-    
-    sendCompleted();
-  } else {
-    sendError(MSG_MISSING_PARAMETER);
-  }
+  bool multiState = readEndstopState(MULTI_ENDSTOP_PIN);
+  bool multizoneState = readEndstopState(MULTIZONE_ENDSTOP_PIN);
+  bool rrightState = readEndstopState(RRIGHT_ENDSTOP_PIN);
+  
+  Serial.print("Multi: ");
+  Serial.println(multiState ? "TRIGGERED" : "NOT TRIGGERED");
+  Serial.print("Multizone: ");
+  Serial.println(multizoneState ? "TRIGGERED" : "NOT TRIGGERED");
+  Serial.print("RRight: ");
+  Serial.println(rrightState ? "TRIGGERED" : "NOT TRIGGERED");
+  
+  sendCompleted();
 }
 
 // ============== ОБРАБОТЧИКИ КОМАНД ДЛЯ ДВИГАТЕЛЕЙ E0 И E1 ==============
-// Команда clamp вызывает функцию clampMotors с заданной абсолютной позицией
-// Пример использования: отправить "clamp 100" для движения моторов в позицию 100
 void handleClamp() {
   sendReceived();
   char* arg = sCmd.next();
-  if (arg) {
-    long position = atol(arg);
-    Serial.print(F("Выполняю команду clamp в абсолютную позицию "));
-    Serial.print(position);
-    Serial.println(F("..."));
-    
-    if (clampMotors(position)) {
-      Serial.println(F("Команда clamp успешно выполнена."));
-      sendCompleted();
-    } else {
-      // Более детальное сообщение об ошибке
-      Serial.println(F("Ошибка при выполнении команды clamp. Возможно, превышен таймаут или двигатели заблокированы."));
-      sendError("CLAMP_FAILED");
-      
-      // Дополнительная безопасность: сбрасываем состояние
-      e0Stepper.reset();
-      e1Stepper.reset();
-      resetClampFlag();
-    }
-  } else {
+  if (!arg) {
     sendError(MSG_MISSING_PARAMETER);
+    return;
   }
-}
-
-void handleClampZero() {
-  sendReceived();
-  Serial.println(F("Начинаю процедуру обнуления двигателей E0 и E1..."));
   
-  if (clampZeroMotors()) {
-    // Команда запущена успешно
-    Serial.println(F("Обнуление двигателей E0 и E1 успешно выполнено."));
+  long position = atol(arg);
+  Serial.print(F("Выполнение команды clamp к позиции: "));
+  Serial.println(position);
+  
+  if (clampMotors(position)) {
+    Serial.println(F("Команда clamp успешно выполнена"));
     sendCompleted();
   } else {
-    // Более детальное сообщение об ошибке
-    Serial.println(F("Ошибка при выполнении обнуления. Возможно, превышен таймаут или датчик не сработал."));
-    sendError("CLAMP_ZERO_FAILED");
+    Serial.println(F("Ошибка выполнения команды clamp"));
+    sendError("CLAMP_FAILED");
     
-    // Дополнительная безопасность: сбрасываем состояние
+    // Безопасность: сброс состояния
     e0Stepper.reset();
     e1Stepper.reset();
     resetClampFlag();
   }
 }
 
-// Обработчик команды аварийной остановки двигателей E0 и E1
+void handleClampZero() {
+  sendReceived();
+  Serial.println(F("Начало процедуры обнуления двигателей E0 и E1..."));
+  
+  if (clampZeroMotors()) {
+    Serial.println(F("Обнуление двигателей E0 и E1 успешно выполнено"));
+    sendCompleted();
+  } else {
+    Serial.println(F("Ошибка при выполнении обнуления"));
+    sendError("CLAMP_ZERO_FAILED");
+    
+    // Безопасность: сброс состояния
+    e0Stepper.reset();
+    e1Stepper.reset();
+    resetClampFlag();
+  }
+}
+
 void handleClampStop() {
   sendReceived();
-  Serial.println(F("Выполняю аварийную остановку двигателей E0 и E1..."));
+  Serial.println(F("Выполнение аварийной остановки двигателей E0 и E1..."));
   
   // Остановка двигателей
   e0Stepper.brake();
@@ -489,6 +522,6 @@ void handleClampStop() {
   // Сброс состояния
   resetClampFlag();
   
-  Serial.println(F("Двигатели E0 и E1 остановлены."));
+  Serial.println(F("Двигатели E0 и E1 остановлены"));
   sendCompleted();
 }
