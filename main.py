@@ -1,10 +1,8 @@
 import json
 import logging
 import os
-import shutil
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 from datetime import datetime
@@ -14,45 +12,32 @@ import serial
 import serial.tools.list_ports
 import tomli
 from PySide6.QtCore import (
-    QMetaObject,
-    QMutex,
     QThread,
     QTimer,
-    QWaitCondition,
     Qt,
     Signal,
     Slot,
-    QObject,
 )
-from PySide6.QtGui import QFont, QIcon, QPixmap, QAction
+from PySide6.QtGui import QAction, QFont
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
     QComboBox,
-    QDialog,
-    QDialogButtonBox,
     QFileDialog,
     QFormLayout,
     QFrame,
-    QGroupBox,
+    QGridLayout,
     QHBoxLayout,
-    QHeaderView,
     QLabel,
     QLineEdit,
     QMainWindow,
     QMessageBox,
-    QProgressBar,
-    QProgressDialog,
     QPushButton,
     QScrollArea,
-    QSpinBox,
-    QSplitter,
     QStackedWidget,
-    QTableWidget,
     QTextEdit,
     QVBoxLayout,
     QWidget,
-    QGridLayout,
 )
 
 # Настройка логирования
@@ -551,11 +536,11 @@ class ModernCard(QFrame):
                 margin: 5px;
             }
         """)
-        
+
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(15, 15, 15, 15)
         self.layout.setSpacing(10)
-        
+
         if title:
             self.title_label = QLabel(title)
             self.title_label.setStyleSheet("""
@@ -586,10 +571,10 @@ class ModernButton(QPushButton):
         self.setMinimumHeight(36)
         self.setFont(QFont("Segoe UI", 10, QFont.Weight.Medium))
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        
+
         if icon:
             self.setIcon(icon)
-        
+
         self.apply_style()
 
     def apply_style(self):
@@ -602,7 +587,7 @@ class ModernButton(QPushButton):
                 font-size: 10pt;
             }
         """
-        
+
         if self.button_type == "primary":
             style = base_style + """
                 ModernButton {
@@ -670,7 +655,7 @@ class ModernButton(QPushButton):
                     background-color: #383a59;
                 }
             """
-        
+
         self.setStyleSheet(style)
 
 
@@ -679,7 +664,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Панель управления устройством")
         self.setMinimumSize(1200, 800)
-        
+
         # Инициализация переменных
         self.serial_port = None
         self.serial_thread = None
@@ -690,44 +675,44 @@ class MainWindow(QMainWindow):
         self.sequences = {}
         self.is_fullscreen = False
         self.current_theme = "dark"
-        
+
         # Загружаем сохраненные настройки
         self.serial_settings = self.load_serial_settings()
         self.update_settings = self.load_update_settings()
-        
+
         # Загрузка конфигурации
         self.load_config()
-        
+
         # Настройка интерфейса
         self.setup_ui()
-        
+
         # Применение темы
         self.apply_theme()
-        
+
         # Переключаемся на главную страницу
         self.switch_page("sequences")
-        
+
         # Автоматическое подключение
         if self.update_settings.get('auto_connect', True):
             QTimer.singleShot(1000, self.auto_connect)
-        
+
         # Запуск в полноэкранном режиме
         self.showFullScreen()
         self.is_fullscreen = True
-        
+
         logging.info("Приложение запущено с PySide6")
 
     def apply_theme(self):
         """Применение современной темы"""
         theme = self.update_settings.get('theme', 'dark')
-        
+
         if theme == 'dark':
             self.setStyleSheet(PYDRACULA_DARK)
             self.current_theme = 'dark'
         else:
             self.setStyleSheet(PYDRACULA_DARK)
             self.current_theme = 'dark'
-        
+
         # Обновляем тему для всех виджетов
         self.update()
 
@@ -836,10 +821,10 @@ class MainWindow(QMainWindow):
 
             # Загружаем кнопки команд
             self.buttons_config = config.get('buttons', {})
-            
+
             # Загружаем последовательности
             self.sequences = config.get('sequences', {})
-            
+
             # Загружаем настройки serial по умолчанию
             serial_default = config.get('serial_default', {})
             if serial_default:
@@ -847,7 +832,7 @@ class MainWindow(QMainWindow):
                 for key, value in serial_default.items():
                     if key not in self.serial_settings:
                         self.serial_settings[key] = value
-            
+
             logging.info(f"Конфигурация загружена: {len(self.buttons_config)} команд, {len(self.sequences)} последовательностей, {len(self.button_groups)} разделов")
 
         except Exception as e:
@@ -868,16 +853,16 @@ class MainWindow(QMainWindow):
         sections = {}
         current_section = "Основные команды"
         sections[current_section] = []
-        
+
         try:
-            with open(config_path, 'r', encoding='utf-8') as file:
+            with open(config_path, encoding='utf-8') as file:
                 lines = file.readlines()
-            
+
             in_buttons_section = False
-            
+
             for line in lines:
                 line = line.strip()
-                
+
                 # Проверяем, находимся ли в секции [buttons]
                 if line == '[buttons]':
                     in_buttons_section = True
@@ -885,10 +870,10 @@ class MainWindow(QMainWindow):
                 elif line.startswith('[') and line != '[buttons]':
                     in_buttons_section = False
                     continue
-                
+
                 if not in_buttons_section:
                     continue
-                
+
                 # Парсим комментарии как названия разделов
                 if line.startswith('#') and line.strip() != '#':
                     section_name = line[1:].strip()
@@ -896,7 +881,7 @@ class MainWindow(QMainWindow):
                         current_section = section_name
                         if current_section not in sections:
                             sections[current_section] = []
-                
+
                 # Парсим команды (строки с кавычками и знаком =)
                 elif '"' in line and '=' in line and not line.startswith('#'):
                     try:
@@ -909,16 +894,16 @@ class MainWindow(QMainWindow):
                                 sections[current_section].append(command_name)
                     except Exception as e:
                         logging.warning(f"Ошибка парсинга строки: {line}, {str(e)}")
-            
+
             # Удаляем пустые разделы
             sections = {k: v for k, v in sections.items() if v}
-            
+
             if not sections:
                 sections = {"Основные команды": list(self.buttons_config.keys()) if hasattr(self, 'buttons_config') else []}
-            
+
             logging.info(f"Найдено разделов: {list(sections.keys())}")
             return sections
-            
+
         except Exception as e:
             logging.error(f"Ошибка парсинга разделов: {str(e)}")
             return {"Основные команды": []}
@@ -951,22 +936,22 @@ baudrate = 115200
         # Создаем центральный виджет
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        
+
         # Основной горизонтальный layout
         main_layout = QHBoxLayout(central_widget)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
-        
+
         # Создаем боковую панель
         self.setup_sidebar()
-        
+
         # Создаем основную область контента
         self.setup_content_area()
-        
+
         # Добавляем в основной layout
         main_layout.addWidget(self.sidebar)
         main_layout.addWidget(self.content_area, 1)
-        
+
         # Создаем меню и статусную строку
         self.create_menu()
         self.statusBar().showMessage("Готов к работе")
@@ -982,16 +967,16 @@ baudrate = 115200
                 border-right: 3px solid #343b48;
             }
         """)
-        
+
         sidebar_layout = QVBoxLayout(self.sidebar)
         sidebar_layout.setContentsMargins(0, 20, 0, 20)
         sidebar_layout.setSpacing(5)
-        
+
         # Логотип и заголовок
         header_widget = QWidget()
         header_layout = QVBoxLayout(header_widget)
         header_layout.setContentsMargins(20, 0, 20, 20)
-        
+
         title_label = QLabel("Панель управления")
         title_label.setStyleSheet("""
             QLabel {
@@ -1002,7 +987,7 @@ baudrate = 115200
             }
         """)
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
+
         subtitle_label = QLabel("Система контроля")
         subtitle_label.setStyleSheet("""
             QLabel {
@@ -1012,17 +997,17 @@ baudrate = 115200
             }
         """)
         subtitle_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
+
         header_layout.addWidget(title_label)
         header_layout.addWidget(subtitle_label)
         sidebar_layout.addWidget(header_widget)
-        
+
         # Разделитель
         separator = QFrame()
         separator.setFrameShape(QFrame.Shape.HLine)
         separator.setStyleSheet("background-color: #343b48; height: 1px; margin: 0 20px;")
         sidebar_layout.addWidget(separator)
-        
+
         # Кнопки навигации
         self.nav_buttons = {}
         nav_data = [
@@ -1031,12 +1016,12 @@ baudrate = 115200
             ("settings", "⚙️ Настройки", False),
             ("firmware", "🔧 Прошивка", False),
         ]
-        
+
         nav_widget = QWidget()
         nav_layout = QVBoxLayout(nav_widget)
         nav_layout.setContentsMargins(10, 20, 10, 20)
         nav_layout.setSpacing(5)
-        
+
         for key, text, checked in nav_data:
             btn = QPushButton(text)
             btn.setCheckable(True)
@@ -1067,14 +1052,14 @@ baudrate = 115200
             btn.clicked.connect(lambda checked, k=key: self.switch_page(k))
             self.nav_buttons[key] = btn
             nav_layout.addWidget(btn)
-        
+
         sidebar_layout.addWidget(nav_widget)
         sidebar_layout.addStretch()
-        
+
         # Информация о подключении
         self.connection_card = ModernCard()
         connection_layout = QVBoxLayout()
-        
+
         self.connection_status = QLabel("● Отключено")
         self.connection_status.setStyleSheet("""
             QLabel {
@@ -1088,14 +1073,14 @@ baudrate = 115200
             }
         """)
         connection_layout.addWidget(self.connection_status)
-        
+
         self.connection_card.addLayout(connection_layout)
         sidebar_layout.addWidget(self.connection_card)
 
     def setup_content_area(self):
         """Настройка основной области контента"""
         self.content_area = QStackedWidget()
-        
+
         # Создаем страницы
         self.setup_sequences_page()
         self.setup_commands_page()
@@ -1108,13 +1093,13 @@ baudrate = 115200
         main_layout = QHBoxLayout(page)
         main_layout.setContentsMargins(20, 20, 20, 20)
         main_layout.setSpacing(20)
-        
+
         # Левая часть - последовательности
         left_widget = QWidget()
         left_layout = QVBoxLayout(left_widget)
         left_layout.setContentsMargins(0, 0, 0, 0)
         left_layout.setSpacing(20)
-        
+
         # Заголовок
         title = QLabel("🚀 Автоматические последовательности")
         title.setStyleSheet("""
@@ -1126,11 +1111,11 @@ baudrate = 115200
             }
         """)
         left_layout.addWidget(title)
-        
+
         # Карточка с последовательностями
         sequences_card = ModernCard("📋 Доступные последовательности")
         sequences_layout = QVBoxLayout()
-        
+
         # Создаем кнопки последовательностей
         self.sequence_buttons = {}
         for seq_name, commands in self.sequences.items():
@@ -1138,31 +1123,31 @@ baudrate = 115200
             btn.clicked.connect(lambda checked, name=seq_name: self.start_sequence(name))
             sequences_layout.addWidget(btn)
             self.sequence_buttons[seq_name] = btn
-            
+
             # Добавляем описание
             desc_label = QLabel(f"Команд: {len(commands)}")
             desc_label.setStyleSheet("color: #8a95aa; font-size: 9pt; margin-bottom: 10px;")
             sequences_layout.addWidget(desc_label)
-        
+
         if not self.sequences:
             no_sequences_label = QLabel("Последовательности не найдены в конфигурации")
             no_sequences_label.setStyleSheet("color: #8a95aa; font-style: italic;")
             sequences_layout.addWidget(no_sequences_label)
-        
+
         # Кнопка остановки
         stop_btn = ModernButton("⏹ Остановить выполнение", "danger")
         stop_btn.clicked.connect(self.stop_sequence)
         sequences_layout.addWidget(stop_btn)
-        
+
         sequences_card.addLayout(sequences_layout)
         left_layout.addWidget(sequences_card)
         left_layout.addStretch()
-        
+
         # Правая часть - терминал
         right_widget = QWidget()
         right_layout = QVBoxLayout(right_widget)
         right_layout.setContentsMargins(0, 0, 0, 0)
-        
+
         # Заголовок терминала
         terminal_title = QLabel("📟 Терминал")
         terminal_title.setStyleSheet("""
@@ -1174,7 +1159,7 @@ baudrate = 115200
             }
         """)
         right_layout.addWidget(terminal_title)
-        
+
         # Терминал
         self.terminal = QTextEdit()
         self.terminal.setMinimumHeight(400)
@@ -1192,28 +1177,28 @@ baudrate = 115200
             }
         """)
         right_layout.addWidget(self.terminal)
-        
+
         # Поле ввода команды
         input_layout = QHBoxLayout()
         self.command_input = QLineEdit()
         self.command_input.setPlaceholderText("Введите команду...")
         self.command_input.returnPressed.connect(self.send_manual_command)
-        
+
         send_btn = ModernButton("Отправить", "primary")
         send_btn.clicked.connect(self.send_manual_command)
-        
+
         clear_btn = ModernButton("Очистить", "secondary")
         clear_btn.clicked.connect(self.clear_terminal)
-        
+
         input_layout.addWidget(self.command_input)
         input_layout.addWidget(send_btn)
         input_layout.addWidget(clear_btn)
         right_layout.addLayout(input_layout)
-        
+
         # Добавляем в основной layout
         main_layout.addWidget(left_widget, 1)
         main_layout.addWidget(right_widget, 1)
-        
+
         # Добавляем в стек
         self.content_area.addWidget(page)
 
@@ -1223,13 +1208,13 @@ baudrate = 115200
         main_layout = QHBoxLayout(page)
         main_layout.setContentsMargins(20, 20, 20, 20)
         main_layout.setSpacing(20)
-        
+
         # Левая часть - команды
         left_widget = QWidget()
         left_layout = QVBoxLayout(left_widget)
         left_layout.setContentsMargins(0, 0, 0, 0)
         left_layout.setSpacing(20)
-        
+
         # Заголовок
         title = QLabel("⚡ Команды управления")
         title.setStyleSheet("""
@@ -1241,33 +1226,33 @@ baudrate = 115200
             }
         """)
         left_layout.addWidget(title)
-        
+
         # Создаем прокручиваемую область для команд
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setFrameShape(QScrollArea.Shape.NoFrame)
         scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
-        
+
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(15)
-        
+
         # Создаем карточки для каждой группы команд
         for group_name, commands in self.button_groups.items():
             if not commands:
                 continue
-                
+
             group_card = ModernCard(f"📂 {group_name}")
             group_layout = QGridLayout()
             group_layout.setSpacing(10)
-            
+
             # Размещаем кнопки в сетке (2 в строке для экономии места)
             row, col = 0, 0
             for command_name in commands:
                 if command_name in self.buttons_config:
                     command = self.buttons_config[command_name]
-                    
+
                     # Определяем тип кнопки по команде
                     if any(keyword in command_name.lower() for keyword in ['zero', 'stop', 'off']):
                         btn_type = "warning"
@@ -1277,35 +1262,35 @@ baudrate = 115200
                         btn_type = "secondary"
                     else:
                         btn_type = "primary"
-                    
+
                     btn = ModernButton(command_name, btn_type)
                     btn.clicked.connect(lambda checked, cmd=command: self.send_command(cmd))
                     btn.setMinimumHeight(40)
-                    
+
                     group_layout.addWidget(btn, row, col)
-                    
+
                     col += 1
                     if col >= 2:  # 2 кнопки в строке
                         col = 0
                         row += 1
-            
+
             group_card.addLayout(group_layout)
             scroll_layout.addWidget(group_card)
-        
+
         if not self.buttons_config:
             no_commands_label = QLabel("Команды не найдены в конфигурации")
             no_commands_label.setStyleSheet("color: #8a95aa; font-style: italic; text-align: center;")
             scroll_layout.addWidget(no_commands_label)
-        
+
         scroll_layout.addStretch()
         scroll.setWidget(scroll_widget)
         left_layout.addWidget(scroll)
-        
+
         # Правая часть - терминал (используем тот же, что на странице последовательностей)
         right_widget = QWidget()
         right_layout = QVBoxLayout(right_widget)
         right_layout.setContentsMargins(0, 0, 0, 0)
-        
+
         # Заголовок терминала
         terminal_title = QLabel("📟 Терминал команд")
         terminal_title.setStyleSheet("""
@@ -1317,7 +1302,7 @@ baudrate = 115200
             }
         """)
         right_layout.addWidget(terminal_title)
-        
+
         # Используем общий терминал или создаем дублированный
         if not hasattr(self, 'terminal'):
             # Если терминал еще не создан, создаем его
@@ -1336,7 +1321,7 @@ baudrate = 115200
                     line-height: 1.4;
                 }
             """)
-        
+
         # Создаем второй терминал для команд (чтобы не конфликтовать)
         self.commands_terminal = QTextEdit()
         self.commands_terminal.setMinimumHeight(400)
@@ -1354,28 +1339,28 @@ baudrate = 115200
             }
         """)
         right_layout.addWidget(self.commands_terminal)
-        
+
         # Поле ввода команды для команд
         input_layout = QHBoxLayout()
         self.commands_input = QLineEdit()
         self.commands_input.setPlaceholderText("Введите команду...")
         self.commands_input.returnPressed.connect(self.send_manual_command_from_commands)
-        
+
         send_btn = ModernButton("Отправить", "primary")
         send_btn.clicked.connect(self.send_manual_command_from_commands)
-        
+
         clear_btn = ModernButton("Очистить", "secondary")
         clear_btn.clicked.connect(self.clear_commands_terminal)
-        
+
         input_layout.addWidget(self.commands_input)
         input_layout.addWidget(send_btn)
         input_layout.addWidget(clear_btn)
         right_layout.addLayout(input_layout)
-        
+
         # Добавляем в основной layout (левая часть чуть больше)
         main_layout.addWidget(left_widget, 3)  # 60% ширины
         main_layout.addWidget(right_widget, 2)  # 40% ширины
-        
+
         # Добавляем в стек
         self.content_area.addWidget(page)
 
@@ -1385,7 +1370,7 @@ baudrate = 115200
         layout = QVBoxLayout(page)
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(20)
-        
+
         # Заголовок
         title = QLabel("⚙️ Настройки")
         title.setStyleSheet("""
@@ -1397,70 +1382,70 @@ baudrate = 115200
             }
         """)
         layout.addWidget(title)
-        
+
         # Создаем прокручиваемую область
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setFrameShape(QScrollArea.Shape.NoFrame)
         scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
-        
+
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(20)
-        
+
         # Карточка подключения
         connection_card = ModernCard("🔌 Подключение")
         connection_layout = QFormLayout()
-        
+
         # Порт
         self.port_combo = QComboBox()
         self.refresh_ports()
         self.port_combo.setCurrentText(self.serial_settings.get('port', 'COM1'))
         connection_layout.addRow("Порт:", self.port_combo)
-        
+
         # Скорость
         self.baud_combo = QComboBox()
         self.baud_combo.addItems(['9600', '19200', '38400', '57600', '115200', '230400', '460800', '921600'])
         self.baud_combo.setCurrentText(str(self.serial_settings.get('baudrate', 115200)))
         connection_layout.addRow("Скорость:", self.baud_combo)
-        
+
         # Кнопки управления подключением
         connection_buttons = QHBoxLayout()
-        
+
         self.connect_btn = ModernButton("🔗 Подключиться", "success")
         self.connect_btn.clicked.connect(self.connect_serial)
-        
-        self.disconnect_btn = ModernButton("📴 Отключиться", "danger") 
+
+        self.disconnect_btn = ModernButton("📴 Отключиться", "danger")
         self.disconnect_btn.clicked.connect(self.disconnect_serial)
-        
+
         refresh_btn = ModernButton("🔄 Обновить порты", "secondary")
         refresh_btn.clicked.connect(self.refresh_ports)
-        
+
         connection_buttons.addWidget(self.connect_btn)
         connection_buttons.addWidget(self.disconnect_btn)
         connection_buttons.addWidget(refresh_btn)
-        
+
         connection_layout.addRow("", connection_buttons)
         connection_card.addLayout(connection_layout)
         scroll_layout.addWidget(connection_card)
-        
+
         # Карточка настроек приложения
         app_card = ModernCard("🎨 Интерфейс")
         app_layout = QFormLayout()
-        
+
         # Автоподключение
         self.auto_connect_check = QCheckBox("Автоматически подключаться при запуске")
         self.auto_connect_check.setChecked(self.update_settings.get('auto_connect', True))
         app_layout.addRow("", self.auto_connect_check)
-        
+
         app_card.addLayout(app_layout)
         scroll_layout.addWidget(app_card)
-        
+
         # Карточка информации
         info_card = ModernCard("ℹ️ Информация")
         info_layout = QVBoxLayout()
-        
+
         info_text = QLabel(
             f"<b>Версия:</b> 2.0 (PySide6)<br>"
             f"<b>Команд загружено:</b> {len(self.buttons_config)}<br>"
@@ -1469,34 +1454,34 @@ baudrate = 115200
         )
         info_text.setStyleSheet("color: #dce1ec; line-height: 1.6;")
         info_layout.addWidget(info_text)
-        
+
         info_card.addLayout(info_layout)
         scroll_layout.addWidget(info_card)
-        
+
         # Кнопки действий
         actions_card = ModernCard("🛠️ Действия")
         actions_layout = QHBoxLayout()
-        
+
         save_btn = ModernButton("💾 Сохранить настройки", "success")
         save_btn.clicked.connect(self.save_connection_settings)
-        
+
         reload_btn = ModernButton("🔄 Перезагрузить конфигурацию", "warning")
         reload_btn.clicked.connect(self.reload_config)
-        
+
         about_btn = ModernButton("ℹ️ О программе", "secondary")
         about_btn.clicked.connect(self.show_about)
-        
+
         actions_layout.addWidget(save_btn)
         actions_layout.addWidget(reload_btn)
         actions_layout.addWidget(about_btn)
-        
+
         actions_card.addLayout(actions_layout)
         scroll_layout.addWidget(actions_card)
-        
+
         scroll_layout.addStretch()
         scroll.setWidget(scroll_widget)
         layout.addWidget(scroll)
-        
+
         # Добавляем в стек
         self.content_area.addWidget(page)
 
@@ -1506,7 +1491,7 @@ baudrate = 115200
         layout = QVBoxLayout(page)
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(20)
-        
+
         # Заголовок
         title = QLabel("🔧 Прошивка и обновления")
         title.setStyleSheet("""
@@ -1518,107 +1503,107 @@ baudrate = 115200
             }
         """)
         layout.addWidget(title)
-        
+
         # Создаем прокручиваемую область
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setFrameShape(QScrollArea.Shape.NoFrame)
         scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
-        
+
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
         scroll_layout.setContentsMargins(0, 0, 0, 0)
         scroll_layout.setSpacing(20)
-        
+
         # Карточка Git
         git_card = ModernCard("📡 Git Repository")
         git_layout = QVBoxLayout()
-        
+
         # Информация о репозитории
         self.repo_info_label = QLabel("Статус репозитория: Проверяется...")
         self.repo_info_label.setStyleSheet("color: #dce1ec; margin-bottom: 10px;")
         git_layout.addWidget(self.repo_info_label)
-        
+
         # Кнопки Git
         git_buttons_layout = QHBoxLayout()
-        
+
         self.check_updates_btn = ModernButton("🔍 Проверить обновления", "primary")
         self.check_updates_btn.clicked.connect(self.check_git_updates)
-        
+
         self.pull_updates_btn = ModernButton("⬇️ Скачать обновления", "success")
         self.pull_updates_btn.clicked.connect(self.pull_git_updates)
         self.pull_updates_btn.setEnabled(False)
-        
+
         self.view_commits_btn = ModernButton("📜 История изменений", "secondary")
         self.view_commits_btn.clicked.connect(self.view_git_commits)
-        
+
         git_buttons_layout.addWidget(self.check_updates_btn)
         git_buttons_layout.addWidget(self.pull_updates_btn)
         git_buttons_layout.addWidget(self.view_commits_btn)
-        
+
         git_layout.addLayout(git_buttons_layout)
         git_card.addLayout(git_layout)
         scroll_layout.addWidget(git_card)
-        
+
         # Карточка PlatformIO
         pio_card = ModernCard("⚡ PlatformIO")
         pio_layout = QVBoxLayout()
-        
+
         # Путь к проекту Arduino
         path_layout = QHBoxLayout()
         path_layout.addWidget(QLabel("Путь к проекту:"))
-        
+
         self.arduino_path_edit = QLineEdit()
         self.arduino_path_edit.setText(self.update_settings.get('platformio_path', ''))
         self.arduino_path_edit.setPlaceholderText("Путь к папке с проектом Arduino/PlatformIO")
-        
+
         browse_btn = ModernButton("📁", "secondary")
         browse_btn.clicked.connect(self.browse_arduino_path)
         browse_btn.setMaximumWidth(50)
-        
+
         path_layout.addWidget(self.arduino_path_edit)
         path_layout.addWidget(browse_btn)
         pio_layout.addLayout(path_layout)
-        
+
         # Порт для загрузки
         upload_port_layout = QHBoxLayout()
         upload_port_layout.addWidget(QLabel("Порт загрузки:"))
-        
+
         self.upload_port_combo = QComboBox()
         self.refresh_upload_ports()
         upload_port_layout.addWidget(self.upload_port_combo)
-        
+
         refresh_ports_btn = ModernButton("🔄", "secondary")
         refresh_ports_btn.clicked.connect(self.refresh_upload_ports)
         refresh_ports_btn.setMaximumWidth(50)
         upload_port_layout.addWidget(refresh_ports_btn)
-        
+
         pio_layout.addLayout(upload_port_layout)
-        
+
         # Кнопки PlatformIO
         pio_buttons_layout = QHBoxLayout()
-        
+
         self.compile_btn = ModernButton("🔨 Компилировать", "warning")
         self.compile_btn.clicked.connect(self.compile_firmware)
-        
+
         self.upload_btn = ModernButton("⬆️ Загрузить прошивку", "success")
         self.upload_btn.clicked.connect(self.upload_firmware)
-        
+
         self.compile_upload_btn = ModernButton("🚀 Компилировать и загрузить", "primary")
         self.compile_upload_btn.clicked.connect(self.compile_and_upload_firmware)
-        
+
         pio_buttons_layout.addWidget(self.compile_btn)
         pio_buttons_layout.addWidget(self.upload_btn)
         pio_buttons_layout.addWidget(self.compile_upload_btn)
-        
+
         pio_layout.addLayout(pio_buttons_layout)
         pio_card.addLayout(pio_layout)
         scroll_layout.addWidget(pio_card)
-        
+
         # Карточка вывода
         output_card = ModernCard("📟 Вывод команд")
         output_layout = QVBoxLayout()
-        
+
         self.firmware_output = QTextEdit()
         self.firmware_output.setMinimumHeight(300)
         self.firmware_output.setReadOnly(True)
@@ -1635,22 +1620,22 @@ baudrate = 115200
             }
         """)
         output_layout.addWidget(self.firmware_output)
-        
+
         # Кнопка очистки вывода
         clear_output_btn = ModernButton("🧹 Очистить вывод", "secondary")
         clear_output_btn.clicked.connect(lambda: self.firmware_output.clear())
         output_layout.addWidget(clear_output_btn)
-        
+
         output_card.addLayout(output_layout)
         scroll_layout.addWidget(output_card)
-        
+
         scroll_layout.addStretch()
         scroll.setWidget(scroll_widget)
         layout.addWidget(scroll)
-        
+
         # Добавляем в стек
         self.content_area.addWidget(page)
-        
+
         # Проверяем статус Git при загрузке
         QTimer.singleShot(1000, self.check_git_status)
 
@@ -1659,7 +1644,7 @@ baudrate = 115200
         if hasattr(self, 'port_combo'):
             current_port = self.port_combo.currentText()
             self.port_combo.clear()
-            
+
             # Получаем список доступных портов
             ports = [port.device for port in serial.tools.list_ports.comports()]
             if ports:
@@ -1675,11 +1660,11 @@ baudrate = 115200
         self.update_settings['theme'] = theme_name
         self.save_update_settings()
         self.apply_theme()
-        
+
         # Обновляем состояние кнопок
         self.theme_dark_btn.setEnabled(theme_name != 'dark')
         self.theme_light_btn.setEnabled(theme_name != 'dark')
-        
+
         self.add_terminal_message(f"🎨 Тема изменена на: {theme_name}", "info")
 
     def save_connection_settings(self):
@@ -1687,13 +1672,13 @@ baudrate = 115200
         if hasattr(self, 'port_combo') and hasattr(self, 'baud_combo'):
             self.serial_settings['port'] = self.port_combo.currentText()
             self.serial_settings['baudrate'] = int(self.baud_combo.currentText())
-        
+
         if hasattr(self, 'auto_connect_check'):
             self.update_settings['auto_connect'] = self.auto_connect_check.isChecked()
-        
+
         self.save_serial_settings()
         self.save_update_settings()
-        
+
         self.add_terminal_message("💾 Настройки сохранены", "info")
         self.statusBar().showMessage("Настройки сохранены", 3000)
 
@@ -1723,12 +1708,12 @@ baudrate = 115200
             # Отправляем команду
             full_command = command + '\n'
             self.serial_port.write(full_command.encode('utf-8'))
-            
+
             # Добавляем в терминалы
             self.add_terminal_message(f"➤ {command}", "command")
             if hasattr(self, 'commands_terminal'):
                 self.add_commands_terminal_message(f"➤ {command}", "command")
-            
+
             logging.info(f"Отправлена команда: {command}")
 
         except Exception as e:
@@ -1743,7 +1728,7 @@ baudrate = 115200
         if hasattr(self, 'terminal'):
             # Добавляем временную метку
             timestamp = datetime.now().strftime("%H:%M:%S")
-            
+
             # Цветовое кодирование по типу сообщения
             if msg_type == "command":
                 formatted_msg = f'<span style="color: #6c98f3;">[{timestamp}] {message}</span>'
@@ -1755,10 +1740,10 @@ baudrate = 115200
                 formatted_msg = f'<span style="color: #ffb86c;">[{timestamp}] {message}</span>'
             else:
                 formatted_msg = f'<span style="color: #dce1ec;">[{timestamp}] {message}</span>'
-            
+
             # Добавляем сообщение в терминал
             self.terminal.append(formatted_msg)
-            
+
             # Прокручиваем в конец
             scrollbar = self.terminal.verticalScrollBar()
             scrollbar.setValue(scrollbar.maximum())
@@ -1787,7 +1772,7 @@ baudrate = 115200
                     border: 1px solid #ff5555;
                 }
             """)
-            
+
             self.add_terminal_message("📴 Устройство отключено", "warning")
             self.statusBar().showMessage("Отключено", 3000)
 
@@ -1808,7 +1793,7 @@ baudrate = 115200
 
         # Получаем команды последовательности
         sequence_commands = self.sequences[sequence_name]
-        
+
         # Преобразуем названия команд в actual команды
         actual_commands = []
         for cmd in sequence_commands:
@@ -1843,7 +1828,7 @@ baudrate = 115200
             self.add_terminal_message(f"✅ {message}", "response")
         else:
             self.add_terminal_message(f"❌ {message}", "error")
-        
+
         self.command_sequence_thread = None
 
     def stop_sequence(self):
@@ -1869,33 +1854,33 @@ baudrate = 115200
         try:
             # Сохраняем текущую страницу
             current_page = 0
-            for i, (name, button) in enumerate(self.nav_buttons.items()):
+            for i, (_name, button) in enumerate(self.nav_buttons.items()):
                 if button.isChecked():
                     current_page = i
                     break
-            
+
             # Перезагружаем конфигурацию
             self.load_config()
-            
+
             # Пересоздаем страницы с новой конфигурацией
             # Очищаем содержимое
             while self.content_area.count():
                 widget = self.content_area.widget(0)
                 self.content_area.removeWidget(widget)
                 widget.deleteLater()
-            
+
             # Пересоздаем страницы
             self.setup_sequences_page()
-            self.setup_commands_page() 
+            self.setup_commands_page()
             self.setup_settings_page()
             self.setup_firmware_page()
-            
+
             # Возвращаемся на текущую страницу
             self.content_area.setCurrentIndex(current_page)
-            
+
             self.add_terminal_message("🔄 Конфигурация перезагружена", "info")
             self.statusBar().showMessage("Конфигурация перезагружена", 3000)
-            
+
         except Exception as e:
             error_msg = f"Не удалось перезагрузить конфигурацию: {str(e)}"
             logging.error(error_msg)
@@ -1911,7 +1896,7 @@ baudrate = 115200
         # Обновляем состояние кнопок навигации
         for name, button in self.nav_buttons.items():
             button.setChecked(name == page_name)
-        
+
         # Переключаем страницу
         page_index = {"sequences": 0, "commands": 1, "settings": 2, "firmware": 3}.get(page_name, 0)
         self.content_area.setCurrentIndex(page_index)
@@ -1965,65 +1950,65 @@ baudrate = 115200
     def on_data_received(self, data):
         """Обработка полученных данных"""
         self.add_terminal_message(f"◄ {data}", "response")
-        
+
         # Дублируем в терминал команд, если он существует
         if hasattr(self, 'commands_terminal'):
             self.add_commands_terminal_message(f"◄ {data}", "response")
-        
+
         # Передаем ответ в поток последовательности, если он активен
         if self.command_sequence_thread and self.command_sequence_thread.isRunning():
             self.command_sequence_thread.add_response(data)
-        
+
         logging.info(f"Получены данные: {data}")
 
     def create_menu(self):
         """Создание современного меню"""
         menubar = self.menuBar()
-        
+
         # Меню "Файл"
         file_menu = menubar.addMenu('📁 Файл')
-        
+
         reload_action = QAction('🔄 Перезагрузить конфигурацию', self)
         reload_action.setShortcut('Ctrl+R')
         reload_action.triggered.connect(self.reload_config)
         file_menu.addAction(reload_action)
-        
+
         file_menu.addSeparator()
-        
+
         exit_action = QAction('❌ Выход', self)
         exit_action.setShortcut('Ctrl+Q')
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
-        
+
         # Меню "Вид"
         view_menu = menubar.addMenu('👁️ Вид')
-        
+
         fullscreen_action = QAction('📺 Полноэкранный режим', self)
         fullscreen_action.setShortcut('F11')
         fullscreen_action.triggered.connect(self.toggle_fullscreen)
         view_menu.addAction(fullscreen_action)
-        
+
         theme_action = QAction('🎨 Переключить тему', self)
         theme_action.setShortcut('Ctrl+T')
         theme_action.triggered.connect(self.toggle_theme)
         view_menu.addAction(theme_action)
-        
+
         # Меню "Подключение"
         connection_menu = menubar.addMenu('🔌 Подключение')
-        
+
         connect_action = QAction('🔗 Подключиться', self)
         connect_action.setShortcut('Ctrl+Shift+C')
         connect_action.triggered.connect(self.connect_serial)
         connection_menu.addAction(connect_action)
-        
+
         disconnect_action = QAction('📴 Отключиться', self)
         disconnect_action.setShortcut('Ctrl+Shift+D')
         disconnect_action.triggered.connect(self.disconnect_serial)
         connection_menu.addAction(disconnect_action)
-        
+
         # Меню "Помощь"
         help_menu = menubar.addMenu('💡 Помощь')
-        
+
         about_action = QAction('ℹ️ О программе', self)
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
@@ -2045,23 +2030,23 @@ baudrate = 115200
         try:
             repo_path = os.path.dirname(os.path.abspath(__file__))
             repo = git.Repo(repo_path)
-            
+
             # Получаем информацию о текущей ветке
             current_branch = repo.active_branch.name
             last_commit = repo.head.commit.hexsha[:7]
             last_commit_msg = repo.head.commit.message.strip()
-            
+
             # Проверяем состояние
             if repo.is_dirty():
                 status = "🔸 Есть несохраненные изменения"
             else:
                 status = "✅ Репозиторий чистый"
-            
+
             info_text = f"{status}\nВетка: {current_branch}\nКоммит: {last_commit}\nСообщение: {last_commit_msg}"
             self.repo_info_label.setText(info_text)
-            
+
             self.add_firmware_message(f"📡 Статус Git: {status}", "info")
-            
+
         except Exception as e:
             error_msg = f"❌ Ошибка Git: {str(e)}"
             self.repo_info_label.setText(error_msg)
@@ -2071,29 +2056,29 @@ baudrate = 115200
         """Проверка обновлений в удаленном репозитории"""
         try:
             self.add_firmware_message("🔍 Проверка обновлений...", "info")
-            
+
             repo_path = os.path.dirname(os.path.abspath(__file__))
             repo = git.Repo(repo_path)
-            
+
             # Получаем информацию о remote
             origin = repo.remotes.origin
             origin.fetch()
-            
+
             # Сравниваем локальные и удаленные коммиты
             local_commit = repo.head.commit.hexsha
             remote_commit = origin.refs[repo.active_branch.name].commit.hexsha
-            
+
             if local_commit == remote_commit:
                 self.add_firmware_message("✅ Обновления не найдены", "response")
                 self.pull_updates_btn.setEnabled(False)
             else:
                 self.add_firmware_message("🆕 Найдены обновления!", "warning")
                 self.pull_updates_btn.setEnabled(True)
-                
+
                 # Показываем количество коммитов
                 commits_behind = list(repo.iter_commits(f'{local_commit}..{remote_commit}'))
                 self.add_firmware_message(f"📊 Доступно коммитов: {len(commits_behind)}", "info")
-                
+
         except Exception as e:
             error_msg = f"❌ Ошибка проверки обновлений: {str(e)}"
             self.add_firmware_message(error_msg, "error")
@@ -2102,20 +2087,20 @@ baudrate = 115200
         """Скачивание обновлений из репозитория"""
         try:
             self.add_firmware_message("⬇️ Скачивание обновлений...", "info")
-            
+
             repo_path = os.path.dirname(os.path.abspath(__file__))
             repo = git.Repo(repo_path)
-            
+
             # Выполняем git pull
             origin = repo.remotes.origin
             origin.pull()
-            
+
             self.add_firmware_message("✅ Обновления успешно скачаны!", "response")
             self.pull_updates_btn.setEnabled(False)
-            
+
             # Обновляем статус
             self.check_git_status()
-            
+
             # Предлагаем перезапустить приложение
             reply = QMessageBox.question(
                 self,
@@ -2123,10 +2108,10 @@ baudrate = 115200
                 "Обновления скачаны успешно.\nХотите перезапустить приложение для применения изменений?",
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
             )
-            
+
             if reply == QMessageBox.StandardButton.Yes:
                 self.restart_application()
-                
+
         except Exception as e:
             error_msg = f"❌ Ошибка скачивания обновлений: {str(e)}"
             self.add_firmware_message(error_msg, "error")
@@ -2136,15 +2121,15 @@ baudrate = 115200
         try:
             repo_path = os.path.dirname(os.path.abspath(__file__))
             repo = git.Repo(repo_path)
-            
+
             # Получаем последние 10 коммитов
             commits = list(repo.iter_commits(max_count=10))
-            
+
             self.add_firmware_message("📜 Последние коммиты:", "info")
             for commit in commits:
                 commit_info = f"  {commit.hexsha[:7]} - {commit.message.strip()} ({commit.author.name})"
                 self.add_firmware_message(commit_info, "info")
-                
+
         except Exception as e:
             error_msg = f"❌ Ошибка получения истории: {str(e)}"
             self.add_firmware_message(error_msg, "error")
@@ -2155,10 +2140,10 @@ baudrate = 115200
             # Сохраняем настройки
             self.save_serial_settings()
             self.save_update_settings()
-            
+
             # Перезапускаем приложение
             os.execl(sys.executable, sys.executable, *sys.argv)
-            
+
         except Exception as e:
             error_msg = f"❌ Ошибка перезапуска: {str(e)}"
             self.add_firmware_message(error_msg, "error")
@@ -2171,7 +2156,7 @@ baudrate = 115200
             "Выберите папку с проектом Arduino/PlatformIO",
             self.update_settings.get('platformio_path', '')
         )
-        
+
         if path:
             self.arduino_path_edit.setText(path)
             self.update_settings['platformio_path'] = path
@@ -2183,7 +2168,7 @@ baudrate = 115200
         if hasattr(self, 'upload_port_combo'):
             current_port = self.upload_port_combo.currentText()
             self.upload_port_combo.clear()
-            
+
             # Получаем список доступных портов
             ports = [port.device for port in serial.tools.list_ports.comports()]
             if ports:
@@ -2205,7 +2190,7 @@ baudrate = 115200
         if not arduino_path or not os.path.exists(arduino_path):
             QMessageBox.warning(self, "Ошибка", "Укажите корректный путь к проекту Arduino/PlatformIO")
             return
-        
+
         self.add_firmware_message("🔨 Начало компиляции...", "info")
         self.run_platformio_command(arduino_path, ["run"])
 
@@ -2213,15 +2198,15 @@ baudrate = 115200
         """Загрузка прошивки"""
         arduino_path = self.arduino_path_edit.text().strip()
         upload_port = self.upload_port_combo.currentText()
-        
+
         if not arduino_path or not os.path.exists(arduino_path):
             QMessageBox.warning(self, "Ошибка", "Укажите корректный путь к проекту Arduino/PlatformIO")
             return
-        
+
         if not upload_port or upload_port == "Нет доступных портов":
             QMessageBox.warning(self, "Ошибка", "Выберите порт для загрузки")
             return
-        
+
         self.add_firmware_message(f"⬆️ Загрузка на порт {upload_port}...", "info")
         self.run_platformio_command(arduino_path, ["run", "--target", "upload", "--upload-port", upload_port])
 
@@ -2229,15 +2214,15 @@ baudrate = 115200
         """Компиляция и загрузка прошивки"""
         arduino_path = self.arduino_path_edit.text().strip()
         upload_port = self.upload_port_combo.currentText()
-        
+
         if not arduino_path or not os.path.exists(arduino_path):
             QMessageBox.warning(self, "Ошибка", "Укажите корректный путь к проекту Arduino/PlatformIO")
             return
-        
+
         if not upload_port or upload_port == "Нет доступных портов":
             QMessageBox.warning(self, "Ошибка", "Выберите порт для загрузки")
             return
-        
+
         self.add_firmware_message(f"🚀 Компиляция и загрузка на порт {upload_port}...", "info")
         self.run_platformio_command(arduino_path, ["run", "--target", "upload", "--upload-port", upload_port])
 
@@ -2246,9 +2231,9 @@ baudrate = 115200
         try:
             # Формируем команду
             cmd = ["pio"] + args
-            
+
             self.add_firmware_message(f"💻 Команда: {' '.join(cmd)}", "info")
-            
+
             # Выполняем команду
             process = subprocess.run(
                 cmd,
@@ -2257,23 +2242,23 @@ baudrate = 115200
                 text=True,
                 timeout=300  # 5 минут таймаут
             )
-            
+
             # Выводим результат
             if process.stdout:
                 for line in process.stdout.split('\n'):
                     if line.strip():
                         self.add_firmware_message(f"📄 {line}", "info")
-            
+
             if process.stderr:
                 for line in process.stderr.split('\n'):
                     if line.strip():
                         self.add_firmware_message(f"⚠️ {line}", "warning")
-            
+
             if process.returncode == 0:
                 self.add_firmware_message("✅ Команда выполнена успешно!", "response")
             else:
                 self.add_firmware_message(f"❌ Команда завершена с ошибкой (код {process.returncode})", "error")
-                
+
         except subprocess.TimeoutExpired:
             self.add_firmware_message("⏰ Команда прервана по таймауту (5 минут)", "error")
         except FileNotFoundError:
@@ -2285,7 +2270,7 @@ baudrate = 115200
         """Добавление сообщения в вывод прошивки"""
         if hasattr(self, 'firmware_output'):
             timestamp = datetime.now().strftime("%H:%M:%S")
-            
+
             # Цветовое кодирование
             if msg_type == "command":
                 formatted_msg = f'<span style="color: #6c98f3;">[{timestamp}] {message}</span>'
@@ -2297,9 +2282,9 @@ baudrate = 115200
                 formatted_msg = f'<span style="color: #ffb86c;">[{timestamp}] {message}</span>'
             else:
                 formatted_msg = f'<span style="color: #dce1ec;">[{timestamp}] {message}</span>'
-            
+
             self.firmware_output.append(formatted_msg)
-            
+
             # Прокручиваем в конец
             scrollbar = self.firmware_output.verticalScrollBar()
             scrollbar.setValue(scrollbar.maximum())
@@ -2328,11 +2313,11 @@ baudrate = 115200
             # Отправляем команду
             full_command = command + '\n'
             self.serial_port.write(full_command.encode('utf-8'))
-            
+
             # Добавляем в оба терминала
             self.add_terminal_message(f"➤ {command}", "command")
             self.add_commands_terminal_message(f"➤ {command}", "command")
-            
+
             logging.info(f"Отправлена команда: {command}")
 
         except Exception as e:
@@ -2346,7 +2331,7 @@ baudrate = 115200
         if hasattr(self, 'commands_terminal'):
             # Добавляем временную метку
             timestamp = datetime.now().strftime("%H:%M:%S")
-            
+
             # Цветовое кодирование по типу сообщения
             if msg_type == "command":
                 formatted_msg = f'<span style="color: #6c98f3;">[{timestamp}] {message}</span>'
@@ -2358,10 +2343,10 @@ baudrate = 115200
                 formatted_msg = f'<span style="color: #ffb86c;">[{timestamp}] {message}</span>'
             else:
                 formatted_msg = f'<span style="color: #dce1ec;">[{timestamp}] {message}</span>'
-            
+
             # Добавляем сообщение в терминал
             self.commands_terminal.append(formatted_msg)
-            
+
             # Прокручиваем в конец
             scrollbar = self.commands_terminal.verticalScrollBar()
             scrollbar.setValue(scrollbar.maximum())
@@ -2388,4 +2373,4 @@ if __name__ == "__main__":
         sys.exit(app.exec())
     except Exception as e:
         logging.error(f"Критическая ошибка при выполнении приложения: {str(e)}")
-        print(f"Ошибка: {str(e)}") 
+        print(f"Ошибка: {str(e)}")

@@ -142,7 +142,14 @@ void applyStepperConfig(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& c
   Serial.print(config.stepsPerRevolution);
   Serial.print(F(", enable_pin="));
   Serial.print(config.enablePin);
-  Serial.println(F(" [АКТИВИРОВАН]"));
+  
+  // Для двигателей с временным питанием отключаем их после настройки
+  if (!config.powerAlwaysOn) {
+    stepper.disable();
+    Serial.println(F(" [НАСТРОЕН, ВРЕМЕННОЕ ПИТАНИЕ - ВЫКЛЮЧЕН]"));
+  } else {
+    Serial.println(F(" [НАСТРОЕН, ПОСТОЯННОЕ ПИТАНИЕ - ВКЛЮЧЕН]"));
+  }
 }
 
 bool readEndstopWithType(int endstopPin, bool isNPN) {
