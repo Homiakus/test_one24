@@ -8,12 +8,12 @@
 #include "stepper_control.h"
 #include <Arduino.h>
 
-// Создание экземпляров шаговых двигателей (используем GStepper2)
-GStepper2<STEPPER2WIRE> multiStepper(MULTI_STEPS_PER_REVOLUTION, MULTI_STEP_PIN, MULTI_DIR_PIN, MULTI_ENABLE_PIN);
-GStepper2<STEPPER2WIRE> multizoneSteper(MULTIZONE_STEPS_PER_REVOLUTION, MULTIZONE_STEP_PIN, MULTIZONE_DIR_PIN, MULTIZONE_ENABLE_PIN);
-GStepper2<STEPPER2WIRE> rRightStepper(RRIGHT_STEPS_PER_REVOLUTION, RRIGHT_STEP_PIN, RRIGHT_DIR_PIN, RRIGHT_ENABLE_PIN);
-GStepper2<STEPPER2WIRE> e0Stepper(E0_STEPS_PER_REVOLUTION, E0_STEP_PIN, E0_DIR_PIN, E0_ENABLE_PIN);
-GStepper2<STEPPER2WIRE> e1Stepper(E1_STEPS_PER_REVOLUTION, E1_STEP_PIN, E1_DIR_PIN, E1_ENABLE_PIN);
+// Создание экземпляров шаговых двигателей БЕЗ enable пинов как в примерах
+GStepper2<STEPPER2WIRE> multiStepper(MULTI_STEPS_PER_REVOLUTION, MULTI_STEP_PIN, MULTI_DIR_PIN);
+GStepper2<STEPPER2WIRE> multizoneSteper(MULTIZONE_STEPS_PER_REVOLUTION, MULTIZONE_STEP_PIN, MULTIZONE_DIR_PIN);
+GStepper2<STEPPER2WIRE> rRightStepper(RRIGHT_STEPS_PER_REVOLUTION, RRIGHT_STEP_PIN, RRIGHT_DIR_PIN);
+GStepper2<STEPPER2WIRE> e0Stepper(E0_STEPS_PER_REVOLUTION, E0_STEP_PIN, E0_DIR_PIN);
+GStepper2<STEPPER2WIRE> e1Stepper(E1_STEPS_PER_REVOLUTION, E1_STEP_PIN, E1_DIR_PIN);
 
 // Флаг для предотвращения одновременного запуска команд, влияющих на E0/E1
 static bool clampInProgress = false;
@@ -36,7 +36,6 @@ StepperConfig getStepperConfig(StepperType type) {
     case STEPPER_MULTI:
       config.stepPin = MULTI_STEP_PIN;
       config.dirPin = MULTI_DIR_PIN;
-      config.enablePin = MULTI_ENABLE_PIN;
       config.endstopPin = MULTI_ENDSTOP_PIN;
       config.stepsPerRevolution = MULTI_STEPS_PER_REVOLUTION;
       config.maxSpeed = MULTI_MAX_SPEED;
@@ -49,7 +48,6 @@ StepperConfig getStepperConfig(StepperType type) {
     case STEPPER_MULTIZONE:
       config.stepPin = MULTIZONE_STEP_PIN;
       config.dirPin = MULTIZONE_DIR_PIN;
-      config.enablePin = MULTIZONE_ENABLE_PIN;
       config.endstopPin = MULTIZONE_ENDSTOP_PIN;
       config.stepsPerRevolution = MULTIZONE_STEPS_PER_REVOLUTION;
       config.maxSpeed = MULTIZONE_MAX_SPEED;
@@ -62,7 +60,6 @@ StepperConfig getStepperConfig(StepperType type) {
     case STEPPER_RRIGHT:
       config.stepPin = RRIGHT_STEP_PIN;
       config.dirPin = RRIGHT_DIR_PIN;
-      config.enablePin = RRIGHT_ENABLE_PIN;
       config.endstopPin = RRIGHT_ENDSTOP_PIN;
       config.stepsPerRevolution = RRIGHT_STEPS_PER_REVOLUTION;
       config.maxSpeed = RRIGHT_MAX_SPEED;
@@ -75,7 +72,6 @@ StepperConfig getStepperConfig(StepperType type) {
     case STEPPER_E0:
       config.stepPin = E0_STEP_PIN;
       config.dirPin = E0_DIR_PIN;
-      config.enablePin = E0_ENABLE_PIN;
       config.endstopPin = CLAMP_SENSOR_PIN; // Используется для clamp_zero
       config.stepsPerRevolution = E0_STEPS_PER_REVOLUTION;
       config.maxSpeed = E0_MAX_SPEED;
@@ -88,7 +84,6 @@ StepperConfig getStepperConfig(StepperType type) {
     case STEPPER_E1:
       config.stepPin = E1_STEP_PIN;
       config.dirPin = E1_DIR_PIN;
-      config.enablePin = E1_ENABLE_PIN;
       config.endstopPin = CLAMP_SENSOR_PIN; // Используется для clamp_zero
       config.stepsPerRevolution = E1_STEPS_PER_REVOLUTION;
       config.maxSpeed = E1_MAX_SPEED;
@@ -114,42 +109,18 @@ GStepper2<STEPPER2WIRE>* getStepperByType(StepperType type) {
 }
 
 void applyStepperConfig(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config) {
-  Serial.print(F("Активация двигателя... "));
-  
-  // Диагностика enable пина ДО активации
-  Serial.print(F("Enable pin "));
-  Serial.print(config.enablePin);
-  Serial.print(F(" ДО активации: "));
-  Serial.print(digitalRead(config.enablePin));
-  
-  stepper.enable();
-  
-  // Небольшая задержка для стабилизации
-  delay(10);
-  
-  // Диагностика enable пина ПОСЛЕ активации
-  Serial.print(F(", ПОСЛЕ активации: "));
-  Serial.print(digitalRead(config.enablePin));
+  Serial.print(F("Настройка двигателя... "));
   
   stepper.setMaxSpeed(config.maxSpeed);
   stepper.setAcceleration(config.acceleration);
   
-  Serial.print(F(". Конфигурация: скорость="));
+  Serial.print(F("Конфигурация: скорость="));
   Serial.print(config.maxSpeed);
   Serial.print(F(", ускорение="));
   Serial.print(config.acceleration);
   Serial.print(F(", шагов/оборот="));
   Serial.print(config.stepsPerRevolution);
-  Serial.print(F(", enable_pin="));
-  Serial.print(config.enablePin);
-  
-  // Для двигателей с временным питанием отключаем их после настройки
-  if (!config.powerAlwaysOn) {
-    stepper.disable();
-    Serial.println(F(" [НАСТРОЕН, ВРЕМЕННОЕ ПИТАНИЕ - ВЫКЛЮЧЕН]"));
-  } else {
-    Serial.println(F(" [НАСТРОЕН, ПОСТОЯННОЕ ПИТАНИЕ - ВКЛЮЧЕН]"));
-  }
+  Serial.println(F(" [НАСТРОЕН]"));
 }
 
 bool readEndstopWithType(int endstopPin, bool isNPN) {
@@ -166,30 +137,44 @@ bool readEndstopWithType(int endstopPin, bool isNPN) {
 
 // ============== ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ==============
 void initializeSteppers() {
-  Serial.println(F("Инициализация шаговых двигателей с индивидуальными настройками..."));
+  Serial.println(F("Инициализация шаговых двигателей БЕЗ управления enable через GyverStepper2..."));
   
   // Настройка пинов для всех двигателей
   pinMode(MULTI_STEP_PIN, OUTPUT);
   pinMode(MULTI_DIR_PIN, OUTPUT);
-  pinMode(MULTI_ENABLE_PIN, OUTPUT); // Добавлено обратно для корректной работы
   
   pinMode(MULTIZONE_STEP_PIN, OUTPUT);
   pinMode(MULTIZONE_DIR_PIN, OUTPUT);
-  pinMode(MULTIZONE_ENABLE_PIN, OUTPUT); // Добавлено обратно для корректной работы
   
   pinMode(RRIGHT_STEP_PIN, OUTPUT);
   pinMode(RRIGHT_DIR_PIN, OUTPUT);
-  pinMode(RRIGHT_ENABLE_PIN, OUTPUT); // Добавлено обратно для корректной работы
   
   pinMode(E0_STEP_PIN, OUTPUT);
   pinMode(E0_DIR_PIN, OUTPUT);
-  pinMode(E0_ENABLE_PIN, OUTPUT); // Добавлено обратно для корректной работы
   
   pinMode(E1_STEP_PIN, OUTPUT);
   pinMode(E1_DIR_PIN, OUTPUT);
-  pinMode(E1_ENABLE_PIN, OUTPUT); // Добавлено обратно для корректной работы
   
-  // НЕ устанавливаем значения enable пинов - это делает GyverStepper2 при stepper.enable()
+  // РУЧНАЯ активация enable пинов (драйверы активны на LOW)
+  pinMode(MULTI_ENABLE_PIN, OUTPUT);
+  digitalWrite(MULTI_ENABLE_PIN, LOW);
+  Serial.println(F("Multi enable pin АКТИВИРОВАН вручную"));
+  
+  pinMode(MULTIZONE_ENABLE_PIN, OUTPUT);
+  digitalWrite(MULTIZONE_ENABLE_PIN, LOW);
+  Serial.println(F("Multizone enable pin АКТИВИРОВАН вручную"));
+  
+  pinMode(RRIGHT_ENABLE_PIN, OUTPUT);
+  digitalWrite(RRIGHT_ENABLE_PIN, LOW);
+  Serial.println(F("RRight enable pin АКТИВИРОВАН вручную"));
+  
+  pinMode(E0_ENABLE_PIN, OUTPUT);
+  digitalWrite(E0_ENABLE_PIN, LOW);
+  Serial.println(F("E0 enable pin АКТИВИРОВАН вручную"));
+  
+  pinMode(E1_ENABLE_PIN, OUTPUT);
+  digitalWrite(E1_ENABLE_PIN, LOW);
+  Serial.println(F("E1 enable pin АКТИВИРОВАН вручную"));
   
   // Настройка датчиков
   pinMode(MULTI_ENDSTOP_PIN, INPUT_PULLUP);
@@ -215,8 +200,7 @@ void initializeSteppers() {
   Serial.print(F("E1: "));
   applyStepperConfig(e1Stepper, getStepperConfig(STEPPER_E1));
   
-  Serial.println(F("Инициализация шаговых двигателей завершена"));
-  Serial.println(F("Enable пины настроены, управляются библиотекой GyverStepper2"));
+  Serial.println(F("Инициализация завершена - ВСЕ ENABLE ПИНЫ АКТИВИРОВАНЫ ВРУЧНУЮ"));
 }
 
 // ============== БАЗОВЫЕ ФУНКЦИИ УПРАВЛЕНИЯ ==============
@@ -232,94 +216,67 @@ bool setStepperPosition(GStepper2<STEPPER2WIRE>& stepper, long position) {
     return false;
   }
   
-  // Определяем какой это двигатель и получаем его конфигурацию
-  StepperType stepperType;
-  if (&stepper == &multiStepper) stepperType = STEPPER_MULTI;
-  else if (&stepper == &multizoneSteper) stepperType = STEPPER_MULTIZONE;
-  else if (&stepper == &rRightStepper) stepperType = STEPPER_RRIGHT;
-  else if (&stepper == &e0Stepper) stepperType = STEPPER_E0;
-  else if (&stepper == &e1Stepper) stepperType = STEPPER_E1;
-  else {
-    Serial.println(F("Ошибка: Неизвестный двигатель"));
-    return false;
-  }
-  
-  StepperConfig config = getStepperConfig(stepperType);
-  
+  // Определяем какой это двигатель для диагностики
   String motorName = "UNKNOWN";
   if (&stepper == &multiStepper) motorName = "Multi";
   else if (&stepper == &multizoneSteper) motorName = "Multizone";
   else if (&stepper == &rRightStepper) motorName = "RRight";
   else if (&stepper == &e0Stepper) motorName = "E0";
   else if (&stepper == &e1Stepper) motorName = "E1";
+  else {
+    Serial.println(F("Ошибка: Неизвестный двигатель"));
+    return false;
+  }
   
   long currentPos = stepper.getCurrent();
-  Serial.print(F("ДИАГНОСТИКА "));
+  Serial.print(F("ДВИЖЕНИЕ "));
   Serial.print(motorName);
-  Serial.print(F(": текущая позиция="));
+  Serial.print(F(": "));
   Serial.print(currentPos);
-  Serial.print(F(", целевая="));
-  Serial.print(position);
-  Serial.print(F(", расстояние="));
-  Serial.println(abs(position - currentPos));
-  
-  // Включаем питание двигателя
-  enableStepper(stepper, config);
-  
-  Serial.print(F("Движение к позиции: "));
+  Serial.print(F(" -> "));
   Serial.println(position);
   
+  // Простая настройка как в примерах GyverStepper2
   stepper.setTarget(position);
   
-  // Блокирующее ожидание завершения движения с подробной диагностикой
+  // Простое блокирующее ожидание как в примерах
   unsigned long startTime = millis();
   unsigned long lastProgressTime = 0;
-  const unsigned long moveTimeout = HOMING_TIMEOUT; // Используем общий таймаут
   
   while (!stepper.ready()) {
     unsigned long currentTime = millis();
     
     // Проверка таймаута
-    if (currentTime - startTime > moveTimeout) {
-      Serial.print(F("ДИАГНОСТИКА ТАЙМАУТА "));
+    if (currentTime - startTime > HOMING_TIMEOUT) {
+      Serial.print(F("ТАЙМАУТ "));
       Serial.print(motorName);
-      Serial.print(F(": время="));
-      Serial.print(currentTime - startTime);
-      Serial.print(F("мс, текущая позиция="));
-      Serial.print(stepper.getCurrent());
-      Serial.print(F(", цель="));
-      Serial.println(stepper.getTarget());
-      Serial.println(F("Ошибка: Таймаут движения"));
+      Serial.print(F(" на позиции "));
+      Serial.println(stepper.getCurrent());
       stepper.brake();
-      
-      // Выключаем питание в случае ошибки
-      disableStepper(stepper, config);
       return false;
     }
     
-    // Периодический вывод прогресса каждые 2 секунды
+    // Главное - вызов tick()!
+    stepper.tick();
+    
+    // Периодический прогресс
     if (currentTime - lastProgressTime >= 2000) {
       lastProgressTime = currentTime;
       Serial.print(F("ПРОГРЕСС "));
       Serial.print(motorName);
-      Serial.print(F(": позиция="));
+      Serial.print(F(": "));
       Serial.print(stepper.getCurrent());
       Serial.print(F("/"));
-      Serial.print(stepper.getTarget());
-      Serial.print(F(", время="));
-      Serial.print((currentTime - startTime) / 1000);
-      Serial.println(F("с"));
+      Serial.println(stepper.getTarget());
     }
     
-    stepper.tick();
     yield();
   }
   
-  Serial.print(F("Движение завершено. Текущая позиция: "));
+  Serial.print(F("ЗАВЕРШЕНО "));
+  Serial.print(motorName);
+  Serial.print(F(": "));
   Serial.println(stepper.getCurrent());
-  
-  // Выключаем питание для двигателей с временным питанием
-  disableStepper(stepper, config);
   
   return true;
 }
@@ -487,15 +444,11 @@ bool clampMotors(long targetPosition) {
   }
   
   clampInProgress = true;
-  Serial.println(F("Начало выполнения команды clamp с временным питанием"));
+  Serial.println(F("Начало выполнения команды clamp"));
   
   // Получение конфигураций для E0 и E1
   StepperConfig e0Config = getStepperConfig(STEPPER_E0);
   StepperConfig e1Config = getStepperConfig(STEPPER_E1);
-  
-  // Включаем питание двигателей
-  enableStepper(e0Stepper, e0Config);
-  enableStepper(e1Stepper, e1Config);
   
   // Получение текущих позиций
   long currentE0 = e0Stepper.getCurrent();
@@ -511,7 +464,7 @@ bool clampMotors(long targetPosition) {
   e1Stepper.brake();
   delay(50);
   
-  // Настройка параметров движения из конфигурации
+  // Настройка параметров движения ПРОСТЫМИ командами как в примерах
   e0Stepper.setMaxSpeed(e0Config.maxSpeed);
   e1Stepper.setMaxSpeed(e1Config.maxSpeed);
   e0Stepper.setAcceleration(e0Config.acceleration);
@@ -521,19 +474,10 @@ bool clampMotors(long targetPosition) {
   e0Stepper.setTarget(targetPosition);
   e1Stepper.setTarget(targetPosition);
   
-  Serial.print(F("Целевая позиция: "));
+  Serial.print(F("Движение E0 и E1 к позиции: "));
   Serial.println(targetPosition);
   
-  // Расчет динамического таймаута
-  long maxDistance = max(abs(targetPosition - currentE0), abs(targetPosition - currentE1));
-  unsigned long dynamicTimeout = HOMING_TIMEOUT + (maxDistance / 10) * 100;
-  
-  Serial.print(F("Максимальное расстояние: "));
-  Serial.print(maxDistance);
-  Serial.print(F(", таймаут: "));
-  Serial.println(dynamicTimeout);
-  
-  // Синхронное движение обоих двигателей
+  // Простое движение как в примерах GyverStepper2
   unsigned long startTime = millis();
   unsigned long lastProgressTime = 0;
   
@@ -541,20 +485,15 @@ bool clampMotors(long targetPosition) {
     unsigned long currentTime = millis();
     
     // Проверка таймаута
-    if (currentTime - startTime >= dynamicTimeout) {
+    if (currentTime - startTime >= HOMING_TIMEOUT) {
       Serial.println(F("Ошибка: Таймаут выполнения команды clamp"));
       e0Stepper.brake();
       e1Stepper.brake();
-      
-      // Выключаем питание
-      disableStepper(e0Stepper, e0Config);
-      disableStepper(e1Stepper, e1Config);
-      
       clampInProgress = false;
       return false;
     }
     
-    // Обновление двигателей
+    // Обновление двигателей - ГЛАВНОЕ В GYVERSTEPPER2!
     e0Stepper.tick();
     e1Stepper.tick();
     
@@ -579,10 +518,6 @@ bool clampMotors(long targetPosition) {
   Serial.print(F(", E1: "));
   Serial.println(e1Stepper.getCurrent());
   
-  // Выключаем питание двигателей
-  disableStepper(e0Stepper, e0Config);
-  disableStepper(e1Stepper, e1Config);
-  
   clampInProgress = false;
   return true;
 }
@@ -594,15 +529,11 @@ bool clampZeroMotors() {
   }
   
   clampInProgress = true;
-  Serial.println(F("Начало процедуры clamp_zero с временным питанием"));
+  Serial.println(F("Начало процедуры clamp_zero"));
   
   // Получение конфигураций для E0 и E1
   StepperConfig e0Config = getStepperConfig(STEPPER_E0);
   StepperConfig e1Config = getStepperConfig(STEPPER_E1);
-  
-  // Включаем питание двигателей
-  enableStepper(e0Stepper, e0Config);
-  enableStepper(e1Stepper, e1Config);
   
   // Остановка двигателей
   e0Stepper.brake();
@@ -651,11 +582,6 @@ bool clampZeroMotors() {
       Serial.println(F("Ошибка: Таймаут при движении к датчику"));
       e0Stepper.brake();
       e1Stepper.brake();
-      
-      // Выключаем питание
-      disableStepper(e0Stepper, e0Config);
-      disableStepper(e1Stepper, e1Config);
-      
       clampInProgress = false;
       return false;
     }
@@ -688,11 +614,6 @@ bool clampZeroMotors() {
       Serial.println(F("Ошибка: Таймаут отъезда от датчика"));
       e0Stepper.brake();
       e1Stepper.brake();
-      
-      // Выключаем питание
-      disableStepper(e0Stepper, e0Config);
-      disableStepper(e1Stepper, e1Config);
-      
       clampInProgress = false;
       return false;
     }
@@ -713,10 +634,6 @@ bool clampZeroMotors() {
     e0Stepper.setCurrent(100);
     e1Stepper.setCurrent(100);
   }
-  
-  // Выключаем питание двигателей
-  disableStepper(e0Stepper, e0Config);
-  disableStepper(e1Stepper, e1Config);
   
   clampInProgress = false;
   return true;
@@ -774,27 +691,4 @@ bool zeroAndMoveRRight(long position) {
   Serial.print(F("Перемещение RRight в позицию "));
   Serial.println(position);
   return setStepperPosition(rRightStepper, position);
-}
-
-// ============== УПРАВЛЕНИЕ ПИТАНИЕМ ДВИГАТЕЛЕЙ ==============
-void enableStepper(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config) {
-  stepper.enable();
-  Serial.print(F("Enable pin "));
-  Serial.print(config.enablePin);
-  Serial.print(F(": ВКЛЮЧЕН (режим: "));
-  Serial.print(config.powerAlwaysOn ? "постоянный" : "временный");
-  Serial.println(F(")"));
-}
-
-void disableStepper(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config) {
-  if (!config.powerAlwaysOn) {
-    stepper.disable();
-    Serial.print(F("Enable pin "));
-    Serial.print(config.enablePin);
-    Serial.println(F(": ВЫКЛЮЧЕН (временный режим)"));
-  } else {
-    Serial.print(F("Enable pin "));
-    Serial.print(config.enablePin);
-    Serial.println(F(": ОСТАЕТСЯ ВКЛЮЧЕННЫМ (постоянный режим)"));
-  }
 } 

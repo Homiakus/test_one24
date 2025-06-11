@@ -14,18 +14,17 @@ typedef enum {
   STEPPER_E1
 } StepperType;
 
-// Структура конфигурации шагового двигателя
+// Структура для хранения конфигурации шагового двигателя
 typedef struct {
   int stepPin;
   int dirPin;
-  int enablePin;
-  int endstopPin;         // -1, если нет концевика
-  int stepsPerRevolution; // шагов на оборот
-  int maxSpeed;           // максимальная скорость
-  int acceleration;       // ускорение
-  int homingSpeed;        // скорость хоминга
-  bool endstopTypeNPN;    // true = NPN, false = PNP
-  bool powerAlwaysOn;     // true = питание постоянно, false = только при движении
+  int endstopPin;
+  int stepsPerRevolution;
+  int maxSpeed;
+  int acceleration;
+  int homingSpeed;
+  bool endstopTypeNPN;
+  bool powerAlwaysOn;
 } StepperConfig;
 
 // Объявления шаговых двигателей
@@ -51,10 +50,6 @@ StepperConfig getStepperConfig(StepperType type);
 // Применение конфигурации к двигателю
 void applyStepperConfig(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config);
 
-// Управление питанием двигателя
-void enableStepper(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config);
-void disableStepper(GStepper2<STEPPER2WIRE>& stepper, const StepperConfig& config);
-
 // Чтение концевого выключателя с учетом типа (NPN/PNP)
 bool readEndstopWithType(int endstopPin, bool isNPN);
 
@@ -79,5 +74,9 @@ bool clampMotors(long steps);
 
 // Обнуление двигателей E0 и E1 по датчику
 bool clampZeroMotors();
+
+// Дополнительные функции для Multi и RRight
+bool zeroAndMoveMulti(long position);
+bool zeroAndMoveRRight(long position);
 
 #endif // STEPPER_CONTROL_H 

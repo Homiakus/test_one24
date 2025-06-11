@@ -82,7 +82,7 @@
 #define E0_ACCELERATION 2000                // steps/sec^2
 #define E0_HOMING_SPEED 1000                // steps/sec для хоминга (если будет использоваться)
 #define E0_ENDSTOP_TYPE_NPN true            // true = NPN, false = PNP (для clamp_zero датчика)
-#define E0_POWER_ALWAYS_ON false            // true = питание постоянно, false = только при движении
+#define E0_POWER_ALWAYS_ON true            // ВРЕМЕННО true для диагностики
 
 // Stepper E1 Configuration
 #define E1_STEPS_PER_REVOLUTION 200         // шагов на оборот
@@ -90,7 +90,7 @@
 #define E1_ACCELERATION 2000                // steps/sec^2
 #define E1_HOMING_SPEED 1000                // steps/sec для хоминга (если будет использоваться)
 #define E1_ENDSTOP_TYPE_NPN true            // true = NPN, false = PNP (для clamp_zero датчика)
-#define E1_POWER_ALWAYS_ON false            // true = питание постоянно, false = только при движении
+#define E1_POWER_ALWAYS_ON true            // ВРЕМЕННО true для диагностики
 
 // ============== LEGACY CONSTANTS (для обратной совместимости) ==============
 const int HOMING_SPEED = 300;               // Общий хоминг (устарело, используйте индивидуальные настройки)
