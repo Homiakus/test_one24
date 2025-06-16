@@ -2424,3 +2424,453 @@
 2025-06-11 19:18:14 - INFO - Получены данные: Ошибка выполнения команды clamp
 2025-06-11 19:18:14 - INFO - Получены данные: ERR: CLAMP_FAILED
 2025-06-11 19:18:14 - INFO - Получены данные: Флаг занятости clamp сброшен
+2025-06-16 14:01:21 - INFO - Логирование инициализировано успешно
+2025-06-16 14:01:21 - INFO - ================================================================================
+2025-06-16 14:01:21 - INFO - Запуск приложения с PySide6
+2025-06-16 14:01:21 - INFO - Операционная система: win32
+2025-06-16 14:01:21 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-16 14:01:21 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-16 14:01:21 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-16 14:01:21 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения Multizone', 'Команды движения RRight', 'Команды движения E0 (индивидуальные)', 'Команды движения E1 (индивидуальные)', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Чтение датчиков', 'Диагностические команды']
+2025-06-16 14:01:21 - INFO - Конфигурация загружена: 76 команд, 5 последовательностей, 12 разделов
+2025-06-16 14:01:21 - INFO - Приложение запущено с PySide6
+2025-06-16 14:01:23 - INFO - Получены данные: === FastAccelStepper 5-Motor System ===
+2025-06-16 14:01:24 - INFO - Получены данные: === Based on provided config.h pins ===
+2025-06-16 14:01:24 - INFO - Получены данные: Initializing...
+2025-06-16 14:01:24 - INFO - Получены данные: ERROR: Cannot create stepper 0 (Multi(X))
+2025-06-16 14:02:07 - INFO - Отправлена команда: pinon 0
+2025-06-16 14:06:45 - INFO - Получены данные: === AccelStepper 5-Motor System ===
+2025-06-16 14:06:45 - INFO - Получены данные: === Based on provided config.h pins ===
+2025-06-16 14:06:45 - INFO - Получены данные: Initializing...
+2025-06-16 14:06:45 - INFO - Получены данные: Multi(X) initialized - Step:54 Dir:55 Enable:38 Home:14 (PNP)
+2025-06-16 14:06:45 - INFO - Получены данные: Multizone(Y) initialized - Step:60 Dir:61 Enable:56 Home:2 (NPN)
+2025-06-16 14:06:45 - INFO - Получены данные: RRight(Z) initialized - Step:46 Dir:48 Enable:62 Home:2 (NPN)
+2025-06-16 14:06:45 - INFO - Получены данные: E0 initialized - Step:26 Dir:28 Enable:24 Home:15 (NPN)
+2025-06-16 14:06:45 - INFO - Получены данные: E1 initialized - Step:36 Dir:34 Enable:30 Home:15 (NPN)
+2025-06-16 14:06:45 - INFO - Получены данные: System initialized successfully!
+2025-06-16 14:06:45 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 14:06:45 - INFO - Получены данные: Ready for commands...
+2025-06-16 14:07:21 - INFO - Отправлена команда: pinon 0
+2025-06-16 14:07:21 - INFO - Получены данные: Pin 18 turned ON
+2025-06-16 14:07:29 - INFO - Отправлена команда: pinoff 0
+2025-06-16 14:07:29 - INFO - Получены данные: Pin 18 turned OFF
+2025-06-16 14:07:41 - INFO - Отправлена команда: pinon 1
+2025-06-16 14:07:41 - INFO - Получены данные: Pin 8 turned ON
+2025-06-16 14:07:49 - INFO - Отправлена команда: pinoff 2
+2025-06-16 14:07:49 - INFO - Получены данные: Pin 10 turned OFF
+2025-06-16 14:07:56 - INFO - Отправлена команда: pinoff 1
+2025-06-16 14:07:56 - INFO - Получены данные: Pin 8 turned OFF
+2025-06-16 14:08:12 - INFO - Отправлена команда: status
+2025-06-16 14:08:12 - INFO - Получены данные: === STEPPER SYSTEM STATUS ===
+2025-06-16 14:08:12 - INFO - Получены данные: Motors enabled: NO
+2025-06-16 14:08:12 - INFO - Получены данные: Homing active: NO
+2025-06-16 14:08:12 - INFO - Получены данные: All motors idle: YES
+2025-06-16 14:08:13 - INFO - Получены данные: Motor positions:
+2025-06-16 14:08:13 - INFO - Получены данные: Multi(X): 0.00 units (0 steps) - IDLE
+2025-06-16 14:08:13 - INFO - Получены данные: Multizone(Y): 0.00 units (0 steps) - IDLE
+2025-06-16 14:08:13 - INFO - Получены данные: RRight(Z): 0.00 units (0 steps) - IDLE
+2025-06-16 14:08:13 - INFO - Получены данные: E0: 0.00 units (0 steps) - IDLE
+2025-06-16 14:08:13 - INFO - Получены данные: E1: 0.00 units (0 steps) - IDLE
+2025-06-16 14:08:13 - INFO - Получены данные: Home switches:
+2025-06-16 14:08:13 - INFO - Получены данные: Multi(X) (PNP): OPEN
+2025-06-16 14:08:13 - INFO - Получены данные: Multizone(Y) (NPN): OPEN
+2025-06-16 14:08:13 - INFO - Получены данные: RRight(Z) (NPN): OPEN
+2025-06-16 14:08:13 - INFO - Получены данные: E0 (NPN): OPEN
+2025-06-16 14:08:13 - INFO - Получены данные: E1 (NPN): OPEN
+2025-06-16 14:08:13 - INFO - Получены данные: Pin configuration:
+2025-06-16 14:08:14 - INFO - Получены данные: Multi(X) - Step:54 Dir:55 Enable:38 Home:14
+2025-06-16 14:08:14 - INFO - Получены данные: Multizone(Y) - Step:60 Dir:61 Enable:56 Home:2
+2025-06-16 14:08:14 - INFO - Получены данные: RRight(Z) - Step:46 Dir:48 Enable:62 Home:2
+2025-06-16 14:08:14 - INFO - Получены данные: E0 - Step:26 Dir:28 Enable:24 Home:15
+2025-06-16 14:08:14 - INFO - Получены данные: E1 - Step:36 Dir:34 Enable:30 Home:15
+2025-06-16 14:08:42 - INFO - Отправлена команда: stepperhome 1 1 1 1 1
+2025-06-16 14:08:42 - INFO - Получены данные: Starting homing procedure...
+2025-06-16 14:08:42 - INFO - Получены данные: Motors enabled
+2025-06-16 14:08:42 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 14:08:43 - INFO - Получены данные: Multi(X) - home switch triggered
+2025-06-16 14:08:43 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 14:08:43 - INFO - Получены данные: Homing Multizone(Y) (NPN sensor)
+2025-06-16 14:09:14 - INFO - Получены данные: ERROR: Multizone(Y) - homing timeout
+2025-06-16 14:09:14 - INFO - Получены данные: ERROR: Multizone(Y) - home switch not found
+2025-06-16 14:09:14 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 14:09:22 - INFO - Получены данные: RRight(Z) - home switch triggered
+2025-06-16 14:09:23 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 14:09:23 - INFO - Получены данные: Homing E0 (NPN sensor)
+2025-06-16 14:09:44 - INFO - Получены данные: ERROR: E0 - home switch not found
+2025-06-16 14:09:44 - INFO - Получены данные: Homing E1 (NPN sensor)
+2025-06-16 14:09:58 - INFO - Получены данные: === AccelStepper 5-Motor System ===
+2025-06-16 14:09:58 - INFO - Получены данные: === Based on provided config.h pins ===
+2025-06-16 14:09:58 - INFO - Получены данные: Initializing...
+2025-06-16 14:09:58 - INFO - Получены данные: Multi(X) initialized - Step:54 Dir:55 Enable:38 Home:14 (PNP)
+2025-06-16 14:09:58 - INFO - Получены данные: Multizone(Y) initialized - Step:60 Dir:61 Enable:56 Home:2 (NPN)
+2025-06-16 14:09:58 - INFO - Получены данные: RRight(Z) initialized - Step:46 Dir:48 Enable:62 Home:2 (NPN)
+2025-06-16 14:09:58 - INFO - Получены данные: E0 initialized - Step:26 Dir:28 Enable:24 Home:15 (NPN)
+2025-06-16 14:09:58 - INFO - Получены данные: E1 initialized - Step:36 Dir:34 Enable:30 Home:15 (NPN)
+2025-06-16 14:09:59 - INFO - Получены данные: System initialized successfully!
+2025-06-16 14:09:59 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 14:09:59 - INFO - Получены данные: Ready for commands...
+2025-06-16 14:23:23 - INFO - Получены данные: === AccelStepper + MultiStepper 5-Motor System ===
+2025-06-16 14:23:23 - INFO - Получены данные: === Coordinated Movement with Scheduler ===
+2025-06-16 14:23:23 - INFO - Получены данные: Initializing...
+2025-06-16 14:23:23 - INFO - Получены данные: Multi(X) initialized - Step:54 Dir:55 Enable:38 Home:14 (PNP) - ADDED TO MULTISEPPER
+2025-06-16 14:23:23 - INFO - Получены данные: Multizone(Y) initialized - Step:60 Dir:61 Enable:56 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:23:23 - INFO - Получены данные: RRight(Z) initialized - Step:46 Dir:48 Enable:62 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:23:23 - INFO - Получены данные: E0 initialized - Step:26 Dir:28 Enable:24 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:23:23 - INFO - Получены данные: E1 initialized - Step:36 Dir:34 Enable:30 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:23:23 - INFO - Получены данные: System initialized successfully!
+2025-06-16 14:23:23 - INFO - Получены данные: MultiStepper configured for coordinated movement
+2025-06-16 14:23:23 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 14:23:23 - INFO - Получены данные: Ready for commands...
+2025-06-16 14:23:36 - INFO - Отправлена команда: steppermove * * 50 * *
+2025-06-16 14:23:36 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 14:23:36 - INFO - Получены данные: Motors enabled
+2025-06-16 14:23:36 - INFO - Получены данные: Multi(X) -> no movement
+2025-06-16 14:23:36 - INFO - Получены данные: Multizone(Y) -> no movement
+2025-06-16 14:23:37 - INFO - Получены данные: RRight(Z) -> 50.00 units (4000 steps)
+2025-06-16 14:23:37 - INFO - Получены данные: E0 -> no movement
+2025-06-16 14:23:37 - INFO - Получены данные: E1 -> no movement
+2025-06-16 14:23:37 - INFO - Получены данные: Starting coordinated movement...
+2025-06-16 14:23:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):1 E0:0 E1:0
+2025-06-16 14:23:38 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):1755 E0:0 E1:0
+2025-06-16 14:23:38 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):1756 E0:0 E1:0
+2025-06-16 14:23:38 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):1757 E0:0 E1:0
+2025-06-16 14:23:40 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):3507 E0:0 E1:0
+2025-06-16 14:23:40 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):3508 E0:0 E1:0
+2025-06-16 14:23:40 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):3509 E0:0 E1:0
+2025-06-16 14:23:41 - INFO - Получены данные: Coordinated movement completed
+2025-06-16 14:23:41 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 14:23:41 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 14:23:41 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 14:23:41 - INFO - Получены данные: RRight(Z) final position: 50.00 units (4000 steps)
+2025-06-16 14:23:41 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 14:23:41 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 14:23:41 - INFO - Получены данные: Motors disabled
+2025-06-16 14:24:28 - INFO - Отправлена команда: steppermove * * * 1000 1000
+2025-06-16 14:24:29 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 14:24:29 - INFO - Получены данные: Motors enabled
+2025-06-16 14:24:29 - INFO - Получены данные: Multi(X) -> no movement
+2025-06-16 14:24:29 - INFO - Получены данные: Multizone(Y) -> no movement
+2025-06-16 14:24:29 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 14:24:29 - INFO - Получены данные: E0 -> 1000.00 units (80000 steps)
+2025-06-16 14:24:29 - INFO - Получены данные: E1 -> 1000.00 units (80000 steps)
+2025-06-16 14:24:29 - INFO - Получены данные: Starting coordinated movement...
+2025-06-16 14:24:29 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:1 E1:1
+2025-06-16 14:24:29 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:2 E1:2
+2025-06-16 14:24:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:1665 E1:1665
+2025-06-16 14:24:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:1666 E1:1666
+2025-06-16 14:24:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:1667 E1:1667
+2025-06-16 14:24:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:3331 E1:3331
+2025-06-16 14:24:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:3332 E1:3332
+2025-06-16 14:24:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:3333 E1:3333
+2025-06-16 14:24:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:4997 E1:4997
+2025-06-16 14:24:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:4998 E1:4998
+2025-06-16 14:24:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:4999 E1:4999
+2025-06-16 14:24:36 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:6662 E1:6662
+2025-06-16 14:24:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:6663 E1:6663
+2025-06-16 14:24:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:6664 E1:6664
+2025-06-16 14:24:39 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:8328 E1:8328
+2025-06-16 14:24:39 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:8329 E1:8329
+2025-06-16 14:24:39 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:8330 E1:8330
+2025-06-16 14:24:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:9995 E1:9995
+2025-06-16 14:24:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:9996 E1:9996
+2025-06-16 14:24:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:9997 E1:9997
+2025-06-16 14:24:42 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:11661 E1:11661
+2025-06-16 14:24:43 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:11662 E1:11662
+2025-06-16 14:24:43 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:11663 E1:11663
+2025-06-16 14:24:44 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:13326 E1:13326
+2025-06-16 14:24:45 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:13327 E1:13327
+2025-06-16 14:24:45 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:13328 E1:13328
+2025-06-16 14:24:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:14992 E1:14992
+2025-06-16 14:24:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:14993 E1:14993
+2025-06-16 14:24:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:14994 E1:14994
+2025-06-16 14:24:48 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:16657 E1:16657
+2025-06-16 14:24:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:16658 E1:16658
+2025-06-16 14:24:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:16659 E1:16659
+2025-06-16 14:24:50 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:18323 E1:18323
+2025-06-16 14:24:51 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:18324 E1:18324
+2025-06-16 14:24:51 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:18325 E1:18325
+2025-06-16 14:24:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:19988 E1:19988
+2025-06-16 14:24:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:19989 E1:19989
+2025-06-16 14:24:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:19990 E1:19990
+2025-06-16 14:24:55 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:21653 E1:21653
+2025-06-16 14:24:55 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:21654 E1:21654
+2025-06-16 14:24:55 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:21655 E1:21655
+2025-06-16 14:24:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:23320 E1:23320
+2025-06-16 14:24:57 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:23321 E1:23321
+2025-06-16 14:24:57 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:23322 E1:23322
+2025-06-16 14:24:59 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:24985 E1:24985
+2025-06-16 14:24:59 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:24986 E1:24986
+2025-06-16 14:24:59 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:24987 E1:24987
+2025-06-16 14:25:01 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:26650 E1:26650
+2025-06-16 14:25:01 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:26651 E1:26651
+2025-06-16 14:25:01 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:26652 E1:26652
+2025-06-16 14:25:03 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:28316 E1:28316
+2025-06-16 14:25:03 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:28317 E1:28317
+2025-06-16 14:25:03 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:28318 E1:28318
+2025-06-16 14:25:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:29981 E1:29981
+2025-06-16 14:25:05 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:29982 E1:29982
+2025-06-16 14:25:05 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:29983 E1:29983
+2025-06-16 14:25:07 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:31647 E1:31647
+2025-06-16 14:25:07 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:31648 E1:31648
+2025-06-16 14:25:07 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:31649 E1:31649
+2025-06-16 14:25:09 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:33312 E1:33312
+2025-06-16 14:25:09 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:33313 E1:33313
+2025-06-16 14:25:09 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:33314 E1:33314
+2025-06-16 14:25:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:34978 E1:34978
+2025-06-16 14:25:11 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:34979 E1:34979
+2025-06-16 14:25:11 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:34980 E1:34980
+2025-06-16 14:25:13 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:36644 E1:36644
+2025-06-16 14:25:13 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:36645 E1:36645
+2025-06-16 14:25:13 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:36646 E1:36646
+2025-06-16 14:25:15 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:38309 E1:38309
+2025-06-16 14:25:15 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:38310 E1:38310
+2025-06-16 14:25:15 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:38311 E1:38311
+2025-06-16 14:25:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:39975 E1:39975
+2025-06-16 14:25:17 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:39976 E1:39976
+2025-06-16 14:25:17 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:39977 E1:39977
+2025-06-16 14:25:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:41640 E1:41640
+2025-06-16 14:25:19 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:41641 E1:41641
+2025-06-16 14:25:19 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:41642 E1:41642
+2025-06-16 14:25:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:43305 E1:43305
+2025-06-16 14:25:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:43306 E1:43306
+2025-06-16 14:25:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:43307 E1:43307
+2025-06-16 14:25:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:44971 E1:44971
+2025-06-16 14:25:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:44972 E1:44972
+2025-06-16 14:25:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:44973 E1:44973
+2025-06-16 14:25:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:46636 E1:46636
+2025-06-16 14:25:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:46637 E1:46637
+2025-06-16 14:25:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:46638 E1:46638
+2025-06-16 14:25:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:48302 E1:48302
+2025-06-16 14:25:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:48303 E1:48303
+2025-06-16 14:25:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):4000 E0:48304 E1:48304
+2025-06-16 14:25:30 - INFO - Получены данные: === AccelStepper + MultiStepper 5-Motor System ===
+2025-06-16 14:25:30 - INFO - Получены данные: === Coordinated Movement with Scheduler ===
+2025-06-16 14:25:30 - INFO - Получены данные: Initializing...
+2025-06-16 14:25:30 - INFO - Получены данные: Multi(X) initialized - Step:54 Dir:55 Enable:38 Home:14 (PNP) - ADDED TO MULTISEPPER
+2025-06-16 14:25:30 - INFO - Получены данные: Multizone(Y) initialized - Step:60 Dir:61 Enable:56 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:25:30 - INFO - Получены данные: RRight(Z) initialized - Step:46 Dir:48 Enable:62 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:25:30 - INFO - Получены данные: E0 initialized - Step:26 Dir:28 Enable:24 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:25:30 - INFO - Получены данные: E1 initialized - Step:36 Dir:34 Enable:30 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:25:30 - INFO - Получены данные: System initialized successfully!
+2025-06-16 14:25:30 - INFO - Получены данные: MultiStepper configured for coordinated movement
+2025-06-16 14:25:30 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 14:25:30 - INFO - Получены данные: Ready for commands...
+2025-06-16 14:45:01 - INFO - Отправлена команда: steppermove * * * 1000 1000
+2025-06-16 14:45:01 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 14:45:01 - INFO - Получены данные: Motors enabled
+2025-06-16 14:45:02 - INFO - Получены данные: Multi(X) -> no movement
+2025-06-16 14:45:02 - INFO - Получены данные: Multizone(Y) -> no movement
+2025-06-16 14:45:02 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 14:45:02 - INFO - Получены данные: E0 -> 1000.00 units (80000 steps)
+2025-06-16 14:45:02 - INFO - Получены данные: E1 -> 1000.00 units (80000 steps)
+2025-06-16 14:45:02 - INFO - Получены данные: Starting coordinated movement...
+2025-06-16 14:45:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1 E1:1
+2025-06-16 14:45:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:2 E1:2
+2025-06-16 14:45:03 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1666 E1:1666
+2025-06-16 14:45:03 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1667 E1:1667
+2025-06-16 14:45:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1668 E1:1668
+2025-06-16 14:45:05 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:3332 E1:3332
+2025-06-16 14:45:05 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:3333 E1:3333
+2025-06-16 14:45:06 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:3334 E1:3334
+2025-06-16 14:45:07 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:4999 E1:4999
+2025-06-16 14:45:07 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:5000 E1:5000
+2025-06-16 14:45:08 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:5001 E1:5001
+2025-06-16 14:45:09 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:6666 E1:6666
+2025-06-16 14:45:09 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:6667 E1:6667
+2025-06-16 14:45:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:6668 E1:6668
+2025-06-16 14:45:11 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:8333 E1:8333
+2025-06-16 14:45:11 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:8334 E1:8334
+2025-06-16 14:45:12 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:8335 E1:8335
+2025-06-16 14:45:13 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:9999 E1:9999
+2025-06-16 14:45:13 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:10000 E1:10000
+2025-06-16 14:45:13 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:10001 E1:10001
+2025-06-16 14:45:15 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:11665 E1:11665
+2025-06-16 14:45:15 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:11666 E1:11666
+2025-06-16 14:45:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:11667 E1:11667
+2025-06-16 14:45:17 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:13331 E1:13331
+2025-06-16 14:45:17 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:13332 E1:13332
+2025-06-16 14:45:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:13333 E1:13333
+2025-06-16 14:45:19 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:14997 E1:14997
+2025-06-16 14:45:19 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:14998 E1:14998
+2025-06-16 14:45:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:14999 E1:14999
+2025-06-16 14:45:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:16663 E1:16663
+2025-06-16 14:45:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:16664 E1:16664
+2025-06-16 14:45:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:16665 E1:16665
+2025-06-16 14:45:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:18329 E1:18329
+2025-06-16 14:45:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:18330 E1:18330
+2025-06-16 14:45:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:18331 E1:18331
+2025-06-16 14:45:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:19996 E1:19996
+2025-06-16 14:45:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:19997 E1:19997
+2025-06-16 14:45:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:19998 E1:19998
+2025-06-16 14:45:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:21662 E1:21662
+2025-06-16 14:45:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:21663 E1:21663
+2025-06-16 14:45:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:21664 E1:21664
+2025-06-16 14:45:29 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:23328 E1:23328
+2025-06-16 14:45:29 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:23329 E1:23329
+2025-06-16 14:45:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:23330 E1:23330
+2025-06-16 14:45:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:24994 E1:24994
+2025-06-16 14:45:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:24995 E1:24995
+2025-06-16 14:45:32 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:24996 E1:24996
+2025-06-16 14:45:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:26660 E1:26660
+2025-06-16 14:45:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:26661 E1:26661
+2025-06-16 14:45:34 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:26662 E1:26662
+2025-06-16 14:45:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:28326 E1:28326
+2025-06-16 14:45:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:28327 E1:28327
+2025-06-16 14:45:36 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:28328 E1:28328
+2025-06-16 14:45:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:29992 E1:29992
+2025-06-16 14:45:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:29993 E1:29993
+2025-06-16 14:45:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:29994 E1:29994
+2025-06-16 14:45:39 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:31658 E1:31658
+2025-06-16 14:45:39 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:31659 E1:31659
+2025-06-16 14:45:40 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:31660 E1:31660
+2025-06-16 14:45:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:33325 E1:33325
+2025-06-16 14:45:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:33326 E1:33326
+2025-06-16 14:45:42 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:33327 E1:33327
+2025-06-16 14:45:43 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:34991 E1:34991
+2025-06-16 14:45:43 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:34992 E1:34992
+2025-06-16 14:45:44 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:34993 E1:34993
+2025-06-16 14:45:45 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:36657 E1:36657
+2025-06-16 14:45:45 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:36658 E1:36658
+2025-06-16 14:45:46 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:36659 E1:36659
+2025-06-16 14:45:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:38323 E1:38323
+2025-06-16 14:45:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:38324 E1:38324
+2025-06-16 14:45:48 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:38325 E1:38325
+2025-06-16 14:45:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:39989 E1:39989
+2025-06-16 14:45:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:39990 E1:39990
+2025-06-16 14:45:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:39991 E1:39991
+2025-06-16 14:45:51 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:41655 E1:41655
+2025-06-16 14:45:51 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:41656 E1:41656
+2025-06-16 14:45:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:41657 E1:41657
+2025-06-16 14:45:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:43321 E1:43321
+2025-06-16 14:45:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:43322 E1:43322
+2025-06-16 14:45:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:43323 E1:43323
+2025-06-16 14:48:00 - INFO - Получены данные: === AccelStepper + MultiStepper 5-Motor System ===
+2025-06-16 14:48:00 - INFO - Получены данные: === Coordinated Movement with Scheduler ===
+2025-06-16 14:48:00 - INFO - Получены данные: Initializing...
+2025-06-16 14:48:00 - INFO - Получены данные: Multi(X) initialized - Step:54 Dir:55 Enable:38 Home:14 (PNP) - ADDED TO MULTISEPPER
+2025-06-16 14:48:00 - INFO - Получены данные: Multizone(Y) initialized - Step:60 Dir:61 Enable:56 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:48:01 - INFO - Получены данные: RRight(Z) initialized - Step:46 Dir:48 Enable:62 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:48:01 - INFO - Получены данные: E0 initialized - Step:26 Dir:28 Enable:24 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:48:01 - INFO - Получены данные: E1 initialized - Step:36 Dir:34 Enable:30 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:48:01 - INFO - Получены данные: System initialized successfully!
+2025-06-16 14:48:01 - INFO - Получены данные: MultiStepper configured for coordinated movement
+2025-06-16 14:48:01 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 14:48:01 - INFO - Получены данные: Ready for commands...
+2025-06-16 14:49:24 - INFO - Отправлена команда: stepperhome 1 0 1 0 0
+2025-06-16 14:49:24 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 14:49:24 - INFO - Получены данные: Motors enabled
+2025-06-16 14:49:24 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 14:49:24 - INFO - Получены данные: Multi(X) - home switch triggered
+2025-06-16 14:49:25 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 14:49:25 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 14:49:46 - INFO - Получены данные: ERROR: RRight(Z) - home switch not found
+2025-06-16 14:49:46 - INFO - Получены данные: Motors disabled
+2025-06-16 14:49:46 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 14:51:08 - INFO - Получены данные: === AccelStepper + MultiStepper 5-Motor System ===
+2025-06-16 14:51:08 - INFO - Получены данные: === Coordinated Movement with Scheduler ===
+2025-06-16 14:51:08 - INFO - Получены данные: Initializing...
+2025-06-16 14:51:08 - INFO - Получены данные: Multi(X) initialized - Step:54 Dir:55 Enable:38 Home:14 (PNP) - ADDED TO MULTISEPPER
+2025-06-16 14:51:08 - INFO - Получены данные: Multizone(Y) initialized - Step:60 Dir:61 Enable:56 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:51:08 - INFO - Получены данные: RRight(Z) initialized - Step:46 Dir:48 Enable:62 Home:2 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:51:08 - INFO - Получены данные: E0 initialized - Step:26 Dir:28 Enable:24 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:51:08 - INFO - Получены данные: E1 initialized - Step:36 Dir:34 Enable:30 Home:15 (NPN) - ADDED TO MULTISEPPER
+2025-06-16 14:51:09 - INFO - Получены данные: System initialized successfully!
+2025-06-16 14:51:09 - INFO - Получены данные: MultiStepper configured for coordinated movement
+2025-06-16 14:51:09 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 14:51:09 - INFO - Получены данные: Ready for commands...
+2025-06-16 14:51:21 - INFO - Отправлена команда: stepperhome 0 0 0 1 1
+2025-06-16 14:51:21 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 14:51:21 - INFO - Получены данные: Motors enabled
+2025-06-16 14:51:21 - INFO - Получены данные: Homing E0 (NPN sensor)
+2025-06-16 14:51:42 - INFO - Получены данные: ERROR: E0 - home switch not found
+2025-06-16 14:51:42 - INFO - Получены данные: Homing E1 (NPN sensor)
+2025-06-16 14:52:02 - INFO - Получены данные: ERROR: E1 - home switch not found
+2025-06-16 14:52:03 - INFO - Получены данные: Motors disabled
+2025-06-16 14:52:03 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 15:08:40 - INFO - Отправлена команда: stepperhome 0 0 0 1 1
+2025-06-16 15:08:40 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 15:08:40 - INFO - Получены данные: Motors enabled
+2025-06-16 15:08:40 - INFO - Получены данные: Homing E0 (NPN sensor)
+2025-06-16 15:09:01 - INFO - Получены данные: ERROR: E0 - home switch not found
+2025-06-16 15:09:01 - INFO - Получены данные: Homing E1 (NPN sensor)
+2025-06-16 15:09:22 - INFO - Получены данные: ERROR: E1 - home switch not found
+2025-06-16 15:09:22 - INFO - Получены данные: Motors disabled
+2025-06-16 15:09:22 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 15:09:50 - INFO - Отправлена команда: steppermove * * * 10 10
+2025-06-16 15:09:50 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 15:09:50 - INFO - Получены данные: Motors enabled
+2025-06-16 15:09:50 - INFO - Получены данные: Multi(X) -> no movement
+2025-06-16 15:09:50 - INFO - Получены данные: Multizone(Y) -> no movement
+2025-06-16 15:09:50 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 15:09:50 - INFO - Получены данные: E0 -> 10.00 units (2000 steps)
+2025-06-16 15:09:50 - INFO - Получены данные: E1 -> 10.00 units (2000 steps)
+2025-06-16 15:09:50 - INFO - Получены данные: Starting coordinated movement...
+2025-06-16 15:09:50 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-31999 E1:-31999
+2025-06-16 15:09:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-30332 E1:-30332
+2025-06-16 15:09:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-30331 E1:-30331
+2025-06-16 15:09:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-30330 E1:-30330
+2025-06-16 15:09:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-28666 E1:-28666
+2025-06-16 15:09:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-28665 E1:-28665
+2025-06-16 15:09:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-28664 E1:-28664
+2025-06-16 15:09:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-27001 E1:-27001
+2025-06-16 15:09:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-27000 E1:-27000
+2025-06-16 15:09:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-26999 E1:-26999
+2025-06-16 15:09:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-25335 E1:-25335
+2025-06-16 15:09:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-25334 E1:-25334
+2025-06-16 15:09:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-25333 E1:-25333
+2025-06-16 15:10:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-23669 E1:-23669
+2025-06-16 15:10:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-23668 E1:-23668
+2025-06-16 15:10:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-23667 E1:-23667
+2025-06-16 15:10:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-22004 E1:-22004
+2025-06-16 15:10:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-22003 E1:-22003
+2025-06-16 15:10:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-22002 E1:-22002
+2025-06-16 15:10:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-20337 E1:-20337
+2025-06-16 15:10:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-20336 E1:-20336
+2025-06-16 15:10:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-20335 E1:-20335
+2025-06-16 15:10:06 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-18672 E1:-18672
+2025-06-16 15:10:06 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-18671 E1:-18671
+2025-06-16 15:10:06 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-18670 E1:-18670
+2025-06-16 15:10:08 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-17006 E1:-17006
+2025-06-16 15:10:08 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-17005 E1:-17005
+2025-06-16 15:10:08 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-17004 E1:-17004
+2025-06-16 15:10:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-15341 E1:-15341
+2025-06-16 15:10:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-15340 E1:-15340
+2025-06-16 15:10:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-15339 E1:-15339
+2025-06-16 15:10:12 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-13675 E1:-13675
+2025-06-16 15:10:12 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-13674 E1:-13674
+2025-06-16 15:10:12 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-13673 E1:-13673
+2025-06-16 15:10:14 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-12010 E1:-12010
+2025-06-16 15:10:14 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-12009 E1:-12009
+2025-06-16 15:10:14 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-12008 E1:-12008
+2025-06-16 15:10:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-10344 E1:-10344
+2025-06-16 15:10:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-10343 E1:-10343
+2025-06-16 15:10:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-10342 E1:-10342
+2025-06-16 15:10:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-8678 E1:-8678
+2025-06-16 15:10:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-8677 E1:-8677
+2025-06-16 15:10:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-8676 E1:-8676
+2025-06-16 15:10:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-7012 E1:-7012
+2025-06-16 15:10:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-7011 E1:-7011
+2025-06-16 15:10:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-7010 E1:-7010
+2025-06-16 15:10:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-5346 E1:-5346
+2025-06-16 15:10:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-5345 E1:-5345
+2025-06-16 15:10:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-5344 E1:-5344
+2025-06-16 15:10:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-3680 E1:-3680
+2025-06-16 15:10:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-3679 E1:-3679
+2025-06-16 15:10:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-3678 E1:-3678
+2025-06-16 15:10:26 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-2014 E1:-2014
+2025-06-16 15:10:26 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-2013 E1:-2013
+2025-06-16 15:10:26 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-2012 E1:-2012
+2025-06-16 15:10:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-348 E1:-348
+2025-06-16 15:10:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-347 E1:-347
+2025-06-16 15:10:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:-346 E1:-346
+2025-06-16 15:10:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1319 E1:1319
+2025-06-16 15:10:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1320 E1:1320
+2025-06-16 15:10:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:1321 E1:1321
+2025-06-16 15:10:30 - INFO - Получены данные: Coordinated movement completed
+2025-06-16 15:10:30 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 15:10:31 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 15:10:31 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 15:10:31 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 15:10:31 - INFO - Получены данные: E0 final position: 10.00 units (2000 steps)
+2025-06-16 15:10:31 - INFO - Получены данные: E1 final position: 10.00 units (2000 steps)
+2025-06-16 15:10:31 - INFO - Получены данные: Motors disabled
