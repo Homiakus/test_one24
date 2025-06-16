@@ -41,6 +41,14 @@ const long stepsPerRevolution[NUM_MOTORS] = {200, 200, 200, 200, 200};     // ш
 const float homingSpeed[NUM_MOTORS] = {3000.0, 40.0, 4000.0, 30000.0, 30000.0};        // шагов/сек для хоминга
 const bool endstopTypeNPN[NUM_MOTORS] = {false, true, true, true, true};   // тип датчика (true=NPN, false=PNP)
 
+// НОВАЯ НАСТРОЙКА: Управление питанием двигателей
+const bool powerAlwaysOn[NUM_MOTORS] = {true, true, true, false, false};   // питание постоянно (true) или временно (false)
+// Multi(X): постоянное питание
+// Multizone(Y): постоянное питание  
+// RRight(Z): постоянное питание
+// E0: временное питание (выключается после движения)
+// E1: временное питание (выключается после движения)
+
 // Настройки для преобразования единиц (шагов на мм - можно настроить под ваши механизмы)
 const long stepsPerUnit[NUM_MOTORS] = {80, 80, 80, 200, 200};                // шагов/мм
 const long maxSteps[NUM_MOTORS] = {16000, 16000, 16000, 16000, 16000};      // максимальные шаги для поиска нуля
@@ -88,25 +96,72 @@ float stepsToUnits(int motorIndex, long steps) {
 }
 
 /**
+ * Включение конкретного двигателя
+ */
+void enableMotor(int motorIndex) {
+    digitalWrite(enablePins[motorIndex], LOW); // LOW включает драйвер
+    Serial.print(motorNames[motorIndex]);
+    Serial.println(" enabled");
+}
+
+/**
+ * Отключение конкретного двигателя (только если у него временное питание)
+ */
+void disableMotor(int motorIndex) {
+    if (!powerAlwaysOn[motorIndex]) {
+        digitalWrite(enablePins[motorIndex], HIGH); // HIGH отключает драйвер
+        Serial.print(motorNames[motorIndex]);
+        Serial.println(" disabled (temporary power)");
+    } else {
+        Serial.print(motorNames[motorIndex]);
+        Serial.println(" remains enabled (always on power)");
+    }
+}
+
+/**
  * Включение всех двигателей
  */
 void enableMotors() {
     for (int i = 0; i < NUM_MOTORS; i++) {
-        digitalWrite(enablePins[i], LOW); // LOW включает драйвер
+        enableMotor(i);
     }
     motorsEnabled = true;
-    Serial.println("Motors enabled");
+    Serial.println("All motors enabled");
 }
 
 /**
- * Отключение всех двигателей
+ * Отключение двигателей согласно их настройкам питания
  */
 void disableMotors() {
+    bool anyDisabled = false;
     for (int i = 0; i < NUM_MOTORS; i++) {
-        digitalWrite(enablePins[i], HIGH); // HIGH отключает драйвер
+        if (!powerAlwaysOn[i]) {
+            digitalWrite(enablePins[i], HIGH); // HIGH отключает драйвер
+            anyDisabled = true;
+        }
     }
-    motorsEnabled = false;
-    Serial.println("Motors disabled");
+    
+    if (anyDisabled) {
+        Serial.print("Temporary power motors disabled: ");
+        for (int i = 0; i < NUM_MOTORS; i++) {
+            if (!powerAlwaysOn[i]) {
+                Serial.print(motorNames[i]);
+                Serial.print(" ");
+            }
+        }
+        Serial.println();
+    }
+    
+    Serial.print("Always-on motors remain enabled: ");
+    for (int i = 0; i < NUM_MOTORS; i++) {
+        if (powerAlwaysOn[i]) {
+            Serial.print(motorNames[i]);
+            Serial.print(" ");
+        }
+    }
+    Serial.println();
+    
+    motorsEnabled = false; // Флаг показывает что система в режиме экономии
 }
 
 /**
@@ -732,6 +787,17 @@ void parseCommand(String command) {
                 Serial.print(" Home:");
                 Serial.println(homePins[i]);
             }
+            
+            Serial.println("\nMotor power settings:");
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                Serial.print(motorNames[i]);
+                Serial.print(" - Power mode: ");
+                Serial.print(powerAlwaysOn[i] ? "ALWAYS ON" : "TEMPORARY");
+                Serial.print(", Current state: ");
+                bool isEnabled = (digitalRead(enablePins[i]) == LOW);
+                Serial.println(isEnabled ? "ENABLED" : "DISABLED");
+            }
+            
             Serial.println("COMPLETE");
             break;
         }
@@ -854,6 +920,15 @@ void parseCommand(String command) {
             Serial.println("  - Joint E0+E1 homing with shared sensor");
             Serial.println("  - All commands return COMPLETE or ERROR");
             Serial.println("  - Switch-case architecture for better performance");
+            Serial.println("  - Individual motor power management (always-on vs temporary)");
+            
+            Serial.println("\nMotor power configuration:");
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                Serial.print("  ");
+                Serial.print(motorNames[i]);
+                Serial.print(": ");
+                Serial.println(powerAlwaysOn[i] ? "ALWAYS ON (never disabled)" : "TEMPORARY (disabled after movement)");
+            }
             Serial.println("ERROR");
             break;
         }
@@ -942,6 +1017,21 @@ void setup() {
     planner.addStepper(4, stepper4);
     
     Serial.println("All steppers added to planner");
+    
+    // НОВАЯ ЛОГИКА: Включаем двигатели с постоянным питанием
+    Serial.println("=== MOTOR POWER INITIALIZATION ===");
+    for (int i = 0; i < NUM_MOTORS; i++) {
+        if (powerAlwaysOn[i]) {
+            digitalWrite(enablePins[i], LOW); // Включаем двигатель
+            Serial.print(motorNames[i]);
+            Serial.println(" - ALWAYS ON (enabled at startup)");
+        } else {
+            digitalWrite(enablePins[i], HIGH); // Оставляем выключенным
+            Serial.print(motorNames[i]);
+            Serial.println(" - TEMPORARY POWER (disabled at startup)");
+        }
+    }
+    Serial.println("Motor power initialization completed");
     
     // ИСПРАВЛЕНО: Устанавливаем высокие общие настройки для быстрого движения E0/E1
     planner.setAcceleration(30000); // Высокое ускорение для E0/E1 (10000 шагов/сек²)
