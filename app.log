@@ -2874,3 +2874,2191 @@
 2025-06-16 15:10:31 - INFO - Получены данные: E0 final position: 10.00 units (2000 steps)
 2025-06-16 15:10:31 - INFO - Получены данные: E1 final position: 10.00 units (2000 steps)
 2025-06-16 15:10:31 - INFO - Получены данные: Motors disabled
+2025-06-16 15:51:24 - INFO - Логирование инициализировано успешно
+2025-06-16 15:51:24 - INFO - ================================================================================
+2025-06-16 15:51:24 - INFO - Запуск приложения с PySide6
+2025-06-16 15:51:24 - INFO - Операционная система: win32
+2025-06-16 15:51:24 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-16 15:51:24 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-16 15:51:24 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-16 15:51:24 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения Multizone', 'Команды движения RRight', 'Команды движения E0 (индивидуальные)', 'Команды движения E1 (индивидуальные)', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Чтение датчиков', 'Диагностические команды']
+2025-06-16 15:51:24 - INFO - Конфигурация загружена: 76 команд, 5 последовательностей, 12 разделов
+2025-06-16 15:51:25 - INFO - Приложение запущено с PySide6
+2025-06-16 15:51:27 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 15:51:27 - INFO - Получены данные: === High-Performance Coordinated Movement ===
+2025-06-16 15:51:27 - INFO - Получены данные: Initializing...
+2025-06-16 15:51:27 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38 Home:14 (PNP)
+2025-06-16 15:51:27 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56 Home:2 (NPN)
+2025-06-16 15:51:27 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62 Home:2 (NPN)
+2025-06-16 15:51:27 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24 Home:15 (NPN)
+2025-06-16 15:51:27 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30 Home:15 (NPN)
+2025-06-16 15:51:27 - INFO - Получены данные: System initialized successfully!
+2025-06-16 15:51:27 - INFO - Получены данные: GyverPlanner2 configured for coordinated movement
+2025-06-16 15:51:27 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 15:51:27 - INFO - Получены данные: Ready for commands...
+2025-06-16 15:51:52 - INFO - Отправлена команда: stepperhome 1 1 1 1 1
+2025-06-16 15:51:52 - INFO - Получены данные: ERROR: Motors are moving, cannot start homing
+2025-06-16 15:52:05 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 15:52:05 - INFO - Получены данные: === High-Performance Coordinated Movement ===
+2025-06-16 15:52:05 - INFO - Получены данные: Initializing...
+2025-06-16 15:52:05 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38 Home:14 (PNP)
+2025-06-16 15:52:05 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56 Home:2 (NPN)
+2025-06-16 15:52:05 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62 Home:2 (NPN)
+2025-06-16 15:52:05 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24 Home:15 (NPN)
+2025-06-16 15:52:05 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30 Home:15 (NPN)
+2025-06-16 15:52:05 - INFO - Получены данные: System initialized successfully!
+2025-06-16 15:52:05 - INFO - Получены данные: GyverPlanner2 configured for coordinated movement
+2025-06-16 15:52:05 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 15:52:05 - INFO - Получены данные: Ready for commands...
+2025-06-16 15:52:26 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 15:52:26 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 15:52:26 - INFO - Получены данные: Motors enabled
+2025-06-16 15:52:26 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 15:52:26 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 15:52:27 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 15:52:27 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 15:52:27 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 15:52:27 - INFO - Получены данные: Starting coordinated movement...
+2025-06-16 15:52:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:32 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:34 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:36 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:38 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:40 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:42 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:44 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:46 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:48 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:50 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:52:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:06 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:08 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:12 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:14 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:53:26 - INFO - Получены данные: ERROR: Coordinated movement timeout
+2025-06-16 15:53:26 - INFO - Получены данные: === COORDINATED MOVE FAILED ===
+2025-06-16 15:53:26 - INFO - Получены данные: Motors disabled
+2025-06-16 15:57:24 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 15:57:24 - INFO - Получены данные: === High-Performance Coordinated Movement ===
+2025-06-16 15:57:24 - INFO - Получены данные: Initializing...
+2025-06-16 15:57:24 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38 Home:14 (PNP)
+2025-06-16 15:57:24 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56 Home:2 (NPN)
+2025-06-16 15:57:24 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62 Home:2 (NPN)
+2025-06-16 15:57:24 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24 Home:15 (NPN)
+2025-06-16 15:57:24 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30 Home:15 (NPN)
+2025-06-16 15:57:24 - INFO - Получены данные: System initialized successfully!
+2025-06-16 15:57:24 - INFO - Получены данные: GyverPlanner2 configured for coordinated movement
+2025-06-16 15:57:24 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 15:57:24 - INFO - Получены данные: Ready for commands...
+2025-06-16 15:57:46 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 15:57:46 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 15:57:46 - INFO - Получены данные: Motors enabled
+2025-06-16 15:57:47 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 15:57:47 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 15:57:47 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 15:57:47 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 15:57:47 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 15:57:47 - INFO - Получены данные: Target added to planner
+2025-06-16 15:57:47 - INFO - Получены данные: Starting coordinated movement...
+2025-06-16 15:57:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:57:48 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:57:50 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:57:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:57:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:57:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:57:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:04 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:06 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:08 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:12 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:14 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:16 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:26 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:32 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:34 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:36 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:38 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:40 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:42 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:44 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 15:58:46 - INFO - Получены данные: ERROR: Movement timeout
+2025-06-16 15:58:46 - INFO - Получены данные: Coordinated movement completed
+2025-06-16 15:58:47 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 15:58:47 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 15:58:47 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 15:58:47 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 15:58:47 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 15:58:47 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 15:58:47 - INFO - Получены данные: Motors disabled
+2025-06-16 17:19:32 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:19:32 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:19:32 - INFO - Получены данные: Initializing...
+2025-06-16 17:19:32 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38 Home:14 (PNP)
+2025-06-16 17:19:32 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56 Home:2 (NPN)
+2025-06-16 17:19:32 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62 Home:2 (NPN)
+2025-06-16 17:19:32 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24 Home:15 (NPN)
+2025-06-16 17:19:32 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30 Home:15 (NPN)
+2025-06-16 17:19:32 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:19:32 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:19:32 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:19:32 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:25:55 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 17:25:55 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:25:55 - INFO - Получены данные: Motors enabled
+2025-06-16 17:25:55 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:25:56 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:25:56 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:25:56 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 17:25:56 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 17:25:56 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:25:56 - INFO - Получены данные: Movement started asynchronously
+2025-06-16 17:25:56 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:25:56 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:25:57 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:25:58 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:25:59 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:01 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:02 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:02 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:03 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:04 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:05 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:06 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:07 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:08 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:09 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:10 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:11 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:12 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:13 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:14 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:15 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:16 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:17 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:18 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:19 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:20 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:21 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:22 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:24 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:24 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:25 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:26 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:27 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:29 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:29 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:30 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:31 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:32 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:33 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:34 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:35 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:36 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:37 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:38 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:39 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:40 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:41 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:42 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:43 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:44 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:45 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:46 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:47 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:49 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:49 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:50 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:51 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:52 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:53 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:54 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:55 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:56 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:57 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:58 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:26:59 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:00 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:01 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:02 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:03 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:04 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:05 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:06 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:07 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:08 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:09 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:27:10 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:31:24 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:31:24 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:31:24 - INFO - Получены данные: Initializing...
+2025-06-16 17:31:24 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:31:24 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:31:24 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:31:24 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:31:24 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:31:24 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:31:24 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:31:25 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:31:25 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:31:25 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:32:11 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 17:32:11 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:32:11 - INFO - Получены данные: Motors enabled
+2025-06-16 17:32:11 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:32:11 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:32:11 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:32:11 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 17:32:11 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 17:32:11 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:32:11 - INFO - Получены данные: Movement started asynchronously
+2025-06-16 17:32:12 - INFO - Получены данные: Enable pins status: Multi(X):ON Multizone(Y):ON RRight(Z):ON E0:ON E1:ON
+2025-06-16 17:32:12 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:13 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:14 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:15 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:16 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:17 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:18 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:19 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:20 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:21 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:22 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:23 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:24 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:25 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:26 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:27 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:32:29 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:32:29 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:32:29 - INFO - Получены данные: Initializing...
+2025-06-16 17:32:29 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:32:29 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:32:29 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:32:29 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:32:29 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:32:30 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:32:30 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:32:30 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:32:30 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:32:30 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:37:06 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:37:06 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:37:06 - INFO - Получены данные: Initializing...
+2025-06-16 17:37:06 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:37:06 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:37:06 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:37:06 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:37:07 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:37:07 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:37:07 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:37:07 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:37:07 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:37:07 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:37:07 - INFO - Получены данные: === PLANNER DIAGNOSTIC ===
+2025-06-16 17:37:07 - INFO - Получены данные: Planner ready: NO
+2025-06-16 17:37:07 - INFO - Получены данные: Planner available: YES
+2025-06-16 17:37:07 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:37:07 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:37:07 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:37:07 - INFO - Получены данные: Step/Dir pins configured as OUTPUT
+2025-06-16 17:37:07 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:37:07 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:37:19 - INFO - Отправлена команда: test
+2025-06-16 17:37:19 - INFO - Получены данные: === SIMPLE MOTOR TEST ===
+2025-06-16 17:37:19 - INFO - Получены данные: Motors enabled
+2025-06-16 17:37:19 - INFO - Получены данные: Testing Multi(X) with direct pin control
+2025-06-16 17:37:19 - INFO - Получены данные: Generating 100 steps...
+2025-06-16 17:37:19 - INFO - Получены данные: Step 0
+2025-06-16 17:37:19 - INFO - Получены данные: Step 20
+2025-06-16 17:37:19 - INFO - Получены данные: Step 40
+2025-06-16 17:37:19 - INFO - Получены данные: Step 60
+2025-06-16 17:37:19 - INFO - Получены данные: Step 80
+2025-06-16 17:37:19 - INFO - Получены данные: Test completed
+2025-06-16 17:37:19 - INFO - Получены данные: Motors disabled
+2025-06-16 17:37:42 - INFO - Отправлена команда: test
+2025-06-16 17:37:42 - INFO - Получены данные: === SIMPLE MOTOR TEST ===
+2025-06-16 17:37:42 - INFO - Получены данные: Motors enabled
+2025-06-16 17:37:43 - INFO - Получены данные: Testing Multi(X) with direct pin control
+2025-06-16 17:37:43 - INFO - Получены данные: Generating 100 steps...
+2025-06-16 17:37:43 - INFO - Получены данные: Step 0
+2025-06-16 17:37:43 - INFO - Получены данные: Step 20
+2025-06-16 17:37:43 - INFO - Получены данные: Step 40
+2025-06-16 17:37:43 - INFO - Получены данные: Step 60
+2025-06-16 17:37:43 - INFO - Получены данные: Step 80
+2025-06-16 17:37:43 - INFO - Получены данные: Test completed
+2025-06-16 17:37:43 - INFO - Получены данные: Motors disabled
+2025-06-16 17:37:55 - INFO - Отправлена команда: test
+2025-06-16 17:37:55 - INFO - Получены данные: === SIMPLE MOTOR TEST ===
+2025-06-16 17:37:55 - INFO - Получены данные: Motors enabled
+2025-06-16 17:37:55 - INFO - Получены данные: Testing Multi(X) with direct pin control
+2025-06-16 17:37:55 - INFO - Получены данные: Generating 100 steps...
+2025-06-16 17:37:55 - INFO - Получены данные: Step 0
+2025-06-16 17:37:55 - INFO - Получены данные: Step 20
+2025-06-16 17:37:55 - INFO - Получены данные: Step 40
+2025-06-16 17:37:55 - INFO - Получены данные: Step 60
+2025-06-16 17:37:55 - INFO - Получены данные: Step 80
+2025-06-16 17:37:55 - INFO - Получены данные: Test completed
+2025-06-16 17:37:55 - INFO - Получены данные: Motors disabled
+2025-06-16 17:38:04 - INFO - Отправлена команда: test
+2025-06-16 17:38:04 - INFO - Получены данные: === SIMPLE MOTOR TEST ===
+2025-06-16 17:38:04 - INFO - Получены данные: Motors enabled
+2025-06-16 17:38:04 - INFO - Получены данные: Testing Multi(X) with direct pin control
+2025-06-16 17:38:04 - INFO - Получены данные: Generating 100 steps...
+2025-06-16 17:38:04 - INFO - Получены данные: Step 0
+2025-06-16 17:38:04 - INFO - Получены данные: Step 20
+2025-06-16 17:38:04 - INFO - Получены данные: Step 40
+2025-06-16 17:38:04 - INFO - Получены данные: Step 60
+2025-06-16 17:38:04 - INFO - Получены данные: Step 80
+2025-06-16 17:38:05 - INFO - Получены данные: Test completed
+2025-06-16 17:38:05 - INFO - Получены данные: Motors disabled
+2025-06-16 17:38:25 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 17:38:25 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:38:25 - INFO - Получены данные: Motors enabled
+2025-06-16 17:38:25 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:38:25 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:38:25 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:38:25 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 17:38:25 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 17:38:25 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:38:25 - INFO - Получены данные: Movement started asynchronously
+2025-06-16 17:38:25 - INFO - Получены данные: Enable pins status: Multi(X):ON Multizone(Y):ON RRight(Z):ON E0:ON E1:ON
+2025-06-16 17:38:25 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:26 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:27 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:28 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:29 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:30 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:31 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:32 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:33 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:34 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:35 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:36 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:37 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:38 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:39 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:40 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:41 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:42 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:43 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:44 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:45 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:46 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:47 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:48 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:49 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:50 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:51 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:52 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:53 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:54 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:55 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:38:58 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:38:58 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:38:58 - INFO - Получены данные: Initializing...
+2025-06-16 17:38:58 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:38:58 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:38:58 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:38:58 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:38:58 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:38:58 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:38:58 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:38:58 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:38:59 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:38:59 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:38:59 - INFO - Получены данные: === PLANNER DIAGNOSTIC ===
+2025-06-16 17:38:59 - INFO - Получены данные: Planner ready: NO
+2025-06-16 17:38:59 - INFO - Получены данные: Planner available: YES
+2025-06-16 17:38:59 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:38:59 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:38:59 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:38:59 - INFO - Получены данные: Step/Dir pins configured as OUTPUT
+2025-06-16 17:38:59 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:38:59 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:39:11 - INFO - Отправлена команда: steppermove 10 20 * 500 500
+2025-06-16 17:39:11 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:39:11 - INFO - Получены данные: Motors enabled
+2025-06-16 17:39:11 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:39:12 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:39:12 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:39:12 - INFO - Получены данные: E0 -> 500.00 units (100000 steps)
+2025-06-16 17:39:12 - INFO - Получены данные: E1 -> 500.00 units (100000 steps)
+2025-06-16 17:39:12 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:39:12 - INFO - Получены данные: Movement started asynchronously
+2025-06-16 17:39:12 - INFO - Получены данные: Enable pins status: Multi(X):ON Multizone(Y):ON RRight(Z):ON E0:ON E1:ON
+2025-06-16 17:39:12 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:13 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:14 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:15 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:16 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:17 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:18 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:19 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:20 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:21 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:22 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:23 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:24 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:25 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:26 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:27 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:28 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:29 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:30 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:31 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:39:33 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:39:33 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:39:33 - INFO - Получены данные: Initializing...
+2025-06-16 17:39:33 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:39:33 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:39:33 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:39:33 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:39:33 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:39:33 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:39:33 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:39:33 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:39:33 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:39:33 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:39:34 - INFO - Получены данные: === PLANNER DIAGNOSTIC ===
+2025-06-16 17:39:34 - INFO - Получены данные: Planner ready: NO
+2025-06-16 17:39:34 - INFO - Получены данные: Planner available: YES
+2025-06-16 17:39:34 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:39:34 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:39:34 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:39:34 - INFO - Получены данные: Step/Dir pins configured as OUTPUT
+2025-06-16 17:39:34 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:39:34 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:39:37 - INFO - Отправлена команда: test
+2025-06-16 17:39:37 - INFO - Получены данные: === SIMPLE MOTOR TEST ===
+2025-06-16 17:39:38 - INFO - Получены данные: Motors enabled
+2025-06-16 17:39:38 - INFO - Получены данные: Testing Multi(X) with direct pin control
+2025-06-16 17:39:38 - INFO - Получены данные: Generating 100 steps...
+2025-06-16 17:39:38 - INFO - Получены данные: Step 0
+2025-06-16 17:39:38 - INFO - Получены данные: Step 20
+2025-06-16 17:39:38 - INFO - Получены данные: Step 40
+2025-06-16 17:39:38 - INFO - Получены данные: Step 60
+2025-06-16 17:39:38 - INFO - Получены данные: Step 80
+2025-06-16 17:39:38 - INFO - Получены данные: Test completed
+2025-06-16 17:39:38 - INFO - Получены данные: Motors disabled
+2025-06-16 17:43:56 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:43:56 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:43:56 - INFO - Получены данные: Initializing...
+2025-06-16 17:43:56 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:43:56 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:43:56 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:43:56 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:43:56 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:43:56 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:43:56 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:43:56 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:43:56 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:43:56 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:43:56 - INFO - Получены данные: === PLANNER DIAGNOSTIC ===
+2025-06-16 17:43:56 - INFO - Получены данные: Planner ready: NO
+2025-06-16 17:43:56 - INFO - Получены данные: Planner available: YES
+2025-06-16 17:43:57 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:43:57 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:43:57 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:43:57 - INFO - Получены данные: Step/Dir pins configured as OUTPUT
+2025-06-16 17:43:57 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:43:57 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:44:07 - INFO - Отправлена команда: test
+2025-06-16 17:44:07 - INFO - Получены данные: === COMPREHENSIVE MOTOR TEST ===
+2025-06-16 17:44:07 - INFO - Получены данные: Testing all motors with direct pin control
+2025-06-16 17:44:07 - INFO - Получены данные: Movement: 10 units forward/backward for 10 seconds
+2025-06-16 17:44:07 - INFO - Получены данные: Motors enabled
+2025-06-16 17:44:07 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:44:07 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:44:07 - INFO - Получены данные: Step 0/800 - Time: 0.0s
+2025-06-16 17:44:07 - INFO - Получены данные: Step 100/800 - Time: 0.2s
+2025-06-16 17:44:08 - INFO - Получены данные: Step 200/800 - Time: 0.4s
+2025-06-16 17:44:08 - INFO - Получены данные: Step 300/800 - Time: 0.6s
+2025-06-16 17:44:08 - INFO - Получены данные: Step 400/800 - Time: 0.8s
+2025-06-16 17:44:08 - INFO - Получены данные: Step 500/800 - Time: 1.1s
+2025-06-16 17:44:08 - INFO - Получены данные: Step 600/800 - Time: 1.3s
+2025-06-16 17:44:09 - INFO - Получены данные: Step 700/800 - Time: 1.5s
+2025-06-16 17:44:09 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 17:44:09 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:44:09 - INFO - Получены данные: Step 0/800 - Time: 2.2s
+2025-06-16 17:44:09 - INFO - Получены данные: Step 100/800 - Time: 2.4s
+2025-06-16 17:44:10 - INFO - Получены данные: Step 200/800 - Time: 2.6s
+2025-06-16 17:44:10 - INFO - Получены данные: Step 300/800 - Time: 2.8s
+2025-06-16 17:44:10 - INFO - Получены данные: Step 400/800 - Time: 3.0s
+2025-06-16 17:44:10 - INFO - Получены данные: Step 500/800 - Time: 3.2s
+2025-06-16 17:44:11 - INFO - Получены данные: Step 600/800 - Time: 3.4s
+2025-06-16 17:44:11 - INFO - Получены данные: Step 700/800 - Time: 3.6s
+2025-06-16 17:44:11 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:44:11 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:44:12 - INFO - Получены данные: Step 0/800 - Time: 4.4s
+2025-06-16 17:44:12 - INFO - Получены данные: Step 100/800 - Time: 4.6s
+2025-06-16 17:44:12 - INFO - Получены данные: Step 200/800 - Time: 4.8s
+2025-06-16 17:44:12 - INFO - Получены данные: Step 300/800 - Time: 5.0s
+2025-06-16 17:44:12 - INFO - Получены данные: Step 400/800 - Time: 5.2s
+2025-06-16 17:44:12 - INFO - Получены данные: Step 500/800 - Time: 5.4s
+2025-06-16 17:44:13 - INFO - Получены данные: Step 600/800 - Time: 5.6s
+2025-06-16 17:44:13 - INFO - Получены данные: Step 700/800 - Time: 5.8s
+2025-06-16 17:44:14 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 17:44:14 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:44:14 - INFO - Получены данные: Step 0/800 - Time: 6.5s
+2025-06-16 17:44:14 - INFO - Получены данные: Step 100/800 - Time: 6.7s
+2025-06-16 17:44:14 - INFO - Получены данные: Step 200/800 - Time: 7.0s
+2025-06-16 17:44:14 - INFO - Получены данные: Step 300/800 - Time: 7.2s
+2025-06-16 17:44:14 - INFO - Получены данные: Step 400/800 - Time: 7.4s
+2025-06-16 17:44:15 - INFO - Получены данные: Step 500/800 - Time: 7.6s
+2025-06-16 17:44:15 - INFO - Получены данные: Step 600/800 - Time: 7.8s
+2025-06-16 17:44:15 - INFO - Получены данные: Step 700/800 - Time: 8.0s
+2025-06-16 17:44:16 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:44:16 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:44:16 - INFO - Получены данные: Step 0/800 - Time: 8.7s
+2025-06-16 17:44:16 - INFO - Получены данные: Step 100/800 - Time: 8.9s
+2025-06-16 17:44:16 - INFO - Получены данные: Step 200/800 - Time: 9.1s
+2025-06-16 17:44:16 - INFO - Получены данные: Step 300/800 - Time: 9.3s
+2025-06-16 17:44:17 - INFO - Получены данные: Step 400/800 - Time: 9.6s
+2025-06-16 17:44:17 - INFO - Получены данные: Step 500/800 - Time: 9.8s
+2025-06-16 17:44:17 - INFO - Получены данные: Step 600/800 - Time: 10.0s
+2025-06-16 17:44:18 - INFO - Получены данные: === TEST COMPLETED ===
+2025-06-16 17:44:18 - INFO - Получены данные: Total test time: 10.5 seconds
+2025-06-16 17:44:18 - INFO - Получены данные: Motors disabled
+2025-06-16 17:44:33 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 17:44:33 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:44:33 - INFO - Получены данные: Motors enabled
+2025-06-16 17:44:33 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:44:33 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:44:33 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:44:33 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 17:44:33 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 17:44:34 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:44:34 - INFO - Получены данные: Movement started asynchronously
+2025-06-16 17:44:34 - INFO - Получены данные: Enable pins status: Multi(X):ON Multizone(Y):ON RRight(Z):ON E0:ON E1:ON
+2025-06-16 17:44:34 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:35 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:36 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:37 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:38 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:39 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:40 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:41 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:42 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:43 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:44 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:45 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:46 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:47 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:48 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:49 - INFO - Получены данные: Positions: Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0 | Planner ready: NO | Available: YES
+2025-06-16 17:44:51 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:44:51 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:44:51 - INFO - Получены данные: Initializing...
+2025-06-16 17:44:51 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:44:51 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:44:51 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:44:51 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:44:51 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:44:51 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:44:51 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:44:51 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:44:51 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:44:51 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:44:51 - INFO - Получены данные: === PLANNER DIAGNOSTIC ===
+2025-06-16 17:44:51 - INFO - Получены данные: Planner ready: NO
+2025-06-16 17:44:51 - INFO - Получены данные: Planner available: YES
+2025-06-16 17:44:52 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:44:52 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:44:52 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:44:52 - INFO - Получены данные: Step/Dir pins configured as OUTPUT
+2025-06-16 17:44:52 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:44:52 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:44:59 - INFO - Отправлена команда: test
+2025-06-16 17:44:59 - INFO - Получены данные: === COMPREHENSIVE MOTOR TEST ===
+2025-06-16 17:44:59 - INFO - Получены данные: Testing all motors with direct pin control
+2025-06-16 17:44:59 - INFO - Получены данные: Movement: 10 units forward/backward for 10 seconds
+2025-06-16 17:44:59 - INFO - Получены данные: Motors enabled
+2025-06-16 17:44:59 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:44:59 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:44:59 - INFO - Получены данные: Step 0/800 - Time: 0.0s
+2025-06-16 17:45:00 - INFO - Получены данные: Step 100/800 - Time: 0.2s
+2025-06-16 17:45:00 - INFO - Получены данные: Step 200/800 - Time: 0.4s
+2025-06-16 17:45:00 - INFO - Получены данные: Step 300/800 - Time: 0.6s
+2025-06-16 17:45:00 - INFO - Получены данные: Step 400/800 - Time: 0.8s
+2025-06-16 17:45:00 - INFO - Получены данные: Step 500/800 - Time: 1.1s
+2025-06-16 17:45:00 - INFO - Получены данные: Step 600/800 - Time: 1.3s
+2025-06-16 17:45:01 - INFO - Получены данные: Step 700/800 - Time: 1.5s
+2025-06-16 17:45:01 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 17:45:01 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:45:01 - INFO - Получены данные: Step 0/800 - Time: 2.2s
+2025-06-16 17:45:01 - INFO - Получены данные: Step 100/800 - Time: 2.4s
+2025-06-16 17:45:02 - INFO - Получены данные: Step 200/800 - Time: 2.6s
+2025-06-16 17:45:02 - INFO - Получены данные: Step 300/800 - Time: 2.8s
+2025-06-16 17:45:02 - INFO - Получены данные: Step 400/800 - Time: 3.0s
+2025-06-16 17:45:02 - INFO - Получены данные: Step 500/800 - Time: 3.2s
+2025-06-16 17:45:03 - INFO - Получены данные: Step 600/800 - Time: 3.4s
+2025-06-16 17:45:03 - INFO - Получены данные: Step 700/800 - Time: 3.7s
+2025-06-16 17:45:03 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:45:03 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:45:04 - INFO - Получены данные: Step 0/800 - Time: 4.4s
+2025-06-16 17:45:04 - INFO - Получены данные: Step 100/800 - Time: 4.6s
+2025-06-16 17:45:04 - INFO - Получены данные: Step 200/800 - Time: 4.8s
+2025-06-16 17:45:04 - INFO - Получены данные: Step 300/800 - Time: 5.0s
+2025-06-16 17:45:04 - INFO - Получены данные: Step 400/800 - Time: 5.2s
+2025-06-16 17:45:04 - INFO - Получены данные: Step 500/800 - Time: 5.4s
+2025-06-16 17:45:05 - INFO - Получены данные: Step 600/800 - Time: 5.6s
+2025-06-16 17:45:05 - INFO - Получены данные: Step 700/800 - Time: 5.8s
+2025-06-16 17:45:06 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 17:45:06 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:45:06 - INFO - Получены данные: Step 0/800 - Time: 6.5s
+2025-06-16 17:45:06 - INFO - Получены данные: Step 100/800 - Time: 6.7s
+2025-06-16 17:45:06 - INFO - Получены данные: Step 200/800 - Time: 7.0s
+2025-06-16 17:45:06 - INFO - Получены данные: Step 300/800 - Time: 7.2s
+2025-06-16 17:45:06 - INFO - Получены данные: Step 400/800 - Time: 7.4s
+2025-06-16 17:45:07 - INFO - Получены данные: Step 500/800 - Time: 7.6s
+2025-06-16 17:45:07 - INFO - Получены данные: Step 600/800 - Time: 7.8s
+2025-06-16 17:45:07 - INFO - Получены данные: Step 700/800 - Time: 8.0s
+2025-06-16 17:45:08 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:45:08 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:45:08 - INFO - Получены данные: Step 0/800 - Time: 8.7s
+2025-06-16 17:45:08 - INFO - Получены данные: Step 100/800 - Time: 8.9s
+2025-06-16 17:45:08 - INFO - Получены данные: Step 200/800 - Time: 9.1s
+2025-06-16 17:45:08 - INFO - Получены данные: Step 300/800 - Time: 9.3s
+2025-06-16 17:45:09 - INFO - Получены данные: Step 400/800 - Time: 9.6s
+2025-06-16 17:45:09 - INFO - Получены данные: Step 500/800 - Time: 9.8s
+2025-06-16 17:45:09 - INFO - Получены данные: Step 600/800 - Time: 10.0s
+2025-06-16 17:45:10 - INFO - Получены данные: === TEST COMPLETED ===
+2025-06-16 17:45:10 - INFO - Получены данные: Total test time: 10.5 seconds
+2025-06-16 17:45:10 - INFO - Получены данные: Motors disabled
+2025-06-16 17:46:35 - INFO - Получены данные: === GyverStepper2 + GyverPlanner2 5-Motor System ===
+2025-06-16 17:46:35 - INFO - Получены данные: === Asynchronous Coordinated Movement ===
+2025-06-16 17:46:35 - INFO - Получены данные: Initializing...
+2025-06-16 17:46:35 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:46:35 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:46:35 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:46:36 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:46:36 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:46:36 - INFO - Получены данные: Multi(X) added to planner - Step:54 Dir:55 Enable:38
+2025-06-16 17:46:36 - INFO - Получены данные: Multizone(Y) added to planner - Step:60 Dir:61 Enable:56
+2025-06-16 17:46:36 - INFO - Получены данные: RRight(Z) added to planner - Step:46 Dir:48 Enable:62
+2025-06-16 17:46:36 - INFO - Получены данные: E0 added to planner - Step:26 Dir:28 Enable:24
+2025-06-16 17:46:36 - INFO - Получены данные: E1 added to planner - Step:36 Dir:34 Enable:30
+2025-06-16 17:46:36 - INFO - Получены данные: === PLANNER DIAGNOSTIC ===
+2025-06-16 17:46:36 - INFO - Получены данные: Planner ready: NO
+2025-06-16 17:46:36 - INFO - Получены данные: Planner available: YES
+2025-06-16 17:46:36 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:46:36 - INFO - Получены данные: GyverPlanner2 started and ready for asynchronous movement
+2025-06-16 17:46:36 - INFO - Получены данные: All motors configured with common parameters
+2025-06-16 17:46:36 - INFO - Получены данные: Step/Dir pins configured as OUTPUT
+2025-06-16 17:46:36 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:46:36 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:46:43 - INFO - Отправлена команда: test
+2025-06-16 17:46:43 - INFO - Получены данные: === COMPREHENSIVE MOTOR TEST ===
+2025-06-16 17:46:43 - INFO - Получены данные: Testing all motors with direct pin control
+2025-06-16 17:46:43 - INFO - Получены данные: Movement: 10 units forward/backward for 10 seconds
+2025-06-16 17:46:43 - INFO - Получены данные: Motors enabled
+2025-06-16 17:46:43 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:46:43 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:46:43 - INFO - Получены данные: Step 0/800 - Time: 0.0s
+2025-06-16 17:46:43 - INFO - Получены данные: Step 100/800 - Time: 0.2s
+2025-06-16 17:46:43 - INFO - Получены данные: Step 200/800 - Time: 0.4s
+2025-06-16 17:46:44 - INFO - Получены данные: Step 300/800 - Time: 0.6s
+2025-06-16 17:46:44 - INFO - Получены данные: Step 400/800 - Time: 0.8s
+2025-06-16 17:46:44 - INFO - Получены данные: Step 500/800 - Time: 1.1s
+2025-06-16 17:46:44 - INFO - Получены данные: Step 600/800 - Time: 1.3s
+2025-06-16 17:46:44 - INFO - Получены данные: Step 700/800 - Time: 1.5s
+2025-06-16 17:46:45 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 17:46:45 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:46:45 - INFO - Получены данные: Step 0/800 - Time: 2.2s
+2025-06-16 17:46:45 - INFO - Получены данные: Step 100/800 - Time: 2.4s
+2025-06-16 17:46:46 - INFO - Получены данные: Step 200/800 - Time: 2.6s
+2025-06-16 17:46:46 - INFO - Получены данные: Step 300/800 - Time: 2.8s
+2025-06-16 17:46:46 - INFO - Получены данные: Step 400/800 - Time: 3.0s
+2025-06-16 17:46:46 - INFO - Получены данные: Step 500/800 - Time: 3.2s
+2025-06-16 17:46:46 - INFO - Получены данные: Step 600/800 - Time: 3.4s
+2025-06-16 17:46:46 - INFO - Получены данные: Step 700/800 - Time: 3.6s
+2025-06-16 17:46:47 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:46:47 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:46:47 - INFO - Получены данные: Step 0/800 - Time: 4.4s
+2025-06-16 17:46:47 - INFO - Получены данные: Step 100/800 - Time: 4.6s
+2025-06-16 17:46:48 - INFO - Получены данные: Step 200/800 - Time: 4.8s
+2025-06-16 17:46:48 - INFO - Получены данные: Step 300/800 - Time: 5.0s
+2025-06-16 17:46:48 - INFO - Получены данные: Step 400/800 - Time: 5.2s
+2025-06-16 17:46:48 - INFO - Получены данные: Step 500/800 - Time: 5.4s
+2025-06-16 17:46:48 - INFO - Получены данные: Step 600/800 - Time: 5.6s
+2025-06-16 17:46:49 - INFO - Получены данные: Step 700/800 - Time: 5.8s
+2025-06-16 17:46:49 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 17:46:49 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:46:50 - INFO - Получены данные: Step 0/800 - Time: 6.5s
+2025-06-16 17:46:50 - INFO - Получены данные: Step 100/800 - Time: 6.7s
+2025-06-16 17:46:50 - INFO - Получены данные: Step 200/800 - Time: 7.0s
+2025-06-16 17:46:50 - INFO - Получены данные: Step 300/800 - Time: 7.2s
+2025-06-16 17:46:50 - INFO - Получены данные: Step 400/800 - Time: 7.4s
+2025-06-16 17:46:50 - INFO - Получены данные: Step 500/800 - Time: 7.6s
+2025-06-16 17:46:51 - INFO - Получены данные: Step 600/800 - Time: 7.8s
+2025-06-16 17:46:51 - INFO - Получены данные: Step 700/800 - Time: 8.0s
+2025-06-16 17:46:52 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 17:46:52 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 17:46:52 - INFO - Получены данные: Step 0/800 - Time: 8.7s
+2025-06-16 17:46:52 - INFO - Получены данные: Step 100/800 - Time: 8.9s
+2025-06-16 17:46:52 - INFO - Получены данные: Step 200/800 - Time: 9.1s
+2025-06-16 17:46:52 - INFO - Получены данные: Step 300/800 - Time: 9.3s
+2025-06-16 17:46:52 - INFO - Получены данные: Step 400/800 - Time: 9.6s
+2025-06-16 17:46:53 - INFO - Получены данные: Step 500/800 - Time: 9.8s
+2025-06-16 17:46:53 - INFO - Получены данные: Step 600/800 - Time: 10.0s
+2025-06-16 17:46:53 - INFO - Получены данные: === TEST COMPLETED ===
+2025-06-16 17:46:53 - INFO - Получены данные: Total test time: 10.5 seconds
+2025-06-16 17:46:53 - INFO - Получены данные: Motors disabled
+2025-06-16 17:54:55 - INFO - Получены данные: === GyverPlanner2 5-Motor System ===
+2025-06-16 17:54:55 - INFO - Получены данные: === Synchronous Coordinated Movement ===
+2025-06-16 17:54:55 - INFO - Получены данные: Initializing...
+2025-06-16 17:54:55 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:54:55 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:54:55 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:54:56 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:54:56 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:54:56 - INFO - Получены данные: All steppers added to planner
+2025-06-16 17:54:56 - INFO - Получены данные: System initialized successfully!
+2025-06-16 17:54:56 - INFO - Получены данные: GyverPlanner2 ready for synchronous movement
+2025-06-16 17:54:56 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 17:54:56 - INFO - Получены данные: Ready for commands...
+2025-06-16 17:55:09 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 17:55:09 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:55:09 - INFO - Получены данные: Motors enabled
+2025-06-16 17:55:09 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:55:09 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:55:09 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:55:09 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 17:55:09 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 17:55:09 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:55:09 - INFO - Получены данные: Movement started - motors should move now!
+2025-06-16 17:55:09 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 17:55:09 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 17:55:09 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 17:55:10 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 17:55:10 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 17:55:10 - INFO - Получены данные: Motors disabled
+2025-06-16 17:55:40 - INFO - Отправлена команда: steppermove 10 20 * 500 500
+2025-06-16 17:55:41 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 17:55:41 - INFO - Получены данные: Motors enabled
+2025-06-16 17:55:41 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 17:55:41 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 17:55:41 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 17:55:41 - INFO - Получены данные: E0 -> 500.00 units (100000 steps)
+2025-06-16 17:55:41 - INFO - Получены данные: E1 -> 500.00 units (100000 steps)
+2025-06-16 17:55:41 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 17:55:41 - INFO - Получены данные: Movement started - motors should move now!
+2025-06-16 17:55:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:41 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:42 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:42 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:43 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:43 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:44 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:44 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:45 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:45 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:46 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:46 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:47 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:48 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:48 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:49 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:50 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:50 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:51 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:51 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:52 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:53 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:54 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:55 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:55 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:56 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:57 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:57 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:58 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:59 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:55:59 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:56:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:56:00 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:56:01 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:56:01 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:56:02 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 17:56:03 - INFO - Получены данные: === GyverPlanner2 5-Motor System ===
+2025-06-16 17:56:04 - INFO - Получены данные: === Synchronous Coordinated Movement ===
+2025-06-16 17:56:04 - INFO - Получены данные: Initializing...
+2025-06-16 17:56:04 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 17:56:04 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 17:56:04 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 17:56:04 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 17:56:04 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 17:56:04 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:00:18 - INFO - Получены данные: === GyverPlanner2 5-Motor System ===
+2025-06-16 18:00:18 - INFO - Получены данные: === Synchronous Coordinated Movement ===
+2025-06-16 18:00:18 - INFO - Получены данные: Initializing...
+2025-06-16 18:00:18 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:00:18 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:00:18 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:00:18 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:00:19 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:00:19 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:00:19 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:00:19 - INFO - Получены данные: GyverPlanner2 ready for synchronous movement
+2025-06-16 18:00:19 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:00:19 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:00:24 - INFO - Отправлена команда: test
+2025-06-16 18:00:24 - INFO - Получены данные: === COMPREHENSIVE MOTOR TEST ===
+2025-06-16 18:00:25 - INFO - Получены данные: Testing all motors with direct pin control
+2025-06-16 18:00:25 - INFO - Получены данные: Movement: 10 units forward/backward for 10 seconds
+2025-06-16 18:00:25 - INFO - Получены данные: Motors enabled
+2025-06-16 18:00:25 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 18:00:25 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 18:00:25 - INFO - Получены данные: Step 0/800 - Time: 0.0s
+2025-06-16 18:00:25 - INFO - Получены данные: Step 100/800 - Time: 0.2s
+2025-06-16 18:00:25 - INFO - Получены данные: Step 200/800 - Time: 0.4s
+2025-06-16 18:00:25 - INFO - Получены данные: Step 300/800 - Time: 0.6s
+2025-06-16 18:00:25 - INFO - Получены данные: Step 400/800 - Time: 0.8s
+2025-06-16 18:00:26 - INFO - Получены данные: Step 500/800 - Time: 1.1s
+2025-06-16 18:00:26 - INFO - Получены данные: Step 600/800 - Time: 1.3s
+2025-06-16 18:00:26 - INFO - Получены данные: Step 700/800 - Time: 1.5s
+2025-06-16 18:00:27 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 18:00:27 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 18:00:27 - INFO - Получены данные: Step 0/800 - Time: 2.2s
+2025-06-16 18:00:27 - INFO - Получены данные: Step 100/800 - Time: 2.4s
+2025-06-16 18:00:27 - INFO - Получены данные: Step 200/800 - Time: 2.6s
+2025-06-16 18:00:27 - INFO - Получены данные: Step 300/800 - Time: 2.8s
+2025-06-16 18:00:28 - INFO - Получены данные: Step 400/800 - Time: 3.0s
+2025-06-16 18:00:28 - INFO - Получены данные: Step 500/800 - Time: 3.2s
+2025-06-16 18:00:28 - INFO - Получены данные: Step 600/800 - Time: 3.4s
+2025-06-16 18:00:28 - INFO - Получены данные: Step 700/800 - Time: 3.7s
+2025-06-16 18:00:29 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 18:00:29 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 18:00:29 - INFO - Получены данные: Step 0/800 - Time: 4.4s
+2025-06-16 18:00:29 - INFO - Получены данные: Step 100/800 - Time: 4.6s
+2025-06-16 18:00:29 - INFO - Получены данные: Step 200/800 - Time: 4.8s
+2025-06-16 18:00:30 - INFO - Получены данные: Step 300/800 - Time: 5.0s
+2025-06-16 18:00:30 - INFO - Получены данные: Step 400/800 - Time: 5.2s
+2025-06-16 18:00:30 - INFO - Получены данные: Step 500/800 - Time: 5.4s
+2025-06-16 18:00:30 - INFO - Получены данные: Step 600/800 - Time: 5.6s
+2025-06-16 18:00:30 - INFO - Получены данные: Step 700/800 - Time: 5.8s
+2025-06-16 18:00:31 - INFO - Получены данные: Direction: BACKWARD
+2025-06-16 18:00:31 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 18:00:31 - INFO - Получены данные: Step 0/800 - Time: 6.5s
+2025-06-16 18:00:31 - INFO - Получены данные: Step 100/800 - Time: 6.7s
+2025-06-16 18:00:31 - INFO - Получены данные: Step 200/800 - Time: 7.0s
+2025-06-16 18:00:32 - INFO - Получены данные: Step 300/800 - Time: 7.2s
+2025-06-16 18:00:32 - INFO - Получены данные: Step 400/800 - Time: 7.4s
+2025-06-16 18:00:32 - INFO - Получены данные: Step 500/800 - Time: 7.6s
+2025-06-16 18:00:32 - INFO - Получены данные: Step 600/800 - Time: 7.8s
+2025-06-16 18:00:32 - INFO - Получены данные: Step 700/800 - Time: 8.0s
+2025-06-16 18:00:33 - INFO - Получены данные: Direction: FORWARD
+2025-06-16 18:00:33 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-16 18:00:33 - INFO - Получены данные: Step 0/800 - Time: 8.7s
+2025-06-16 18:00:33 - INFO - Получены данные: Step 100/800 - Time: 8.9s
+2025-06-16 18:00:34 - INFO - Получены данные: Step 200/800 - Time: 9.1s
+2025-06-16 18:00:34 - INFO - Получены данные: Step 300/800 - Time: 9.3s
+2025-06-16 18:00:34 - INFO - Получены данные: Step 400/800 - Time: 9.6s
+2025-06-16 18:00:34 - INFO - Получены данные: Step 500/800 - Time: 9.8s
+2025-06-16 18:00:34 - INFO - Получены данные: Step 600/800 - Time: 10.0s
+2025-06-16 18:00:35 - INFO - Получены данные: === TEST COMPLETED ===
+2025-06-16 18:00:35 - INFO - Получены данные: Total test time: 10.5 seconds
+2025-06-16 18:00:35 - INFO - Получены данные: Motors disabled
+2025-06-16 18:01:05 - INFO - Отправлена команда: steppermove 10 20 * 5 150
+2025-06-16 18:01:05 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:01:05 - INFO - Получены данные: Motors enabled
+2025-06-16 18:01:05 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:01:05 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: E1 -> 150.00 units (30000 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 18:01:05 - INFO - Получены данные: Movement started - motors should move now!
+2025-06-16 18:01:05 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 18:01:05 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 18:01:05 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 18:01:06 - INFO - Получены данные: Motors disabled
+2025-06-16 18:01:18 - INFO - Отправлена команда: steppermove 10 20 * 5 1500
+2025-06-16 18:01:18 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:01:18 - INFO - Получены данные: Motors enabled
+2025-06-16 18:01:18 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:01:18 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:01:18 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:01:18 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 18:01:18 - INFO - Получены данные: E1 -> 1500.00 units (300000 steps)
+2025-06-16 18:01:18 - INFO - Получены данные: Target added to planner buffer
+2025-06-16 18:01:18 - INFO - Получены данные: Movement started - motors should move now!
+2025-06-16 18:01:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:18 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:19 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:19 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:20 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:21 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:22 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:23 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:24 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:25 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:26 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:26 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:27 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:28 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:29 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:29 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:30 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:31 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:32 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:32 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:33 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:34 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:34 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:35 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:36 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:36 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:01:37 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:10:51 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:10:51 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:10:51 - INFO - Получены данные: Initializing...
+2025-06-16 18:10:51 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:10:51 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:10:51 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:10:51 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:10:51 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:10:52 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:10:52 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:10:52 - INFO - Получены данные: GyverPlanner ready for coordinated movement
+2025-06-16 18:10:52 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:10:52 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:11:09 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 18:11:09 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:11:09 - INFO - Получены данные: Motors enabled
+2025-06-16 18:11:09 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:11:09 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:11:09 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:11:09 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 18:11:09 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 18:11:09 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 18:11:10 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:11:10 - INFO - Получены данные: Moving... Multi(X):18 Multizone(Y):35 RRight(Z):0 E0:22 E1:66
+2025-06-16 18:11:10 - INFO - Получены данные: Moving... Multi(X):56 Multizone(Y):112 RRight(Z):0 E0:70 E1:209
+2025-06-16 18:11:11 - INFO - Получены данные: Moving... Multi(X):94 Multizone(Y):189 RRight(Z):0 E0:118 E1:354
+2025-06-16 18:11:11 - INFO - Получены данные: Moving... Multi(X):133 Multizone(Y):266 RRight(Z):0 E0:166 E1:498
+2025-06-16 18:11:12 - INFO - Получены данные: Moving... Multi(X):171 Multizone(Y):343 RRight(Z):0 E0:214 E1:643
+2025-06-16 18:11:12 - INFO - Получены данные: Moving... Multi(X):210 Multizone(Y):420 RRight(Z):0 E0:263 E1:788
+2025-06-16 18:11:13 - INFO - Получены данные: Moving... Multi(X):249 Multizone(Y):497 RRight(Z):0 E0:311 E1:932
+2025-06-16 18:11:13 - INFO - Получены данные: Moving... Multi(X):287 Multizone(Y):574 RRight(Z):0 E0:359 E1:1077
+2025-06-16 18:11:14 - INFO - Получены данные: Moving... Multi(X):326 Multizone(Y):651 RRight(Z):0 E0:407 E1:1221
+2025-06-16 18:11:14 - INFO - Получены данные: Moving... Multi(X):364 Multizone(Y):728 RRight(Z):0 E0:455 E1:1366
+2025-06-16 18:11:15 - INFO - Получены данные: Moving... Multi(X):403 Multizone(Y):806 RRight(Z):0 E0:503 E1:1510
+2025-06-16 18:11:15 - INFO - Получены данные: Moving... Multi(X):441 Multizone(Y):883 RRight(Z):0 E0:552 E1:1655
+2025-06-16 18:11:16 - INFO - Получены данные: Moving... Multi(X):480 Multizone(Y):960 RRight(Z):0 E0:600 E1:1800
+2025-06-16 18:11:16 - INFO - Получены данные: Moving... Multi(X):518 Multizone(Y):1037 RRight(Z):0 E0:648 E1:1944
+2025-06-16 18:11:17 - INFO - Получены данные: Moving... Multi(X):557 Multizone(Y):1114 RRight(Z):0 E0:696 E1:2089
+2025-06-16 18:11:17 - INFO - Получены данные: Moving... Multi(X):596 Multizone(Y):1191 RRight(Z):0 E0:744 E1:2233
+2025-06-16 18:11:18 - INFO - Получены данные: Moving... Multi(X):634 Multizone(Y):1268 RRight(Z):0 E0:793 E1:2378
+2025-06-16 18:11:18 - INFO - Получены данные: Moving... Multi(X):673 Multizone(Y):1345 RRight(Z):0 E0:841 E1:2522
+2025-06-16 18:11:19 - INFO - Получены данные: Moving... Multi(X):711 Multizone(Y):1423 RRight(Z):0 E0:889 E1:2667
+2025-06-16 18:11:19 - INFO - Получены данные: Moving... Multi(X):750 Multizone(Y):1500 RRight(Z):0 E0:937 E1:2812
+2025-06-16 18:11:20 - INFO - Получены данные: Moving... Multi(X):787 Multizone(Y):1573 RRight(Z):0 E0:983 E1:2950
+2025-06-16 18:11:20 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 18:11:20 - INFO - Получены данные: Multi(X) final position: 10.00 units (800 steps)
+2025-06-16 18:11:20 - INFO - Получены данные: Multizone(Y) final position: 20.00 units (1600 steps)
+2025-06-16 18:11:20 - INFO - Получены данные: E0 final position: 5.00 units (1000 steps)
+2025-06-16 18:11:20 - INFO - Получены данные: E1 final position: 15.00 units (3000 steps)
+2025-06-16 18:11:20 - INFO - Получены данные: Motors disabled
+2025-06-16 18:12:48 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:12:49 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:12:49 - INFO - Получены данные: Initializing...
+2025-06-16 18:12:49 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:12:49 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:12:49 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:12:49 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:12:49 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:12:49 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:12:49 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:12:49 - INFO - Получены данные: GyverPlanner ready for coordinated movement
+2025-06-16 18:12:49 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:12:49 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:12:56 - INFO - Отправлена команда: steppermove 10 20 * 5 150
+2025-06-16 18:12:56 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:12:56 - INFO - Получены данные: Motors enabled
+2025-06-16 18:12:56 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:12:56 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:12:56 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:12:56 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 18:12:56 - INFO - Получены данные: E1 -> 150.00 units (30000 steps)
+2025-06-16 18:12:57 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 18:12:57 - INFO - Получены данные: Moving... Multi(X):0 Multizone(Y):0 RRight(Z):0 E0:0 E1:0
+2025-06-16 18:12:57 - INFO - Получены данные: Moving... Multi(X):2 Multizone(Y):4 RRight(Z):0 E0:2 E1:66
+2025-06-16 18:12:57 - INFO - Получены данные: Moving... Multi(X):6 Multizone(Y):11 RRight(Z):0 E0:7 E1:209
+2025-06-16 18:12:58 - INFO - Получены данные: Moving... Multi(X):9 Multizone(Y):19 RRight(Z):0 E0:12 E1:354
+2025-06-16 18:12:58 - INFO - Получены данные: Moving... Multi(X):13 Multizone(Y):27 RRight(Z):0 E0:17 E1:498
+2025-06-16 18:12:59 - INFO - Получены данные: Moving... Multi(X):17 Multizone(Y):34 RRight(Z):0 E0:21 E1:643
+2025-06-16 18:12:59 - INFO - Получены данные: Moving... Multi(X):21 Multizone(Y):42 RRight(Z):0 E0:26 E1:787
+2025-06-16 18:13:00 - INFO - Получены данные: Moving... Multi(X):25 Multizone(Y):50 RRight(Z):0 E0:31 E1:932
+2025-06-16 18:13:00 - INFO - Получены данные: Moving... Multi(X):29 Multizone(Y):57 RRight(Z):0 E0:36 E1:1077
+2025-06-16 18:13:01 - INFO - Получены данные: Moving... Multi(X):33 Multizone(Y):65 RRight(Z):0 E0:41 E1:1221
+2025-06-16 18:13:01 - INFO - Получены данные: Moving... Multi(X):36 Multizone(Y):73 RRight(Z):0 E0:46 E1:1366
+2025-06-16 18:13:02 - INFO - Получены данные: Moving... Multi(X):40 Multizone(Y):81 RRight(Z):0 E0:50 E1:1510
+2025-06-16 18:13:02 - INFO - Получены данные: Moving... Multi(X):44 Multizone(Y):88 RRight(Z):0 E0:55 E1:1655
+2025-06-16 18:13:03 - INFO - Получены данные: Moving... Multi(X):48 Multizone(Y):96 RRight(Z):0 E0:60 E1:1799
+2025-06-16 18:13:03 - INFO - Получены данные: Moving... Multi(X):52 Multizone(Y):104 RRight(Z):0 E0:65 E1:1944
+2025-06-16 18:13:04 - INFO - Получены данные: Moving... Multi(X):56 Multizone(Y):111 RRight(Z):0 E0:70 E1:2088
+2025-06-16 18:13:04 - INFO - Получены данные: Moving... Multi(X):60 Multizone(Y):119 RRight(Z):0 E0:74 E1:2233
+2025-06-16 18:13:05 - INFO - Получены данные: Moving... Multi(X):63 Multizone(Y):127 RRight(Z):0 E0:79 E1:2378
+2025-06-16 18:13:05 - INFO - Получены данные: Moving... Multi(X):67 Multizone(Y):135 RRight(Z):0 E0:84 E1:2522
+2025-06-16 18:13:06 - INFO - Получены данные: Moving... Multi(X):71 Multizone(Y):142 RRight(Z):0 E0:89 E1:2667
+2025-06-16 18:13:06 - INFO - Получены данные: Moving... Multi(X):75 Multizone(Y):150 RRight(Z):0 E0:94 E1:2811
+2025-06-16 18:13:07 - INFO - Получены данные: Moving... Multi(X):79 Multizone(Y):158 RRight(Z):0 E0:99 E1:2956
+2025-06-16 18:13:07 - INFO - Получены данные: Moving... Multi(X):83 Multizone(Y):165 RRight(Z):0 E0:103 E1:3100
+2025-06-16 18:13:08 - INFO - Получены данные: Moving... Multi(X):87 Multizone(Y):173 RRight(Z):0 E0:108 E1:3245
+2025-06-16 18:13:08 - INFO - Получены данные: Moving... Multi(X):90 Multizone(Y):181 RRight(Z):0 E0:113 E1:3390
+2025-06-16 18:13:09 - INFO - Получены данные: Moving... Multi(X):94 Multizone(Y):188 RRight(Z):0 E0:118 E1:3534
+2025-06-16 18:13:09 - INFO - Получены данные: Moving... Multi(X):98 Multizone(Y):196 RRight(Z):0 E0:123 E1:3679
+2025-06-16 18:13:10 - INFO - Получены данные: Moving... Multi(X):102 Multizone(Y):204 RRight(Z):0 E0:127 E1:3823
+2025-06-16 18:13:10 - INFO - Получены данные: Moving... Multi(X):106 Multizone(Y):212 RRight(Z):0 E0:132 E1:3968
+2025-06-16 18:13:11 - INFO - Получены данные: Moving... Multi(X):110 Multizone(Y):219 RRight(Z):0 E0:137 E1:4112
+2025-06-16 18:13:11 - INFO - Получены данные: Moving... Multi(X):114 Multizone(Y):227 RRight(Z):0 E0:142 E1:4257
+2025-06-16 18:13:12 - INFO - Получены данные: Moving... Multi(X):117 Multizone(Y):235 RRight(Z):0 E0:147 E1:4401
+2025-06-16 18:13:12 - INFO - Получены данные: Moving... Multi(X):121 Multizone(Y):242 RRight(Z):0 E0:152 E1:4546
+2025-06-16 18:13:13 - INFO - Получены данные: Moving... Multi(X):125 Multizone(Y):250 RRight(Z):0 E0:156 E1:4690
+2025-06-16 18:13:13 - INFO - Получены данные: Moving... Multi(X):129 Multizone(Y):258 RRight(Z):0 E0:161 E1:4835
+2025-06-16 18:13:14 - INFO - Получены данные: Moving... Multi(X):133 Multizone(Y):266 RRight(Z):0 E0:166 E1:4979
+2025-06-16 18:13:14 - INFO - Получены данные: Moving... Multi(X):137 Multizone(Y):273 RRight(Z):0 E0:171 E1:5124
+2025-06-16 18:13:15 - INFO - Получены данные: Moving... Multi(X):140 Multizone(Y):281 RRight(Z):0 E0:176 E1:5268
+2025-06-16 18:13:15 - INFO - Получены данные: Moving... Multi(X):144 Multizone(Y):289 RRight(Z):0 E0:180 E1:5413
+2025-06-16 18:13:16 - INFO - Получены данные: Moving... Multi(X):148 Multizone(Y):296 RRight(Z):0 E0:185 E1:5558
+2025-06-16 18:13:16 - INFO - Получены данные: Moving... Multi(X):152 Multizone(Y):304 RRight(Z):0 E0:190 E1:5702
+2025-06-16 18:13:17 - INFO - Получены данные: Moving... Multi(X):156 Multizone(Y):312 RRight(Z):0 E0:195 E1:5846
+2025-06-16 18:13:17 - INFO - Получены данные: Moving... Multi(X):160 Multizone(Y):320 RRight(Z):0 E0:200 E1:5991
+2025-06-16 18:13:18 - INFO - Получены данные: Moving... Multi(X):164 Multizone(Y):327 RRight(Z):0 E0:205 E1:6136
+2025-06-16 18:13:18 - INFO - Получены данные: Moving... Multi(X):167 Multizone(Y):335 RRight(Z):0 E0:209 E1:6280
+2025-06-16 18:13:19 - INFO - Получены данные: Moving... Multi(X):171 Multizone(Y):343 RRight(Z):0 E0:214 E1:6424
+2025-06-16 18:13:19 - INFO - Получены данные: Moving... Multi(X):175 Multizone(Y):350 RRight(Z):0 E0:219 E1:6569
+2025-06-16 18:13:20 - INFO - Получены данные: Moving... Multi(X):179 Multizone(Y):358 RRight(Z):0 E0:224 E1:6714
+2025-06-16 18:13:20 - INFO - Получены данные: Moving... Multi(X):183 Multizone(Y):366 RRight(Z):0 E0:229 E1:6858
+2025-06-16 18:13:21 - INFO - Получены данные: Moving... Multi(X):187 Multizone(Y):373 RRight(Z):0 E0:233 E1:7003
+2025-06-16 18:13:21 - INFO - Получены данные: Moving... Multi(X):191 Multizone(Y):381 RRight(Z):0 E0:238 E1:7148
+2025-06-16 18:13:22 - INFO - Получены данные: Moving... Multi(X):194 Multizone(Y):389 RRight(Z):0 E0:243 E1:7292
+2025-06-16 18:13:22 - INFO - Получены данные: Moving... Multi(X):198 Multizone(Y):397 RRight(Z):0 E0:248 E1:7436
+2025-06-16 18:13:23 - INFO - Получены данные: Moving... Multi(X):202 Multizone(Y):404 RRight(Z):0 E0:253 E1:7581
+2025-06-16 18:13:23 - INFO - Получены данные: Moving... Multi(X):206 Multizone(Y):412 RRight(Z):0 E0:258 E1:7726
+2025-06-16 18:13:24 - INFO - Получены данные: Moving... Multi(X):210 Multizone(Y):420 RRight(Z):0 E0:262 E1:7870
+2025-06-16 18:13:24 - INFO - Получены данные: Moving... Multi(X):214 Multizone(Y):427 RRight(Z):0 E0:267 E1:8014
+2025-06-16 18:13:25 - INFO - Получены данные: Moving... Multi(X):218 Multizone(Y):435 RRight(Z):0 E0:272 E1:8159
+2025-06-16 18:13:25 - INFO - Получены данные: Moving... Multi(X):221 Multizone(Y):443 RRight(Z):0 E0:277 E1:8304
+2025-06-16 18:13:26 - INFO - Получены данные: Moving... Multi(X):225 Multizone(Y):451 RRight(Z):0 E0:282 E1:8448
+2025-06-16 18:13:26 - INFO - Получены данные: ERROR: Movement timeout!
+2025-06-16 18:13:26 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 18:13:26 - INFO - Получены данные: Multi(X) final position: 2.86 units (229 steps)
+2025-06-16 18:13:26 - INFO - Получены данные: Multizone(Y) final position: 5.73 units (458 steps)
+2025-06-16 18:13:26 - INFO - Получены данные: E0 final position: 1.43 units (286 steps)
+2025-06-16 18:13:26 - INFO - Получены данные: E1 final position: 42.96 units (8592 steps)
+2025-06-16 18:13:27 - INFO - Получены данные: Motors disabled
+2025-06-16 18:13:29 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:23:30 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:23:30 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:23:30 - INFO - Получены данные: Initializing...
+2025-06-16 18:23:30 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:23:30 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:23:30 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:23:30 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:23:30 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:23:30 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:23:30 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:23:30 - INFO - Получены данные: GyverPlanner ready for coordinated movement
+2025-06-16 18:23:30 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:23:31 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:23:50 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 18:23:50 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:23:50 - INFO - Получены данные: Motors enabled
+2025-06-16 18:23:50 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:23:50 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:23:50 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:23:50 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 18:23:51 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 18:23:51 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 18:24:01 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 18:24:01 - INFO - Получены данные: Multi(X) final position: 10.00 units (800 steps)
+2025-06-16 18:24:01 - INFO - Получены данные: Multizone(Y) final position: 20.00 units (1600 steps)
+2025-06-16 18:24:01 - INFO - Получены данные: E0 final position: 5.00 units (1000 steps)
+2025-06-16 18:24:01 - INFO - Получены данные: E1 final position: 15.00 units (3000 steps)
+2025-06-16 18:24:01 - INFO - Получены данные: Motors disabled
+2025-06-16 18:28:22 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:28:22 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:28:22 - INFO - Получены данные: Initializing...
+2025-06-16 18:28:22 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:28:22 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:28:22 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:28:22 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:28:22 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:28:22 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:28:22 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:28:22 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:28:22 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:28:22 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:28:22 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:28:22 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:28:32 - INFO - Отправлена команда: steppermove 10 20 * 5 15
+2025-06-16 18:28:32 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:28:33 - INFO - Получены данные: Motors enabled
+2025-06-16 18:28:33 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:28:33 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:28:33 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:28:33 - INFO - Получены данные: E0 -> 5.00 units (1000 steps)
+2025-06-16 18:28:33 - INFO - Получены данные: E1 -> 15.00 units (3000 steps)
+2025-06-16 18:28:33 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 18:28:33 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 18:28:34 - INFO - Получены данные: Multi(X) final position: 10.00 units (800 steps)
+2025-06-16 18:28:34 - INFO - Получены данные: Multizone(Y) final position: 20.00 units (1600 steps)
+2025-06-16 18:28:34 - INFO - Получены данные: E0 final position: 5.00 units (1000 steps)
+2025-06-16 18:28:34 - INFO - Получены данные: E1 final position: 15.00 units (3000 steps)
+2025-06-16 18:28:34 - INFO - Получены данные: Motors disabled
+2025-06-16 18:29:04 - INFO - Отправлена команда: steppermove 10 20 * 500 500
+2025-06-16 18:29:04 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 18:29:04 - INFO - Получены данные: Motors enabled
+2025-06-16 18:29:04 - INFO - Получены данные: Multi(X) -> 10.00 units (800 steps)
+2025-06-16 18:29:04 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 18:29:04 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 18:29:04 - INFO - Получены данные: E0 -> 500.00 units (100000 steps)
+2025-06-16 18:29:04 - INFO - Получены данные: E1 -> 500.00 units (100000 steps)
+2025-06-16 18:29:04 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 18:29:15 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 18:29:15 - INFO - Получены данные: Multi(X) final position: 10.00 units (800 steps)
+2025-06-16 18:29:15 - INFO - Получены данные: Multizone(Y) final position: 20.00 units (1600 steps)
+2025-06-16 18:29:15 - INFO - Получены данные: E0 final position: 500.00 units (100000 steps)
+2025-06-16 18:29:15 - INFO - Получены данные: E1 final position: 500.00 units (100000 steps)
+2025-06-16 18:29:15 - INFO - Получены данные: Motors disabled
+2025-06-16 18:31:02 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:31:02 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:31:02 - INFO - Получены данные: Initializing...
+2025-06-16 18:31:02 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:31:02 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:31:02 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:31:02 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:31:02 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:31:02 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:31:02 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:31:02 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:31:03 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:31:03 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:31:03 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:31:03 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:31:31 - INFO - Отправлена команда: stepperhome 1 1 1 1 1
+2025-06-16 18:31:31 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:31:31 - INFO - Получены данные: Motors enabled
+2025-06-16 18:31:31 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 18:31:31 - INFO - Получены данные: Multi(X) - endstop already triggered, backing off
+2025-06-16 18:31:37 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 18:31:38 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 18:31:42 - INFO - Получены данные: Multi(X) - homing completed, position reset to 0
+2025-06-16 18:31:42 - INFO - Получены данные: Homing Multizone(Y) (NPN sensor)
+2025-06-16 18:31:42 - INFO - Получены данные: Multizone(Y) - moving to endstop
+2025-06-16 18:32:13 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:32:13 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:32:13 - INFO - Получены данные: Initializing...
+2025-06-16 18:32:13 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:32:13 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:32:13 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:32:13 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:32:14 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:32:14 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:32:14 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:32:14 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:32:14 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:32:14 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:32:14 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:32:14 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:39:21 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:39:21 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:39:21 - INFO - Получены данные: Initializing...
+2025-06-16 18:39:21 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:39:21 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:39:21 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:39:21 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:39:21 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:39:21 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:39:21 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:39:21 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:39:21 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:39:22 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:39:22 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:39:22 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:39:41 - INFO - Отправлена команда: stepperhome 1 1 1 1 1
+2025-06-16 18:39:41 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:39:41 - INFO - Получены данные: Motors enabled
+2025-06-16 18:39:41 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 18:39:41 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 18:39:45 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 18:39:45 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 18:39:45 - INFO - Получены данные: Homing Multizone(Y) (NPN sensor)
+2025-06-16 18:39:45 - INFO - Получены данные: Multizone(Y) - moving to endstop
+2025-06-16 18:41:35 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:41:35 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:41:35 - INFO - Получены данные: Initializing...
+2025-06-16 18:41:35 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:41:35 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:41:36 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:41:36 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:41:36 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:41:36 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:41:36 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:41:36 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:41:36 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:41:36 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:41:36 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:41:36 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:44:00 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:44:00 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:44:00 - INFO - Получены данные: Initializing...
+2025-06-16 18:44:00 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:44:00 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:44:00 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:44:01 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:44:01 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:44:01 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:44:01 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:44:01 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:44:01 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:44:01 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:44:01 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:44:01 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:44:22 - INFO - Отправлена команда: sh 0 0 1 1 1
+2025-06-16 18:44:22 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:44:22 - INFO - Получены данные: Motors enabled
+2025-06-16 18:44:23 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 18:44:23 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 18:44:25 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 18:44:25 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 18:44:26 - INFO - Получены данные: Homing E0 (NPN sensor)
+2025-06-16 18:44:26 - INFO - Получены данные: E0 - moving to endstop
+2025-06-16 18:45:19 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:45:19 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:45:19 - INFO - Получены данные: Initializing...
+2025-06-16 18:45:19 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:45:19 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:45:19 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:45:19 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:45:19 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:45:19 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:45:19 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:45:19 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:45:19 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:45:19 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:45:19 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:45:19 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:50:48 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:50:48 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:50:48 - INFO - Получены данные: Initializing...
+2025-06-16 18:50:48 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:50:48 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:50:48 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:50:48 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:50:48 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:50:49 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:50:49 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:50:49 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:50:49 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:50:49 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:50:49 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:50:49 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:50:59 - INFO - Отправлена команда: sh 0 0 0 1
+2025-06-16 18:50:59 - INFO - Получены данные: ERROR: Expected 5 arguments, got 4
+2025-06-16 18:51:20 - INFO - Отправлена команда: sh 0 0 0 1 1
+2025-06-16 18:51:20 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:51:20 - INFO - Получены данные: Motors enabled
+2025-06-16 18:51:20 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 18:51:20 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 18:51:20 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 18:51:49 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:51:49 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:51:49 - INFO - Получены данные: Initializing...
+2025-06-16 18:51:49 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:51:49 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:51:49 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:51:49 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:51:49 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:51:49 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:51:49 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:51:49 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:51:50 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:51:50 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:51:50 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:51:50 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:52:00 - INFO - Отправлена команда: sh 0 0 0 0 1
+2025-06-16 18:52:00 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:52:00 - INFO - Получены данные: Motors enabled
+2025-06-16 18:52:00 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 18:52:00 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 18:52:00 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 18:53:35 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:53:35 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:53:36 - INFO - Получены данные: Initializing...
+2025-06-16 18:53:36 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:53:36 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:53:36 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:53:36 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:53:36 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:53:36 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:53:36 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:53:36 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:53:36 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:53:36 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:53:36 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:53:36 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:53:45 - INFO - Отправлена команда: sh 0 0 0 0 1
+2025-06-16 18:53:45 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:53:45 - INFO - Получены данные: Motors enabled
+2025-06-16 18:53:45 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 18:53:45 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 18:53:45 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 18:53:45 - INFO - Получены данные: Both motors E0 and E1 started moving...
+2025-06-16 18:55:37 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:55:37 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:55:37 - INFO - Получены данные: Initializing...
+2025-06-16 18:55:37 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:55:37 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:55:37 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:55:37 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:55:37 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:55:37 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:55:37 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:55:38 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:55:38 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:55:38 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:55:38 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:55:38 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:55:49 - INFO - Отправлена команда: sh 0 0 0 0 1
+2025-06-16 18:55:49 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:55:49 - INFO - Получены данные: Motors enabled
+2025-06-16 18:55:49 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 18:55:49 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 18:55:49 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 18:55:49 - INFO - Получены данные: DEBUG: Setting speeds for both motors...
+2025-06-16 18:55:49 - INFO - Получены данные: E0 homing speed: 30000.00
+2025-06-16 18:55:49 - INFO - Получены данные: E1 homing speed: 30000.00
+2025-06-16 18:55:50 - INFO - Получены данные: DEBUG: Starting E0 motor...
+2025-06-16 18:55:50 - INFO - Получены данные: DEBUG: Starting E1 motor...
+2025-06-16 18:55:50 - INFO - Получены данные: Both motors E0 and E1 should be moving now...
+2025-06-16 18:55:50 - INFO - Получены данные: DEBUG: Homing in progress... Time: 0.0s, E0 pos: 0, E1 pos: -1
+2025-06-16 18:55:51 - INFO - Получены данные: DEBUG: Homing in progress... Time: 2.0s, E0 pos: 0, E1 pos: -41043
+2025-06-16 18:55:53 - INFO - Получены данные: DEBUG: Homing in progress... Time: 4.0s, E0 pos: 0, E1 pos: -82088
+2025-06-16 18:55:55 - INFO - Получены данные: DEBUG: Homing in progress... Time: 6.0s, E0 pos: 0, E1 pos: -123133
+2025-06-16 18:55:57 - INFO - Получены данные: DEBUG: Homing in progress... Time: 8.0s, E0 pos: 0, E1 pos: -164197
+2025-06-16 18:55:59 - INFO - Получены данные: DEBUG: Homing in progress... Time: 10.0s, E0 pos: 0, E1 pos: -205241
+2025-06-16 18:56:01 - INFO - Получены данные: DEBUG: Homing in progress... Time: 12.0s, E0 pos: 0, E1 pos: -246285
+2025-06-16 18:56:03 - INFO - Получены данные: DEBUG: Homing in progress... Time: 14.0s, E0 pos: 0, E1 pos: -287329
+2025-06-16 18:56:05 - INFO - Получены данные: DEBUG: Homing in progress... Time: 16.0s, E0 pos: 0, E1 pos: -328372
+2025-06-16 18:56:07 - INFO - Получены данные: DEBUG: Homing in progress... Time: 18.0s, E0 pos: 0, E1 pos: -369416
+2025-06-16 18:56:09 - INFO - Получены данные: DEBUG: Homing in progress... Time: 20.0s, E0 pos: 0, E1 pos: -410461
+2025-06-16 18:56:11 - INFO - Получены данные: DEBUG: Homing in progress... Time: 22.0s, E0 pos: 0, E1 pos: -451505
+2025-06-16 18:56:13 - INFO - Получены данные: DEBUG: Homing in progress... Time: 24.0s, E0 pos: 0, E1 pos: -492549
+2025-06-16 18:56:15 - INFO - Получены данные: DEBUG: Homing in progress... Time: 26.0s, E0 pos: 0, E1 pos: -533593
+2025-06-16 18:56:17 - INFO - Получены данные: DEBUG: Homing in progress... Time: 28.0s, E0 pos: 0, E1 pos: -574637
+2025-06-16 18:56:19 - INFO - Получены данные: ERROR: Homing timeout - stopping both motors
+2025-06-16 18:56:19 - INFO - Получены данные: Shared endstop triggered - stopping both motors
+2025-06-16 18:56:19 - INFO - Получены данные: Final positions - E0: 0, E1: -615029
+2025-06-16 18:56:19 - INFO - Получены данные: E0+E1 - shared endstop triggered
+2025-06-16 18:56:20 - INFO - Получены данные: E0+E1 - joint homing completed
+2025-06-16 18:56:20 - INFO - Получены данные: Motors disabled
+2025-06-16 18:56:20 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 18:58:31 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:58:31 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:58:31 - INFO - Получены данные: Initializing...
+2025-06-16 18:58:31 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:58:31 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:58:32 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:58:32 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:58:32 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:58:32 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:58:32 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:58:32 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:58:32 - INFO - Получены данные: System initialized successfully!
+2025-06-16 18:58:32 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 18:58:32 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 18:58:32 - INFO - Получены данные: Ready for commands...
+2025-06-16 18:58:45 - INFO - Отправлена команда: sh 0 0 0 0 1
+2025-06-16 18:58:45 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 18:58:45 - INFO - Получены данные: Motors enabled
+2025-06-16 18:58:45 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 18:58:45 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 18:58:45 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 18:58:45 - INFO - Получены данные: DEBUG: Using coordinated movement for both motors...
+2025-06-16 18:58:46 - INFO - Получены данные: E0 target: -50000, E1 target: -50000
+2025-06-16 18:58:46 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 18:58:46 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Planner ready: NO
+2025-06-16 18:58:47 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16932, E1 pos: -16932, Planner ready: NO
+2025-06-16 18:58:49 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41343, E1 pos: -41343, Planner ready: NO
+2025-06-16 18:58:50 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000
+2025-06-16 18:58:50 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 18:58:50 - INFO - Получены данные: E0+E1 - joint homing completed
+2025-06-16 18:58:51 - INFO - Получены данные: Motors disabled
+2025-06-16 18:58:51 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 18:59:40 - INFO - Отправлена команда: sh 1 0 1 0 0
+2025-06-16 18:59:40 - INFO - Получены данные: ERROR: Planner busy, cannot start homing
+2025-06-16 18:59:59 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 18:59:59 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 18:59:59 - INFO - Получены данные: Initializing...
+2025-06-16 18:59:59 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 18:59:59 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 18:59:59 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 18:59:59 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 18:59:59 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 18:59:59 - INFO - Получены данные: All steppers added to planner
+2025-06-16 18:59:59 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 18:59:59 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 18:59:59 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:00:00 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:00:00 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:00:00 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:00:05 - INFO - Отправлена команда: sh 1 0 1 0 0
+2025-06-16 19:00:05 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:00:05 - INFO - Получены данные: Motors enabled
+2025-06-16 19:00:05 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:00:05 - INFO - Получены данные: Multi(X) - endstop already triggered
+2025-06-16 19:00:05 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:00:05 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:00:05 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:00:11 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:00:12 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:00:12 - INFO - Получены данные: Motors disabled
+2025-06-16 19:00:12 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:01:38 - INFO - Отправлена команда: sh 1 0 1 0 0
+2025-06-16 19:01:39 - INFO - Получены данные: ERROR: Planner busy, cannot start homing
+2025-06-16 19:05:21 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:05:21 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:05:21 - INFO - Получены данные: Initializing...
+2025-06-16 19:05:21 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:05:21 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:05:21 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:05:21 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:05:21 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:05:21 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:05:21 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:05:21 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:05:21 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:05:22 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:05:22 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:05:22 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:05:40 - INFO - Отправлена команда: sh 1 0 1 0 0
+2025-06-16 19:05:40 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:05:40 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:05:40 - INFO - Получены данные: Motors enabled
+2025-06-16 19:05:40 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:05:40 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:05:40 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:05:40 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:06:57 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:06:57 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:06:57 - INFO - Получены данные: Initializing...
+2025-06-16 19:06:57 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:06:57 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:06:57 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:06:57 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:06:58 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:06:58 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:06:58 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:06:58 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:06:58 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:06:58 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:06:58 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:06:58 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:07:05 - INFO - Отправлена команда: sh 1 0 1 0 0
+2025-06-16 19:07:05 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:07:05 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:07:05 - INFO - Получены данные: Motors enabled
+2025-06-16 19:07:05 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:07:05 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:07:06 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:07:06 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:07:06 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:07:06 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:07:09 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:07:09 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:07:09 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:07:09 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:07:28 - INFO - Отправлена команда: sh 1 0 1 0 0
+2025-06-16 19:07:28 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:09:15 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:09:15 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:09:15 - INFO - Получены данные: Initializing...
+2025-06-16 19:09:15 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:09:15 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:09:15 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:09:16 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:09:16 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:09:16 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:09:16 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:09:16 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:09:16 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:09:16 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:09:16 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:09:16 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:09:30 - INFO - Отправлена команда: sh 1 0 0 0 0
+2025-06-16 19:09:30 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:09:31 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:09:31 - INFO - Получены данные: Motors enabled
+2025-06-16 19:09:31 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:09:31 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:09:31 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:09:31 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:09:31 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:09:31 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:09:31 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:09:31 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:10:08 - INFO - Отправлена команда: sm 500 * * * *
+2025-06-16 19:10:08 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:10:08 - INFO - Получены данные: Motors enabled
+2025-06-16 19:10:08 - INFO - Получены данные: Multi(X) -> 500.00 units (40000 steps)
+2025-06-16 19:10:08 - INFO - Получены данные: Multizone(Y) -> no movement
+2025-06-16 19:10:08 - INFO - Получены данные: RRight(Z) -> no movement
+2025-06-16 19:10:08 - INFO - Получены данные: E0 -> no movement
+2025-06-16 19:10:08 - INFO - Получены данные: E1 -> no movement
+2025-06-16 19:10:08 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:10:12 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:10:12 - INFO - Получены данные: Multi(X) final position: 500.00 units (40000 steps)
+2025-06-16 19:10:12 - INFO - Получены данные: Motors disabled
+2025-06-16 19:18:27 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:18:27 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:18:27 - INFO - Получены данные: Initializing...
+2025-06-16 19:18:27 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:18:27 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:18:27 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:18:27 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:18:27 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:18:27 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:18:28 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:18:28 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:18:28 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:18:28 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:18:28 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:18:28 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:18:43 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-16 19:18:43 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:18:44 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:18:44 - INFO - Получены данные: Motors enabled
+2025-06-16 19:18:44 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:18:44 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:18:49 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:18:49 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:18:49 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:18:49 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:18:51 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:18:51 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:18:52 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:18:52 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:18:52 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:18:52 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:18:52 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Planner ready: NO
+2025-06-16 19:18:53 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16884, E1 pos: -16884, Planner ready: NO
+2025-06-16 19:18:55 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41287, E1 pos: -41287, Planner ready: NO
+2025-06-16 19:18:57 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000
+2025-06-16 19:18:57 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:18:57 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:18:57 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:18:57 - INFO - Получены данные: STATUS: COMPLETE
+2025-06-16 19:18:57 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:18:57 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:19:31 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-16 19:19:31 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:19:36 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-16 19:19:36 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:19:36 - INFO - Получены данные: Motors enabled
+2025-06-16 19:19:36 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:19:36 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:19:36 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:19:36 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:19:36 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:19:36 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:19:37 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:19:37 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:19:40 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:19:40 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:19:40 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:19:40 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:19:40 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:19:40 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:19:40 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Planner ready: NO
+2025-06-16 19:19:42 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16883, E1 pos: -16883, Planner ready: NO
+2025-06-16 19:19:44 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41287, E1 pos: -41287, Planner ready: NO
+2025-06-16 19:19:45 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000
+2025-06-16 19:19:45 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:19:45 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:19:45 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:19:45 - INFO - Получены данные: STATUS: COMPLETE
+2025-06-16 19:19:45 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:19:45 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:23:14 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:23:14 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:23:14 - INFO - Получены данные: Initializing...
+2025-06-16 19:23:14 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:23:15 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:23:15 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:23:15 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:23:15 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:23:15 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:23:15 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:23:15 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:23:15 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:23:15 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:23:15 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:23:15 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:23:25 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-16 19:23:26 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:23:26 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:23:26 - INFO - Получены данные: Motors enabled
+2025-06-16 19:23:26 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:23:26 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:23:26 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:23:26 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:23:26 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:23:26 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:23:26 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:23:26 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:23:28 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:23:28 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:23:28 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:23:28 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:23:28 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:23:28 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:23:28 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Planner ready: NO
+2025-06-16 19:23:30 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16907, E1 pos: -16907, Planner ready: NO
+2025-06-16 19:23:32 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41310, E1 pos: -41310, Planner ready: NO
+2025-06-16 19:23:33 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000
+2025-06-16 19:23:33 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:23:33 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:23:33 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:23:34 - INFO - Получены данные: STATUS: COMPLETE
+2025-06-16 19:23:34 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:23:34 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:24:23 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:24:23 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:24:23 - INFO - Получены данные: Initializing...
+2025-06-16 19:24:23 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:24:23 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:24:23 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:24:23 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:24:23 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:24:23 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:24:23 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:24:23 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:24:23 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:24:23 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:24:23 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:24:24 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:24:35 - INFO - Отправлена команда: sh 1 0 0 0 1
+2025-06-16 19:24:35 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:24:35 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:24:35 - INFO - Получены данные: Motors enabled
+2025-06-16 19:24:35 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:24:36 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:24:36 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:24:36 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:24:36 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:24:36 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:24:36 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:24:36 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:24:36 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:24:36 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:24:36 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Planner ready: NO
+2025-06-16 19:24:38 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16899, E1 pos: -16899, Planner ready: NO
+2025-06-16 19:24:40 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41305, E1 pos: -41305, Planner ready: NO
+2025-06-16 19:24:41 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000
+2025-06-16 19:24:41 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:24:41 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:24:41 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:24:41 - INFO - Получены данные: COMPLETE
+2025-06-16 19:24:41 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:24:41 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:26:57 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:26:57 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:26:57 - INFO - Получены данные: Initializing...
+2025-06-16 19:26:57 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:26:57 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:26:57 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:26:57 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:26:57 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:26:57 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:26:57 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:26:57 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:26:58 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:26:58 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:26:58 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:26:58 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:27:08 - INFO - Отправлена команда: sh 1 0 0 0 1
+2025-06-16 19:27:08 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:27:08 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:27:08 - INFO - Получены данные: Motors enabled
+2025-06-16 19:27:08 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:27:08 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:27:08 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:27:08 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:27:08 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:27:08 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:27:08 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:27:08 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:27:08 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:27:09 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:27:09 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:27:10 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16886, E1 pos: -16886, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:27:12 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41287, E1 pos: -41287, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:27:13 - INFO - Получены данные: ERROR: Unknown exit condition from homing loop
+2025-06-16 19:27:13 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000, Final sensor state: OPEN
+2025-06-16 19:27:13 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:27:13 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:27:13 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:27:14 - INFO - Получены данные: ERROR
+2025-06-16 19:27:14 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:27:14 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:27:30 - INFO - Отправлена команда: sh 1 0 0 0 0
+2025-06-16 19:27:30 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:27:35 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-16 19:27:35 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:27:35 - INFO - Получены данные: Motors enabled
+2025-06-16 19:27:35 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:27:35 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-16 19:27:35 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-16 19:27:35 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:27:35 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:27:35 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:27:35 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:27:35 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:27:36 - INFO - Получены данные: COMPLETE
+2025-06-16 19:27:36 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:27:36 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:28:01 - INFO - Отправлена команда: sm 200 0 50 300 30
+2025-06-16 19:28:02 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:28:02 - INFO - Получены данные: Motors enabled
+2025-06-16 19:28:02 - INFO - Получены данные: Multi(X) -> 200.00 units (16000 steps)
+2025-06-16 19:28:02 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps)
+2025-06-16 19:28:02 - INFO - Получены данные: RRight(Z) -> 50.00 units (4000 steps)
+2025-06-16 19:28:02 - INFO - Получены данные: E0 -> 300.00 units (60000 steps)
+2025-06-16 19:28:02 - INFO - Получены данные: E1 -> 30.00 units (6000 steps)
+2025-06-16 19:28:02 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:28:07 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:28:07 - INFO - Получены данные: Multi(X) final position: 200.00 units (16000 steps)
+2025-06-16 19:28:07 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:28:07 - INFO - Получены данные: RRight(Z) final position: 50.00 units (4000 steps)
+2025-06-16 19:28:07 - INFO - Получены данные: E0 final position: 300.00 units (60000 steps)
+2025-06-16 19:28:07 - INFO - Получены данные: E1 final position: 30.00 units (6000 steps)
+2025-06-16 19:28:07 - INFO - Получены данные: Motors disabled
+2025-06-16 19:28:07 - INFO - Получены данные: COMPLETE
+2025-06-16 19:28:07 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:28:07 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:28:28 - INFO - Отправлена команда: pon 0
+2025-06-16 19:28:28 - INFO - Получены данные: Pin 18 turned ON
+2025-06-16 19:28:28 - INFO - Получены данные: COMPLETE
+2025-06-16 19:28:28 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:28:28 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:28:33 - INFO - Отправлена команда: poff 0
+2025-06-16 19:28:33 - INFO - Получены данные: Pin 18 turned OFF
+2025-06-16 19:28:33 - INFO - Получены данные: COMPLETE
+2025-06-16 19:28:33 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:28:33 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:28:36 - INFO - Отправлена команда: pon 2
+2025-06-16 19:28:36 - INFO - Получены данные: Pin 10 turned ON
+2025-06-16 19:28:36 - INFO - Получены данные: COMPLETE
+2025-06-16 19:28:36 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:28:36 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:28:40 - INFO - Отправлена команда: poff 2
+2025-06-16 19:28:40 - INFO - Получены данные: Pin 10 turned OFF
+2025-06-16 19:28:40 - INFO - Получены данные: COMPLETE
+2025-06-16 19:28:40 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:28:40 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:29:05 - INFO - Отправлена команда: hm 0 0 0 0 0
+2025-06-16 19:29:05 - INFO - Получены данные: ERROR: Unknown command 'hm'
+2025-06-16 19:29:05 - INFO - Получены данные: Available commands:
+2025-06-16 19:29:05 - INFO - Получены данные: sm pos0 pos1 pos2 pos3 pos4  - coordinated movement (steppermove)
+2025-06-16 19:29:05 - INFO - Получены данные: sh bool0 bool1 bool2 bool3 bool4  - homing procedure (stepperhome)
+2025-06-16 19:29:05 - INFO - Получены данные: Note: sh flags - Multi Multizone RRight E0_individual E0+E1_joint
+2025-06-16 19:29:05 - INFO - Получены данные: Example: sh 1 1 0 0 1 = home Multi, Multizone, and E0+E1 together
+2025-06-16 19:29:05 - INFO - Получены данные: Example: sh 0 0 0 1 0 = home only E0 individually
+2025-06-16 19:29:05 - INFO - Получены данные: pon index  - turn on control pin (pinon)
+2025-06-16 19:29:05 - INFO - Получены данные: poff index  - turn off control pin (pinoff)
+2025-06-16 19:29:05 - INFO - Получены данные: status  - show system status
+2025-06-16 19:29:05 - INFO - Получены данные: test  - comprehensive motor test (all motors, 10 seconds)
+2025-06-16 19:29:06 - INFO - Получены данные: Motor assignment:
+2025-06-16 19:29:06 - INFO - Получены данные: Motor 0: Multi(X)
+2025-06-16 19:29:06 - INFO - Получены данные: Motor 1: Multizone(Y)
+2025-06-16 19:29:06 - INFO - Получены данные: Motor 2: RRight(Z)
+2025-06-16 19:29:06 - INFO - Получены данные: Motor 3: E0
+2025-06-16 19:29:06 - INFO - Получены данные: Motor 4: E1
+2025-06-16 19:29:06 - INFO - Получены данные: Homing logic:
+2025-06-16 19:29:06 - INFO - Получены данные: - Flags 0-2: Individual homing for Multi, Multizone, RRight
+2025-06-16 19:29:06 - INFO - Получены данные: - Flag 3: Individual E0 homing (only if flag 4 = 0)
+2025-06-16 19:29:06 - INFO - Получены данные: - Flag 4: Joint E0+E1 homing using shared sensor
+2025-06-16 19:29:06 - INFO - Получены данные: - If flag 4 = 1, flag 3 is ignored (joint mode takes priority)
+2025-06-16 19:29:06 - INFO - Получены данные: Features:
+2025-06-16 19:29:06 - INFO - Получены данные: - GyverPlanner for coordinated movement
+2025-06-16 19:29:07 - INFO - Получены данные: - Proper API usage with setTarget/setSpeed
+2025-06-16 19:29:07 - INFO - Получены данные: - NPN/PNP endstop support
+2025-06-16 19:29:07 - INFO - Получены данные: - Analog pins A0, A6, A7 supported
+2025-06-16 19:29:07 - INFO - Получены данные: - Direct pin control test mode
+2025-06-16 19:29:07 - INFO - Получены данные: - Joint E0+E1 homing with shared sensor
+2025-06-16 19:29:07 - INFO - Получены данные: - All commands return COMPLETE or ERROR
+2025-06-16 19:29:07 - INFO - Получены данные: - Switch-case architecture for better performance
+2025-06-16 19:29:07 - INFO - Получены данные: ERROR
+2025-06-16 19:29:07 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:29:07 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:29:29 - INFO - Отправлена команда: hm 0 0 0 0 0
+2025-06-16 19:29:29 - INFO - Получены данные: ERROR: Unknown command 'hm'
+2025-06-16 19:29:29 - INFO - Получены данные: Available commands:
+2025-06-16 19:29:29 - INFO - Получены данные: sm pos0 pos1 pos2 pos3 pos4  - coordinated movement (steppermove)
+2025-06-16 19:29:29 - INFO - Получены данные: sh bool0 bool1 bool2 bool3 bool4  - homing procedure (stepperhome)
+2025-06-16 19:29:29 - INFO - Получены данные: Note: sh flags - Multi Multizone RRight E0_individual E0+E1_joint
+2025-06-16 19:29:29 - INFO - Получены данные: Example: sh 1 1 0 0 1 = home Multi, Multizone, and E0+E1 together
+2025-06-16 19:29:30 - INFO - Получены данные: Example: sh 0 0 0 1 0 = home only E0 individually
+2025-06-16 19:29:30 - INFO - Получены данные: pon index  - turn on control pin (pinon)
+2025-06-16 19:29:30 - INFO - Получены данные: poff index  - turn off control pin (pinoff)
+2025-06-16 19:29:30 - INFO - Получены данные: status  - show system status
+2025-06-16 19:29:30 - INFO - Получены данные: test  - comprehensive motor test (all motors, 10 seconds)
+2025-06-16 19:29:30 - INFO - Получены данные: Motor assignment:
+2025-06-16 19:29:30 - INFO - Получены данные: Motor 0: Multi(X)
+2025-06-16 19:29:30 - INFO - Получены данные: Motor 1: Multizone(Y)
+2025-06-16 19:29:30 - INFO - Получены данные: Motor 2: RRight(Z)
+2025-06-16 19:29:30 - INFO - Получены данные: Motor 3: E0
+2025-06-16 19:29:30 - INFO - Получены данные: Motor 4: E1
+2025-06-16 19:29:30 - INFO - Получены данные: Homing logic:
+2025-06-16 19:29:30 - INFO - Получены данные: - Flags 0-2: Individual homing for Multi, Multizone, RRight
+2025-06-16 19:29:30 - INFO - Получены данные: - Flag 3: Individual E0 homing (only if flag 4 = 0)
+2025-06-16 19:29:31 - INFO - Получены данные: - Flag 4: Joint E0+E1 homing using shared sensor
+2025-06-16 19:29:31 - INFO - Получены данные: - If flag 4 = 1, flag 3 is ignored (joint mode takes priority)
+2025-06-16 19:29:31 - INFO - Получены данные: Features:
+2025-06-16 19:29:31 - INFO - Получены данные: - GyverPlanner for coordinated movement
+2025-06-16 19:29:31 - INFO - Получены данные: - Proper API usage with setTarget/setSpeed
+2025-06-16 19:29:31 - INFO - Получены данные: - NPN/PNP endstop support
+2025-06-16 19:29:31 - INFO - Получены данные: - Analog pins A0, A6, A7 supported
+2025-06-16 19:29:31 - INFO - Получены данные: - Direct pin control test mode
+2025-06-16 19:29:31 - INFO - Получены данные: - Joint E0+E1 homing with shared sensor
+2025-06-16 19:29:31 - INFO - Получены данные: - All commands return COMPLETE or ERROR
+2025-06-16 19:29:31 - INFO - Получены данные: - Switch-case architecture for better performance
+2025-06-16 19:29:31 - INFO - Получены данные: ERROR
+2025-06-16 19:29:31 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:29:31 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:29:45 - INFO - Отправлена команда: sm 0 0 0 0 0
+2025-06-16 19:29:45 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:29:46 - INFO - Получены данные: Motors enabled
+2025-06-16 19:29:46 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: E0 -> 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: E1 -> 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:29:46 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:29:46 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 19:29:46 - INFO - Получены данные: Motors disabled
+2025-06-16 19:29:46 - INFO - Получены данные: COMPLETE
+2025-06-16 19:29:46 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:29:46 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:35:06 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:35:07 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:35:07 - INFO - Получены данные: Initializing...
+2025-06-16 19:35:07 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:35:07 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:35:07 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:35:07 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:35:07 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:35:07 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:35:07 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:35:07 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:35:07 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:35:07 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:35:07 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:35:07 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:35:30 - INFO - Отправлена команда: sm 0 20 0 0 0
+2025-06-16 19:35:30 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:35:30 - INFO - Получены данные: Motors enabled
+2025-06-16 19:35:30 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps)
+2025-06-16 19:35:30 - INFO - Получены данные: Multizone(Y) -> 20.00 units (1600 steps)
+2025-06-16 19:35:30 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps)
+2025-06-16 19:35:30 - INFO - Получены данные: E0 -> 0.00 units (0 steps)
+2025-06-16 19:35:30 - INFO - Получены данные: E1 -> 0.00 units (0 steps)
+2025-06-16 19:35:30 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:35:30 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:35:30 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 19:35:30 - INFO - Получены данные: Multizone(Y) final position: 20.00 units (1600 steps)
+2025-06-16 19:35:31 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 19:35:31 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 19:35:31 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 19:35:31 - INFO - Получены данные: Motors disabled
+2025-06-16 19:35:31 - INFO - Получены данные: COMPLETE
+2025-06-16 19:35:31 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:35:31 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:35:53 - INFO - Отправлена команда: sm 0 0 0 0 0
+2025-06-16 19:35:53 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:35:53 - INFO - Получены данные: Motors enabled
+2025-06-16 19:35:53 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: E0 -> 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: E1 -> 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:35:53 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:35:53 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 19:35:53 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 19:35:54 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 19:35:54 - INFO - Получены данные: Motors disabled
+2025-06-16 19:35:54 - INFO - Получены данные: COMPLETE
+2025-06-16 19:35:54 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:35:54 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:36:08 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-16 19:36:08 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:36:13 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-16 19:36:13 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:36:13 - INFO - Получены данные: Motors enabled
+2025-06-16 19:36:13 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:36:13 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:36:19 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:36:19 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-16 19:36:19 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-16 19:36:19 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:36:19 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:36:19 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:36:20 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:36:20 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-16 19:36:20 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-16 19:36:20 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:36:20 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:36:20 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:36:20 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:36:20 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:36:20 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:36:22 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16879, E1 pos: -16879, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:36:24 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41278, E1 pos: -41278, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:36:25 - INFO - Получены данные: ERROR: Unknown exit condition from homing loop
+2025-06-16 19:36:25 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000, Final sensor state: OPEN
+2025-06-16 19:36:25 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:36:25 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:36:25 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:36:25 - INFO - Получены данные: ERROR
+2025-06-16 19:36:25 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:36:25 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:36:45 - INFO - Отправлена команда: sm 100 0 100 100 100
+2025-06-16 19:36:45 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:36:46 - INFO - Получены данные: Motors enabled
+2025-06-16 19:36:46 - INFO - Получены данные: Multi(X) -> 100.00 units (8000 steps)
+2025-06-16 19:36:46 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps)
+2025-06-16 19:36:46 - INFO - Получены данные: RRight(Z) -> 100.00 units (8000 steps)
+2025-06-16 19:36:46 - INFO - Получены данные: E0 -> 100.00 units (20000 steps)
+2025-06-16 19:36:46 - INFO - Получены данные: E1 -> 100.00 units (20000 steps)
+2025-06-16 19:36:46 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:36:48 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:36:48 - INFO - Получены данные: Multi(X) final position: 100.00 units (8000 steps)
+2025-06-16 19:36:48 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:36:48 - INFO - Получены данные: RRight(Z) final position: 100.00 units (8000 steps)
+2025-06-16 19:36:48 - INFO - Получены данные: E0 final position: 100.00 units (20000 steps)
+2025-06-16 19:36:48 - INFO - Получены данные: E1 final position: 100.00 units (20000 steps)
+2025-06-16 19:36:48 - INFO - Получены данные: Motors disabled
+2025-06-16 19:36:49 - INFO - Получены данные: COMPLETE
+2025-06-16 19:36:49 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:36:49 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:37:09 - INFO - Отправлена команда: sm 0 0 0 0 0
+2025-06-16 19:37:09 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:37:09 - INFO - Получены данные: Motors enabled
+2025-06-16 19:37:09 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps)
+2025-06-16 19:37:09 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps)
+2025-06-16 19:37:09 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps)
+2025-06-16 19:37:09 - INFO - Получены данные: E0 -> 0.00 units (0 steps)
+2025-06-16 19:37:09 - INFO - Получены данные: E1 -> 0.00 units (0 steps)
+2025-06-16 19:37:09 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:37:09 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:37:10 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 19:37:10 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:37:10 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 19:37:10 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 19:37:10 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 19:37:10 - INFO - Получены данные: Motors disabled
+2025-06-16 19:37:10 - INFO - Получены данные: COMPLETE
+2025-06-16 19:37:10 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:37:10 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:38:27 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:38:27 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:38:27 - INFO - Получены данные: Initializing...
+2025-06-16 19:38:27 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:38:28 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:38:28 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:38:28 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:38:28 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:38:28 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:38:28 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:38:28 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:38:28 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:38:28 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:38:28 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:38:28 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:39:48 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:39:49 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:39:49 - INFO - Получены данные: Initializing...
+2025-06-16 19:39:49 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:39:49 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:39:49 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:39:49 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:39:49 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:39:49 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:39:49 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:39:49 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:39:49 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:39:49 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:39:49 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:39:49 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:40:01 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-16 19:40:01 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-16 19:40:01 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-16 19:40:01 - INFO - Получены данные: Motors enabled
+2025-06-16 19:40:01 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-16 19:40:01 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-16 19:40:04 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-16 19:40:04 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-16 19:40:04 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-16 19:40:04 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-16 19:40:04 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-16 19:40:04 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-16 19:40:05 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-16 19:40:05 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-16 19:40:05 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-16 19:40:05 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-16 19:40:06 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-16 19:40:06 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-16 19:40:06 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-16 19:40:06 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-16 19:40:06 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:40:07 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16866, E1 pos: -16866, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:40:09 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -41262, E1 pos: -41262, Sensor: OPEN, Planner ready: NO
+2025-06-16 19:40:11 - INFO - Получены данные: ERROR: Unknown exit condition from homing loop
+2025-06-16 19:40:11 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000, Final sensor state: OPEN
+2025-06-16 19:40:11 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-16 19:40:11 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-16 19:40:11 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-16 19:40:11 - INFO - Получены данные: ERROR
+2025-06-16 19:40:11 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:40:11 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:40:26 - INFO - Отправлена команда: sm 100 0 100 100 100
+2025-06-16 19:40:26 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:40:26 - INFO - Получены данные: Motors enabled
+2025-06-16 19:40:26 - INFO - Получены данные: Multi(X) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-16 19:40:26 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:40:26 - INFO - Получены данные: RRight(Z) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-16 19:40:26 - INFO - Получены данные: E0 -> 100.00 units (20000 steps) from current 0 steps
+2025-06-16 19:40:26 - INFO - Получены данные: E1 -> 100.00 units (20000 steps) from current 0 steps
+2025-06-16 19:40:26 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:40:29 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:40:29 - INFO - Получены данные: Multi(X) final position: 100.00 units (8000 steps)
+2025-06-16 19:40:29 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:40:29 - INFO - Получены данные: RRight(Z) final position: 100.00 units (8000 steps)
+2025-06-16 19:40:29 - INFO - Получены данные: E0 final position: 100.00 units (20000 steps)
+2025-06-16 19:40:29 - INFO - Получены данные: E1 final position: 100.00 units (20000 steps)
+2025-06-16 19:40:29 - INFO - Получены данные: Motors disabled
+2025-06-16 19:40:29 - INFO - Получены данные: COMPLETE
+2025-06-16 19:40:29 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:40:29 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:40:42 - INFO - Отправлена команда: sm 0 0 0 0 0
+2025-06-16 19:40:42 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:40:42 - INFO - Получены данные: Motors enabled
+2025-06-16 19:40:42 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:40:42 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:40:42 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:40:42 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:40:42 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:40:42 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-16 19:40:42 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-16 19:40:42 - INFO - Получены данные: Motors disabled
+2025-06-16 19:40:42 - INFO - Получены данные: COMPLETE
+2025-06-16 19:40:42 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:40:42 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:42:58 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-16 19:42:58 - INFO - Получены данные: === Proper API Usage ===
+2025-06-16 19:42:58 - INFO - Получены данные: Initializing...
+2025-06-16 19:42:58 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-16 19:42:58 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-16 19:42:58 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-16 19:42:58 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-16 19:42:58 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-16 19:42:59 - INFO - Получены данные: All steppers added to planner
+2025-06-16 19:42:59 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-16 19:42:59 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-16 19:42:59 - INFO - Получены данные: System initialized successfully!
+2025-06-16 19:42:59 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-16 19:42:59 - INFO - Получены данные: Type 'status' for system information
+2025-06-16 19:42:59 - INFO - Получены данные: Ready for commands...
+2025-06-16 19:43:08 - INFO - Отправлена команда: sm 100 0 100 100 100
+2025-06-16 19:43:08 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:43:08 - INFO - Получены данные: Motors enabled
+2025-06-16 19:43:08 - INFO - Получены данные: Multi(X) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-16 19:43:08 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:43:08 - INFO - Получены данные: RRight(Z) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-16 19:43:08 - INFO - Получены данные: E0 -> 100.00 units (20000 steps) from current 0 steps
+2025-06-16 19:43:08 - INFO - Получены данные: E1 -> 100.00 units (20000 steps) from current 0 steps
+2025-06-16 19:43:08 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:43:10 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:43:10 - INFO - Получены данные: Multi(X) final position: 100.00 units (8000 steps)
+2025-06-16 19:43:11 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:43:11 - INFO - Получены данные: RRight(Z) final position: 100.00 units (8000 steps)
+2025-06-16 19:43:11 - INFO - Получены данные: E0 final position: 100.00 units (20000 steps)
+2025-06-16 19:43:11 - INFO - Получены данные: E1 final position: 100.00 units (20000 steps)
+2025-06-16 19:43:11 - INFO - Получены данные: Motors disabled
+2025-06-16 19:43:11 - INFO - Получены данные: COMPLETE
+2025-06-16 19:43:11 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:43:11 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-16 19:43:22 - INFO - Отправлена команда: sm 0 0 0 0 0
+2025-06-16 19:43:22 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-16 19:43:22 - INFO - Получены данные: Motors enabled
+2025-06-16 19:43:22 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 8000 steps
+2025-06-16 19:43:22 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-16 19:43:22 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 8000 steps
+2025-06-16 19:43:22 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 20000 steps
+2025-06-16 19:43:22 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 20000 steps
+2025-06-16 19:43:22 - INFO - Получены данные: Target set, starting movement...
+2025-06-16 19:43:24 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-16 19:43:24 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-16 19:43:25 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-16 19:43:25 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-16 19:43:25 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-16 19:43:25 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-16 19:43:25 - INFO - Получены данные: Motors disabled
+2025-06-16 19:43:25 - INFO - Получены данные: COMPLETE
+2025-06-16 19:43:25 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-16 19:43:25 - INFO - Получены данные: DEBUG: Planner cleanup completed

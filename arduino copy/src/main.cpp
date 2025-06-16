@@ -1,15 +1,13 @@
 /**
  * @file: main.cpp
- * @description: Система управления 5 шаговыми двигателями с использованием AccelStepper и MultiStepper
- * @dependencies: AccelStepper, MultiStepper, SerialCommand
+ * @description: Система управления 5 шаговыми двигателями с использованием GyverPlanner
+ * @dependencies: GyverPlanner
  * @created: 2024-12-19
- * @updated: 2024-12-19 - добавлен MultiStepper для координированного движения
+ * @updated: 2024-12-19 - переход на GyverPlanner с правильным API
  */
 
 #include <Arduino.h>
-#include <AccelStepper.h>
-#include <MultiStepper.h>
-#include <SerialCommand.h>
+#include "GyverPlanner.h"
 
 // ============================================
 // КОНФИГУРАЦИЯ СИСТЕМЫ
@@ -37,10 +35,10 @@ const int NUM_CONTROL_PINS = sizeof(controlPins) / sizeof(controlPins[0]);
 const char* motorNames[NUM_MOTORS] = {"Multi(X)", "Multizone(Y)", "RRight(Z)", "E0", "E1"};
 
 // Настройки двигателей (из config.h)
-const float maxSpeed[NUM_MOTORS] = {6000.0, 600.0, 30000.0, 30000.0, 30000.0};          // шагов/сек
-const float acceleration[NUM_MOTORS] = {5000.0, 800.0, 2000.0, 3000.0, 2000.0};       // шагов/сек²
+const float maxSpeed[NUM_MOTORS] = {10000.0, 200.0, 4000.0, 30000.0, 30000.0};          // шагов/сек
+const float acceleration[NUM_MOTORS] = {10000.0, 300.0, 1000.0, 30000.0, 30000.0};       // шагов/сек²
 const long stepsPerRevolution[NUM_MOTORS] = {200, 200, 200, 200, 200};     // шагов на оборот
-const float homingSpeed[NUM_MOTORS] = {6000.0, 400.0, 2000.0, 1000.0, 1000.0};        // шагов/сек для хоминга
+const float homingSpeed[NUM_MOTORS] = {3000.0, 40.0, 4000.0, 30000.0, 30000.0};        // шагов/сек для хоминга
 const bool endstopTypeNPN[NUM_MOTORS] = {false, true, true, true, true};   // тип датчика (true=NPN, false=PNP)
 
 // Настройки для преобразования единиц (шагов на мм - можно настроить под ваши механизмы)
@@ -52,12 +50,24 @@ const long homeBackoff[NUM_MOTORS] = {200, 200, 200, 200, 200};            // ш
 // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 // ============================================
 
-AccelStepper* steppers[NUM_MOTORS];
-MultiStepper multiStepper;  // Планировщик координированного движения
-SerialCommand sCmd;
+// Создаем объекты шаговиков для планировщика
+Stepper<STEPPER2WIRE> stepper0(stepPins[0], dirPins[0]);
+Stepper<STEPPER2WIRE> stepper1(stepPins[1], dirPins[1]);
+Stepper<STEPPER2WIRE> stepper2(stepPins[2], dirPins[2]);
+Stepper<STEPPER2WIRE> stepper3(stepPins[3], dirPins[3]);
+Stepper<STEPPER2WIRE> stepper4(stepPins[4], dirPins[4]);
+
+// Создаем планировщик для 5 осей
+GPlanner<STEPPER2WIRE, NUM_MOTORS> planner;
+
+// Массив указателей на шаговики для удобства работы
+Stepper<STEPPER2WIRE>* steppers[NUM_MOTORS] = {&stepper0, &stepper1, &stepper2, &stepper3, &stepper4};
 
 bool motorsEnabled = true;
 bool homingActive = false;
+
+String inputString = "";
+bool stringComplete = false;
 
 // ============================================
 // СЛУЖЕБНЫЕ ФУНКЦИИ
@@ -100,13 +110,6 @@ void disableMotors() {
 }
 
 /**
- * Проверка завершения движения всех двигателей (через MultiStepper)
- */
-bool allMotorsIdle() {
-    return !multiStepper.run();
-}
-
-/**
  * Чтение состояния концевого выключателя с учетом типа (NPN/PNP)
  */
 bool readHomeSwitch(int motorIndex) {
@@ -121,49 +124,14 @@ bool readHomeSwitch(int motorIndex) {
     }
 }
 
-/**
- * Ожидание завершения координированного движения с таймаутом
- */
-bool waitForCoordinatedMoveComplete(unsigned long timeoutMs = 60000) {
-    unsigned long startTime = millis();
-    
-    Serial.println("Starting coordinated movement...");
-    
-    while (multiStepper.run()) {
-        if (millis() - startTime > timeoutMs) {
-            Serial.println("ERROR: Coordinated movement timeout");
-            return false;
-        }
-        
-        // Показываем прогресс каждые 2 секунды
-        if ((millis() - startTime) % 2000 < 10) {
-            Serial.print("Moving... ");
-            for (int i = 0; i < NUM_MOTORS; i++) {
-                Serial.print(motorNames[i]);
-                Serial.print(":");
-                Serial.print(steppers[i]->currentPosition());
-                Serial.print(" ");
-            }
-            Serial.println();
-        }
-        
-        delay(1);
-    }
-    
-    Serial.println("Coordinated movement completed");
-    return true;
-}
-
 // ============================================
 // ОСНОВНЫЕ ФУНКЦИИ УПРАВЛЕНИЯ
 // ============================================
 
 /**
- * Координированное движение всех двигателей с использованием MultiStepper
- * @param positions массив позиций в пользовательских единицах
- * @param moveFlags массив флагов движения (true - двигать, false - не двигать)
+ * Функция движения моторов согласно примеру GyverPlanner
  */
-void coordinatedMove(float positions[NUM_MOTORS], bool moveFlags[NUM_MOTORS]) {
+void moveMotorsToPosition(float positions[NUM_MOTORS], bool flags[NUM_MOTORS]) {
     if (homingActive) {
         Serial.println("ERROR: Cannot move during homing");
         return;
@@ -174,36 +142,63 @@ void coordinatedMove(float positions[NUM_MOTORS], bool moveFlags[NUM_MOTORS]) {
     // Включаем двигатели
     enableMotors();
     
-    // Подготавливаем массив целевых позиций
-    long targetPositions[NUM_MOTORS];
-    
+    // Подготавливаем целевые позиции
+    int32_t targetPositions[NUM_MOTORS];
     for (int i = 0; i < NUM_MOTORS; i++) {
-        if (moveFlags[i]) {
+        if (flags[i]) {
             targetPositions[i] = unitsToSteps(i, positions[i]);
             Serial.print(motorNames[i]);
             Serial.print(" -> ");
             Serial.print(positions[i]);
             Serial.print(" units (");
             Serial.print(targetPositions[i]);
-            Serial.println(" steps)");
+            Serial.print(" steps) from current ");
+            Serial.print(steppers[i]->pos);
+            Serial.println(" steps");
         } else {
-            // Если двигатель не двигается, оставляем текущую позицию
-            targetPositions[i] = steppers[i]->currentPosition();
+            targetPositions[i] = steppers[i]->pos; // Текущая позиция
             Serial.print(motorNames[i]);
             Serial.println(" -> no movement");
         }
     }
     
-    // КРИТИЧЕСКИ ВАЖНО: Используем MultiStepper для координированного движения
-    multiStepper.moveTo(targetPositions);
+    // Проверяем, есть ли реальное движение
+    bool hasMovement = false;
+    for (int i = 0; i < NUM_MOTORS; i++) {
+        if (flags[i] && targetPositions[i] != steppers[i]->pos) {
+            hasMovement = true;
+            break;
+        }
+    }
     
-    // Ожидаем завершения координированного движения
-    if (waitForCoordinatedMoveComplete()) {
-        Serial.println("=== COORDINATED MOVE COMPLETED ===");
-        
-        // Показываем финальные позиции
-        for (int i = 0; i < NUM_MOTORS; i++) {
-            long currentSteps = steppers[i]->currentPosition();
+    if (!hasMovement) {
+        Serial.println("WARNING: All motors are already at target positions - no movement needed");
+        Serial.println("=== COORDINATED MOVE COMPLETED (NO MOVEMENT) ===");
+        disableMotors();
+        Serial.println("COMPLETE");
+        return;
+    }
+    
+    // Используем правильный API GyverPlanner
+    planner.setTarget(targetPositions);
+    
+    Serial.println("Target set, starting movement...");
+    
+    // МАКСИМАЛЬНО УПРОЩЕННЫЙ ЦИКЛ - ТОЛЬКО tick()!
+    while (!planner.ready()) {
+        planner.tick(); // ВСЕ РЕСУРСЫ НА tick()!
+    }
+    
+    // ИСПРАВЛЕНО: Принудительная очистка планировщика
+    planner.stop();  // Останавливаем все движения
+    delay(50);       // Пауза для стабилизации
+    
+    Serial.println("=== COORDINATED MOVE COMPLETED ===");
+    
+    // Показываем финальные позиции
+    for (int i = 0; i < NUM_MOTORS; i++) {
+        if (flags[i]) {
+            long currentSteps = steppers[i]->pos;
             float currentUnits = stepsToUnits(i, currentSteps);
             Serial.print(motorNames[i]);
             Serial.print(" final position: ");
@@ -212,22 +207,34 @@ void coordinatedMove(float positions[NUM_MOTORS], bool moveFlags[NUM_MOTORS]) {
             Serial.print(currentSteps);
             Serial.println(" steps)");
         }
-    } else {
-        Serial.println("=== COORDINATED MOVE FAILED ===");
     }
     
-    // Отключаем двигатели
     disableMotors();
+    
+    // ОБЯЗАТЕЛЬНЫЙ СТАТУС ЗАВЕРШЕНИЯ
+    Serial.println("COMPLETE");
 }
 
 /**
- * Поиск нуля для выбранных двигателей
- * @param homeFlags массив флагов поиска нуля (true - искать, false - пропустить)
+ * Поиск нуля для выбранных двигателей согласно примеру
  */
 void stepperHome(bool homeFlags[NUM_MOTORS]) {
-    if (!allMotorsIdle()) {
-        Serial.println("ERROR: Motors are moving, cannot start homing");
-        return;
+    // ИСПРАВЛЕНО: Ждем готовности планировщика вместо немедленного отказа
+    Serial.println("Waiting for planner to be ready...");
+    
+    // Добавляем таймаут для ожидания планировщика
+    unsigned long waitStart = millis();
+    while (!planner.ready()) {
+        planner.tick(); // Продолжаем обработку до готовности
+        delay(10);      // Небольшая задержка для избежания зависания
+        
+        // Таймаут ожидания планировщика
+        if (millis() - waitStart > 5000) { // 5 секунд максимум
+            Serial.println("ERROR: Planner timeout - forcing reset");
+            planner.stop();  // Принудительная остановка
+            delay(100);
+            break;
+        }
     }
     
     homingActive = true;
@@ -235,7 +242,10 @@ void stepperHome(bool homeFlags[NUM_MOTORS]) {
     
     enableMotors();
     
-    for (int i = 0; i < NUM_MOTORS; i++) {
+    bool homingSuccess = true; // Флаг успешности хоминга
+    
+    // Обрабатываем индивидуальные моторы (Multi, Multizone, RRight)
+    for (int i = 0; i < 3; i++) {
         if (!homeFlags[i]) continue;
         
         Serial.print("Homing ");
@@ -244,255 +254,643 @@ void stepperHome(bool homeFlags[NUM_MOTORS]) {
         Serial.print(endstopTypeNPN[i] ? "NPN" : "PNP");
         Serial.println(" sensor)");
         
-        // Временно отключаем двигатель от MultiStepper для индивидуального хоминга
-        
-        // Этап 1: Движение до концевика или лимита шагов
-        bool homeSwitchTriggered = false;
-        steppers[i]->setMaxSpeed(homingSpeed[i]); // Используем индивидуальную скорость хоминга
-        steppers[i]->move(-maxSteps[i]); // Движение в отрицательном направлении
-        
-        unsigned long startTime = millis();
-        while (steppers[i]->isRunning()) {
-            steppers[i]->run(); // Обновляем мотор
+        // ИСПРАВЛЕНО: Правильная логика для уже сработавшего датчика
+        if (readHomeSwitch(i)) {
+            // Датчик уже сработал - сначала отъезжаем от него
+            Serial.print(motorNames[i]);
+            Serial.println(" - endstop already triggered, moving away first");
             
-            if (readHomeSwitch(i)) {
-                steppers[i]->stop();
-                while (steppers[i]->isRunning()) {
-                    steppers[i]->run();
-                    delay(1);
+            planner.setSpeed(i, homingSpeed[i]); // положительная скорость - от концевика
+            
+            unsigned long moveStart = millis();
+            while (readHomeSwitch(i)) {  // пока концевик сработан
+                planner.tick();          // отъезжаем
+                
+                // Таймаут для отъезда
+                if (millis() - moveStart > 10000) { // 10 секунд максимум
+                    Serial.print("ERROR: ");
+                    Serial.print(motorNames[i]);
+                    Serial.println(" - timeout moving away from endstop");
+                    homingSuccess = false;
+                    break;
                 }
-                steppers[i]->setCurrentPosition(0);
-                homeSwitchTriggered = true;
-                Serial.print(motorNames[i]);
-                Serial.println(" - home switch triggered");
-                break;
             }
             
-            // Таймаут
-            if (millis() - startTime > 30000) {
-                steppers[i]->stop();
-                while (steppers[i]->isRunning()) {
-                    steppers[i]->run();
-                    delay(1);
-                }
-                steppers[i]->setCurrentPosition(0);
+            planner.setSpeed(i, 0);      // останавливаем
+            
+            if (!homingSuccess) break;
+            
+            Serial.print(motorNames[i]);
+            Serial.println(" - moved away from endstop");
+            
+            delay(200); // Небольшая пауза для стабилизации
+        }
+        
+        // Теперь движемся к концевику (датчик точно НЕ сработан)
+        Serial.print(motorNames[i]);
+        Serial.println(" - moving to endstop");
+        
+        planner.setSpeed(i, -homingSpeed[i]); // отрицательная скорость - к концевику
+        
+        unsigned long moveStart = millis();
+        while (!readHomeSwitch(i)) {  // пока концевик не сработал
+            planner.tick();           // крутим
+            
+            // Таймаут для поиска концевика
+            if (millis() - moveStart > 15000) { // 15 секунд максимум
                 Serial.print("ERROR: ");
                 Serial.print(motorNames[i]);
-                Serial.println(" - homing timeout");
+                Serial.println(" - timeout searching for endstop");
+                homingSuccess = false;
                 break;
             }
-            
-            delay(1);
         }
         
-        if (!homeSwitchTriggered) {
-            Serial.print("ERROR: ");
-            Serial.print(motorNames[i]);
-            Serial.println(" - home switch not found");
-            continue;
-        }
+        planner.setSpeed(i, 0);       // останавливаем мотор
         
-        // Этап 2: Отъезд на заданное расстояние
-        delay(100); // Пауза между этапами
-        steppers[i]->move(homeBackoff[i]);
+        if (!homingSuccess) break;
         
-        while (steppers[i]->isRunning()) {
-            steppers[i]->run();
-            delay(1);
-        }
+        Serial.print(motorNames[i]);
+        Serial.println(" - endstop triggered");
         
-        // Установка нулевой позиции
-        steppers[i]->setCurrentPosition(0);
+        // ИСПРАВЛЕНО: Устанавливаем нулевую позицию сразу после срабатывания датчика
+        Serial.print("Setting ");
+        Serial.print(motorNames[i]);
+        Serial.println(" position to zero...");
+        steppers[i]->pos = 0;  // Устанавливаем позицию в 0
+        Serial.print(motorNames[i]);
+        Serial.println(" position set to zero");
         
         Serial.print(motorNames[i]);
         Serial.println(" - homing completed");
-        
-        // Восстанавливаем рабочую скорость
-        steppers[i]->setMaxSpeed(maxSpeed[i]);
     }
     
-    disableMotors();
+    // Обрабатываем E0 индивидуально (если флаг homeFlags[3] = true)
+    if (homeFlags[3] && !homeFlags[4] && homingSuccess) {
+        int i = 3; // E0
+        Serial.print("Homing ");
+        Serial.print(motorNames[i]);
+        Serial.print(" individually (");
+        Serial.print(endstopTypeNPN[i] ? "NPN" : "PNP");
+        Serial.println(" sensor)");
+        
+        // Аналогичная логика для E0 с таймаутами
+        if (readHomeSwitch(i)) {
+            Serial.print(motorNames[i]);
+            Serial.println(" - endstop already triggered, moving away first");
+            
+            planner.setSpeed(i, homingSpeed[i]);
+            
+            unsigned long moveStart = millis();
+            while (readHomeSwitch(i)) {
+                planner.tick();
+                if (millis() - moveStart > 10000) {
+                    Serial.print("ERROR: ");
+                    Serial.print(motorNames[i]);
+                    Serial.println(" - timeout moving away");
+                    homingSuccess = false;
+                    break;
+                }
+            }
+            
+            planner.setSpeed(i, 0);
+            
+            if (homingSuccess) {
+                Serial.print(motorNames[i]);
+                Serial.println(" - moved away from endstop");
+                delay(200);
+            }
+        }
+        
+        if (homingSuccess) {
+            Serial.print(motorNames[i]);
+            Serial.println(" - moving to endstop");
+            
+            planner.setSpeed(i, -homingSpeed[i]);
+            
+            unsigned long moveStart = millis();
+            while (!readHomeSwitch(i)) {
+                planner.tick();
+                if (millis() - moveStart > 15000) {
+                    Serial.print("ERROR: ");
+                    Serial.print(motorNames[i]);
+                    Serial.println(" - timeout searching");
+                    homingSuccess = false;
+                    break;
+                }
+            }
+            
+            planner.setSpeed(i, 0);
+            
+            if (homingSuccess) {
+                Serial.print(motorNames[i]);
+                Serial.println(" - endstop triggered");
+                
+                // ИСПРАВЛЕНО: Устанавливаем нулевую позицию сразу после срабатывания датчика
+                Serial.print("Setting ");
+                Serial.print(motorNames[i]);
+                Serial.println(" position to zero...");
+                steppers[i]->pos = 0;  // E0 в позицию 0
+                Serial.print(motorNames[i]);
+                Serial.println(" position set to zero");
+                
+                Serial.print(motorNames[i]);
+                Serial.println(" - homing completed");
+            }
+        }
+    }
+    
+    // ОБЩИЙ ХОМИНГ E0 и E1 (если флаг homeFlags[4] = true)
+    if (homeFlags[4] && homingSuccess) {
+        Serial.println("=== JOINT E0+E1 HOMING ===");
+        Serial.print("Homing E0 and E1 together using shared sensor (");
+        Serial.print(endstopTypeNPN[3] ? "NPN" : "PNP"); // Используем датчик E0 (индекс 3)
+        Serial.println(")");
+        
+        // Проверяем датчик E0 (который общий для E0 и E1)
+        if (readHomeSwitch(3)) { // Датчик уже сработал
+            Serial.println("E0+E1 - shared endstop already triggered, moving away first");
+            
+            // Отъезжаем от датчика координированным движением
+            int32_t awayDistance = 1000; // Расстояние отъезда
+            int32_t targetPositions[NUM_MOTORS];
+            
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                if (i == 3 || i == 4) { // E0 и E1
+                    targetPositions[i] = steppers[i]->pos + awayDistance;
+                } else {
+                    targetPositions[i] = steppers[i]->pos; // Остальные не двигаются
+                }
+            }
+            
+            planner.setTarget(targetPositions);
+            
+            unsigned long moveStart = millis();
+            while (!planner.ready()) {
+                planner.tick();
+                if (millis() - moveStart > 10000) {
+                    Serial.println("ERROR: E0+E1 timeout moving away");
+                    homingSuccess = false;
+                    break;
+                }
+            }
+            
+            if (homingSuccess) {
+                Serial.println("E0+E1 - moved away from shared endstop");
+                delay(200);
+            }
+        }
+        
+        if (homingSuccess) {
+            // Теперь движемся к концевику (датчик точно НЕ сработан)
+            Serial.println("E0+E1 - moving to shared endstop");
+            
+            // Используем координированное движение для поиска концевика
+            int32_t searchDistance = -50000; // Большое расстояние для поиска
+            int32_t targetPositions[NUM_MOTORS];
+            
+            // Подготавливаем целевые позиции
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                if (i == 3 || i == 4) { // E0 и E1
+                    targetPositions[i] = steppers[i]->pos + searchDistance;
+                } else {
+                    targetPositions[i] = steppers[i]->pos; // Остальные не двигаются
+                }
+            }
+            
+            // Запускаем координированное движение
+            planner.setTarget(targetPositions);
+            
+            Serial.println("Both motors E0 and E1 started coordinated movement...");
+            
+            // Добавляем счетчик для диагностики
+            unsigned long startTime = millis();
+            unsigned long lastDiagTime = 0;
+            
+            while (!readHomeSwitch(3) && !planner.ready()) {  // пока концевик не сработал И движение не завершено
+                planner.tick();           // крутим оба мотора
+                
+                // Диагностика каждые 2 секунды
+                if (millis() - lastDiagTime > 2000) {
+                    Serial.print("DEBUG: Coordinated homing... Time: ");
+                    Serial.print((millis() - startTime) / 1000.0, 1);
+                    Serial.print("s, E0 pos: ");
+                    Serial.print(steppers[3]->pos);
+                    Serial.print(", E1 pos: ");
+                    Serial.print(steppers[4]->pos);
+                    Serial.print(", Sensor: ");
+                    Serial.print(readHomeSwitch(3) ? "TRIGGERED" : "OPEN");
+                    Serial.print(", Planner ready: ");
+                    Serial.println(planner.ready() ? "YES" : "NO");
+                    lastDiagTime = millis();
+                }
+                
+                // Защита от зависания
+                if (millis() - startTime > 30000) { // 30 секунд максимум
+                    Serial.println("ERROR: E0+E1 homing timeout");
+                    homingSuccess = false;
+                    break;
+                }
+            }
+            
+            // Проверяем причину выхода из цикла
+            if (readHomeSwitch(3)) {
+                Serial.println("SUCCESS: Shared endstop triggered during coordinated movement");
+                
+                // ИСПРАВЛЕНО: Устанавливаем нулевую позицию сразу после срабатывания датчика
+                Serial.println("Setting E0 and E1 positions to zero...");
+                steppers[3]->pos = 0;  // E0 в позицию 0
+                steppers[4]->pos = 0;  // E1 в позицию 0
+                Serial.println("E0 and E1 positions set to zero");
+                
+            } else if (planner.ready()) {
+                Serial.println("ERROR: Movement completed but endstop not triggered");
+                homingSuccess = false;
+            } else {
+                Serial.println("ERROR: Unknown exit condition from homing loop");
+                homingSuccess = false;
+            }
+            
+            // Финальная диагностика с состоянием датчика
+            Serial.print("Final positions - E0: ");
+            Serial.print(steppers[3]->pos);
+            Serial.print(", E1: ");
+            Serial.print(steppers[4]->pos);
+            Serial.print(", Final sensor state: ");
+            Serial.println(readHomeSwitch(3) ? "TRIGGERED" : "OPEN");
+            
+            Serial.println("E0+E1 - coordinated homing completed");
+        }
+    }
+    
+    // ИСПРАВЛЕНО: Принудительная очистка планировщика
+    planner.stop();  // Останавливаем все движения
+    delay(50);       // Пауза для стабилизации
+    
+    // ИСПРАВЛЕНО: НЕ вызываем planner.reset() в конце - позиции уже установлены индивидуально
+    // planner.reset();    // УБРАНО - позиции устанавливаются индивидуально при срабатывании датчиков
+    // delay(50);          // УБРАНО
+    
+    // ИСПРАВЛЕНО: НЕ отключаем двигатели после хоминга
+    // disableMotors(); // УБРАНО - оставляем двигатели включенными
+    
     homingActive = false;
     Serial.println("=== HOMING PROCEDURE COMPLETED ===");
+    Serial.println("Motors remain enabled for immediate use");
+    
+    // ОБЯЗАТЕЛЬНЫЙ СТАТУС ЗАВЕРШЕНИЯ
+    if (homingSuccess) {
+        Serial.println("COMPLETE");
+    } else {
+        Serial.println("ERROR");
+    }
 }
 
 // ============================================
-// ОБРАБОТКА SERIAL КОМАНД
+// ОБРАБОТКА КОМАНД БЕЗ SERIALCOMMAND
 // ============================================
 
 /**
- * Команда: steppermove pos0 pos1 pos2 pos3 pos4
- * Перемещение двигателей. Символ '*' означает не двигать двигатель
+ * Парсинг строки команды и извлечение аргументов
  */
-void cmdStepperMove() {
-    float positions[NUM_MOTORS];
-    bool moveFlags[NUM_MOTORS];
-    char* arg;
+void parseCommand(String command) {
+    command.trim();
+    int spaceIndex = command.indexOf(' ');
+    String cmd = (spaceIndex == -1) ? command : command.substring(0, spaceIndex);
+    String args = (spaceIndex == -1) ? "" : command.substring(spaceIndex + 1);
     
-    for (int i = 0; i < NUM_MOTORS; i++) {
-        arg = sCmd.next();
-        if (arg == NULL) {
-            Serial.println("ERROR: Not enough arguments for steppermove");
-            return;
+    cmd.toLowerCase();
+    
+    // Определяем тип команды для switch case
+    enum CommandType {
+        CMD_SM,      // steppermove
+        CMD_SH,      // stepperhome
+        CMD_PON,     // pinon
+        CMD_POFF,    // pinoff
+        CMD_STATUS,  // status
+        CMD_TEST,    // test
+        CMD_UNKNOWN  // неизвестная команда
+    };
+    
+    CommandType cmdType = CMD_UNKNOWN;
+    
+    // Определяем тип команды
+    if (cmd == "sm") {
+        cmdType = CMD_SM;
+    } else if (cmd == "sh") {
+        cmdType = CMD_SH;
+    } else if (cmd == "pon") {
+        cmdType = CMD_PON;
+    } else if (cmd == "poff") {
+        cmdType = CMD_POFF;
+    } else if (cmd == "status") {
+        cmdType = CMD_STATUS;
+    } else if (cmd == "test") {
+        cmdType = CMD_TEST;
+    }
+    
+    // Обработка команд через switch case
+    switch (cmdType) {
+        case CMD_SM: {
+            // Парсим 5 аргументов для sm (steppermove)
+            float positions[NUM_MOTORS];
+            bool flags[NUM_MOTORS];
+            
+            int argCount = 0;
+            int lastIndex = 0;
+            
+            for (int i = 0; i < NUM_MOTORS && argCount < NUM_MOTORS; i++) {
+                int nextSpace = args.indexOf(' ', lastIndex);
+                String arg = (nextSpace == -1) ? args.substring(lastIndex) : args.substring(lastIndex, nextSpace);
+                
+                if (arg.length() == 0 && nextSpace == -1) break;
+                
+                arg.trim();
+                if (arg == "*") {
+                    flags[i] = false;
+                    positions[i] = 0;
+                } else {
+                    flags[i] = true;
+                    positions[i] = arg.toFloat();
+                }
+                
+                argCount++;
+                lastIndex = (nextSpace == -1) ? args.length() : nextSpace + 1;
+            }
+            
+            if (argCount == NUM_MOTORS) {
+                moveMotorsToPosition(positions, flags);
+            } else {
+                Serial.print("ERROR: Expected 5 arguments, got ");
+                Serial.println(argCount);
+                Serial.println("ERROR");
+            }
+            break;
         }
         
-        if (strcmp(arg, "*") == 0) {
-            moveFlags[i] = false;
-            positions[i] = 0;
+        case CMD_SH: {
+            // Парсим 5 аргументов для sh (stepperhome)
+            bool homeFlags[NUM_MOTORS];
+            
+            int argCount = 0;
+            int lastIndex = 0;
+            
+            for (int i = 0; i < NUM_MOTORS && argCount < NUM_MOTORS; i++) {
+                int nextSpace = args.indexOf(' ', lastIndex);
+                String arg = (nextSpace == -1) ? args.substring(lastIndex) : args.substring(lastIndex, nextSpace);
+                
+                if (arg.length() == 0 && nextSpace == -1) break;
+                
+                arg.trim();
+                homeFlags[i] = (arg.toInt() != 0);
+                
+                argCount++;
+                lastIndex = (nextSpace == -1) ? args.length() : nextSpace + 1;
+            }
+            
+            if (argCount == NUM_MOTORS) {
+                stepperHome(homeFlags);
+            } else {
+                Serial.print("ERROR: Expected 5 arguments, got ");
+                Serial.println(argCount);
+                Serial.println("ERROR");
+            }
+            break;
+        }
+        
+        case CMD_PON: {
+            int index = args.toInt();
+            if (index >= 0 && index < NUM_CONTROL_PINS) {
+                digitalWrite(controlPins[index], HIGH);
+                Serial.print("Pin ");
+                Serial.print(controlPins[index]);
+                Serial.println(" turned ON");
+                Serial.println("COMPLETE");
+            } else {
+                Serial.print("ERROR: Invalid pin index. Range: 0-");
+                Serial.println(NUM_CONTROL_PINS - 1);
+                Serial.println("ERROR");
+            }
+            break;
+        }
+        
+        case CMD_POFF: {
+            int index = args.toInt();
+            if (index >= 0 && index < NUM_CONTROL_PINS) {
+                digitalWrite(controlPins[index], LOW);
+                Serial.print("Pin ");
+                Serial.print(controlPins[index]);
+                Serial.println(" turned OFF");
+                Serial.println("COMPLETE");
+            } else {
+                Serial.print("ERROR: Invalid pin index. Range: 0-");
+                Serial.println(NUM_CONTROL_PINS - 1);
+                Serial.println("ERROR");
+            }
+            break;
+        }
+        
+        case CMD_STATUS: {
+            Serial.println("=== GYVER PLANNER SYSTEM STATUS ===");
+            Serial.print("Motors enabled: ");
+            Serial.println(motorsEnabled ? "YES" : "NO");
+            Serial.print("Homing active: ");
+            Serial.println(homingActive ? "YES" : "NO");
+            Serial.print("Planner ready: ");
+            Serial.println(planner.ready() ? "READY" : "BUSY");
+            
+            Serial.println("\nMotor positions:");
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                long currentSteps = steppers[i]->pos;
+                float currentUnits = stepsToUnits(i, currentSteps);
+                Serial.print(motorNames[i]);
+                Serial.print(": ");
+                Serial.print(currentUnits, 2);
+                Serial.print(" units (");
+                Serial.print(currentSteps);
+                Serial.println(" steps)");
+            }
+            
+            Serial.println("\nHome switches:");
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                Serial.print(motorNames[i]);
+                Serial.print(" (");
+                Serial.print(endstopTypeNPN[i] ? "NPN" : "PNP");
+                Serial.print("): ");
+                Serial.println(readHomeSwitch(i) ? "TRIGGERED" : "OPEN");
+            }
+            
+            Serial.println("\nPin configuration:");
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                Serial.print(motorNames[i]);
+                Serial.print(" - Step:");
+                Serial.print(stepPins[i]);
+                Serial.print(" Dir:");
+                Serial.print(dirPins[i]);
+                Serial.print(" Enable:");
+                Serial.print(enablePins[i]);
+                Serial.print(" Home:");
+                Serial.println(homePins[i]);
+            }
+            Serial.println("COMPLETE");
+            break;
+        }
+        
+        case CMD_TEST: {
+            // Тест всех моторов туда-сюда на 10 единиц в течение 10 секунд
+            Serial.println("=== COMPREHENSIVE MOTOR TEST ===");
+            Serial.println("Testing all motors with direct pin control");
+            Serial.println("Movement: 10 units forward/backward for 10 seconds");
+            
+            enableMotors();
+            
+            unsigned long testStartTime = millis();
+            unsigned long testDuration = 10000; // 10 секунд
+            bool direction = true; // true = вперед, false = назад
+            bool testSuccess = true;
+            
+            while (millis() - testStartTime < testDuration) {
+                Serial.print("Direction: ");
+                Serial.println(direction ? "FORWARD" : "BACKWARD");
+                
+                // Устанавливаем направление для всех моторов
+                for (int i = 0; i < NUM_MOTORS; i++) {
+                    digitalWrite(dirPins[i], direction ? LOW : HIGH);
+                }
+                
+                // Генерируем шаги для всех моторов одновременно
+                int stepsToMove = unitsToSteps(0, 10); // 10 единиц для первого мотора (как эталон)
+                Serial.print("Generating ");
+                Serial.print(stepsToMove);
+                Serial.println(" steps for each motor");
+                
+                for (int step = 0; step < stepsToMove; step++) {
+                    // Одновременно шагаем всеми моторами
+                    for (int i = 0; i < NUM_MOTORS; i++) {
+                        digitalWrite(stepPins[i], HIGH);
+                    }
+                    delayMicroseconds(500); // Короткий импульс
+                    
+                    for (int i = 0; i < NUM_MOTORS; i++) {
+                        digitalWrite(stepPins[i], LOW);
+                    }
+                    delayMicroseconds(1500); // Пауза между шагами (скорость ~667 шагов/сек)
+                    
+                    // Прерываем если время вышло
+                    if (millis() - testStartTime >= testDuration) {
+                        break;
+                    }
+                    
+                    // Показываем прогресс каждые 100 шагов
+                    if (step % 100 == 0) {
+                        Serial.print("Step ");
+                        Serial.print(step);
+                        Serial.print("/");
+                        Serial.print(stepsToMove);
+                        Serial.print(" - Time: ");
+                        Serial.print((millis() - testStartTime) / 1000.0, 1);
+                        Serial.println("s");
+                    }
+                }
+                
+                // Меняем направление
+                direction = !direction;
+                delay(500); // Пауза между сменой направления
+                
+                // Проверяем время
+                if (millis() - testStartTime >= testDuration) {
+                    break;
+                }
+            }
+            
+            Serial.println("=== TEST COMPLETED ===");
+            Serial.print("Total test time: ");
+            Serial.print((millis() - testStartTime) / 1000.0, 1);
+            Serial.println(" seconds");
+            
+            disableMotors();
+            
+            if (testSuccess) {
+                Serial.println("COMPLETE");
+            } else {
+                Serial.println("ERROR");
+            }
+            break;
+        }
+        
+        case CMD_UNKNOWN:
+        default: {
+            Serial.print("ERROR: Unknown command '");
+            Serial.print(cmd);
+            Serial.println("'");
+            Serial.println("Available commands:");
+            Serial.println("  sm pos0 pos1 pos2 pos3 pos4  - coordinated movement (steppermove)");
+            Serial.println("  sh bool0 bool1 bool2 bool3 bool4  - homing procedure (stepperhome)");
+            Serial.println("    Note: sh flags - Multi Multizone RRight E0_individual E0+E1_joint");
+            Serial.println("    Example: sh 1 1 0 0 1 = home Multi, Multizone, and E0+E1 together");
+            Serial.println("    Example: sh 0 0 0 1 0 = home only E0 individually");
+            Serial.println("  pon index  - turn on control pin (pinon)");
+            Serial.println("  poff index  - turn off control pin (pinoff)");
+            Serial.println("  status  - show system status");
+            Serial.println("  test  - comprehensive motor test (all motors, 10 seconds)");
+            Serial.println("\nMotor assignment:");
+            for (int i = 0; i < NUM_MOTORS; i++) {
+                Serial.print("  Motor ");
+                Serial.print(i);
+                Serial.print(": ");
+                Serial.println(motorNames[i]);
+            }
+            Serial.println("\nHoming logic:");
+            Serial.println("  - Flags 0-2: Individual homing for Multi, Multizone, RRight");
+            Serial.println("  - Flag 3: Individual E0 homing (only if flag 4 = 0)");
+            Serial.println("  - Flag 4: Joint E0+E1 homing using shared sensor");
+            Serial.println("  - If flag 4 = 1, flag 3 is ignored (joint mode takes priority)");
+            Serial.println("\nFeatures:");
+            Serial.println("  - GyverPlanner for coordinated movement");
+            Serial.println("  - Proper API usage with setTarget/setSpeed");
+            Serial.println("  - NPN/PNP endstop support");
+            Serial.println("  - Analog pins A0, A6, A7 supported");
+            Serial.println("  - Direct pin control test mode");
+            Serial.println("  - Joint E0+E1 homing with shared sensor");
+            Serial.println("  - All commands return COMPLETE or ERROR");
+            Serial.println("  - Switch-case architecture for better performance");
+            Serial.println("ERROR");
+            break;
+        }
+    }
+    
+    // ИСПРАВЛЕНО: Принудительная очистка планировщика после каждой команды
+    if (cmdType != CMD_STATUS) { // Статус не требует очистки планировщика
+        delay(100);        // Пауза для завершения всех операций
+        
+        // Принудительно очищаем планировщик если он завис
+        if (!planner.ready()) {
+            Serial.println("DEBUG: Forcing planner cleanup...");
+            planner.stop();
+            delay(50);
+            // ИСПРАВЛЕНО: Убран planner.reset() чтобы сохранить позиции моторов
+            // planner.reset(); // УБРАНО - это сбрасывало позиции в 0
+            delay(50);
+            Serial.println("DEBUG: Planner cleanup completed");
+        }
+    }
+}
+
+/**
+ * Обработка входящих данных Serial
+ */
+void serialEvent() {
+    while (Serial.available()) {
+        char inChar = (char)Serial.read();
+        
+        if (inChar == '\n' || inChar == '\r') {
+            if (inputString.length() > 0) {
+                stringComplete = true;
+            }
         } else {
-            moveFlags[i] = true;
-            positions[i] = atof(arg);
+            inputString += inChar;
         }
     }
-    
-    coordinatedMove(positions, moveFlags);
-}
-
-/**
- * Команда: stepperhome bool0 bool1 bool2 bool3 bool4
- * Поиск нуля для выбранных двигателей (1 - выполнять, 0 - пропустить)
- */
-void cmdStepperHome() {
-    bool homeFlags[NUM_MOTORS];
-    char* arg;
-    
-    for (int i = 0; i < NUM_MOTORS; i++) {
-        arg = sCmd.next();
-        if (arg == NULL) {
-            Serial.println("ERROR: Not enough arguments for stepperhome");
-            return;
-        }
-        
-        homeFlags[i] = (atoi(arg) != 0);
-    }
-    
-    stepperHome(homeFlags);
-}
-
-/**
- * Команда: pinon index
- * Включение дополнительного цифрового выхода
- */
-void cmdPinOn() {
-    char* arg = sCmd.next();
-    if (arg == NULL) {
-        Serial.println("ERROR: No index specified for pinon");
-        return;
-    }
-    
-    int index = atoi(arg);
-    if (index < 0 || index >= NUM_CONTROL_PINS) {
-        Serial.print("ERROR: Invalid pin index. Range: 0-");
-        Serial.println(NUM_CONTROL_PINS - 1);
-        return;
-    }
-    
-    digitalWrite(controlPins[index], HIGH);
-    Serial.print("Pin ");
-    Serial.print(controlPins[index]);
-    Serial.println(" turned ON");
-}
-
-/**
- * Команда: pinoff index
- * Отключение дополнительного цифрового выхода
- */
-void cmdPinOff() {
-    char* arg = sCmd.next();
-    if (arg == NULL) {
-        Serial.println("ERROR: No index specified for pinoff");
-        return;
-    }
-    
-    int index = atoi(arg);
-    if (index < 0 || index >= NUM_CONTROL_PINS) {
-        Serial.print("ERROR: Invalid pin index. Range: 0-");
-        Serial.println(NUM_CONTROL_PINS - 1);
-        return;
-    }
-    
-    digitalWrite(controlPins[index], LOW);
-    Serial.print("Pin ");
-    Serial.print(controlPins[index]);
-    Serial.println(" turned OFF");
-}
-
-/**
- * Команда: status
- * Вывод текущего состояния системы
- */
-void cmdStatus() {
-    Serial.println("=== STEPPER SYSTEM STATUS ===");
-    Serial.print("Motors enabled: ");
-    Serial.println(motorsEnabled ? "YES" : "NO");
-    Serial.print("Homing active: ");
-    Serial.println(homingActive ? "YES" : "NO");
-    Serial.print("All motors idle: ");
-    Serial.println(allMotorsIdle() ? "YES" : "NO");
-    Serial.print("MultiStepper active: ");
-    Serial.println(multiStepper.run() ? "RUNNING" : "IDLE");
-    
-    Serial.println("\nMotor positions:");
-    for (int i = 0; i < NUM_MOTORS; i++) {
-        long currentSteps = steppers[i]->currentPosition();
-        float currentUnits = stepsToUnits(i, currentSteps);
-        Serial.print(motorNames[i]);
-        Serial.print(": ");
-        Serial.print(currentUnits, 2);
-        Serial.print(" units (");
-        Serial.print(currentSteps);
-        Serial.print(" steps) - ");
-        Serial.println(steppers[i]->isRunning() ? "RUNNING" : "IDLE");
-    }
-    
-    Serial.println("\nHome switches:");
-    for (int i = 0; i < NUM_MOTORS; i++) {
-        Serial.print(motorNames[i]);
-        Serial.print(" (");
-        Serial.print(endstopTypeNPN[i] ? "NPN" : "PNP");
-        Serial.print("): ");
-        Serial.println(readHomeSwitch(i) ? "TRIGGERED" : "OPEN");
-    }
-    
-    Serial.println("\nPin configuration:");
-    for (int i = 0; i < NUM_MOTORS; i++) {
-        Serial.print(motorNames[i]);
-        Serial.print(" - Step:");
-        Serial.print(stepPins[i]);
-        Serial.print(" Dir:");
-        Serial.print(dirPins[i]);
-        Serial.print(" Enable:");
-        Serial.print(enablePins[i]);
-        Serial.print(" Home:");
-        Serial.println(homePins[i]);
-    }
-}
-
-/**
- * Неизвестная команда
- */
-void cmdUnrecognized(const char* command) {
-    Serial.print("ERROR: Unknown command '");
-    Serial.print(command);
-    Serial.println("'");
-    Serial.println("Available commands:");
-    Serial.println("  steppermove pos0 pos1 pos2 pos3 pos4  - coordinated movement");
-    Serial.println("  stepperhome bool0 bool1 bool2 bool3 bool4  - homing procedure");
-    Serial.println("  pinon index  - turn on control pin");
-    Serial.println("  pinoff index  - turn off control pin");
-    Serial.println("  status  - show system status");
-    Serial.println("\nMotor assignment:");
-    for (int i = 0; i < NUM_MOTORS; i++) {
-        Serial.print("  Motor ");
-        Serial.print(i);
-        Serial.print(": ");
-        Serial.println(motorNames[i]);
-    }
-    Serial.println("\nFeatures:");
-    Serial.println("  - Coordinated movement with MultiStepper");
-    Serial.println("  - All motors move simultaneously");
-    Serial.println("  - NPN/PNP endstop support");
-    Serial.println("  - Analog pins A0, A6, A7 supported");
 }
 
 // ============================================
@@ -501,48 +899,28 @@ void cmdUnrecognized(const char* command) {
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("=== AccelStepper + MultiStepper 5-Motor System ===");
-    Serial.println("=== Coordinated Movement with Scheduler ===");
+    Serial.println("=== GyverPlanner 5-Motor System ===");
+    Serial.println("=== Proper API Usage ===");
     Serial.println("Initializing...");
     
-    // Создание и настройка двигателей
+    // КРИТИЧЕСКИ ВАЖНО: Настройка step и dir пинов как OUTPUT
     for (int i = 0; i < NUM_MOTORS; i++) {
-        // Создаем объект AccelStepper с интерфейсом DRIVER (step/direction)
-        steppers[i] = new AccelStepper(AccelStepper::DRIVER, stepPins[i], dirPins[i]);
-        
-        if (steppers[i] == NULL) {
-            Serial.print("ERROR: Cannot create stepper ");
-            Serial.print(i);
-            Serial.print(" (");
-            Serial.print(motorNames[i]);
-            Serial.println(")");
-            while (1);
-        }
-        
-        // Настройка пинов enable
-        pinMode(enablePins[i], OUTPUT);
-        digitalWrite(enablePins[i], HIGH); // Изначально отключены
-        
-        // Настройка параметров движения
-        steppers[i]->setMaxSpeed(maxSpeed[i]);
-        steppers[i]->setAcceleration(acceleration[i]);
-        steppers[i]->setCurrentPosition(0);
-        
-        // КРИТИЧЕСКИ ВАЖНО: Добавляем двигатель в MultiStepper
-        multiStepper.addStepper(*steppers[i]);
-        
+        pinMode(stepPins[i], OUTPUT);
+        pinMode(dirPins[i], OUTPUT);
+        digitalWrite(stepPins[i], LOW);
+        digitalWrite(dirPins[i], LOW);
+        Serial.print("Configured pins for ");
         Serial.print(motorNames[i]);
-        Serial.print(" initialized - Step:");
+        Serial.print(" - Step:");
         Serial.print(stepPins[i]);
         Serial.print(" Dir:");
-        Serial.print(dirPins[i]);
-        Serial.print(" Enable:");
-        Serial.print(enablePins[i]);
-        Serial.print(" Home:");
-        Serial.print(homePins[i]);
-        Serial.print(" (");
-        Serial.print(endstopTypeNPN[i] ? "NPN" : "PNP");
-        Serial.println(") - ADDED TO MULTISEPPER");
+        Serial.println(dirPins[i]);
+    }
+    
+    // Настройка пинов enable
+    for (int i = 0; i < NUM_MOTORS; i++) {
+        pinMode(enablePins[i], OUTPUT);
+        digitalWrite(enablePins[i], HIGH); // Изначально отключены
     }
     
     // Настройка концевых выключателей
@@ -556,27 +934,37 @@ void setup() {
         digitalWrite(controlPins[i], LOW);
     }
     
-    // Настройка Serial команд
-    sCmd.addCommand("steppermove", cmdStepperMove);
-    sCmd.addCommand("stepperhome", cmdStepperHome);
-    sCmd.addCommand("pinon", cmdPinOn);
-    sCmd.addCommand("pinoff", cmdPinOff);
-    sCmd.addCommand("status", cmdStatus);
-    sCmd.setDefaultHandler(cmdUnrecognized);
+    // КРИТИЧЕСКИ ВАЖНО: Добавляем шаговики в планировщик
+    planner.addStepper(0, stepper0);
+    planner.addStepper(1, stepper1);
+    planner.addStepper(2, stepper2);
+    planner.addStepper(3, stepper3);
+    planner.addStepper(4, stepper4);
+    
+    Serial.println("All steppers added to planner");
+    
+    // ИСПРАВЛЕНО: Устанавливаем высокие общие настройки для быстрого движения E0/E1
+    planner.setAcceleration(30000); // Высокое ускорение для E0/E1 (10000 шагов/сек²)
+    planner.setMaxSpeed(30000);     // Высокая скорость для E0/E1 (10000 шагов/сек)
+    
+    Serial.println("High-speed settings applied for E0/E1!");
+    Serial.print("Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec²");
+    Serial.println();
     
     Serial.println("System initialized successfully!");
-    Serial.println("MultiStepper configured for coordinated movement");
+    Serial.println("GyverPlanner ready for high-speed coordinated movement");
     Serial.println("Type 'status' for system information");
     Serial.println("Ready for commands...");
 }
 
 void loop() {
-    // Обработка Serial команд
-    sCmd.readSerial();
     
-    // ВАЖНО: Обновление MultiStepper для поддержания координированного движения
-    multiStepper.run();
+    // Обработка входящих Serial команд
+    serialEvent();
     
-    // Небольшая задержка для стабильности
-    delay(1);
+    if (stringComplete) {
+        parseCommand(inputString);
+        inputString = "";
+        stringComplete = false;
+    }
 } 
