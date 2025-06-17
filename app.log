@@ -5062,3 +5062,1215 @@
 2025-06-16 19:43:25 - INFO - Получены данные: COMPLETE
 2025-06-16 19:43:25 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
 2025-06-16 19:43:25 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 13:49:01 - INFO - Логирование инициализировано успешно
+2025-06-17 13:49:01 - INFO - ================================================================================
+2025-06-17 13:49:01 - INFO - Запуск приложения с PySide6
+2025-06-17 13:49:01 - INFO - Операционная система: win32
+2025-06-17 13:49:01 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-17 13:49:01 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-17 13:49:01 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-17 13:49:01 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения Multizone', 'Команды движения RRight', 'Команды движения E0 (индивидуальные)', 'Команды движения E1 (индивидуальные)', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Чтение датчиков', 'Диагностические команды']
+2025-06-17 13:49:01 - INFO - Конфигурация загружена: 76 команд, 5 последовательностей, 12 разделов
+2025-06-17 13:49:02 - INFO - Приложение запущено с PySide6
+2025-06-17 13:49:04 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-17 13:49:04 - INFO - Получены данные: === Proper API Usage ===
+2025-06-17 13:49:04 - INFO - Получены данные: Initializing...
+2025-06-17 13:49:04 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-17 13:49:04 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-17 13:49:04 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-17 13:49:04 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-17 13:49:04 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-17 13:49:04 - INFO - Получены данные: All steppers added to planner
+2025-06-17 13:49:04 - INFO - Получены данные: === MOTOR POWER INITIALIZATION ===
+2025-06-17 13:49:04 - INFO - Получены данные: Multi(X) - ALWAYS ON (enabled at startup)
+2025-06-17 13:49:04 - INFO - Получены данные: Multizone(Y) - ALWAYS ON (enabled at startup)
+2025-06-17 13:49:04 - INFO - Получены данные: RRight(Z) - ALWAYS ON (enabled at startup)
+2025-06-17 13:49:04 - INFO - Получены данные: E0 - TEMPORARY POWER (disabled at startup)
+2025-06-17 13:49:04 - INFO - Получены данные: E1 - TEMPORARY POWER (disabled at startup)
+2025-06-17 13:49:04 - INFO - Получены данные: Motor power initialization completed
+2025-06-17 13:49:04 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-17 13:49:05 - INFO - Получены данные: Planner MaxSpeed: 10000 steps/sec, Acceleration: 10000 steps/sec\xb2
+2025-06-17 13:49:05 - INFO - Получены данные: System initialized successfully!
+2025-06-17 13:49:05 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-17 13:49:05 - INFO - Получены данные: Type 'status' for system information
+2025-06-17 13:49:05 - INFO - Получены данные: Ready for commands...
+2025-06-17 13:49:19 - INFO - Отправлена команда: sh 1 0 1 0 0 0
+2025-06-17 13:49:19 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 13:49:19 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 13:49:19 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 13:49:19 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 13:49:19 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 13:49:19 - INFO - Получены данные: E0 enabled
+2025-06-17 13:49:19 - INFO - Получены данные: E1 enabled
+2025-06-17 13:49:19 - INFO - Получены данные: All motors enabled
+2025-06-17 13:49:19 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 13:49:19 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 13:49:21 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 13:49:21 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 13:49:22 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 13:49:22 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 13:49:22 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 13:49:22 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 13:49:24 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 13:49:24 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 13:49:24 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 13:49:24 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 13:49:24 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 13:49:24 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 13:49:24 - INFO - Получены данные: COMPLETE
+2025-06-17 13:49:25 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 13:49:25 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 13:49:38 - INFO - Отправлена команда: sh 1 0 1 0 0 0
+2025-06-17 13:49:38 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 13:49:43 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 13:49:43 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 13:49:43 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 13:49:43 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 13:49:43 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 13:49:43 - INFO - Получены данные: E0 enabled
+2025-06-17 13:49:43 - INFO - Получены данные: E1 enabled
+2025-06-17 13:49:44 - INFO - Получены данные: All motors enabled
+2025-06-17 13:49:44 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 13:49:44 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-17 13:49:44 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-17 13:49:44 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 13:49:44 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 13:49:44 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 13:49:44 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 13:49:44 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 13:49:44 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 13:49:44 - INFO - Получены данные: RRight(Z) - endstop already triggered, moving away first
+2025-06-17 13:49:44 - INFO - Получены данные: RRight(Z) - moved away from endstop
+2025-06-17 13:49:44 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 13:49:44 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 13:49:44 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 13:49:44 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 13:49:45 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 13:49:45 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 13:49:45 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 13:49:45 - INFO - Получены данные: COMPLETE
+2025-06-17 13:49:45 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 13:49:45 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 13:50:06 - INFO - Отправлена команда: sh 1 0 1 0 0 0
+2025-06-17 13:50:06 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 13:50:11 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 13:50:11 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 13:50:11 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 13:50:11 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 13:50:11 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 13:50:11 - INFO - Получены данные: E0 enabled
+2025-06-17 13:50:11 - INFO - Получены данные: E1 enabled
+2025-06-17 13:50:11 - INFO - Получены данные: All motors enabled
+2025-06-17 13:50:11 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 13:50:11 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-17 13:50:11 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-17 13:50:12 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 13:50:12 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 13:50:12 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 13:50:12 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 13:50:12 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 13:50:12 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 13:50:12 - INFO - Получены данные: RRight(Z) - endstop already triggered, moving away first
+2025-06-17 13:50:12 - INFO - Получены данные: RRight(Z) - moved away from endstop
+2025-06-17 13:50:12 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 13:50:12 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 13:50:12 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 13:50:12 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 13:50:12 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 13:50:12 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 13:50:12 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 13:50:12 - INFO - Получены данные: COMPLETE
+2025-06-17 13:50:13 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 13:50:13 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:15:00 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-17 14:15:00 - INFO - Получены данные: === Proper API Usage ===
+2025-06-17 14:15:01 - INFO - Получены данные: Initializing...
+2025-06-17 14:15:01 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-17 14:15:01 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-17 14:15:01 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-17 14:15:01 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-17 14:15:01 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 18 (PUMP)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 8 (KL1)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 10 (KL2)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 19 (WASTE)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 27 (ROTOR1)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 29 (ROTOR2)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 23 (ROTOR3)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 25 (ROTOR4)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 42 (HX711_SCK)
+2025-06-17 14:15:01 - INFO - Получены данные: Configured control pin 40 (HX711_DT)
+2025-06-17 14:15:02 - INFO - Получены данные: All steppers added to planner
+2025-06-17 14:15:02 - INFO - Получены данные: === MOTOR POWER INITIALIZATION ===
+2025-06-17 14:15:02 - INFO - Получены данные: Multi(X) - ALWAYS ON (enabled at startup)
+2025-06-17 14:15:02 - INFO - Получены данные: Multizone(Y) - ALWAYS ON (enabled at startup)
+2025-06-17 14:15:02 - INFO - Получены данные: RRight(Z) - ALWAYS ON (enabled at startup)
+2025-06-17 14:15:02 - INFO - Получены данные: E0 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:15:02 - INFO - Получены данные: E1 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:15:02 - INFO - Получены данные: Motor power initialization completed
+2025-06-17 14:15:02 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-17 14:15:02 - INFO - Получены данные: Planner MaxSpeed: 30000 steps/sec, Acceleration: 30000 steps/sec\xb2
+2025-06-17 14:15:02 - INFO - Получены данные: System initialized successfully!
+2025-06-17 14:15:02 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-17 14:15:02 - INFO - Получены данные: Type 'status' for system information
+2025-06-17 14:15:02 - INFO - Получены данные: Ready for commands...
+2025-06-17 14:15:32 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-17 14:15:32 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:15:32 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:15:32 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:15:32 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:15:32 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:15:32 - INFO - Получены данные: E0 enabled
+2025-06-17 14:15:32 - INFO - Получены данные: E1 enabled
+2025-06-17 14:15:32 - INFO - Получены данные: All motors enabled
+2025-06-17 14:15:32 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 14:15:32 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-17 14:15:32 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-17 14:15:32 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 14:15:33 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 14:15:33 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 14:15:33 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 14:15:33 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 14:15:33 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 14:15:33 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 14:15:33 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 14:15:33 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 14:15:33 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 14:15:33 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 14:15:33 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-17 14:15:33 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-17 14:15:33 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-17 14:15:33 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-17 14:15:33 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -1, E1 pos: -1, Sensor: OPEN, Planner ready: NO
+2025-06-17 14:15:35 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -16666, E1 pos: -16666, Sensor: OPEN, Planner ready: NO
+2025-06-17 14:15:37 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -40945, E1 pos: -40945, Sensor: OPEN, Planner ready: NO
+2025-06-17 14:15:38 - INFO - Получены данные: ERROR: Unknown exit condition from homing loop
+2025-06-17 14:15:38 - INFO - Получены данные: Final positions - E0: -50000, E1: -50000, Final sensor state: OPEN
+2025-06-17 14:15:38 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-17 14:15:38 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:15:38 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:15:39 - INFO - Получены данные: ERROR
+2025-06-17 14:15:39 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:15:39 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:15:54 - INFO - Отправлена команда: sh 1 0 1 0 1
+2025-06-17 14:15:54 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:15:59 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 14:15:59 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:15:59 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:15:59 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:15:59 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:15:59 - INFO - Получены данные: E0 enabled
+2025-06-17 14:15:59 - INFO - Получены данные: E1 enabled
+2025-06-17 14:15:59 - INFO - Получены данные: All motors enabled
+2025-06-17 14:16:00 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 14:16:00 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-17 14:16:00 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-17 14:16:00 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 14:16:00 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 14:16:00 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 14:16:00 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 14:16:00 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 14:16:00 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 14:16:00 - INFO - Получены данные: RRight(Z) - endstop already triggered, moving away first
+2025-06-17 14:16:00 - INFO - Получены данные: RRight(Z) - moved away from endstop
+2025-06-17 14:16:00 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 14:16:00 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 14:16:00 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 14:16:01 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 14:16:01 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 14:16:01 - INFO - Получены данные: === JOINT E0+E1 HOMING ===
+2025-06-17 14:16:01 - INFO - Получены данные: Homing E0 and E1 together using shared sensor (NPN)
+2025-06-17 14:16:01 - INFO - Получены данные: E0+E1 - moving to shared endstop
+2025-06-17 14:16:01 - INFO - Получены данные: Both motors E0 and E1 started coordinated movement...
+2025-06-17 14:16:01 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 0.0s, E0 pos: -50001, E1 pos: -50001, Sensor: OPEN, Planner ready: NO
+2025-06-17 14:16:02 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 2.0s, E0 pos: -66658, E1 pos: -66658, Sensor: OPEN, Planner ready: NO
+2025-06-17 14:16:04 - INFO - Получены данные: DEBUG: Coordinated homing... Time: 4.0s, E0 pos: -90940, E1 pos: -90940, Sensor: OPEN, Planner ready: NO
+2025-06-17 14:16:06 - INFO - Получены данные: ERROR: Unknown exit condition from homing loop
+2025-06-17 14:16:06 - INFO - Получены данные: Final positions - E0: -100000, E1: -100000, Final sensor state: OPEN
+2025-06-17 14:16:06 - INFO - Получены данные: E0+E1 - coordinated homing completed
+2025-06-17 14:16:06 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:16:06 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:16:06 - INFO - Получены данные: ERROR
+2025-06-17 14:16:06 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:16:06 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:17:19 - INFO - Отправлена команда: hm 0 0 100 0 0
+2025-06-17 14:17:19 - INFO - Получены данные: ERROR: Unknown command 'hm'
+2025-06-17 14:17:19 - INFO - Получены данные: Available commands:
+2025-06-17 14:17:20 - INFO - Получены данные: sm pos0 pos1 pos2 pos3 pos4  - coordinated movement (steppermove)
+2025-06-17 14:17:20 - INFO - Получены данные: sh bool0 bool1 bool2 bool3 bool4  - homing procedure (stepperhome)
+2025-06-17 14:17:20 - INFO - Получены данные: Note: sh flags - Multi Multizone RRight E0_individual E0+E1_joint
+2025-06-17 14:17:20 - INFO - Получены данные: Example: sh 1 1 0 0 1 = home Multi, Multizone, and E0+E1 together
+2025-06-17 14:17:20 - INFO - Получены данные: Example: sh 0 0 0 1 0 = home only E0 individually
+2025-06-17 14:17:20 - INFO - Получены данные: pon index  - turn on control pin (pinon)
+2025-06-17 14:17:20 - INFO - Получены данные: poff index  - turn off control pin (pinoff)
+2025-06-17 14:17:20 - INFO - Получены данные: status  - show system status
+2025-06-17 14:17:20 - INFO - Получены данные: test  - comprehensive motor test (all motors, 10 seconds)
+2025-06-17 14:17:20 - INFO - Получены данные: Motor assignment:
+2025-06-17 14:17:20 - INFO - Получены данные: Motor 0: Multi(X)
+2025-06-17 14:17:20 - INFO - Получены данные: Motor 1: Multizone(Y)
+2025-06-17 14:17:20 - INFO - Получены данные: Motor 2: RRight(Z)
+2025-06-17 14:17:20 - INFO - Получены данные: Motor 3: E0
+2025-06-17 14:17:20 - INFO - Получены данные: Motor 4: E1
+2025-06-17 14:17:21 - INFO - Получены данные: Control pins assignment:
+2025-06-17 14:17:21 - INFO - Получены данные: Index 0: Pin 18 (PUMP)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 1: Pin 8 (KL1)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 2: Pin 10 (KL2)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 3: Pin 19 (WASTE)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 4: Pin 27 (ROTOR1)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 5: Pin 29 (ROTOR2)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 6: Pin 23 (ROTOR3)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 7: Pin 25 (ROTOR4)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 8: Pin 42 (HX711_SCK)
+2025-06-17 14:17:21 - INFO - Получены данные: Index 9: Pin 40 (HX711_DT)
+2025-06-17 14:17:21 - INFO - Получены данные: Homing logic:
+2025-06-17 14:17:21 - INFO - Получены данные: - Flags 0-2: Individual homing for Multi, Multizone, RRight
+2025-06-17 14:17:21 - INFO - Получены данные: - Flag 3: Individual E0 homing (only if flag 4 = 0)
+2025-06-17 14:17:22 - INFO - Получены данные: - Flag 4: Joint E0+E1 homing using shared sensor
+2025-06-17 14:17:22 - INFO - Получены данные: - If flag 4 = 1, flag 3 is ignored (joint mode takes priority)
+2025-06-17 14:17:22 - INFO - Получены данные: Features:
+2025-06-17 14:17:22 - INFO - Получены данные: - GyverPlanner for coordinated movement
+2025-06-17 14:17:22 - INFO - Получены данные: - Proper API usage with setTarget/setSpeed
+2025-06-17 14:17:22 - INFO - Получены данные: - NPN/PNP endstop support
+2025-06-17 14:17:22 - INFO - Получены данные: - Analog pins A0, A6, A7 supported
+2025-06-17 14:17:22 - INFO - Получены данные: - Direct pin control test mode
+2025-06-17 14:17:22 - INFO - Получены данные: - Joint E0+E1 homing with shared sensor
+2025-06-17 14:17:22 - INFO - Получены данные: - All commands return COMPLETE or ERROR
+2025-06-17 14:17:22 - INFO - Получены данные: - Structured configuration with enum types
+2025-06-17 14:17:22 - INFO - Получены данные: Motor power configuration:
+2025-06-17 14:17:22 - INFO - Получены данные: Multi(X): ALWAYS ON (never disabled)
+2025-06-17 14:17:22 - INFO - Получены данные: Multizone(Y): ALWAYS ON (never disabled)
+2025-06-17 14:17:22 - INFO - Получены данные: RRight(Z): ALWAYS ON (never disabled)
+2025-06-17 14:17:23 - INFO - Получены данные: E0: TEMPORARY (disabled after movement)
+2025-06-17 14:17:23 - INFO - Получены данные: E1: TEMPORARY (disabled after movement)
+2025-06-17 14:17:23 - INFO - Получены данные: ERROR
+2025-06-17 14:17:23 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:17:23 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:17:40 - INFO - Отправлена команда: sm 0 0 100 0 0
+2025-06-17 14:17:40 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:17:40 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:17:40 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:17:40 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:17:40 - INFO - Получены данные: E0 enabled
+2025-06-17 14:17:40 - INFO - Получены данные: E1 enabled
+2025-06-17 14:17:40 - INFO - Получены данные: All motors enabled
+2025-06-17 14:17:40 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:17:40 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:17:40 - INFO - Получены данные: RRight(Z) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-17 14:17:40 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current -100000 steps
+2025-06-17 14:17:40 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current -100000 steps
+2025-06-17 14:17:40 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:17:47 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:17:48 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:17:48 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:17:48 - INFO - Получены данные: RRight(Z) final position: 100.00 units (8000 steps)
+2025-06-17 14:17:48 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:17:48 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:17:48 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:17:48 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:17:48 - INFO - Получены данные: COMPLETE
+2025-06-17 14:17:48 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:17:48 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:21:49 - INFO - Отправлена команда: sh 0 0 1 0 0
+2025-06-17 14:21:49 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:21:54 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 14:21:54 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:21:54 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:21:54 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:21:54 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:21:54 - INFO - Получены данные: E0 enabled
+2025-06-17 14:21:54 - INFO - Получены данные: E1 enabled
+2025-06-17 14:21:54 - INFO - Получены данные: All motors enabled
+2025-06-17 14:21:54 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 14:21:54 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 14:21:54 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 14:21:54 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 14:21:54 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 14:21:55 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 14:21:55 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:21:55 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:21:55 - INFO - Получены данные: COMPLETE
+2025-06-17 14:21:55 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:21:55 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:22:09 - INFO - Отправлена команда: sm  0 0 100 0 0
+2025-06-17 14:22:09 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:22:09 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:22:09 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:22:09 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:22:09 - INFO - Получены данные: E0 enabled
+2025-06-17 14:22:09 - INFO - Получены данные: E1 enabled
+2025-06-17 14:22:09 - INFO - Получены данные: All motors enabled
+2025-06-17 14:22:09 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:22:09 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:22:09 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:22:09 - INFO - Получены данные: E0 -> 100.00 units (20000 steps) from current 0 steps
+2025-06-17 14:22:09 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:22:09 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:22:11 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:22:11 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:22:11 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:22:11 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-17 14:22:11 - INFO - Получены данные: E0 final position: 100.00 units (20000 steps)
+2025-06-17 14:22:11 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:22:11 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:22:12 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:22:12 - INFO - Получены данные: COMPLETE
+2025-06-17 14:22:12 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:22:12 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:22:54 - INFO - Отправлена команда: sm 100 100 0 0 0
+2025-06-17 14:22:54 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:22:54 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:22:54 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:22:54 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:22:55 - INFO - Получены данные: E0 enabled
+2025-06-17 14:22:55 - INFO - Получены данные: E1 enabled
+2025-06-17 14:22:55 - INFO - Получены данные: All motors enabled
+2025-06-17 14:22:55 - INFO - Получены данные: Multi(X) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-17 14:22:55 - INFO - Получены данные: Multizone(Y) -> 100.00 units (8000 steps) from current 0 steps
+2025-06-17 14:22:55 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:22:55 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 20000 steps
+2025-06-17 14:22:55 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:22:55 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:22:57 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:22:57 - INFO - Получены данные: Multi(X) final position: 100.00 units (8000 steps)
+2025-06-17 14:22:57 - INFO - Получены данные: Multizone(Y) final position: 100.00 units (8000 steps)
+2025-06-17 14:22:57 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-17 14:22:57 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:22:57 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:22:57 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:22:57 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:22:57 - INFO - Получены данные: COMPLETE
+2025-06-17 14:22:57 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:22:57 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:23:22 - INFO - Отправлена команда: sm 0 0 200 0 0
+2025-06-17 14:23:22 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:23:22 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:23:22 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:23:22 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:23:22 - INFO - Получены данные: E0 enabled
+2025-06-17 14:23:22 - INFO - Получены данные: E1 enabled
+2025-06-17 14:23:22 - INFO - Получены данные: All motors enabled
+2025-06-17 14:23:22 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 8000 steps
+2025-06-17 14:23:22 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 8000 steps
+2025-06-17 14:23:22 - INFO - Получены данные: RRight(Z) -> 200.00 units (16000 steps) from current 0 steps
+2025-06-17 14:23:22 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:23:22 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:23:23 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:23:24 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:23:24 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:23:24 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:23:24 - INFO - Получены данные: RRight(Z) final position: 200.00 units (16000 steps)
+2025-06-17 14:23:24 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:23:24 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:23:24 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:23:24 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:23:24 - INFO - Получены данные: COMPLETE
+2025-06-17 14:23:24 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:23:24 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:31:55 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения RRight', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Диагностические команды']
+2025-06-17 14:31:55 - INFO - Конфигурация загружена: 32 команд, 5 последовательностей, 8 разделов
+2025-06-17 14:32:22 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-17 14:32:22 - INFO - Получены данные: === Proper API Usage ===
+2025-06-17 14:32:22 - INFO - Получены данные: Initializing...
+2025-06-17 14:32:22 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-17 14:32:22 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-17 14:32:22 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-17 14:32:22 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-17 14:32:22 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-17 14:32:22 - INFO - Получены данные: Configured control pin 18 (PUMP)
+2025-06-17 14:32:22 - INFO - Получены данные: Configured control pin 8 (KL1)
+2025-06-17 14:32:22 - INFO - Получены данные: Configured control pin 10 (KL2)
+2025-06-17 14:32:22 - INFO - Получены данные: Configured control pin 19 (WASTE)
+2025-06-17 14:32:22 - INFO - Получены данные: Configured control pin 27 (ROTOR1)
+2025-06-17 14:32:22 - INFO - Получены данные: Configured control pin 29 (ROTOR2)
+2025-06-17 14:32:23 - INFO - Получены данные: Configured control pin 23 (ROTOR3)
+2025-06-17 14:32:23 - INFO - Получены данные: Configured control pin 25 (ROTOR4)
+2025-06-17 14:32:23 - INFO - Получены данные: Configured control pin 42 (HX711_SCK)
+2025-06-17 14:32:23 - INFO - Получены данные: Configured control pin 40 (HX711_DT)
+2025-06-17 14:32:23 - INFO - Получены данные: All steppers added to planner
+2025-06-17 14:32:23 - INFO - Получены данные: === MOTOR POWER INITIALIZATION ===
+2025-06-17 14:32:23 - INFO - Получены данные: Multi(X) - ALWAYS ON (enabled at startup)
+2025-06-17 14:32:23 - INFO - Получены данные: Multizone(Y) - ALWAYS ON (enabled at startup)
+2025-06-17 14:32:23 - INFO - Получены данные: RRight(Z) - ALWAYS ON (enabled at startup)
+2025-06-17 14:32:23 - INFO - Получены данные: E0 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:32:23 - INFO - Получены данные: E1 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:32:23 - INFO - Получены данные: Motor power initialization completed
+2025-06-17 14:32:23 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-17 14:32:23 - INFO - Получены данные: Planner MaxSpeed: 30000 steps/sec, Acceleration: 30000 steps/sec\xb2
+2025-06-17 14:32:23 - INFO - Получены данные: System initialized successfully!
+2025-06-17 14:32:23 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-17 14:32:24 - INFO - Получены данные: Type 'status' for system information
+2025-06-17 14:32:24 - INFO - Получены данные: Ready for commands...
+2025-06-17 14:32:53 - INFO - Отправлена команда: sm 0 400 0 0 0
+2025-06-17 14:32:53 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:32:53 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:32:53 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:32:53 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:32:53 - INFO - Получены данные: E0 enabled
+2025-06-17 14:32:53 - INFO - Получены данные: E1 enabled
+2025-06-17 14:32:53 - INFO - Получены данные: All motors enabled
+2025-06-17 14:32:53 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:32:53 - INFO - Получены данные: Multizone(Y) -> 400.00 units (32000 steps) from current 0 steps
+2025-06-17 14:32:53 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:32:53 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:32:53 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:32:53 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:32:56 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:32:56 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:32:56 - INFO - Получены данные: Multizone(Y) final position: 400.00 units (32000 steps)
+2025-06-17 14:32:56 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-17 14:32:56 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:32:56 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:32:56 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:32:56 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:32:57 - INFO - Получены данные: COMPLETE
+2025-06-17 14:32:57 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:32:57 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:34:59 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения RRight', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Диагностические команды']
+2025-06-17 14:34:59 - INFO - Конфигурация загружена: 32 команд, 5 последовательностей, 8 разделов
+2025-06-17 14:35:02 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-17 14:35:02 - INFO - Получены данные: === Proper API Usage ===
+2025-06-17 14:35:02 - INFO - Получены данные: Initializing...
+2025-06-17 14:35:02 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-17 14:35:02 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-17 14:35:02 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-17 14:35:02 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-17 14:35:02 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-17 14:35:02 - INFO - Получены данные: Configured control pin 18 (PUMP)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 8 (KL1)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 10 (KL2)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 19 (WASTE)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 27 (ROTOR1)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 29 (ROTOR2)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 23 (ROTOR3)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 25 (ROTOR4)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 42 (HX711_SCK)
+2025-06-17 14:35:03 - INFO - Получены данные: Configured control pin 40 (HX711_DT)
+2025-06-17 14:35:03 - INFO - Получены данные: All steppers added to planner
+2025-06-17 14:35:03 - INFO - Получены данные: === MOTOR POWER INITIALIZATION ===
+2025-06-17 14:35:03 - INFO - Получены данные: Multi(X) - ALWAYS ON (enabled at startup)
+2025-06-17 14:35:03 - INFO - Получены данные: Multizone(Y) - ALWAYS ON (enabled at startup)
+2025-06-17 14:35:03 - INFO - Получены данные: RRight(Z) - ALWAYS ON (enabled at startup)
+2025-06-17 14:35:03 - INFO - Получены данные: E0 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:35:03 - INFO - Получены данные: E1 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:35:04 - INFO - Получены данные: Motor power initialization completed
+2025-06-17 14:35:04 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-17 14:35:04 - INFO - Получены данные: Planner MaxSpeed: 30000 steps/sec, Acceleration: 30000 steps/sec\xb2
+2025-06-17 14:35:04 - INFO - Получены данные: System initialized successfully!
+2025-06-17 14:35:04 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-17 14:35:04 - INFO - Получены данные: Type 'status' for system information
+2025-06-17 14:35:04 - INFO - Получены данные: Ready for commands...
+2025-06-17 14:35:07 - INFO - Отправлена команда: sm 0 0 400 0 0
+2025-06-17 14:35:07 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:35:07 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:35:07 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:35:07 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:35:07 - INFO - Получены данные: E0 enabled
+2025-06-17 14:35:07 - INFO - Получены данные: E1 enabled
+2025-06-17 14:35:07 - INFO - Получены данные: All motors enabled
+2025-06-17 14:35:07 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:35:07 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:35:07 - INFO - Получены данные: RRight(Z) -> 400.00 units (80000 steps) from current 0 steps
+2025-06-17 14:35:08 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:35:08 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:35:08 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:35:13 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:35:13 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:35:13 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:35:13 - INFO - Получены данные: RRight(Z) final position: 400.00 units (80000 steps)
+2025-06-17 14:35:13 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:35:13 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:35:13 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:35:13 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:35:13 - INFO - Получены данные: COMPLETE
+2025-06-17 14:35:13 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:35:13 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:36:18 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения RRight', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Диагностические команды']
+2025-06-17 14:36:18 - INFO - Конфигурация загружена: 32 команд, 5 последовательностей, 8 разделов
+2025-06-17 14:36:24 - INFO - Отправлена команда: sm 0 0 40 0 0
+2025-06-17 14:36:24 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:36:24 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:36:24 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:36:24 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:36:24 - INFO - Получены данные: E0 enabled
+2025-06-17 14:36:24 - INFO - Получены данные: E1 enabled
+2025-06-17 14:36:25 - INFO - Получены данные: All motors enabled
+2025-06-17 14:36:25 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:25 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:25 - INFO - Получены данные: RRight(Z) -> 40.00 units (8000 steps) from current 80000 steps
+2025-06-17 14:36:25 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:25 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:25 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:36:30 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:36:30 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:36:30 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:36:30 - INFO - Получены данные: RRight(Z) final position: 40.00 units (8000 steps)
+2025-06-17 14:36:30 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:36:30 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:36:30 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:36:30 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:36:30 - INFO - Получены данные: COMPLETE
+2025-06-17 14:36:30 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:36:30 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:36:34 - INFO - Отправлена команда: sm 0 0 60 0 0
+2025-06-17 14:36:34 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:36:34 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:36:34 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:36:34 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:36:34 - INFO - Получены данные: E0 enabled
+2025-06-17 14:36:34 - INFO - Получены данные: E1 enabled
+2025-06-17 14:36:34 - INFO - Получены данные: All motors enabled
+2025-06-17 14:36:34 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:34 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:34 - INFO - Получены данные: RRight(Z) -> 60.00 units (12000 steps) from current 8000 steps
+2025-06-17 14:36:34 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:35 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:35 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:36:35 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:36:35 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:36:35 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:36:35 - INFO - Получены данные: RRight(Z) final position: 60.00 units (12000 steps)
+2025-06-17 14:36:35 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:36:35 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:36:35 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:36:35 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:36:35 - INFO - Получены данные: COMPLETE
+2025-06-17 14:36:35 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:36:35 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:36:38 - INFO - Отправлена команда: sm 0 0 10 0 0
+2025-06-17 14:36:38 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:36:38 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:36:38 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:36:38 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:36:38 - INFO - Получены данные: E0 enabled
+2025-06-17 14:36:38 - INFO - Получены данные: E1 enabled
+2025-06-17 14:36:38 - INFO - Получены данные: All motors enabled
+2025-06-17 14:36:38 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:38 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:38 - INFO - Получены данные: RRight(Z) -> 10.00 units (2000 steps) from current 12000 steps
+2025-06-17 14:36:38 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:38 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:38 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:36:39 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:36:39 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:36:39 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:36:39 - INFO - Получены данные: RRight(Z) final position: 10.00 units (2000 steps)
+2025-06-17 14:36:39 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:36:39 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:36:39 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:36:39 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:36:40 - INFO - Получены данные: COMPLETE
+2025-06-17 14:36:40 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:36:40 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:36:42 - INFO - Отправлена команда: sm 0 0 30 0 0
+2025-06-17 14:36:42 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:36:42 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:36:42 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:36:42 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:36:42 - INFO - Получены данные: E0 enabled
+2025-06-17 14:36:42 - INFO - Получены данные: E1 enabled
+2025-06-17 14:36:42 - INFO - Получены данные: All motors enabled
+2025-06-17 14:36:42 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:42 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:42 - INFO - Получены данные: RRight(Z) -> 30.00 units (6000 steps) from current 2000 steps
+2025-06-17 14:36:42 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:42 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:43 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:36:43 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:36:43 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:36:43 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:36:43 - INFO - Получены данные: RRight(Z) final position: 30.00 units (6000 steps)
+2025-06-17 14:36:43 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:36:43 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:36:43 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:36:43 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:36:43 - INFO - Получены данные: COMPLETE
+2025-06-17 14:36:43 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:36:43 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:36:47 - INFO - Отправлена команда: sm 0 0 60 0 0
+2025-06-17 14:36:48 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:36:48 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:36:48 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:36:48 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:36:48 - INFO - Получены данные: E0 enabled
+2025-06-17 14:36:48 - INFO - Получены данные: E1 enabled
+2025-06-17 14:36:48 - INFO - Получены данные: All motors enabled
+2025-06-17 14:36:48 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:48 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:48 - INFO - Получены данные: RRight(Z) -> 60.00 units (12000 steps) from current 6000 steps
+2025-06-17 14:36:48 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:48 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:48 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:36:49 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:36:49 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:36:49 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:36:49 - INFO - Получены данные: RRight(Z) final position: 60.00 units (12000 steps)
+2025-06-17 14:36:49 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:36:49 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:36:49 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:36:49 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:36:49 - INFO - Получены данные: COMPLETE
+2025-06-17 14:36:49 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:36:49 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:36:51 - INFO - Отправлена команда: sm 0 0 10 0 0
+2025-06-17 14:36:51 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:36:51 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:36:51 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:36:51 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:36:51 - INFO - Получены данные: E0 enabled
+2025-06-17 14:36:51 - INFO - Получены данные: E1 enabled
+2025-06-17 14:36:51 - INFO - Получены данные: All motors enabled
+2025-06-17 14:36:51 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:51 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:52 - INFO - Получены данные: RRight(Z) -> 10.00 units (2000 steps) from current 12000 steps
+2025-06-17 14:36:52 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:52 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:36:52 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:36:52 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:36:52 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:36:52 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:36:53 - INFO - Получены данные: RRight(Z) final position: 10.00 units (2000 steps)
+2025-06-17 14:36:53 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:36:53 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:36:53 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:36:53 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:36:53 - INFO - Получены данные: COMPLETE
+2025-06-17 14:36:53 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:36:53 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:38:14 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-17 14:38:14 - INFO - Получены данные: === Proper API Usage ===
+2025-06-17 14:38:14 - INFO - Получены данные: Initializing...
+2025-06-17 14:38:14 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-17 14:38:14 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-17 14:38:14 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-17 14:38:14 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-17 14:38:14 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 18 (PUMP)
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 8 (KL1)
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 10 (KL2)
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 19 (WASTE)
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 27 (ROTOR1)
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 29 (ROTOR2)
+2025-06-17 14:38:14 - INFO - Получены данные: Configured control pin 23 (ROTOR3)
+2025-06-17 14:38:15 - INFO - Получены данные: Configured control pin 25 (ROTOR4)
+2025-06-17 14:38:15 - INFO - Получены данные: Configured control pin 42 (HX711_SCK)
+2025-06-17 14:38:15 - INFO - Получены данные: Configured control pin 40 (HX711_DT)
+2025-06-17 14:38:15 - INFO - Получены данные: All steppers added to planner
+2025-06-17 14:38:15 - INFO - Получены данные: === MOTOR POWER INITIALIZATION ===
+2025-06-17 14:38:15 - INFO - Получены данные: Multi(X) - ALWAYS ON (enabled at startup)
+2025-06-17 14:38:15 - INFO - Получены данные: Multizone(Y) - ALWAYS ON (enabled at startup)
+2025-06-17 14:38:15 - INFO - Получены данные: RRight(Z) - ALWAYS ON (enabled at startup)
+2025-06-17 14:38:15 - INFO - Получены данные: E0 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:38:15 - INFO - Получены данные: E1 - TEMPORARY POWER (disabled at startup)
+2025-06-17 14:38:15 - INFO - Получены данные: Motor power initialization completed
+2025-06-17 14:38:15 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-17 14:38:15 - INFO - Получены данные: Planner MaxSpeed: 30000 steps/sec, Acceleration: 30000 steps/sec\xb2
+2025-06-17 14:38:15 - INFO - Получены данные: System initialized successfully!
+2025-06-17 14:38:15 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-17 14:38:15 - INFO - Получены данные: Type 'status' for system information
+2025-06-17 14:38:16 - INFO - Получены данные: Ready for commands...
+2025-06-17 14:38:22 - INFO - Отправлена команда: sm 0 0 10 0 0
+2025-06-17 14:38:22 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:38:22 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:38:23 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:38:23 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:38:23 - INFO - Получены данные: E0 enabled
+2025-06-17 14:38:23 - INFO - Получены данные: E1 enabled
+2025-06-17 14:38:23 - INFO - Получены данные: All motors enabled
+2025-06-17 14:38:23 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:23 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:23 - INFO - Получены данные: RRight(Z) -> 10.00 units (2000 steps) from current 0 steps
+2025-06-17 14:38:23 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:23 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:23 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:38:23 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:38:23 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:38:23 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:38:23 - INFO - Получены данные: RRight(Z) final position: 10.00 units (2000 steps)
+2025-06-17 14:38:23 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:38:24 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:38:24 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:38:24 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:38:24 - INFO - Получены данные: COMPLETE
+2025-06-17 14:38:24 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:38:24 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:38:27 - INFO - Отправлена команда: sm 0 0 60 0 0
+2025-06-17 14:38:27 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:38:27 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:38:27 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:38:27 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:38:27 - INFO - Получены данные: E0 enabled
+2025-06-17 14:38:27 - INFO - Получены данные: E1 enabled
+2025-06-17 14:38:27 - INFO - Получены данные: All motors enabled
+2025-06-17 14:38:27 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:27 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:27 - INFO - Получены данные: RRight(Z) -> 60.00 units (12000 steps) from current 2000 steps
+2025-06-17 14:38:27 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:27 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:27 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:38:28 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:38:28 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:38:28 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:38:28 - INFO - Получены данные: RRight(Z) final position: 60.00 units (12000 steps)
+2025-06-17 14:38:28 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:38:28 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:38:29 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:38:29 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:38:29 - INFO - Получены данные: COMPLETE
+2025-06-17 14:38:29 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:38:29 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:38:30 - INFO - Отправлена команда: sm 0 0 40 0 0
+2025-06-17 14:38:30 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:38:30 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:38:30 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:38:30 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:38:30 - INFO - Получены данные: E0 enabled
+2025-06-17 14:38:30 - INFO - Получены данные: E1 enabled
+2025-06-17 14:38:30 - INFO - Получены данные: All motors enabled
+2025-06-17 14:38:31 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:31 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:31 - INFO - Получены данные: RRight(Z) -> 40.00 units (8000 steps) from current 12000 steps
+2025-06-17 14:38:31 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:31 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:31 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:38:31 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:38:31 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:38:31 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:38:31 - INFO - Получены данные: RRight(Z) final position: 40.00 units (8000 steps)
+2025-06-17 14:38:31 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:38:31 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:38:31 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:38:31 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:38:31 - INFO - Получены данные: COMPLETE
+2025-06-17 14:38:31 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:38:32 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:38:32 - INFO - Отправлена команда: sm 0 0 60 0 0
+2025-06-17 14:38:32 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:38:33 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:38:33 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:38:33 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:38:33 - INFO - Получены данные: E0 enabled
+2025-06-17 14:38:33 - INFO - Получены данные: E1 enabled
+2025-06-17 14:38:33 - INFO - Получены данные: All motors enabled
+2025-06-17 14:38:33 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:33 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:33 - INFO - Получены данные: RRight(Z) -> 60.00 units (12000 steps) from current 8000 steps
+2025-06-17 14:38:33 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:33 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:33 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:38:33 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:38:33 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:38:33 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:38:33 - INFO - Получены данные: RRight(Z) final position: 60.00 units (12000 steps)
+2025-06-17 14:38:34 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:38:34 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:38:34 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:38:34 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:38:34 - INFO - Получены данные: COMPLETE
+2025-06-17 14:38:34 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:38:34 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:38:52 - INFO - Отправлена команда: sm 0 0 1 0 0
+2025-06-17 14:38:52 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:38:52 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:38:52 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:38:52 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:38:52 - INFO - Получены данные: E0 enabled
+2025-06-17 14:38:52 - INFO - Получены данные: E1 enabled
+2025-06-17 14:38:52 - INFO - Получены данные: All motors enabled
+2025-06-17 14:38:52 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:52 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:52 - INFO - Получены данные: RRight(Z) -> 1.00 units (200 steps) from current 12000 steps
+2025-06-17 14:38:52 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:52 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:38:53 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:38:53 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:38:53 - INFO - Получены данные: Multi(X) final position: 0.00 units (0 steps)
+2025-06-17 14:38:53 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:38:54 - INFO - Получены данные: RRight(Z) final position: 1.00 units (200 steps)
+2025-06-17 14:38:54 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:38:54 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:38:54 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:38:54 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:38:54 - INFO - Получены данные: COMPLETE
+2025-06-17 14:38:54 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:38:54 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:02 - INFO - Отправлена команда: sm 0 0 1 0 0
+2025-06-17 14:39:02 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:02 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:02 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:02 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:02 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:02 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:02 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:02 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:02 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:02 - INFO - Получены данные: RRight(Z) -> 1.00 units (200 steps) from current 200 steps
+2025-06-17 14:39:03 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:03 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:03 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:03 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:03 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:03 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:03 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:03 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:03 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:09 - INFO - Отправлена команда: sm 0 0 1 0 0
+2025-06-17 14:39:09 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:09 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:09 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:09 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:09 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:09 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:09 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:09 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:09 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:09 - INFO - Получены данные: RRight(Z) -> 1.00 units (200 steps) from current 200 steps
+2025-06-17 14:39:09 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:10 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:10 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:10 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:10 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:10 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:10 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:10 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:10 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:16 - INFO - Отправлена команда: sm 0 0 1 0 0
+2025-06-17 14:39:16 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:16 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:17 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:17 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:17 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:17 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:17 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:17 - INFO - Получены данные: Multi(X) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:17 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:17 - INFO - Получены данные: RRight(Z) -> 1.00 units (200 steps) from current 200 steps
+2025-06-17 14:39:17 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:17 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:17 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:17 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:17 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:17 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:17 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:17 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:18 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:21 - INFO - Отправлена команда: sm 1 0 0 0 0
+2025-06-17 14:39:21 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:21 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:21 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:21 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:21 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:21 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:22 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:22 - INFO - Получены данные: Multi(X) -> 1.00 units (80 steps) from current 0 steps
+2025-06-17 14:39:22 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:22 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 200 steps
+2025-06-17 14:39:22 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:22 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:22 - INFO - Получены данные: Target set, starting movement...
+2025-06-17 14:39:22 - INFO - Получены данные: === COORDINATED MOVE COMPLETED ===
+2025-06-17 14:39:22 - INFO - Получены данные: Multi(X) final position: 1.00 units (80 steps)
+2025-06-17 14:39:22 - INFO - Получены данные: Multizone(Y) final position: 0.00 units (0 steps)
+2025-06-17 14:39:22 - INFO - Получены данные: RRight(Z) final position: 0.00 units (0 steps)
+2025-06-17 14:39:22 - INFO - Получены данные: E0 final position: 0.00 units (0 steps)
+2025-06-17 14:39:22 - INFO - Получены данные: E1 final position: 0.00 units (0 steps)
+2025-06-17 14:39:22 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:22 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:22 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:23 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:23 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:32 - INFO - Отправлена команда: sm 1 0 0 0 0
+2025-06-17 14:39:32 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:32 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:32 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:32 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:32 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:32 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:32 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:32 - INFO - Получены данные: Multi(X) -> 1.00 units (80 steps) from current 80 steps
+2025-06-17 14:39:32 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:32 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:32 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:32 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:32 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:33 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:33 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:33 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:33 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:33 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:33 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:36 - INFO - Отправлена команда: sm 1 0 0 0 0
+2025-06-17 14:39:36 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:36 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:36 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:36 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:36 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:36 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:36 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:36 - INFO - Получены данные: Multi(X) -> 1.00 units (80 steps) from current 80 steps
+2025-06-17 14:39:36 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:37 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:37 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:37 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:37 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:37 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:37 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:37 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:37 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:37 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:37 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:46 - INFO - Отправлена команда: sm 1 0 0 0 0
+2025-06-17 14:39:46 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:46 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:46 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:46 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:46 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:47 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:47 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:47 - INFO - Получены данные: Multi(X) -> 1.00 units (80 steps) from current 80 steps
+2025-06-17 14:39:47 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:47 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:47 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:47 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:47 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:47 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:47 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:47 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:47 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:47 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:47 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:48 - INFO - Отправлена команда: sm 1 0 0 0 0
+2025-06-17 14:39:48 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:39:48 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:39:49 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:39:49 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:39:49 - INFO - Получены данные: E0 enabled
+2025-06-17 14:39:49 - INFO - Получены данные: E1 enabled
+2025-06-17 14:39:49 - INFO - Получены данные: All motors enabled
+2025-06-17 14:39:49 - INFO - Получены данные: Multi(X) -> 1.00 units (80 steps) from current 80 steps
+2025-06-17 14:39:49 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:49 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:49 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:49 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:39:49 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:39:49 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:39:49 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:39:49 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:39:49 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:49 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:50 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:39:59 - INFO - Отправлена команда: pon 2
+2025-06-17 14:39:59 - INFO - Получены данные: Pin 10 (KL2) turned ON
+2025-06-17 14:39:59 - INFO - Получены данные: COMPLETE
+2025-06-17 14:39:59 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:39:59 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:00 - INFO - Отправлена команда: poff 2
+2025-06-17 14:40:00 - INFO - Получены данные: Pin 10 (KL2) turned OFF
+2025-06-17 14:40:00 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:00 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:00 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:11 - INFO - Отправлена команда: pon 2
+2025-06-17 14:40:11 - INFO - Получены данные: Pin 10 (KL2) turned ON
+2025-06-17 14:40:11 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:11 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:12 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:12 - INFO - Отправлена команда: poff 2
+2025-06-17 14:40:12 - INFO - Получены данные: Pin 10 (KL2) turned OFF
+2025-06-17 14:40:12 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:12 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:12 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:14 - INFO - Отправлена команда: pon 0
+2025-06-17 14:40:14 - INFO - Получены данные: Pin 18 (PUMP) turned ON
+2025-06-17 14:40:14 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:14 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:14 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:15 - INFO - Отправлена команда: poff 0
+2025-06-17 14:40:15 - INFO - Получены данные: Pin 18 (PUMP) turned OFF
+2025-06-17 14:40:15 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:15 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:15 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:16 - INFO - Отправлена команда: pon 1
+2025-06-17 14:40:16 - INFO - Получены данные: Pin 8 (KL1) turned ON
+2025-06-17 14:40:16 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:16 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:16 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:18 - INFO - Отправлена команда: poff 1
+2025-06-17 14:40:18 - INFO - Получены данные: Pin 8 (KL1) turned OFF
+2025-06-17 14:40:18 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:18 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:18 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:24 - INFO - Отправлена команда: test
+2025-06-17 14:40:24 - INFO - Получены данные: === COMPREHENSIVE MOTOR TEST ===
+2025-06-17 14:40:24 - INFO - Получены данные: Testing all motors with direct pin control
+2025-06-17 14:40:24 - INFO - Получены данные: Movement: 10 units forward/backward for 10 seconds
+2025-06-17 14:40:24 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:40:24 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:40:24 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:40:24 - INFO - Получены данные: E0 enabled
+2025-06-17 14:40:24 - INFO - Получены данные: E1 enabled
+2025-06-17 14:40:24 - INFO - Получены данные: All motors enabled
+2025-06-17 14:40:24 - INFO - Получены данные: Direction: FORWARD
+2025-06-17 14:40:24 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-17 14:40:24 - INFO - Получены данные: Step 0/800 - Time: 0.0s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 100/800 - Time: 0.2s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 200/800 - Time: 0.4s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 300/800 - Time: 0.6s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 400/800 - Time: 0.8s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 500/800 - Time: 1.1s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 600/800 - Time: 1.3s
+2025-06-17 14:40:25 - INFO - Получены данные: Step 700/800 - Time: 1.5s
+2025-06-17 14:40:26 - INFO - Получены данные: Direction: BACKWARD
+2025-06-17 14:40:26 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-17 14:40:26 - INFO - Получены данные: Step 0/800 - Time: 2.2s
+2025-06-17 14:40:26 - INFO - Получены данные: Step 100/800 - Time: 2.4s
+2025-06-17 14:40:26 - INFO - Получены данные: Step 200/800 - Time: 2.6s
+2025-06-17 14:40:27 - INFO - Получены данные: Step 300/800 - Time: 2.8s
+2025-06-17 14:40:27 - INFO - Получены данные: Step 400/800 - Time: 3.0s
+2025-06-17 14:40:27 - INFO - Получены данные: Step 500/800 - Time: 3.2s
+2025-06-17 14:40:27 - INFO - Получены данные: Step 600/800 - Time: 3.4s
+2025-06-17 14:40:27 - INFO - Получены данные: Step 700/800 - Time: 3.7s
+2025-06-17 14:40:28 - INFO - Получены данные: Direction: FORWARD
+2025-06-17 14:40:28 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-17 14:40:28 - INFO - Получены данные: Step 0/800 - Time: 4.4s
+2025-06-17 14:40:28 - INFO - Получены данные: Step 100/800 - Time: 4.6s
+2025-06-17 14:40:29 - INFO - Получены данные: Step 200/800 - Time: 4.8s
+2025-06-17 14:40:29 - INFO - Получены данные: Step 300/800 - Time: 5.0s
+2025-06-17 14:40:29 - INFO - Получены данные: Step 400/800 - Time: 5.2s
+2025-06-17 14:40:29 - INFO - Получены данные: Step 500/800 - Time: 5.4s
+2025-06-17 14:40:29 - INFO - Получены данные: Step 600/800 - Time: 5.6s
+2025-06-17 14:40:30 - INFO - Получены данные: Step 700/800 - Time: 5.8s
+2025-06-17 14:40:30 - INFO - Получены данные: Direction: BACKWARD
+2025-06-17 14:40:30 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-17 14:40:30 - INFO - Получены данные: Step 0/800 - Time: 6.5s
+2025-06-17 14:40:31 - INFO - Получены данные: Step 100/800 - Time: 6.7s
+2025-06-17 14:40:31 - INFO - Получены данные: Step 200/800 - Time: 7.0s
+2025-06-17 14:40:31 - INFO - Получены данные: Step 300/800 - Time: 7.2s
+2025-06-17 14:40:31 - INFO - Получены данные: Step 400/800 - Time: 7.4s
+2025-06-17 14:40:31 - INFO - Получены данные: Step 500/800 - Time: 7.6s
+2025-06-17 14:40:32 - INFO - Получены данные: Step 600/800 - Time: 7.8s
+2025-06-17 14:40:32 - INFO - Получены данные: Step 700/800 - Time: 8.0s
+2025-06-17 14:40:32 - INFO - Получены данные: Direction: FORWARD
+2025-06-17 14:40:33 - INFO - Получены данные: Generating 800 steps for each motor
+2025-06-17 14:40:33 - INFO - Получены данные: Step 0/800 - Time: 8.7s
+2025-06-17 14:40:33 - INFO - Получены данные: Step 100/800 - Time: 8.9s
+2025-06-17 14:40:33 - INFO - Получены данные: Step 200/800 - Time: 9.1s
+2025-06-17 14:40:33 - INFO - Получены данные: Step 300/800 - Time: 9.3s
+2025-06-17 14:40:33 - INFO - Получены данные: Step 400/800 - Time: 9.6s
+2025-06-17 14:40:34 - INFO - Получены данные: Step 500/800 - Time: 9.8s
+2025-06-17 14:40:34 - INFO - Получены данные: Step 600/800 - Time: 10.0s
+2025-06-17 14:40:34 - INFO - Получены данные: === TEST COMPLETED ===
+2025-06-17 14:40:34 - INFO - Получены данные: Total test time: 10.5 seconds
+2025-06-17 14:40:34 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:40:34 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:40:35 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:35 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:35 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:40:41 - INFO - Отправлена команда: sm 1 0 0 0 0
+2025-06-17 14:40:41 - INFO - Получены данные: === COORDINATED MOVE START ===
+2025-06-17 14:40:41 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:40:41 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:40:41 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:40:41 - INFO - Получены данные: E0 enabled
+2025-06-17 14:40:41 - INFO - Получены данные: E1 enabled
+2025-06-17 14:40:41 - INFO - Получены данные: All motors enabled
+2025-06-17 14:40:41 - INFO - Получены данные: Multi(X) -> 1.00 units (80 steps) from current 80 steps
+2025-06-17 14:40:42 - INFO - Получены данные: Multizone(Y) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:40:42 - INFO - Получены данные: RRight(Z) -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:40:42 - INFO - Получены данные: E0 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:40:42 - INFO - Получены данные: E1 -> 0.00 units (0 steps) from current 0 steps
+2025-06-17 14:40:42 - INFO - Получены данные: WARNING: All motors are already at target positions - no movement needed
+2025-06-17 14:40:42 - INFO - Получены данные: === COORDINATED MOVE COMPLETED (NO MOVEMENT) ===
+2025-06-17 14:40:42 - INFO - Получены данные: Temporary power motors disabled: E0 E1
+2025-06-17 14:40:42 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
+2025-06-17 14:40:42 - INFO - Получены данные: COMPLETE
+2025-06-17 14:40:42 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:40:42 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:41:18 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения RRight', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Диагностические команды']
+2025-06-17 14:41:18 - INFO - Конфигурация загружена: 32 команд, 5 последовательностей, 8 разделов
+2025-06-17 14:41:23 - INFO - Отправлена команда: sh 1 0 0 0 0
+2025-06-17 14:41:23 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:41:28 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 14:41:28 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:41:28 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:41:28 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:41:28 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:41:28 - INFO - Получены данные: E0 enabled
+2025-06-17 14:41:28 - INFO - Получены данные: E1 enabled
+2025-06-17 14:41:28 - INFO - Получены данные: All motors enabled
+2025-06-17 14:41:28 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 14:41:28 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 14:41:34 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 14:41:34 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 14:41:34 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 14:41:34 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 14:41:34 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:41:35 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:41:35 - INFO - Получены данные: COMPLETE
+2025-06-17 14:41:35 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:41:35 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:41:40 - INFO - Отправлена команда: sh 1 0 0 0 0
+2025-06-17 14:41:40 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:41:45 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 14:41:45 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:41:45 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:41:45 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:41:45 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:41:45 - INFO - Получены данные: E0 enabled
+2025-06-17 14:41:45 - INFO - Получены данные: E1 enabled
+2025-06-17 14:41:45 - INFO - Получены данные: All motors enabled
+2025-06-17 14:41:45 - INFO - Получены данные: Homing Multi(X) (PNP sensor)
+2025-06-17 14:41:45 - INFO - Получены данные: Multi(X) - endstop already triggered, moving away first
+2025-06-17 14:41:45 - INFO - Получены данные: Multi(X) - moved away from endstop
+2025-06-17 14:41:45 - INFO - Получены данные: Multi(X) - moving to endstop
+2025-06-17 14:41:45 - INFO - Получены данные: Multi(X) - endstop triggered
+2025-06-17 14:41:45 - INFO - Получены данные: Setting Multi(X) position to zero...
+2025-06-17 14:41:45 - INFO - Получены данные: Multi(X) position set to zero
+2025-06-17 14:41:46 - INFO - Получены данные: Multi(X) - homing completed
+2025-06-17 14:41:46 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:41:46 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:41:46 - INFO - Получены данные: COMPLETE
+2025-06-17 14:41:46 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:41:46 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:41:58 - INFO - Отправлена команда: sh 0 0 1 0 0
+2025-06-17 14:41:58 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:42:03 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 14:42:03 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:42:03 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:42:03 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:42:03 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:42:04 - INFO - Получены данные: E0 enabled
+2025-06-17 14:42:04 - INFO - Получены данные: E1 enabled
+2025-06-17 14:42:04 - INFO - Получены данные: All motors enabled
+2025-06-17 14:42:04 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 14:42:04 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 14:42:04 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 14:42:04 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 14:42:04 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 14:42:04 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 14:42:04 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:42:04 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:42:04 - INFO - Получены данные: COMPLETE
+2025-06-17 14:42:04 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:42:04 - INFO - Получены данные: DEBUG: Planner cleanup completed
+2025-06-17 14:42:11 - INFO - Отправлена команда: sh 0 0 1 0 0
+2025-06-17 14:42:11 - INFO - Получены данные: Waiting for planner to be ready...
+2025-06-17 14:42:16 - INFO - Получены данные: ERROR: Planner timeout - forcing reset
+2025-06-17 14:42:16 - INFO - Получены данные: === HOMING PROCEDURE START ===
+2025-06-17 14:42:16 - INFO - Получены данные: Multi(X) enabled
+2025-06-17 14:42:16 - INFO - Получены данные: Multizone(Y) enabled
+2025-06-17 14:42:16 - INFO - Получены данные: RRight(Z) enabled
+2025-06-17 14:42:16 - INFO - Получены данные: E0 enabled
+2025-06-17 14:42:16 - INFO - Получены данные: E1 enabled
+2025-06-17 14:42:16 - INFO - Получены данные: All motors enabled
+2025-06-17 14:42:16 - INFO - Получены данные: Homing RRight(Z) (NPN sensor)
+2025-06-17 14:42:16 - INFO - Получены данные: RRight(Z) - endstop already triggered, moving away first
+2025-06-17 14:42:21 - INFO - Получены данные: RRight(Z) - moved away from endstop
+2025-06-17 14:42:21 - INFO - Получены данные: RRight(Z) - moving to endstop
+2025-06-17 14:42:22 - INFO - Получены данные: RRight(Z) - endstop triggered
+2025-06-17 14:42:22 - INFO - Получены данные: Setting RRight(Z) position to zero...
+2025-06-17 14:42:22 - INFO - Получены данные: RRight(Z) position set to zero
+2025-06-17 14:42:22 - INFO - Получены данные: RRight(Z) - homing completed
+2025-06-17 14:42:22 - INFO - Получены данные: === HOMING PROCEDURE COMPLETED ===
+2025-06-17 14:42:22 - INFO - Получены данные: Motors remain enabled for immediate use
+2025-06-17 14:42:22 - INFO - Получены данные: COMPLETE
+2025-06-17 14:42:22 - INFO - Получены данные: DEBUG: Forcing planner cleanup...
+2025-06-17 14:42:22 - INFO - Получены данные: DEBUG: Planner cleanup completed

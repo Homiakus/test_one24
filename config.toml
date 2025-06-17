@@ -1,103 +1,54 @@
 [buttons]
 
 # Команды движения Multi
-"Multi → OG" = "move_multi 0"
-"Multi → продувка OG" = "move_multi 1"
-"Multi → EA" = "move_multi 2"
-"Multi → продувка EA" = "move_multi 3"
-"Multi → Gemo" = "move_multi 4"
-"Multi → продувка Gemo" = "move_multi 5"
-"Multi → Alco" = "move_multi 6"
-"Multi → продувка Alco" = "move_multi 7"
-"Multi → Water" = "move_multi 8"
-"Multi → продувка Water" = "move_multi 9"
-"Multi → Chlor" = "move_multi 10"
-"Multi → продувка Chlor" = "move_multi 11"
-
-# Команды движения Multizone
-"Multizone → позиция 0" = "move_multizone 0"
-"Multizone → позиция 1" = "move_multizone 1"
-"Multizone → позиция 2" = "move_multizone 2"
-"Multizone → позиция 3" = "move_multizone 3"
-"Multizone → позиция 4" = "move_multizone 4"
-"Multizone → позиция 5" = "move_multizone 5"
+"Multi → OG" = "sm 1 0 0 0 0"
+"Multi → продувка OG" = "sm 1 0 0 0 0"
+"Multi → EA" = "sm 2 0 0 0 0"
+"Multi → продувка EA" = "sm 3 0 0 0 0"
+"Multi → Gemo" = "sm 4 0 0 0 0"
+"Multi → продувка Gemo" = "sm 5 0 0 0 0"
+"Multi → Alco" = "sm 6 0 0 0 0"
+"Multi → продувка Alco" = "sm 6 0 0 0 0"
+"Multi → Water" = "sm 8 0 0 0 0"
+"Multi → продувка Water" = "sm 8 0 0 0 0"
+"Multi → Chlor" = "sm 10 0 0 0 0"
+"Multi → продувка Chlor" = "sm 11 0 0 0 0"
 
 # Команды движения RRight
-"RRight → налив OG" = "move_rright 2"
-"RRight → налив EA" = "move_rright 3"
-"RRight → налив Gemo" = "move_rright 4"
-"RRight → налив Alco" = "move_rright 10"
-"RRight → налив Water" = "move_rright 1"
-"RRight → налив Chlor" = "move_rright 12"
-"RRight → слив" = "move_rright 90"
-"RRight → экспозиция" = "move_rright 180"
-"RRight → загрузка пробирок" = "move_rright 40"
-"RRight → извлечение пробирок" = "move_rright 60"
-"RRight → установка стекол" = "move_rright 180"
-"RRight → извлечение стекол" = "move_rright 180"
+"RRight → налив " = "sm 0 0 40 0 0"
+"RRight → слив" = "sm 0 0 60 0 0"
+"RRight → экспозиция" = "sm 0 0 50 0 0"
+"RRight → загрузка пробирок" = "sm 0 0 10 0 0"
+"RRight → извлечение пробирок" = "sm 0 0 30 0 0"
 
-# Команды движения E0 (индивидуальные)
-"E0 → позиция 0" = "move_e0 0"
-"E0 → позиция 1000" = "move_e0 1000"
-"E0 → позиция 2000" = "move_e0 2000"
-"E0 → позиция 3000" = "move_e0 3000"
-"E0 → позиция 5000" = "move_e0 5000"
 
-# Команды движения E1 (индивидуальные)
-"E1 → позиция 0" = "move_e1 0"
-"E1 → позиция 1000" = "move_e1 1000"
-"E1 → позиция 2000" = "move_e1 2000"
-"E1 → позиция 3000" = "move_e1 3000"
-"E1 → позиция 5000" = "move_e1 5000"
 
 # Команды хоминга (обнуления)
-"Хоминг Multi" = "zero_multi"
-"Хоминг Multizone" = "zero_multizone"
-"Хоминг RRight" = "zero_rright"
-"Хоминг E0" = "zero_e0"
-"Хоминг E1" = "zero_e1"
+"Хоминг Multi" = "sh 1 0 0 0 0"
+"Хоминг RRight" = "sh 0 0 1 0 0"
+"Хоминг Clamp" = "sh 0 0 0 0 1"
 
 # Команды Clamp (синхронные E0/E1)
-"Clamp → сжать 2000" = "clamp 2000"
-"Clamp → сжать 4000" = "clamp 4000"
-"Clamp → сжать 6000" = "clamp 6000"
-"Clamp → разжать" = "clamp 0"
-"Clamp → реверс" = "clamp -2000"
-"Clamp → обнуление" = "clamp_zero"
-"Clamp → СТОП" = "clamp_stop"
+"Clamp → сжать 2000" = "sm * * * 2000 2000"
+"Clamp → сжать 4000" = "sm * * * 4000 4000"
+"Clamp → сжать 6000" = "sm * * * 6000 6000"
+"Clamp → разжать" = "sm * * * 0 0"
+"Clamp → реверс" = "sm * * * -2000 2000"
 
 # Управление клапанами KL1
-"KL1 включить" = "kl1_on"
-"KL1 выключить" = "kl1_off"
-"KL1 → 50ms" = "kl1 50"
-"KL1 → 100ms" = "kl1 100"
-"KL1 → 200ms" = "kl1 200"
-"KL1 → 500ms" = "kl1 500"
+"KL1 включить" = "pon 1"
+"KL1 выключить" = "poff 1"
 
 # Управление клапанами KL2
-"KL2 включить" = "kl2_on"
-"KL2 выключить" = "kl2_off"
-"KL2 → 50ms" = "kl2 50"
-"KL2 → 100ms" = "kl2 100"
-"KL2 → 200ms" = "kl2 200"
-"KL2 → 500ms" = "kl2 500"
+"KL2 включить" = "pon 2"
+"KL2 выключить" = "poff 2"
 
 # Управление насосом
-"Насос включить" = "pump_on"
-"Насос выключить" = "pump_off"
+"Насос включить" = "pon 0"
+"Насос выключить" = "poff 0"
 
-# Чтение датчиков
-"Показать вес" = "weight"
-"Сырой вес" = "raw_weight"
-"Тарировать весы" = "calibrate_weight"
-"Калибровка (фактор 1.0)" = "calibrate_weight_factor 1.0"
-"Калибровка (фактор 0.1)" = "calibrate_weight_factor 0.1"
-"Состояние ротора" = "staterotor"
-"Датчик отходов" = "waste"
 
 # Диагностические команды
-"Проверка концевиков" = "check_all_endstops"
-"Проверка enable пинов" = "check_enable_pins"
 "Тестовая команда" = "test"
 
 # Настройки Serial по умолчанию
