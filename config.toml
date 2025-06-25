@@ -20,6 +20,7 @@
 "RRight → верх" = "sm * * -53 * *"
 "RRight → загрузка пробирок" = "sm * * 43 * *"
 "RRight → извлечение пробирок" = "sm * * -3 * *"
+"RRight → предноль" = "sm * * 130 * *"
 
 
 
@@ -60,7 +61,16 @@ timeout = 1.0
 
 # Последовательности команд для автоматического выполнения
 [sequences]
-load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → верх", "Хоминг RRight", "RRight → загрузка пробирок"]
+load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → предноль", "Хоминг RRight", "RRight → загрузка пробирок"]
 load_samples = ["RRight → загрузка пробирок", "RRight → верх", "wait 10", "RRight → извлечение пробирок"]
-load_slides = ["RRight → верх", "Clamp → сжать "]
-coloring = ["RRight → экспозиция", "wait 3", "Хоминг Multi", "Multi → продувка Alco", "RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить", "RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10"]
+load_slides = ["RRight → верх", "Clamp → разжать"]
+coloring = ["sedimantation", "alco", "gemo", "water", "water", "og", "alco", "ea", "alco", "alco", "alco"]
+og = ["RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
+ea = ["RRight → верх", "Multi → EA", "KL2 включить", "wait 1", "Multi → продувка EA", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
+gemo = ["RRight → верх", "Multi → Gemo", "KL2 включить", "wait 1", "Multi → продувка Gemo", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
+alco = ["RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "RRight → слив", "waste"]
+water = ["RRight → верх", "Multi → Water", "KL2 включить", "wait 1", "Multi → продувка Water", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
+chlor = ["RRight → верх", "Multi → Chlor", "KL2 включить", "wait 1", "Multi → продувка Chlor", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
+sedimantation = ["RRight → экспозиция", "wait 3", "RRight → слив", "Multi → продувка Alco", "waste"]
+waste = ["RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить"]
+waste_out = ["Multi → продувка OG", "KL1 включить", "KL2 включить", "wait 8", "KL1 выключить", "KL2 выключить"]

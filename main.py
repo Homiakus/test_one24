@@ -1442,11 +1442,12 @@ baudrate = 115200
         """)
         right_layout.addWidget(right_title)
 
-        # Выбор / создание последовательности
-        self.sequence_selector = QComboBox()
-        self.sequence_selector.addItems(list(self.sequences.keys()))
-        self.sequence_selector.setEditable(True)  # Для создания новой
-        right_layout.addWidget(self.sequence_selector)
+        # Список всех последовательностей
+        self.sequence_names_list = QListWidget()
+        self.sequence_names_list.addItems(list(self.sequences.keys()))
+        self.sequence_names_list.setFixedHeight(120)
+        self.sequence_names_list.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
+        right_layout.addWidget(self.sequence_names_list)
 
         # Список элементов последовательности (drop-enabled)
         self.designer_sequence_list = SequenceListWidget(self)
@@ -1473,7 +1474,8 @@ baudrate = 115200
         )
 
         # Сигналы
-        self.sequence_selector.currentTextChanged.connect(self.on_sequence_selector_changed)
+        self.sequence_names_list.itemClicked.connect(self.on_sequence_item_clicked)
+        self.sequence_names_list.itemDoubleClicked.connect(self.rename_sequence_item)
         self.save_sequence_btn.clicked.connect(self.save_current_sequence)
         self.delete_item_btn.clicked.connect(self.delete_selected_sequence_item)
 
@@ -1483,14 +1485,26 @@ baudrate = 115200
             lw.itemActivated.connect(self.edit_wait_item)
 
         # Загрузить первую последовательность (если есть)
-        if self.sequence_selector.count():
-            self.load_sequence_to_designer(self.sequence_selector.currentText())
+        if self.sequence_names_list.count():
+            self.sequence_names_list.setCurrentRow(0)
+            self.load_sequence_to_designer(self.sequence_names_list.currentItem().text())
 
         # ---------------- Сборка в макет ----------------
         main_layout.addWidget(left_widget, 1)
         main_layout.addWidget(right_widget, 2)
 
         self.content_area.addWidget(page)
+
+        # Поле для создания новой последовательности
+        new_seq_layout = QHBoxLayout()
+        self.new_seq_edit = QLineEdit()
+        self.new_seq_edit.setPlaceholderText("Новая последовательность")
+        self.add_seq_btn = ModernButton("➕", "primary")
+        self.add_seq_btn.setFixedWidth(50)
+        self.add_seq_btn.clicked.connect(self.create_new_sequence)
+        new_seq_layout.addWidget(self.new_seq_edit)
+        new_seq_layout.addWidget(self.add_seq_btn)
+        right_layout.addLayout(new_seq_layout)
 
     def setup_settings_page(self):
         """Настройка страницы настроек с портами и параметрами"""
@@ -1919,16 +1933,33 @@ baudrate = 115200
             self.add_terminal_message("❌ Устройство не подключено", "error")
             return
 
-        # Получаем команды последовательности
-        sequence_commands = self.sequences[sequence_name]
+        # Рекурсивно разворачиваем последовательности в реальные команды
+        def expand_item(item, visited):
+            if self.is_wait_command(item):
+                return [item]
 
-        # Преобразуем названия команд в actual команды
+            # Команда
+            if item in self.buttons_config:
+                return [self.buttons_config[item]]
+
+            # Вложенная последовательность
+            if item in self.sequences:
+                if item in visited:
+                    self.add_terminal_message(f"❌ Обнаружена рекурсия в последовательности '{item}'", "error")
+                    return []
+                visited.add(item)
+                expanded = []
+                for sub in self.sequences[item]:
+                    expanded.extend(expand_item(sub, visited))
+                visited.remove(item)
+                return expanded
+
+            # Неизвестное – отправляем как есть
+            return [item]
+
         actual_commands = []
-        for cmd in sequence_commands:
-            if cmd in self.buttons_config:
-                actual_commands.append(self.buttons_config[cmd])
-            else:
-                actual_commands.append(cmd)  # Возможно, это уже команда, а не название
+        for cmd in self.sequences[sequence_name]:
+            actual_commands.extend(expand_item(cmd, {sequence_name}))
 
         # Запускаем поток выполнения последовательности
         self.command_sequence_thread = CommandSequenceThread(self.serial_port, actual_commands, self)
@@ -2493,16 +2524,28 @@ baudrate = 115200
 
         self.validate_designer_items()
 
-    def on_sequence_selector_changed(self, text):
-        """При выборе/создании последовательности загрузить её содержимое"""
-        self.load_sequence_to_designer(text)
+    def on_sequence_item_clicked(self, item):
+        """При выборе последовательности загрузить её содержимое"""
+        self.load_sequence_to_designer(item.text())
+
+    def rename_sequence_item(self, item):
+        """Переименование последовательности"""
+        new_name, ok = QInputDialog.getText(self, 'Переименование последовательности', 'Введите новое имя:', text=item.text())
+        if ok and new_name:
+            item.setText(new_name)
+            self.sequences[new_name] = self.sequences.pop(item.text())
+            self.sequence_names_list.clear()
+            self.sequence_names_list.addItems(list(self.sequences.keys()))
+            self.sequence_names_list.setCurrentRow(0)
+            self.load_sequence_to_designer(new_name)
 
     def save_current_sequence(self):
         """Сохраняет текущую последовательность в self.sequences и файл config.toml"""
-        seq_name = self.sequence_selector.currentText().strip()
+        seq_name = self.get_current_sequence_name()
         if not seq_name:
-            QMessageBox.warning(self, "Ошибка", "Введите имя последовательности")
-            return
+            seq_name, ok = QInputDialog.getText(self, 'Имя последовательности', 'Введите имя новой последовательности:')
+            if not ok or not seq_name:
+                return
 
         # Сбор команд из списка
         cmds = [self.designer_sequence_list.item(i).text() for i in range(self.designer_sequence_list.count())]
@@ -2510,8 +2553,8 @@ baudrate = 115200
         self.sequences[seq_name] = cmds
 
         # Обновить список в случае новой последовательности
-        if self.sequence_selector.findText(seq_name) == -1:
-            self.sequence_selector.addItem(seq_name)
+        if seq_name not in [self.sequence_names_list.item(i).text() for i in range(self.sequence_names_list.count())]:
+            self.sequence_names_list.addItem(seq_name)
 
         # Записать в файл
         success = self.write_sequences_to_config()
@@ -2619,7 +2662,7 @@ baudrate = 115200
 
     def validate_designer_items(self):
         """Проверяет элементы последовательности и подсвечивает недействительные красным"""
-        current_seq = self.sequence_selector.currentText().strip()
+        current_seq = self.get_current_sequence_name()
 
         for i in range(self.designer_sequence_list.count()):
             item = self.designer_sequence_list.item(i)
@@ -2644,6 +2687,21 @@ baudrate = 115200
             if not valid:
                 # недействительная команда/последовательность или self recursion
                 item.setForeground(QColor("#ff5555"))
+
+    def get_current_sequence_name(self):
+        item = self.sequence_names_list.currentItem() if hasattr(self, 'sequence_names_list') else None
+        return item.text() if item else ""
+
+    def create_new_sequence(self):
+        """Создание новой последовательности"""
+        new_name, ok = QInputDialog.getText(self, 'Имя новой последовательности', 'Введите имя новой последовательности:')
+        if ok and new_name:
+            if new_name not in self.sequences:
+                self.sequences[new_name] = []
+                self.sequence_names_list.addItem(new_name)
+                self.add_terminal_message(f"🎉 Новая последовательность '{new_name}' создана", "info")
+            else:
+                QMessageBox.warning(self, "Ошибка", f"Последовательность '{new_name}' уже существует")
 
 
 class SequenceListWidget(QListWidget):
