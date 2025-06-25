@@ -60,7 +60,7 @@ timeout = 1.0
 
 # Последовательности команд для автоматического выполнения
 [sequences]
-load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → налив ", "Хоминг RRight", "RRight → загрузка пробирок"]
+load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → верх", "Хоминг RRight", "RRight → загрузка пробирок"]
 load_samples = ["RRight → загрузка пробирок", "RRight → верх", "wait 10", "RRight → извлечение пробирок"]
 load_slides = ["RRight → верх", "Clamp → сжать "]
 coloring = ["RRight → экспозиция", "wait 3", "Хоминг Multi", "Multi → продувка Alco", "RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить", "RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10"]

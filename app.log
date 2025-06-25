@@ -19993,3 +19993,48 @@
 2025-06-25 17:33:26 - INFO - Получены данные: Always-on motors remain enabled: Multi(X) Multizone(Y) RRight(Z)
 2025-06-25 17:33:26 - INFO - Получены данные: COMPLETE
 2025-06-25 17:33:26 - INFO - Получены данные: DEBUG: Planner still busy after command completion
+2025-06-25 17:50:53 - INFO - Логирование инициализировано успешно
+2025-06-25 17:50:53 - INFO - ================================================================================
+2025-06-25 17:50:53 - INFO - Запуск приложения с PySide6
+2025-06-25 17:50:53 - INFO - Операционная система: win32
+2025-06-25 17:50:53 - INFO - Версия Python: 3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]
+2025-06-25 17:50:53 - INFO - Текущая директория: C:\base_2\projects\1pap24\program\test_one24
+2025-06-25 17:50:53 - INFO - Файл логов: C:\base_2\projects\1pap24\program\test_one24\app.log
+2025-06-25 17:50:53 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения RRight', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Диагностические команды']
+2025-06-25 17:50:53 - INFO - Конфигурация загружена: 30 команд, 4 последовательностей, 8 разделов
+2025-06-25 17:50:53 - INFO - Приложение запущено с PySide6
+2025-06-25 17:50:55 - INFO - Получены данные: === GyverPlanner 5-Motor System ===
+2025-06-25 17:50:55 - INFO - Получены данные: === Proper API Usage ===
+2025-06-25 17:50:55 - INFO - Получены данные: Initializing...
+2025-06-25 17:50:55 - INFO - Получены данные: Configured pins for Multi(X) - Step:54 Dir:55
+2025-06-25 17:50:55 - INFO - Получены данные: Configured pins for Multizone(Y) - Step:60 Dir:61
+2025-06-25 17:50:55 - INFO - Получены данные: Configured pins for RRight(Z) - Step:46 Dir:48
+2025-06-25 17:50:55 - INFO - Получены данные: Configured pins for E0 - Step:26 Dir:28
+2025-06-25 17:50:55 - INFO - Получены данные: Configured pins for E1 - Step:36 Dir:34
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 18 (PUMP)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 8 (KL1)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 10 (KL2)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 19 (WASTE)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 27 (ROTOR1)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 29 (ROTOR2)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 23 (ROTOR3)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 25 (ROTOR4)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 42 (HX711_SCK)
+2025-06-25 17:50:56 - INFO - Получены данные: Configured control pin 40 (HX711_DT)
+2025-06-25 17:50:56 - INFO - Получены данные: All steppers added to planner
+2025-06-25 17:50:56 - INFO - Получены данные: Initial position reset completed
+2025-06-25 17:50:56 - INFO - Получены данные: === MOTOR POWER INITIALIZATION ===
+2025-06-25 17:50:56 - INFO - Получены данные: Multi(X) - ALWAYS ON (enabled at startup)
+2025-06-25 17:50:56 - INFO - Получены данные: Multizone(Y) - ALWAYS ON (enabled at startup)
+2025-06-25 17:50:56 - INFO - Получены данные: RRight(Z) - ALWAYS ON (enabled at startup)
+2025-06-25 17:50:57 - INFO - Получены данные: E0 - TEMPORARY POWER (disabled at startup)
+2025-06-25 17:50:57 - INFO - Получены данные: E1 - TEMPORARY POWER (disabled at startup)
+2025-06-25 17:50:57 - INFO - Получены данные: Motor power initialization completed
+2025-06-25 17:50:57 - INFO - Получены данные: High-speed settings applied for E0/E1!
+2025-06-25 17:50:57 - INFO - Получены данные: Planner MaxSpeed: 30000 steps/sec, Acceleration: 30000 steps/sec\xb2
+2025-06-25 17:50:57 - INFO - Получены данные: System initialized successfully!
+2025-06-25 17:50:57 - INFO - Получены данные: GyverPlanner ready for high-speed coordinated movement
+2025-06-25 17:50:57 - INFO - Получены данные: Type 'status' for system information
+2025-06-25 17:50:57 - INFO - Получены данные: Ready for commands...
+2025-06-25 17:51:28 - INFO - Найдено разделов: ['Команды движения Multi', 'Команды движения RRight', 'Команды хоминга (обнуления)', 'Команды Clamp (синхронные E0/E1)', 'Управление клапанами KL1', 'Управление клапанами KL2', 'Управление насосом', 'Диагностические команды']
+2025-06-25 17:51:28 - INFO - Конфигурация загружена: 30 команд, 4 последовательностей, 8 разделов

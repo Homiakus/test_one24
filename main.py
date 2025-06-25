@@ -1415,6 +1415,14 @@ baudrate = 115200
             item = QListWidgetItem(wait_val, self.designer_commands_list)
             self.style_command_item(item)
 
+        # Добавляем существующие последовательности как элементы
+        if self.sequences:
+            for seq in self.sequences.keys():
+                if seq == "":
+                    continue
+                item = QListWidgetItem(seq, self.designer_commands_list)
+                self.style_command_item(item)
+
         left_layout.addWidget(self.designer_commands_list)
 
         # ---------------- Правая колонка: последовательность ----------------
@@ -1441,7 +1449,7 @@ baudrate = 115200
         right_layout.addWidget(self.sequence_selector)
 
         # Список элементов последовательности (drop-enabled)
-        self.designer_sequence_list = SequenceListWidget()
+        self.designer_sequence_list = SequenceListWidget(self)
         self.designer_sequence_list.setAcceptDrops(True)
         self.designer_sequence_list.setDragEnabled(True)
         self.designer_sequence_list.setDefaultDropAction(Qt.CopyAction)
@@ -2483,6 +2491,8 @@ baudrate = 115200
             item = QListWidgetItem(cmd, self.designer_sequence_list)
             self.style_command_item(item)
 
+        self.validate_designer_items()
+
     def on_sequence_selector_changed(self, text):
         """При выборе/создании последовательности загрузить её содержимое"""
         self.load_sequence_to_designer(text)
@@ -2512,11 +2522,15 @@ baudrate = 115200
             # Перезагрузить конфиг для остальной части UI
             self.reload_config()
 
+        self.validate_designer_items()
+
     def delete_selected_sequence_item(self):
         """Удаляет выбранный элемент из последовательности"""
         row = self.designer_sequence_list.currentRow()
         if row != -1:
             self.designer_sequence_list.takeItem(row)
+
+        self.validate_designer_items()
 
     def write_sequences_to_config(self):
         """Перезаписывает секцию [sequences] в config.toml, сохраняя остальные секции"""
@@ -2569,10 +2583,15 @@ baudrate = 115200
     def is_wait_command(self, text: str) -> bool:
         return text.lower().startswith("wait")
 
+    def is_sequence_name(self, text: str) -> bool:
+        return text in self.sequences
+
     def style_command_item(self, item):
         """Окрашивает команды wait в оранжевый цвет для выделения"""
         if self.is_wait_command(item.text()):
             item.setForeground(QColor("#ffb86c"))  # оранжевый
+        elif self.is_sequence_name(item.text()):
+            item.setForeground(QColor("#568af2"))  # синий
         else:
             item.setForeground(QColor("#dce1ec"))  # стандартный
 
@@ -2596,9 +2615,44 @@ baudrate = 115200
             item.setText(f"wait {new_val}")
             self.style_command_item(item)
 
+        self.validate_designer_items()
+
+    def validate_designer_items(self):
+        """Проверяет элементы последовательности и подсвечивает недействительные красным"""
+        current_seq = self.sequence_selector.currentText().strip()
+
+        for i in range(self.designer_sequence_list.count()):
+            item = self.designer_sequence_list.item(i)
+
+            # Начальная базовая стилизация
+            self.style_command_item(item)
+
+            text = item.text()
+
+            # Особые проверки
+            if self.is_wait_command(text):
+                continue  # wait всегда валиден
+
+            valid = False
+
+            if text in self.buttons_config:  # команда
+                valid = True
+            elif text in self.sequences:  # последовательность
+                if text != current_seq:
+                    valid = True
+
+            if not valid:
+                # недействительная команда/последовательность или self recursion
+                item.setForeground(QColor("#ff5555"))
+
 
 class SequenceListWidget(QListWidget):
-    """QListWidget с умным Drop: внешние перетаскивания копируются, внутренние – переносятся"""
+    """QListWidget с умным Drop: внешние перетаскивания копируются, внутренние – переносятся.
+    После drop уведомляет родительское окно для повторной валидации."""
+
+    def __init__(self, parent_window, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._parent_window = parent_window
 
     def dropEvent(self, event):
         # Если источник тот же виджет – перенос (Move), иначе – копирование
@@ -2608,6 +2662,10 @@ class SequenceListWidget(QListWidget):
             event.setDropAction(Qt.CopyAction)
 
         super().dropEvent(event)
+
+        # После изменений валидируем список
+        if self._parent_window:
+            self._parent_window.validate_designer_items()
 
 
 class NumericPadDialog(QDialog):
