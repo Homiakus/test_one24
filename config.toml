@@ -1,25 +1,25 @@
 [buttons]
 
 # Команды движения Multi
-"Multi → OG" = "sm 16 0 0 0 0"
-"Multi → продувка OG" = "sm -19 0 0 0 0"
-"Multi → EA" = "sm 119 0 0 0 0"
-"Multi → продувка EA" = "sm 85 0 0 0 0"
-"Multi → Gemo" = "sm -53 0 0 0 0"
-"Multi → продувка Gemo" = "sm -87 0 0 0 0"
-"Multi → Alco" = "sm 50 0 0 0 0"
-"Multi → продувка Alco" = "sm 85 0 0 0 0"
-"Multi → Water" = "sm -121 0 0 0 0"
-"Multi → продувка Water" = "sm -87 0 0 0 0"
-"Multi → Chlor" = "sm -190 0 0 0 0"
-"Multi → продувка Chlor" = "sm -156 0 0 0 0"
+"Multi → OG" = "sm 16 * * * *"
+"Multi → продувка OG" = "sm -19 * * * *"
+"Multi → EA" = "sm 119 * * * *"
+"Multi → продувка EA" = "sm 85 * * * *"
+"Multi → Gemo" = "sm -53 * * * *"
+"Multi → продувка Gemo" = "sm -87 * * * *"
+"Multi → Alco" = "sm 50 * * * *"
+"Multi → продувка Alco" = "sm 85 * * * *"
+"Multi → Water" = "sm -121 * * * *"
+"Multi → продувка Water" = "sm -87 * * * *"
+"Multi → Chlor" = "sm -190 * * * *"
+"Multi → продувка Chlor" = "sm -156 * * * *"
 
 # Команды движения RRight
-"RRight → налив " = "sm 0 0 40 0 0"
-"RRight → слив" = "sm 0 0 -70 0 0"
-"RRight → экспозиция" = "sm 0 0 -53 0 0"
-"RRight → загрузка пробирок" = "sm 0 0 43 0 0"
-"RRight → извлечение пробирок" = "sm 0 0 -3 0 0"
+"RRight → слив" = "sm * * 4 * *"
+"RRight → экспозиция" = "sm * * 53 * *"
+"RRight → верх" = "sm * * -53 * *"
+"RRight → загрузка пробирок" = "sm * * 43 * *"
+"RRight → извлечение пробирок" = "sm * * -3 * *"
 
 
 
@@ -60,9 +60,7 @@ timeout = 1.0
 
 # Последовательности команд для автоматического выполнения
 [sequences]
-coloring = ["KL2 включить", "wait 1", "Multi → OG", "KL2 включить", "wait 1", "Насос включить", "Насос выключить", "Насос включить", "wait 5", "Multi → OG", "Насос выключить", "Multi → OG", "KL2 выключить", "Multi → OG"]
-precipitation = ["KL1 включить", "wait 2", "Насос включить", "wait 8", "Насос выключить", "wait 1", "KL1 выключить", "wait 15"]
-washing = ["KL1 включить", "wait 2", "Насос включить", "wait 5", "Насос выключить", "KL1 выключить", "KL2 включить", "wait 2", "Насос включить", "wait 3", "Насос выключить", "KL2 выключить", "wait 5"]
-full_homing = ["Хоминг Multi", "wait 3", "Хоминг Multizone", "wait 3", "Хоминг RRight", "wait 3", "Хоминг E0", "wait 2", "Хоминг E1", "wait 2"]
-system_init = ["Проверка концевиков", "wait 1", "Проверка enable пинов", "wait 1", "Тарировать весы", "wait 2", "Тестовая команда"]
-point = ["Multi → OG", "Multi → продувка Water"]
+load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → налив ", "Хоминг RRight", "RRight → загрузка пробирок"]
+load_samples = ["RRight → загрузка пробирок", "RRight → верх", "wait 10", "RRight → извлечение пробирок"]
+load_slides = ["RRight → верх", "Clamp → сжать "]
+coloring = ["RRight → экспозиция", "wait 3", "Хоминг Multi", "Multi → продувка Alco", "RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить", "RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10"]

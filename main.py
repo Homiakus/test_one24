@@ -18,7 +18,7 @@ from PySide6.QtCore import (
     Signal,
     Slot,
 )
-from PySide6.QtGui import QAction, QFont, QColor
+from PySide6.QtGui import QAction, QFont, QColor, QIntValidator
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -42,6 +42,8 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QAbstractItemView,
     QInputDialog,
+    QDialog,
+    QDialogButtonBox,
 )
 
 import re
@@ -494,7 +496,8 @@ class CommandSequenceThread(QThread):
                         for response in self.responses:
                             if "RECEIVED" in response:
                                 received = True
-                            if "COMPLETED" in response:
+                            # Успешное завершение может приходить как COMPLETE или COMPLETED
+                            if "COMPLETE" in response or "COMPLETED" in response:
                                 completed = True
                             if "ERR" in response:
                                 self.sequence_finished.emit(False, f"Ошибка выполнения команды: {response}")
@@ -1465,6 +1468,11 @@ baudrate = 115200
         self.sequence_selector.currentTextChanged.connect(self.on_sequence_selector_changed)
         self.save_sequence_btn.clicked.connect(self.save_current_sequence)
         self.delete_item_btn.clicked.connect(self.delete_selected_sequence_item)
+
+        # Подключаем обработку double click/Enter для команд wait
+        for lw in (self.designer_commands_list, self.designer_sequence_list):
+            lw.itemDoubleClicked.connect(self.edit_wait_item)
+            lw.itemActivated.connect(self.edit_wait_item)
 
         # Загрузить первую последовательность (если есть)
         if self.sequence_selector.count():
@@ -2568,38 +2576,24 @@ baudrate = 115200
         else:
             item.setForeground(QColor("#dce1ec"))  # стандартный
 
-    def on_item_double_clicked(self, item):
-        """Если элемент wait — запросить ввод значения"""
+    def edit_wait_item(self, item):
+        """Открывает диалог целочисленного ввода для команды wait"""
         if not self.is_wait_command(item.text()):
             return
 
-        # Извлечь текущее значение, если есть
+        # Текущее значение (целое)
         parts = item.text().split()
-        current_val = 1.0
+        current_val = 1
         if len(parts) > 1:
             try:
-                current_val = float(parts[1])
+                current_val = int(float(parts[1]))
             except ValueError:
                 pass
 
-        new_val, ok = QInputDialog.getDouble(
-            self,
-            "Изменить значение wait",
-            "Введите время ожидания (сек):",
-            value=current_val,
-            min=0,
-            max=9999,
-            decimals=2,
-        )
-
-        if ok:
-            # Формат без лишних нулей
-            if new_val.is_integer():
-                new_str = f"wait {int(new_val)}"
-            else:
-                new_str = f"wait {new_val}"
-
-            item.setText(new_str)
+        dlg = NumericPadDialog(current_val, self)
+        if dlg.exec() == QDialog.Accepted:
+            new_val = dlg.value()
+            item.setText(f"wait {new_val}")
             self.style_command_item(item)
 
 
@@ -2614,6 +2608,59 @@ class SequenceListWidget(QListWidget):
             event.setDropAction(Qt.CopyAction)
 
         super().dropEvent(event)
+
+
+class NumericPadDialog(QDialog):
+    """Простой цифровой ввод с кнопками 0-9, ← и OK"""
+
+    def __init__(self, initial_value: int = 0, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Введите число")
+        self.setModal(True)
+        self.setFixedSize(260, 320)
+
+        layout = QVBoxLayout(self)
+
+        # Поле ввода
+        self.edit = QLineEdit(str(initial_value))
+        self.edit.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.edit.setValidator(QIntValidator(0, 9999, self))
+        self.edit.setFixedHeight(40)
+        layout.addWidget(self.edit)
+
+        # Сетка кнопок
+        grid = QGridLayout()
+        buttons = [
+            "7", "8", "9",
+            "4", "5", "6",
+            "1", "2", "3",
+            "←", "0", "OK",
+        ]
+
+        positions = [(i, j) for i in range(4) for j in range(3)]
+        for pos, label in zip(positions, buttons):
+            btn = QPushButton(label)
+            btn.setFixedSize(60, 50)
+            btn.clicked.connect(self.handle_button)
+            grid.addWidget(btn, *pos)
+
+        layout.addLayout(grid)
+
+    def handle_button(self):
+        label = self.sender().text()
+        if label == "OK":
+            if self.edit.text() == "":
+                self.edit.setText("0")
+            self.accept()
+            return
+        elif label == "←":
+            self.edit.backspace()
+        else:  # digit
+            self.edit.insert(label)
+
+    def value(self) -> int:
+        text = self.edit.text()
+        return int(text) if text.isdigit() else 0
 
 
 if __name__ == "__main__":

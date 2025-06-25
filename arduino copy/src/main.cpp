@@ -1038,6 +1038,7 @@ void handleUnknownCommand(String cmd) {
  */
 void parseCommand(String command) {
     command.trim();
+    Serial.println("RECEIVED");
     int spaceIndex = command.indexOf(' ');
     String cmd = (spaceIndex == -1) ? command : command.substring(0, spaceIndex);
     String args = (spaceIndex == -1) ? "" : command.substring(spaceIndex + 1);
