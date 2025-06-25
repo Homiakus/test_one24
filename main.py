@@ -18,7 +18,7 @@ from PySide6.QtCore import (
     Signal,
     Slot,
 )
-from PySide6.QtGui import QAction, QFont
+from PySide6.QtGui import QAction, QFont, QColor
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -38,7 +38,13 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QVBoxLayout,
     QWidget,
+    QListWidget,
+    QListWidgetItem,
+    QAbstractItemView,
+    QInputDialog,
 )
+
+import re
 
 # Настройка логирования
 LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
@@ -1013,6 +1019,7 @@ baudrate = 115200
         nav_data = [
             ("sequences", "🏠 Главное меню", True),
             ("commands", "⚡ Команды", False),
+            ("designer", "🖱️ Конструктор", False),
             ("settings", "⚙️ Настройки", False),
             ("firmware", "🔧 Прошивка", False),
         ]
@@ -1084,6 +1091,7 @@ baudrate = 115200
         # Создаем страницы
         self.setup_sequences_page()
         self.setup_commands_page()
+        self.setup_designer_page()  # Конструктор последовательностей
         self.setup_settings_page()
         self.setup_firmware_page()  # Новая страница для прошивки
 
@@ -1362,6 +1370,110 @@ baudrate = 115200
         main_layout.addWidget(right_widget, 2)  # 40% ширины
 
         # Добавляем в стек
+        self.content_area.addWidget(page)
+
+    def setup_designer_page(self):
+        """Создаёт базовый UI конструктора последовательностей (Drag & Drop)"""
+
+        page = QWidget()
+        main_layout = QHBoxLayout(page)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(20)
+
+        # ---------------- Левая колонка: команды ----------------
+        left_widget = QWidget()
+        left_layout = QVBoxLayout(left_widget)
+        left_layout.setContentsMargins(0, 0, 0, 0)
+        left_layout.setSpacing(10)
+
+        left_title = QLabel("📦 Доступные команды")
+        left_title.setStyleSheet("""
+            QLabel {
+                color: #568af2;
+                font-size: 14pt;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+        """)
+        left_layout.addWidget(left_title)
+
+        # Список команд (drag-enabled)
+        self.designer_commands_list = QListWidget()
+        self.designer_commands_list.setDragEnabled(True)
+        self.designer_commands_list.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
+
+        # Заполняем командами из buttons_config
+        for name in self.buttons_config.keys():
+            item = QListWidgetItem(name, self.designer_commands_list)
+            self.style_command_item(item)
+
+        # Добавляем стандартные команды типа wait
+        for wait_val in ["wait 1", "wait 5", "wait 10"]:
+            item = QListWidgetItem(wait_val, self.designer_commands_list)
+            self.style_command_item(item)
+
+        left_layout.addWidget(self.designer_commands_list)
+
+        # ---------------- Правая колонка: последовательность ----------------
+        right_widget = QWidget()
+        right_layout = QVBoxLayout(right_widget)
+        right_layout.setContentsMargins(0, 0, 0, 0)
+        right_layout.setSpacing(10)
+
+        right_title = QLabel("🧩 Текущая последовательность")
+        right_title.setStyleSheet("""
+            QLabel {
+                color: #568af2;
+                font-size: 14pt;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+        """)
+        right_layout.addWidget(right_title)
+
+        # Выбор / создание последовательности
+        self.sequence_selector = QComboBox()
+        self.sequence_selector.addItems(list(self.sequences.keys()))
+        self.sequence_selector.setEditable(True)  # Для создания новой
+        right_layout.addWidget(self.sequence_selector)
+
+        # Список элементов последовательности (drop-enabled)
+        self.designer_sequence_list = SequenceListWidget()
+        self.designer_sequence_list.setAcceptDrops(True)
+        self.designer_sequence_list.setDragEnabled(True)
+        self.designer_sequence_list.setDefaultDropAction(Qt.CopyAction)
+        right_layout.addWidget(self.designer_sequence_list)
+
+        # Кнопки пока-заглушки
+        buttons_layout = QHBoxLayout()
+        self.save_sequence_btn = ModernButton("💾 Сохранить", "success")
+        self.delete_item_btn = ModernButton("🗑️ Удалить элемент", "danger")
+        buttons_layout.addWidget(self.save_sequence_btn)
+        buttons_layout.addWidget(self.delete_item_btn)
+        right_layout.addLayout(buttons_layout)
+
+        # ---------- Поведение ----------
+        # Настройка режимов drag & drop
+        self.designer_commands_list.setDragDropMode(QAbstractItemView.DragOnly)
+        self.designer_sequence_list.setDragDropMode(QAbstractItemView.DragDrop)
+        self.designer_sequence_list.setDefaultDropAction(Qt.CopyAction)
+        self.designer_sequence_list.setEditTriggers(
+            QAbstractItemView.EditTrigger.DoubleClicked | QAbstractItemView.EditTrigger.EditKeyPressed
+        )
+
+        # Сигналы
+        self.sequence_selector.currentTextChanged.connect(self.on_sequence_selector_changed)
+        self.save_sequence_btn.clicked.connect(self.save_current_sequence)
+        self.delete_item_btn.clicked.connect(self.delete_selected_sequence_item)
+
+        # Загрузить первую последовательность (если есть)
+        if self.sequence_selector.count():
+            self.load_sequence_to_designer(self.sequence_selector.currentText())
+
+        # ---------------- Сборка в макет ----------------
+        main_layout.addWidget(left_widget, 1)
+        main_layout.addWidget(right_widget, 2)
+
         self.content_area.addWidget(page)
 
     def setup_settings_page(self):
@@ -1872,8 +1984,9 @@ baudrate = 115200
             # Пересоздаем страницы
             self.setup_sequences_page()
             self.setup_commands_page()
+            self.setup_designer_page()  # Конструктор последовательностей
             self.setup_settings_page()
-            self.setup_firmware_page()
+            self.setup_firmware_page()  # Новая страница для прошивки
 
             # Возвращаемся на текущую страницу
             self.content_area.setCurrentIndex(current_page)
@@ -1898,7 +2011,7 @@ baudrate = 115200
             button.setChecked(name == page_name)
 
         # Переключаем страницу
-        page_index = {"sequences": 0, "commands": 1, "settings": 2, "firmware": 3}.get(page_name, 0)
+        page_index = {"sequences": 0, "commands": 1, "designer": 2, "settings": 3, "firmware": 4}.get(page_name, 0)
         self.content_area.setCurrentIndex(page_index)
 
     def connect_serial(self):
@@ -2350,6 +2463,157 @@ baudrate = 115200
             # Прокручиваем в конец
             scrollbar = self.commands_terminal.verticalScrollBar()
             scrollbar.setValue(scrollbar.maximum())
+
+    # ================= Designer helpers =================
+
+    def load_sequence_to_designer(self, seq_name):
+        """Отображает команды выбранной последовательности в правом списке"""
+        self.designer_sequence_list.clear()
+
+        commands = self.sequences.get(seq_name, [])
+        for cmd in commands:
+            item = QListWidgetItem(cmd, self.designer_sequence_list)
+            self.style_command_item(item)
+
+    def on_sequence_selector_changed(self, text):
+        """При выборе/создании последовательности загрузить её содержимое"""
+        self.load_sequence_to_designer(text)
+
+    def save_current_sequence(self):
+        """Сохраняет текущую последовательность в self.sequences и файл config.toml"""
+        seq_name = self.sequence_selector.currentText().strip()
+        if not seq_name:
+            QMessageBox.warning(self, "Ошибка", "Введите имя последовательности")
+            return
+
+        # Сбор команд из списка
+        cmds = [self.designer_sequence_list.item(i).text() for i in range(self.designer_sequence_list.count())]
+
+        self.sequences[seq_name] = cmds
+
+        # Обновить список в случае новой последовательности
+        if self.sequence_selector.findText(seq_name) == -1:
+            self.sequence_selector.addItem(seq_name)
+
+        # Записать в файл
+        success = self.write_sequences_to_config()
+        if success:
+            self.add_terminal_message(f"💾 Последовательность '{seq_name}' сохранена", "info")
+            self.statusBar().showMessage("Последовательности сохранены", 3000)
+
+            # Перезагрузить конфиг для остальной части UI
+            self.reload_config()
+
+    def delete_selected_sequence_item(self):
+        """Удаляет выбранный элемент из последовательности"""
+        row = self.designer_sequence_list.currentRow()
+        if row != -1:
+            self.designer_sequence_list.takeItem(row)
+
+    def write_sequences_to_config(self):
+        """Перезаписывает секцию [sequences] в config.toml, сохраняя остальные секции"""
+        try:
+            config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.toml")
+            if not os.path.exists(config_path):
+                QMessageBox.warning(self, "Ошибка", f"Файл конфигурации не найден: {config_path}")
+                return False
+
+            with open(config_path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+
+            start_idx = None
+            end_idx = None
+            for i, line in enumerate(lines):
+                if line.strip().lower() == "[sequences]":
+                    start_idx = i
+                    # поиск конца секции
+                    for j in range(i + 1, len(lines)):
+                        if re.match(r"^\[.*\]", lines[j]) and lines[j].strip().lower() != "[sequences]":
+                            end_idx = j
+                            break
+                    if end_idx is None:
+                        end_idx = len(lines)
+                    break
+
+            if start_idx is None:
+                # если секция не найдена, добавим в конец
+                start_idx = len(lines)
+                end_idx = len(lines)
+                lines.append("\n")
+
+            # Формируем новую секцию
+            new_section_lines = ["[sequences]\n"]
+            for seq, cmds in self.sequences.items():
+                cmds_str = ", ".join([f'\"{c}\"' for c in cmds])
+                new_section_lines.append(f"{seq} = [{cmds_str}]\n")
+
+            # Заменяем старую секцию на новую
+            updated_lines = lines[:start_idx] + new_section_lines + lines[end_idx:]
+
+            with open(config_path, "w", encoding="utf-8") as f:
+                f.writelines(updated_lines)
+
+            return True
+        except Exception as e:
+            QMessageBox.critical(self, "Ошибка сохранения", str(e))
+            return False
+
+    def is_wait_command(self, text: str) -> bool:
+        return text.lower().startswith("wait")
+
+    def style_command_item(self, item):
+        """Окрашивает команды wait в оранжевый цвет для выделения"""
+        if self.is_wait_command(item.text()):
+            item.setForeground(QColor("#ffb86c"))  # оранжевый
+        else:
+            item.setForeground(QColor("#dce1ec"))  # стандартный
+
+    def on_item_double_clicked(self, item):
+        """Если элемент wait — запросить ввод значения"""
+        if not self.is_wait_command(item.text()):
+            return
+
+        # Извлечь текущее значение, если есть
+        parts = item.text().split()
+        current_val = 1.0
+        if len(parts) > 1:
+            try:
+                current_val = float(parts[1])
+            except ValueError:
+                pass
+
+        new_val, ok = QInputDialog.getDouble(
+            self,
+            "Изменить значение wait",
+            "Введите время ожидания (сек):",
+            value=current_val,
+            min=0,
+            max=9999,
+            decimals=2,
+        )
+
+        if ok:
+            # Формат без лишних нулей
+            if new_val.is_integer():
+                new_str = f"wait {int(new_val)}"
+            else:
+                new_str = f"wait {new_val}"
+
+            item.setText(new_str)
+            self.style_command_item(item)
+
+
+class SequenceListWidget(QListWidget):
+    """QListWidget с умным Drop: внешние перетаскивания копируются, внутренние – переносятся"""
+
+    def dropEvent(self, event):
+        # Если источник тот же виджет – перенос (Move), иначе – копирование
+        if event.source() == self:
+            event.setDropAction(Qt.MoveAction)
+        else:
+            event.setDropAction(Qt.CopyAction)
+
+        super().dropEvent(event)
 
 
 if __name__ == "__main__":
