@@ -1,18 +1,18 @@
 [buttons]
 
 # Команды движения Multi
-"Multi → OG" = "sm 16 * * * *"
-"Multi → продувка OG" = "sm -19 * * * *"
-"Multi → EA" = "sm 119 * * * *"
-"Multi → продувка EA" = "sm 85 * * * *"
-"Multi → Gemo" = "sm -53 * * * *"
-"Multi → продувка Gemo" = "sm -87 * * * *"
-"Multi → Alco" = "sm 50 * * * *"
-"Multi → продувка Alco" = "sm 85 * * * *"
-"Multi → Water" = "sm -121 * * * *"
-"Multi → продувка Water" = "sm -87 * * * *"
-"Multi → Chlor" = "sm -190 * * * *"
-"Multi → продувка Chlor" = "sm -156 * * * *"
+"Multi → OG" = "sm -8 * * * *"
+"Multi → продувка OG" = "sm -43 * * * *"
+"Multi → EA" = "sm 95 * * * *"
+"Multi → продувка EA" = "sm 61 * * * *"
+"Multi → Gemo" = "sm -77 * * * *"
+"Multi → продувка Gemo" = "sm -43 * * * *"
+"Multi → Alco" = "sm 26 * * * *"
+"Multi → продувка Alco" = "sm 61 * * * *"
+"Multi → Water" = "sm -111 * * * *"
+"Multi → продувка Water" = "sm -145 * * * *"
+"Multi → Chlor" = "sm -214 * * * *"
+"Multi → продувка Chlor" = "sm -180 * * * *"
 
 # Команды движения RRight
 "RRight → слив" = "sm * * 4 * *"
@@ -65,12 +65,106 @@ load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → �
 load_samples = ["RRight → загрузка пробирок", "RRight → верх", "wait 10", "RRight → извлечение пробирок"]
 load_slides = ["RRight → верх", "Clamp → разжать"]
 coloring = ["sedimantation", "alco", "gemo", "water", "water", "og", "alco", "ea", "alco", "alco", "alco"]
-og = ["RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
+og = ["Хоминг Multi", "RRight → верх", "Multi → OG", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка OG", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "waste"]
 ea = ["RRight → верх", "Multi → EA", "KL2 включить", "wait 1", "Multi → продувка EA", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
 gemo = ["RRight → верх", "Multi → Gemo", "KL2 включить", "wait 1", "Multi → продувка Gemo", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
 alco = ["RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "RRight → слив", "waste"]
 water = ["RRight → верх", "Multi → Water", "KL2 включить", "wait 1", "Multi → продувка Water", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
 chlor = ["RRight → верх", "Multi → Chlor", "KL2 включить", "wait 1", "Multi → продувка Chlor", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
 sedimantation = ["RRight → экспозиция", "wait 3", "RRight → слив", "Multi → продувка Alco", "waste"]
-waste = ["RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить"]
+waste = ["RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить", "Насос выключить"]
 waste_out = ["Multi → продувка OG", "KL1 включить", "KL2 включить", "wait 8", "KL1 выключить", "KL2 выключить"]
+[wizard]
+
+[[wizard.step]]
+id = 1
+title = "Главное меню"
+buttons = [
+  {text = "▶ Начать окраску и осаждение", next = 2},
+  {text = "▶ Начать промывку",          next = 0}
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = ""
+melodyExit  = ""
+
+[[wizard.step]]
+id = 2
+title = "Инициализация системы"
+buttons = [
+  {text = "главное меню", next = 1}
+]
+sequence = "load_tubes"
+autoNext = 3
+showBar = true
+melodyEnter = ""
+melodyExit  = ""
+
+[[wizard.step]]
+id = 3
+title = "Загрузите пробирки с образцами"
+buttons = [
+  {text = "▶ Загрузить образцы", next = 4}
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = "melodies/zvuk-na-trube.wav"
+melodyExit  = ""
+
+[[wizard.step]]
+id = 4
+title = "Загрузка образцов"
+buttons = []
+sequence = "load_samples"
+autoNext = 5
+showBar = true
+melodyEnter = ""
+melodyExit  = ""
+
+[[wizard.step]]
+id = 5
+title = "Извлеките пробирки"
+buttons = [
+  {text = "▶ Продолжить", next = 6}
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = "melodies/zvuk-na-trube.wav"
+melodyExit  = ""
+
+[[wizard.step]]
+id = 6
+title = "Установите стекла"
+buttons = [
+  {text = "▶ Начать осаждение и окраску", next = 7}
+]
+sequence = "load_slides"
+autoNext = false
+showBar = false
+melodyEnter = ""
+melodyExit  = ""
+
+[[wizard.step]]
+id = 7
+title = "Процесс осаждения и окраски"
+buttons = []
+sequence = "coloring"
+autoNext = true
+showBar = true
+melodyEnter = ""
+melodyExit  = ""
+
+[[wizard.step]]
+id = 8
+title = "Окраска закончена"
+buttons = [
+  {text = "🏠 Главное меню", next = 1}
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = "melodies/zvuk-na-trube.wav"
+melodyExit  = ""

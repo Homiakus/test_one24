@@ -17,6 +17,7 @@ from PySide6.QtCore import (
     Qt,
     Signal,
     Slot,
+    QUrl,
 )
 from PySide6.QtGui import QAction, QFont, QColor, QIntValidator
 from PySide6.QtWidgets import (
@@ -44,7 +45,9 @@ from PySide6.QtWidgets import (
     QInputDialog,
     QDialog,
     QDialogButtonBox,
+    QProgressBar,
 )
+from PySide6.QtMultimedia import QSoundEffect
 
 import re
 
@@ -834,6 +837,18 @@ class MainWindow(QMainWindow):
             # Загружаем последовательности
             self.sequences = config.get('sequences', {})
 
+            # Загружаем мастер шаги
+            self.wizard_steps = {}
+            if 'wizard' in config:
+                steps = config['wizard'].get('step', [])
+                # tomli может вернуть dict или list; нормализуем
+                if isinstance(steps, dict):
+                    steps = [steps]
+                for s in steps:
+                    self.wizard_steps[s['id']] = s
+            else:
+                self.wizard_steps = {}
+
             # Загружаем настройки serial по умолчанию
             serial_default = config.get('serial_default', {})
             if serial_default:
@@ -1020,7 +1035,8 @@ baudrate = 115200
         # Кнопки навигации
         self.nav_buttons = {}
         nav_data = [
-            ("sequences", "🏠 Главное меню", True),
+            ("wizard", "🪄 Мастер", True),
+            ("sequences", "🏠 Главное меню", False),
             ("commands", "⚡ Команды", False),
             ("designer", "🖱️ Конструктор", False),
             ("settings", "⚙️ Настройки", False),
@@ -1092,11 +1108,145 @@ baudrate = 115200
         self.content_area = QStackedWidget()
 
         # Создаем страницы
+        self.setup_wizard_page()
         self.setup_sequences_page()
         self.setup_commands_page()
         self.setup_designer_page()  # Конструктор последовательностей
         self.setup_settings_page()
         self.setup_firmware_page()  # Новая страница для прошивки
+
+    def setup_wizard_page(self):
+        """Настройка страницы мастера"""
+        page = QWidget()
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(20)
+
+        header = QLabel("🪄 Мастер")
+        header.setStyleSheet("color:#568af2;font-size:18pt;font-weight:700;")
+        layout.addWidget(header)
+
+        self.wizard_step_title = QLabel()
+        self.wizard_step_title.setStyleSheet("color:#dce1ec;font-size:14pt;font-weight:600;")
+        layout.addWidget(self.wizard_step_title)
+
+        self.wizard_progress = QProgressBar()
+        self.wizard_progress.setVisible(False)
+        layout.addWidget(self.wizard_progress)
+
+        self.wizard_buttons_layout = QHBoxLayout()
+        layout.addLayout(self.wizard_buttons_layout)
+
+        layout.addStretch()
+
+        self.content_area.addWidget(page)
+
+        # state
+        self.current_wizard_id = 1
+        self.wizard_waiting_next_id = None
+
+        # initial render
+        self.render_wizard_step(self.current_wizard_id)
+
+    # ---------------- Wizard helpers ----------------
+
+    def _normalize_next_id(self, value) -> int:
+        """Преобразует значение next/autoNext из конфигурации к целому ID шага.
+
+        Возвращает 0, если переход не задан (false, 0, None или некорректная строка).
+        """
+        # TOML может парсить `false` в bool, а числа – в int/str
+        if value is None:
+            return 0
+        if isinstance(value, bool):
+            # False -> 0, True практически не используется, трактуем как 1
+            return 1 if value else 0
+        if isinstance(value, int):
+            return value
+        # Если пришла строка – пытаемся преобразовать в число
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        # Всё остальное считаем отсутствием перехода
+        return 0
+
+    def render_wizard_step(self, step_id: int):
+        if step_id == 0 or step_id not in getattr(self, 'wizard_steps', {}):
+            return
+
+        step = self.wizard_steps[step_id]
+
+        # play enter melody
+        if step.get('melodyEnter'):
+            safe_playsound(step['melodyEnter'])
+
+        self.wizard_step_title.setText(step.get('title', ''))
+
+        # progress bar
+        self.wizard_progress.setVisible(step.get('showBar', False))
+        if step.get('showBar', False):
+            self.wizard_progress.setRange(0, 0)  # indeterminate
+
+        # clear old buttons
+        while self.wizard_buttons_layout.count():
+            child = self.wizard_buttons_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        # create buttons
+        buttons_cfg = step.get('buttons', [])
+        for btn_cfg in buttons_cfg:
+            text = btn_cfg['text']
+            next_id = btn_cfg.get('next', 0)
+            btn = ModernButton(text, "primary")
+
+            if step.get('sequence') and text.startswith("▶"):
+                # кнопка запуска последовательности
+                btn.clicked.connect(lambda _=False, seq=step['sequence'], nxt=btn_cfg.get('next', 0): self.wizard_run_sequence(seq, nxt or step.get('autoNext', 0)))
+            else:
+                btn.clicked.connect(lambda _=False, nid=next_id: self.render_wizard_step(nid))
+
+            self.wizard_buttons_layout.addWidget(btn)
+
+        self.current_wizard_id = step_id
+
+        # Всегда автоматически запускаем последовательность, если она задана.
+        if step.get('sequence') and (
+            not self.command_sequence_thread or not self.command_sequence_thread.isRunning()
+        ):
+            self.wizard_run_sequence(step['sequence'], step.get('autoNext', 0))
+
+    def wizard_run_sequence(self, sequence_name: str, next_id_after: int = 0):
+        if sequence_name:
+            # Нормализуем ID следующего шага (0 означает – без перехода)
+            self.wizard_waiting_next_id = self._normalize_next_id(next_id_after)
+            self.start_sequence(sequence_name)
+        else:
+            next_id_norm = self._normalize_next_id(next_id_after)
+            if next_id_norm:
+                self.render_wizard_step(next_id_norm)
+
+        # Подключаем прогресс бар
+        if self.command_sequence_thread:
+            total = len(self.command_sequence_thread.commands)
+            self.wizard_progress.setRange(0, total)
+            self.wizard_progress.setValue(0)
+            self.wizard_progress.setVisible(True)
+            self.command_sequence_thread.progress_updated.connect(self.update_wizard_progress)
+            # блокируем кнопки
+            for i in range(self.wizard_buttons_layout.count()):
+                w = self.wizard_buttons_layout.itemAt(i).widget()
+                if w:
+                    w.setEnabled(False)
+
+    def update_wizard_progress(self, current: int, total: int):
+        self.wizard_progress.setRange(0, total)
+        self.wizard_progress.setValue(current)
+
+    def enable_wizard_buttons(self):
+        for i in range(self.wizard_buttons_layout.count()):
+            w = self.wizard_buttons_layout.itemAt(i).widget()
+            if w:
+                w.setEnabled(True)
 
     def setup_sequences_page(self):
         """Настройка страницы последовательностей с терминалом"""
@@ -1985,8 +2135,23 @@ baudrate = 115200
         """Последовательность завершена"""
         if success:
             self.add_terminal_message(f"✅ {message}", "response")
+            # Скрываем прогресс и разблокируем кнопки
+            self.wizard_progress.setVisible(False)
+            self.enable_wizard_buttons()
+            if self.wizard_waiting_next_id and self.wizard_waiting_next_id != 0:
+                self.render_wizard_step(self.wizard_waiting_next_id)
+                self.wizard_waiting_next_id = 0
+            else:
+                # Fallback: используем autoNext текущего шага
+                step = self.wizard_steps.get(self.current_wizard_id, {})
+                auto_next = self._normalize_next_id(step.get('autoNext', 0))
+                if auto_next:
+                    self.render_wizard_step(auto_next)
         else:
             self.add_terminal_message(f"❌ {message}", "error")
+            # Скрываем прогресс и разблокируем кнопки
+            self.wizard_progress.setVisible(False)
+            self.enable_wizard_buttons()
 
         self.command_sequence_thread = None
 
@@ -2029,6 +2194,7 @@ baudrate = 115200
                 widget.deleteLater()
 
             # Пересоздаем страницы
+            self.setup_wizard_page()
             self.setup_sequences_page()
             self.setup_commands_page()
             self.setup_designer_page()  # Конструктор последовательностей
@@ -2058,7 +2224,7 @@ baudrate = 115200
             button.setChecked(name == page_name)
 
         # Переключаем страницу
-        page_index = {"sequences": 0, "commands": 1, "designer": 2, "settings": 3, "firmware": 4}.get(page_name, 0)
+        page_index = {"wizard": 0, "sequences": 1, "commands": 2, "designer": 3, "settings": 4, "firmware": 5}.get(page_name, 0)
         self.content_area.setCurrentIndex(page_index)
 
     def connect_serial(self):
@@ -2777,6 +2943,47 @@ class NumericPadDialog(QDialog):
     def value(self) -> int:
         text = self.edit.text()
         return int(text) if text.isdigit() else 0
+
+
+# ---------------- Safe playsound helper ----------------
+from PySide6.QtCore import QUrl
+
+# Храним активные эффекты, чтобы их не удалил GC до завершения воспроизведения
+_active_sounds: list[QSoundEffect] = []
+
+
+def safe_playsound(path: str):  # type: ignore
+    """Воспроизвести WAV/MP3 через QSoundEffect без блокировки UI.
+
+    Файл допускается задавать относительным путём; он будет преобразован
+    к абсолютному. Ошибки воспроизведения фиксируются в логах, но не
+    мешают работе программы.
+    """
+    if not path:
+        return
+
+    abs_path = os.path.abspath(path)
+    if not os.path.exists(abs_path):
+        logging.warning(f"Файл мелодии не найден: {abs_path}")
+        return
+
+    try:
+        effect = QSoundEffect()
+        effect.setSource(QUrl.fromLocalFile(abs_path))
+        effect.setLoopCount(1)
+        effect.setVolume(0.9)
+        effect.play()
+
+        _active_sounds.append(effect)
+
+        # Очистим список по завершении звука
+        def _cleanup():
+            _active_sounds.remove(effect)
+
+        effect.playingChanged.connect(lambda: None if effect.isPlaying() else _cleanup())
+
+    except Exception as exc:  # noqa: BLE001
+        logging.warning(f"Не удалось воспроизвести звук '{abs_path}': {exc}")
 
 
 if __name__ == "__main__":

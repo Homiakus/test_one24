@@ -111,7 +111,7 @@ const MotorConfig motorConfigs[NUM_MOTORS] = {
         .maxSpeed = 1000.0,
         .acceleration = 200.0,
         .stepsPerRevolution = 200,
-        .homingSpeed = 1000.0,
+        .homingSpeed = 10000.0,
         .endstopTypeNPN = true,
         .powerAlwaysOn = true,
         .stepsPerUnit = 200,
@@ -391,96 +391,142 @@ void moveMotorsToPosition(float positions[NUM_MOTORS], bool flags[NUM_MOTORS]) {
  */
 void stepperHome(bool homeFlags[NUM_MOTORS]) {
     homingActive = true;
-    Serial.println("=== SIMPLIFIED HOMING PROCEDURE START ===");
-    
+    Serial.println("=== TARGET-BASED HOMING PROCEDURE START ===");
+
     enableMotors();
-    
-    // Обрабатываем только индивидуальные моторы (Multi, Multizone, RRight, E0)
-    for (int i = 0; i < 4; i++) { // только 0-3, исключаем E1 (индекс 4)
-        if (!homeFlags[i]) continue;
-        
-        MotorType motorType = (MotorType)i;
-        Serial.print("Homing ");
-        Serial.print(motorConfigs[motorType].name);
-        Serial.print(" (");
-        Serial.print(motorConfigs[motorType].endstopTypeNPN ? "NPN" : "PNP");
-        Serial.println(" sensor)");
-        
-        // ЭТАП 1: Предварительный отъезд (preHomingBackoff) - ВСЕГДА если > 0
-        if (motorConfigs[motorType].preHomingBackoff > 0) {
-            Serial.print(motorConfigs[motorType].name);
-            Serial.print(" - pre-homing backoff: ");
-            Serial.print(motorConfigs[motorType].preHomingBackoff);
-            Serial.println(" steps");
-            
-            planner.setSpeed(i, motorConfigs[motorType].homingSpeed); // положительное направление
-            int steps = 0;
-            while (steps < motorConfigs[motorType].preHomingBackoff) {
-                planner.tick();
-                steps++;
-            }
-            planner.brake();
-            
-            Serial.print(motorConfigs[motorType].name);
-            Serial.println(" - pre-homing backoff completed");
-        }
-        
-        // ЭТАП 2: Если концевик уже сработал - отъезжаем от него дополнительно
-        if (readHomeSwitch(motorType)) {
-            Serial.print(motorConfigs[motorType].name);
-            Serial.println(" - endstop already triggered, moving away");
-            
-            planner.setSpeed(i, motorConfigs[motorType].homingSpeed); // от концевика
-            while (readHomeSwitch(motorType)) {  // пока концевик сработан
-                planner.tick();                  // крутим
-            }
-            planner.brake();                     // тормозим
-            Serial.print(motorConfigs[motorType].name);
-            Serial.println(" - moved away from endstop");
-        }
-        
-        // ЭТАП 3: Движемся к концевику
-        Serial.print(motorConfigs[motorType].name);
-        Serial.println(" - moving to endstop");
-        
-        planner.setSpeed(i, -motorConfigs[motorType].homingSpeed); // к концевику
-        while (!readHomeSwitch(motorType)) { // пока концевик не сработал
-            planner.tick();                  // крутим
-        }
-        planner.brake();                     // тормозим, приехали
-        
-        Serial.print(motorConfigs[motorType].name);
-        Serial.println(" - endstop reached");
-        
-        // ЭТАП 4: Финальный откат (homeBackoff) - ВСЕГДА если > 0
-        if (motorConfigs[motorType].homeBackoff > 0) {
-            Serial.print(motorConfigs[motorType].name);
-            Serial.print(" - final backoff: ");
-            Serial.print(motorConfigs[motorType].homeBackoff);
-            Serial.println(" steps");
-            
-            planner.setSpeed(i, motorConfigs[motorType].homingSpeed); // от концевика
-            int steps = 0;
-            while (steps < motorConfigs[motorType].homeBackoff) {
-                planner.tick();
-                steps++;
-            }
-            planner.brake();
-            
-            Serial.print(motorConfigs[motorType].name);
-            Serial.println(" - final backoff completed");
-        }
-        
-        Serial.print(motorConfigs[motorType].name);
-        Serial.println(" - homing completed");
+
+    /* --------------------------------------------------
+     * ЭТАП 1. Предварительный отъезд (preHomingBackoff)
+     * -------------------------------------------------- */
+    int32_t preBackoffPos[NUM_MOTORS];
+    bool needPreBackoff = false;
+    for (int i = 0; i < NUM_MOTORS; i++) {
+        preBackoffPos[i] = steppers[i]->pos; // базовые – текущие позиции
     }
-    
-    // Сбрасываем координаты в 0 для всех моторов
+    for (int i = 0; i < 4; i++) { // работаем только с 0-3, E1 хомится в clampHome
+        if (!homeFlags[i]) continue;
+        long backoff = motorConfigs[i].preHomingBackoff;
+        if (backoff > 0) {
+            needPreBackoff = true;
+            preBackoffPos[i] += backoff; // положительное направление – «от концевика»
+            Serial.print(motorConfigs[i].name);
+            Serial.print(" – pre-homing backoff: ");
+            Serial.print(backoff);
+            Serial.println(" steps");
+        }
+    }
+    if (needPreBackoff) {
+        planner.setTarget(preBackoffPos);
+        while (!planner.ready()) planner.tick();
+        planner.brake();
+        Serial.println("Pre-homing backoff completed");
+    }
+
+    /* --------------------------------------------------
+     * ЭТАП 2. Отъезд, если концевик уже сработал
+     * -------------------------------------------------- */
+    int32_t moveAwayPos[NUM_MOTORS];
+    bool needMoveAway = false;
+    for (int i = 0; i < NUM_MOTORS; i++) moveAwayPos[i] = steppers[i]->pos;
+    for (int i = 0; i < 4; i++) {
+        if (!homeFlags[i]) continue;
+        if (readHomeSwitch((MotorType)i)) {
+            needMoveAway = true;
+            moveAwayPos[i] += 500; // фиксированное значение «дополнительного» отъезда
+            Serial.print(motorConfigs[i].name);
+            Serial.println(" – endstop already triggered, moving away 500 steps");
+        }
+    }
+    if (needMoveAway) {
+        planner.setTarget(moveAwayPos);
+        while (!planner.ready()) planner.tick();
+        planner.brake();
+        Serial.println("Move-away completed");
+    }
+
+    /* --------------------------------------------------
+     * ЭТАП 3. Движение к концевику (координированное)
+     * -------------------------------------------------- */
+    int32_t seekPos[NUM_MOTORS];
+    for (int i = 0; i < NUM_MOTORS; i++) seekPos[i] = steppers[i]->pos;
+    for (int i = 0; i < 4; i++) {
+        if (!homeFlags[i]) continue;
+        seekPos[i] = steppers[i]->pos - motorConfigs[i].maxSteps; // «к концевику» – отрицательное направление
+        Serial.print(motorConfigs[i].name);
+        Serial.print(" target: ");
+        Serial.print(seekPos[i]);
+        Serial.println(" steps (toward endstop)");
+    }
+    planner.setTarget(seekPos);
+
+    bool homed[NUM_MOTORS] = {false};
+    while (true) {
+        planner.tick();
+        bool allDone = true;
+        for (int i = 0; i < 4; i++) {
+            if (!homeFlags[i] || homed[i]) continue;
+            if (readHomeSwitch((MotorType)i)) {
+                homed[i] = true;
+                Serial.print(motorConfigs[i].name);
+                Serial.print(" – endstop reached at position ");
+                Serial.println(steppers[i]->pos);
+            }
+            if (!homed[i]) allDone = false;
+        }
+        if (allDone) break;
+        if (planner.ready()) {
+            Serial.println("WARNING: Maximum homing distance reached without triggering all endstops");
+            break;
+        }
+    }
+    planner.brake();
+
+    /* --------------------------------------------------
+     * ЭТАП 4. Финальный откат (homeBackoff)
+     * -------------------------------------------------- */
+    int32_t backoffPos[NUM_MOTORS];
+    bool needFinalBackoff = false;
+    for (int i = 0; i < NUM_MOTORS; i++) backoffPos[i] = steppers[i]->pos;
+    for (int i = 0; i < 4; i++) {
+        if (!homeFlags[i] || !homed[i]) continue;
+        long hBack = motorConfigs[i].homeBackoff;
+        if (hBack > 0) {
+            needFinalBackoff = true;
+            backoffPos[i] += hBack; // «отъезд от концевика»
+            Serial.print(motorConfigs[i].name);
+            Serial.print(" – final backoff: ");
+            Serial.print(hBack);
+            Serial.println(" steps");
+        }
+    }
+    if (needFinalBackoff) {
+        planner.setTarget(backoffPos);
+        while (!planner.ready()) planner.tick();
+        planner.brake();
+        Serial.println("Final backoff completed");
+    }
+
+    /* --------------------------------------------------
+     * Установка нуля для успешно отхомленных моторов
+     * -------------------------------------------------- */
+    for (int i = 0; i < 4; i++) {
+        if (homeFlags[i] && homed[i]) {
+            steppers[i]->pos = 0;
+            Serial.print(motorConfigs[i].name);
+            Serial.println(" position set to zero");
+        } else if (homeFlags[i] && !homed[i]) {
+            Serial.print("WARNING: ");
+            Serial.print(motorConfigs[i].name);
+            Serial.println(" homing incomplete – endstop not reached");
+        }
+    }
+
+    // Сбрасываем планировщик, чтобы все координаты были согласованы
     planner.reset();
-    Serial.println("All motor positions reset to zero");
-    
+    Serial.println("Planner reset – all internal coordinates set to zero");
+
     homingActive = false;
-    Serial.println("=== SIMPLIFIED HOMING PROCEDURE COMPLETED ===");
+    Serial.println("=== TARGET-BASED HOMING PROCEDURE COMPLETED ===");
     Serial.println("COMPLETE");
 }
 
