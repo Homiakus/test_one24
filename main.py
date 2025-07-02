@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 import subprocess
 import sys
 import threading
@@ -14,42 +15,39 @@ import tomli
 from PySide6.QtCore import (
     QThread,
     QTimer,
+    QUrl,
     Qt,
     Signal,
     Slot,
-    QUrl,
 )
-from PySide6.QtGui import QAction, QFont, QColor, QIntValidator
+from PySide6.QtGui import QAction, QColor, QFont, QIntValidator
+from PySide6.QtMultimedia import QSoundEffect
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QApplication,
     QCheckBox,
     QComboBox,
+    QDialog,
     QFileDialog,
     QFormLayout,
     QFrame,
     QGridLayout,
     QHBoxLayout,
+    QInputDialog,
     QLabel,
     QLineEdit,
+    QListWidget,
+    QListWidgetItem,
     QMainWindow,
     QMessageBox,
+    QProgressBar,
     QPushButton,
     QScrollArea,
     QStackedWidget,
     QTextEdit,
     QVBoxLayout,
     QWidget,
-    QListWidget,
-    QListWidgetItem,
-    QAbstractItemView,
-    QInputDialog,
-    QDialog,
-    QDialogButtonBox,
-    QProgressBar,
 )
-from PySide6.QtMultimedia import QSoundEffect
-
-import re
 
 # Настройка логирования
 LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
@@ -431,10 +429,21 @@ class CommandSequenceThread(QThread):
     response_received = Signal(str)
     sequence_finished = Signal(bool, str)  # (успешно, сообщение)
 
-    def __init__(self, serial_port, commands, parent=None):
+    def __init__(self, serial_port, commands, keywords=None, parent=None):
         super().__init__(parent)
         self.serial_port = serial_port
         self.commands = commands
+        # Словарь ключевых слов для анализа ответов
+        self.keywords = keywords or {
+            'complete': ['complete', 'completed', 'done'],
+            'received': ['received'],
+            'error': ['err', 'error', 'fail'],
+        }
+        # Гарантируем наличие базовых ключевых слов даже при пустом словаре
+        self.keywords.setdefault('complete', ['complete', 'completed', 'done','COMPLETE'])
+        self.keywords.setdefault('received', ['received'])
+        self.keywords.setdefault('error', ['err', 'error', 'fail'])
+        self.keywords.setdefault('complete_line', ['complete'])
         self.running = True
         self.responses = []
         self.lock = threading.Lock()
@@ -484,36 +493,46 @@ class CommandSequenceThread(QThread):
                 self.serial_port.write(full_command.encode('utf-8'))
                 self.command_sent.emit(command)
 
-                # Ожидаем ответ RECEIVED
-                received = False
+                # Ожидаем завершения команды (COMPLETE). Маркер RECEIVED теперь необязателен
+                received = False  # оставляем для логов, но не используем в проверке
                 completed = False
                 start_time = time.time()
                 timeout = 10  # Таймаут в секундах
 
-                while (not received or not completed) and time.time() - start_time < timeout:
+                # Ждём только until COMPLETE/COMPLETED
+                while (not completed) and time.time() - start_time < timeout:
                     if not self.running:
                         self.sequence_finished.emit(False, "Выполнение прервано пользователем")
                         return
 
                     with self.lock:
-                        for response in self.responses:
-                            if "RECEIVED" in response:
-                                received = True
-                            # Успешное завершение может приходить как COMPLETE или COMPLETED
-                            if "COMPLETE" in response or "COMPLETED" in response:
-                                completed = True
-                            if "ERR" in response:
-                                self.sequence_finished.emit(False, f"Ошибка выполнения команды: {response}")
-                                return
+                        # Копируем ответы и очищаем буфер, чтобы не обрабатывать их повторно
+                        current_responses = self.responses[:]
+                        self.responses.clear()
 
-                    if not received or not completed:
+                    for response in current_responses:
+                        # Приводим строку к нижнему регистру, чтобы сравнение не зависело от регистра
+                        resp_lower = response.lower()
+
+                        # Флаг о получении подтверждения приёма команды
+                        if any(re.search(rf"\\b{re.escape(kw)}\\b", resp_lower) for kw in self.keywords.get('received', [])):
+                            received = True
+
+                        # Флаг о завершении выполнения -- требуем ОТДЕЛЬНУЮ строку "complete" (или другие ключевые)
+                        if (not completed):
+                            cleaned = resp_lower.strip()
+                            if cleaned in self.keywords.get('complete_line', ['complete']):
+                                completed = True
+
+                        # Обрабатываем возможную ошибку
+                        if any(re.search(rf"\\b{re.escape(kw)}\\b", resp_lower) for kw in self.keywords.get('error', [])):
+                            self.sequence_finished.emit(False, f"Ошибка выполнения команды: {response}")
+                            return
+
+                    if not completed:
                         time.sleep(0.1)  # Проверяем каждые 100 мс
 
-                # Проверяем, были ли получены все необходимые ответы
-                if not received:
-                    self.sequence_finished.emit(False, f"Таймаут ожидания ответа RECEIVED для команды: {command}")
-                    return
-
+                # Проверяем завершение выполнения команды
                 if not completed:
                     self.sequence_finished.emit(False, f"Таймаут ожидания ответа COMPLETED для команды: {command}")
                     return
@@ -827,6 +846,17 @@ class MainWindow(QMainWindow):
             # Загружаем конфигурацию
             with open(config_path, 'rb') as file:
                 config = tomli.load(file)
+
+            # ---------- Новая логика: ключевые слова последовательностей ----------
+            self.sequence_keywords = config.get(
+                'sequence_keywords',
+                {
+                    'complete': ['complete', 'completed', 'done'],
+                    'received': ['received'],
+                    'error': ['err', 'error', 'fail'],
+                },
+            )
+            # --------------------------------------------------------------------
 
             # Парсим разделы из исходного файла по комментариям
             self.button_groups = self.parse_config_sections(config_path)
@@ -1834,6 +1864,22 @@ baudrate = 115200
         git_buttons_layout.addWidget(self.view_commits_btn)
 
         git_layout.addLayout(git_buttons_layout)
+
+        # --- Новая секция Commit & Push ---
+        commit_layout = QHBoxLayout()
+        commit_layout.addWidget(QLabel("Сообщение коммита:"))
+
+        self.commit_message_edit = QLineEdit()
+        self.commit_message_edit.setPlaceholderText("Описание изменений...")
+        commit_layout.addWidget(self.commit_message_edit, 1)
+
+        self.commit_push_btn = ModernButton("⬆️ Commit & Push", "warning")
+        self.commit_push_btn.clicked.connect(self.commit_and_push_changes)
+        commit_layout.addWidget(self.commit_push_btn)
+
+        git_layout.addLayout(commit_layout)
+        # --- конец новой секции ---
+
         git_card.addLayout(git_layout)
         scroll_layout.addWidget(git_card)
 
@@ -2083,6 +2129,15 @@ baudrate = 115200
             self.add_terminal_message("❌ Устройство не подключено", "error")
             return
 
+        # Если уже выполняется другая последовательность, корректно завершим её
+        # прежде чем запускать новую. Это гарантирует, что только один поток
+        # CommandSequenceThread обращается к Serial-порту одновременно и
+        # предотвращает возможные гонки и конфликт за ресурсы.
+        if self.command_sequence_thread and self.command_sequence_thread.isRunning():
+            self.command_sequence_thread.stop()
+            self.command_sequence_thread.wait()
+            self.command_sequence_thread = None
+
         # Рекурсивно разворачиваем последовательности в реальные команды
         def expand_item(item, visited):
             if self.is_wait_command(item):
@@ -2112,7 +2167,7 @@ baudrate = 115200
             actual_commands.extend(expand_item(cmd, {sequence_name}))
 
         # Запускаем поток выполнения последовательности
-        self.command_sequence_thread = CommandSequenceThread(self.serial_port, actual_commands, self)
+        self.command_sequence_thread = CommandSequenceThread(self.serial_port, actual_commands, self.sequence_keywords, self)
         self.command_sequence_thread.progress_updated.connect(self.on_sequence_progress)
         self.command_sequence_thread.command_sent.connect(self.on_sequence_command_sent)
         self.command_sequence_thread.sequence_finished.connect(self.on_sequence_finished)
@@ -2159,6 +2214,9 @@ baudrate = 115200
         """Остановка выполнения последовательности"""
         if self.command_sequence_thread and self.command_sequence_thread.isRunning():
             self.command_sequence_thread.stop()
+            # Дожидаемся корректного завершения потока, чтобы освободить ресурсы
+            self.command_sequence_thread.wait()
+            self.command_sequence_thread = None
             self.add_terminal_message("⏹️ Последовательность остановлена", "warning")
 
     def show_about(self):
@@ -2749,7 +2807,7 @@ baudrate = 115200
                 QMessageBox.warning(self, "Ошибка", f"Файл конфигурации не найден: {config_path}")
                 return False
 
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 lines = f.readlines()
 
             start_idx = None
@@ -2869,6 +2927,53 @@ baudrate = 115200
             else:
                 QMessageBox.warning(self, "Ошибка", f"Последовательность '{new_name}' уже существует")
 
+    def commit_and_push_changes(self):
+        """Индексирует изменения, создаёт коммит и выполняет push.
+
+        Использует сообщение из поля ввода. Все логи выводятся
+        в область «Вывод команд» на странице прошивки.
+        """
+
+        # Получаем сообщение коммита
+        commit_msg = self.commit_message_edit.text().strip() if hasattr(self, 'commit_message_edit') else ""
+
+        if not commit_msg:
+            QMessageBox.warning(self, "Ошибка", "Введите сообщение коммита")
+            return
+
+        try:
+            repo_path = os.path.dirname(os.path.abspath(__file__))
+            repo = git.Repo(repo_path)
+
+            # Индексируем все изменения
+            repo.git.add(all=True)
+
+            # Проверяем есть ли что коммитить
+            if not repo.is_dirty(untracked_files=True):
+                self.add_firmware_message("ℹ️ Нет изменений для коммита", "info")
+                return
+
+            # Создаём коммит
+            new_commit = repo.index.commit(commit_msg)
+            self.add_firmware_message(f"✅ Создан коммит {new_commit.hexsha[:7]}", "response")
+
+            # Push
+            origin = repo.remotes.origin
+            push_result = origin.push()
+
+            # Отображаем результат push
+            if push_result and push_result[0].flags & push_result[0].ERROR:
+                self.add_firmware_message(f"❌ Ошибка push: {push_result[0].summary}", "error")
+            else:
+                self.add_firmware_message("⬆️ Изменения отправлены в удалённый репозиторий", "response")
+
+            # Очищаем поле ввода и обновляем статус
+            self.commit_message_edit.clear()
+            self.check_git_status()
+
+        except Exception as e:
+            self.add_firmware_message(f"❌ Ошибка коммита/push: {str(e)}", "error")
+
 
 class SequenceListWidget(QListWidget):
     """QListWidget с умным Drop: внешние перетаскивания копируются, внутренние – переносятся.
@@ -2946,7 +3051,6 @@ class NumericPadDialog(QDialog):
 
 
 # ---------------- Safe playsound helper ----------------
-from PySide6.QtCore import QUrl
 
 # Храним активные эффекты, чтобы их не удалил GC до завершения воспроизведения
 _active_sounds: list[QSoundEffect] = []

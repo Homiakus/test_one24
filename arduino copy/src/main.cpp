@@ -115,7 +115,7 @@ const MotorConfig motorConfigs[NUM_MOTORS] = {
         .endstopTypeNPN = true,
         .powerAlwaysOn = true,
         .stepsPerUnit = 200,
-        .maxSteps = 16000,
+        .maxSteps = 60000,
         .homeBackoff = 100,
         .preHomingBackoff = 60
     },

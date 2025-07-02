@@ -61,17 +61,17 @@ timeout = 1.0
 
 # Последовательности команд для автоматического выполнения
 [sequences]
-load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → предноль", "Хоминг RRight", "RRight → загрузка пробирок"]
+load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → предноль", "wait 3", "Хоминг RRight", "RRight → загрузка пробирок"]
 load_samples = ["RRight → загрузка пробирок", "RRight → верх", "wait 10", "RRight → извлечение пробирок"]
 load_slides = ["RRight → верх", "Clamp → разжать"]
-coloring = ["sedimantation", "alco", "gemo", "water", "water", "og", "alco", "ea", "alco", "alco", "alco"]
-og = ["Хоминг Multi", "RRight → верх", "Multi → OG", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка OG", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "waste"]
-ea = ["RRight → верх", "Multi → EA", "KL2 включить", "wait 1", "Multi → продувка EA", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
-gemo = ["RRight → верх", "Multi → Gemo", "KL2 включить", "wait 1", "Multi → продувка Gemo", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
-alco = ["RRight → верх", "Multi → Alco", "KL2 включить", "wait 1", "Multi → продувка Alco", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "RRight → слив", "waste"]
-water = ["RRight → верх", "Multi → Water", "KL2 включить", "wait 1", "Multi → продувка Water", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
-chlor = ["RRight → верх", "Multi → Chlor", "KL2 включить", "wait 1", "Multi → продувка Chlor", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 10", "RRight → слив", "waste"]
-sedimantation = ["RRight → экспозиция", "wait 3", "RRight → слив", "Multi → продувка Alco", "waste"]
+coloring = ["Clamp → сжать ", "sedimantation", "alco", "gemo", "water", "water", "og", "alco", "ea", "alco", "alco", "alco", "waste_out"]
+og = ["RRight → верх", "Multi → OG", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка OG", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "waste"]
+ea = ["RRight → верх", "Multi → EA", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка EA", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 90", "waste_out", "waste"]
+gemo = ["RRight → верх", "Multi → Gemo", "Насос включить", "KL2 включить", "wait 1", "Multi → продувка Gemo", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "waste"]
+alco = ["RRight → верх", "Multi → Alco", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка Alco", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "waste"]
+water = ["RRight → верх", "Multi → Water", "Насос включить", "KL2 включить", "wait 1", "Multi → продувка Water", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "waste"]
+chlor = ["RRight → верх", "Multi → Chlor", "KL2 включить", "wait 1", "Multi → продувка Chlor", "wait 1", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "waste"]
+sedimantation = ["Хоминг Multi", "wait 3", "Multi → продувка Alco", "RRight → экспозиция", "wait 3", "RRight → слив", "waste", "waste_out"]
 waste = ["RRight → слив", "Насос включить", "wait 1", "KL2 включить", "wait 6", "KL2 выключить", "Насос выключить"]
 waste_out = ["Multi → продувка OG", "KL1 включить", "KL2 включить", "wait 8", "KL1 выключить", "KL2 выключить"]
 [wizard]
@@ -81,7 +81,7 @@ id = 1
 title = "Главное меню"
 buttons = [
   {text = "▶ Начать окраску и осаждение", next = 2},
-  {text = "▶ Начать промывку",          next = 0}
+  {text = "▶ Начать промывку",          next = 7}
 ]
 sequence = ""
 autoNext = false
@@ -141,18 +141,19 @@ title = "Установите стекла"
 buttons = [
   {text = "▶ Начать осаждение и окраску", next = 7}
 ]
-sequence = "load_slides"
+sequence = ""
 autoNext = false
 showBar = false
 melodyEnter = ""
 melodyExit  = ""
+
 
 [[wizard.step]]
 id = 7
 title = "Процесс осаждения и окраски"
 buttons = []
 sequence = "coloring"
-autoNext = true
+autoNext = 8
 showBar = true
 melodyEnter = ""
 melodyExit  = ""
