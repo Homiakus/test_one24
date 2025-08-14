@@ -48,6 +48,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from qt_material import apply_stylesheet  # qt-material must be imported after PySide
 
 # Настройка логирования
 LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app.log')
@@ -62,9 +63,8 @@ try:
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
-        filemode='a'  # Режим добавления, а не перезаписи
+        filemode='a'
     )
-    # Добавляем вывод логов в консоль для отладки
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -75,325 +75,17 @@ try:
 except Exception as e:
     print(f"Ошибка при настройке логирования: {str(e)}")
 
-# Современная темная тема в стиле PyDracula
-PYDRACULA_DARK = """
-/* PyDracula Dark Theme */
-QMainWindow {
-    background-color: #1e1d23;
-    color: #fff;
-}
-
-QWidget {
-    background-color: transparent;
-    color: #fff;
-    font-family: "Segoe UI", Arial, sans-serif;
-    font-size: 10pt;
-}
-
-/* Боковая панель */
-#sidebar {
-    background-color: #16151a;
-    border-right: 3px solid #343b48;
-}
-
-#sidebar QPushButton {
-    background-color: transparent;
-    border: none;
-    padding: 15px 20px;
-    text-align: left;
-    color: #8a95aa;
-    font-weight: 500;
-    font-size: 11pt;
-    border-radius: 8px;
-    margin: 2px 5px;
-}
-
-#sidebar QPushButton:hover {
-    background-color: #21202e;
-    color: #dce1ec;
-}
-
-#sidebar QPushButton:checked {
-    background-color: #568af2;
-    color: #fff;
-    font-weight: 600;
-}
-
-/* Кнопки */
-QPushButton {
-    background-color: #568af2;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 10pt;
-}
-
-QPushButton:hover {
-    background-color: #6c98f3;
-}
-
-QPushButton:pressed {
-    background-color: #4a7ce8;
-}
-
-QPushButton:disabled {
-    background-color: #44475a;
-    color: #6272a4;
-}
-
-/* Специальные кнопки */
-.success-btn {
-    background-color: #50fa7b;
-    color: #282a36;
-}
-
-.success-btn:hover {
-    background-color: #5af78e;
-}
-
-.warning-btn {
-    background-color: #ffb86c;
-    color: #282a36;
-}
-
-.warning-btn:hover {
-    background-color: #ffc382;
-}
-
-.danger-btn {
-    background-color: #ff5555;
-    color: #fff;
-}
-
-.danger-btn:hover {
-    background-color: #ff6b6b;
-}
-
-/* Группы */
-QGroupBox {
-    background-color: #21202e;
-    border: 2px solid #343b48;
-    border-radius: 8px;
-    margin-top: 1ex;
-    color: #dce1ec;
-    font-weight: 600;
-    padding-top: 15px;
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 10px;
-    color: #568af2;
-}
-
-/* Поля ввода */
-QLineEdit, QComboBox, QSpinBox {
-    background-color: #343b48;
-    border: 2px solid #44475a;
-    border-radius: 6px;
-    padding: 8px;
-    color: #fff;
-    font-size: 10pt;
-}
-
-QLineEdit:focus, QComboBox:focus, QSpinBox:focus {
-    border-color: #568af2;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 20px;
-    border-left: 1px solid #44475a;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-}
-
-QComboBox::down-arrow {
-    image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzU2OGFmMiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+);
-}
-
-/* Терминал */
-QTextEdit {
-    background-color: #16151a;
-    border: 2px solid #343b48;
-    border-radius: 8px;
-    padding: 10px;
-    color: #dce1ec;
-    font-family: "Consolas", "Monaco", monospace;
-    font-size: 9pt;
-    line-height: 1.4;
-}
-
-/* Прогресс-бар */
-QProgressBar {
-    background-color: #343b48;
-    border: 2px solid #44475a;
-    border-radius: 8px;
-    text-align: center;
-    color: #fff;
-    font-weight: 500;
-}
-
-QProgressBar::chunk {
-    background-color: #568af2;
-    border-radius: 6px;
-}
-
-/* Таблица */
-QTableWidget {
-    background-color: #21202e;
-    border: 2px solid #343b48;
-    border-radius: 8px;
-    gridline-color: #44475a;
-    color: #dce1ec;
-}
-
-QTableWidget::item {
-    padding: 8px;
-    border-bottom: 1px solid #44475a;
-}
-
-QTableWidget::item:selected {
-    background-color: #568af2;
-}
-
-/* Чекбоксы */
-QCheckBox {
-    spacing: 8px;
-    color: #dce1ec;
-}
-
-QCheckBox::indicator {
-    width: 18px;
-    height: 18px;
-    background-color: #343b48;
-    border: 2px solid #44475a;
-    border-radius: 4px;
-}
-
-QCheckBox::indicator:checked {
-    background-color: #568af2;
-    border-color: #568af2;
-}
-
-QCheckBox::indicator:checked:hover {
-    background-color: #6c98f3;
-}
-
-/* Скроллбары */
-QScrollBar:vertical {
-    background-color: #21202e;
-    width: 12px;
-    border-radius: 6px;
-}
-
-QScrollBar::handle:vertical {
-    background-color: #568af2;
-    border-radius: 6px;
-    min-height: 20px;
-}
-
-QScrollBar::handle:vertical:hover {
-    background-color: #6c98f3;
-}
-
-QScrollBar:horizontal {
-    background-color: #21202e;
-    height: 12px;
-    border-radius: 6px;
-}
-
-QScrollBar::handle:horizontal {
-    background-color: #568af2;
-    border-radius: 6px;
-    min-width: 20px;
-}
-
-QScrollBar::handle:horizontal:hover {
-    background-color: #6c98f3;
-}
-
-/* Меню */
-QMenuBar {
-    background-color: #16151a;
-    color: #dce1ec;
-    padding: 4px;
-}
-
-QMenuBar::item {
-    background-color: transparent;
-    padding: 8px 12px;
-    border-radius: 6px;
-}
-
-QMenuBar::item:selected {
-    background-color: #568af2;
-}
-
-QMenu {
-    background-color: #21202e;
-    border: 2px solid #343b48;
-    border-radius: 8px;
-    padding: 8px;
-}
-
-QMenu::item {
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: #dce1ec;
-}
-
-QMenu::item:selected {
-    background-color: #568af2;
-}
-
-/* Статусная строка */
-QStatusBar {
-    background-color: #16151a;
-    color: #8a95aa;
-    border-top: 1px solid #343b48;
-    padding: 4px;
-}
-
-/* Сплиттер */
-QSplitter::handle {
-    background-color: #343b48;
-    width: 3px;
-    height: 3px;
-}
-
-QSplitter::handle:hover {
-    background-color: #568af2;
-}
-
-/* Диалоги */
-QDialog {
-    background-color: #1e1d23;
-    border: 2px solid #343b48;
-    border-radius: 12px;
-}
-
-QDialogButtonBox QPushButton {
-    min-width: 80px;
-    padding: 10px 20px;
-}
-"""
-
 # Путь к файлу с настройками
 SETTINGS_FILE = 'serial_settings.json'
 # Настройки обновления по умолчанию
 DEFAULT_UPDATE_SETTINGS = {
     'enable_auto_update': True,
     'repository_url': 'https://github.com/yourusername/yourrepository.git',
-    'update_check_interval': 3600,  # в секундах (1 час)
+    'update_check_interval': 3600,
     'auto_connect': True,
-    'platformio_path': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'arduino'),  # Путь к проекту Arduino/PlatformIO
-    'upload_port': '',  # Порт для загрузки прошивки
-    'theme': 'dark'  # Тема по умолчанию
+    'platformio_path': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'arduino'),
+    'upload_port': '',
+    'theme': 'dark'
 }
 
 class SerialThread(QThread):
@@ -609,85 +301,28 @@ class ModernButton(QPushButton):
         self.apply_style()
 
     def apply_style(self):
-        base_style = """
-            ModernButton {
-                border: none;
-                border-radius: 8px;
-                padding: 8px 16px;
-                font-weight: 500;
-                font-size: 10pt;
-            }
-        """
+        # Сбрасываем кастомные стили, чтобы применить qt-material
+        self.setStyleSheet("")
 
-        if self.button_type == "primary":
-            style = base_style + """
-                ModernButton {
-                    background-color: #568af2;
-                    color: #fff;
-                }
-                ModernButton:hover {
-                    background-color: #6c98f3;
-                }
-                ModernButton:pressed {
-                    background-color: #4a7ce8;
-                }
-            """
-        elif self.button_type == "success":
-            style = base_style + """
-                ModernButton {
-                    background-color: #50fa7b;
-                    color: #282a36;
-                }
-                ModernButton:hover {
-                    background-color: #5af78e;
-                }
-                ModernButton:pressed {
-                    background-color: #3df56b;
-                }
-            """
-        elif self.button_type == "danger":
-            style = base_style + """
-                ModernButton {
-                    background-color: #ff5555;
-                    color: #fff;
-                }
-                ModernButton:hover {
-                    background-color: #ff6b6b;
-                }
-                ModernButton:pressed {
-                    background-color: #e74c3c;
-                }
-            """
+        # Устанавливаем accent-класс для qt-material, где применимо
+        qt_material_class = None
+        if self.button_type == "success":
+            qt_material_class = "success"
         elif self.button_type == "warning":
-            style = base_style + """
-                ModernButton {
-                    background-color: #ffb86c;
-                    color: #282a36;
-                }
-                ModernButton:hover {
-                    background-color: #ffc382;
-                }
-                ModernButton:pressed {
-                    background-color: #f39c12;
-                }
-            """
-        else:  # secondary
-            style = base_style + """
-                ModernButton {
-                    background-color: #44475a;
-                    color: #dce1ec;
-                    border: 2px solid #6272a4;
-                }
-                ModernButton:hover {
-                    background-color: #6272a4;
-                    color: #fff;
-                }
-                ModernButton:pressed {
-                    background-color: #383a59;
-                }
-            """
+            qt_material_class = "warning"
+        elif self.button_type == "danger":
+            qt_material_class = "danger"
 
-        self.setStyleSheet(style)
+        if qt_material_class:
+            self.setProperty('class', qt_material_class)
+            # Обновить стиль после изменения property
+            self.style().unpolish(self)
+            self.style().polish(self)
+        else:
+            # Сбрасываем класс для обычных/вторичных кнопок
+            self.setProperty('class', '')
+            self.style().unpolish(self)
+            self.style().polish(self)
 
 
 class MainWindow(QMainWindow):
@@ -734,25 +369,33 @@ class MainWindow(QMainWindow):
         logging.info("Приложение запущено с PySide6")
 
     def apply_theme(self):
-        """Применение современной темы"""
-        theme = self.update_settings.get('theme', 'dark')
+        """Применение темы qt-material"""
+        theme_pref = self.update_settings.get('theme', 'dark')
 
-        if theme == 'dark':
-            self.setStyleSheet(PYDRACULA_DARK)
-            self.current_theme = 'dark'
+        # Дополнительные акцентные цвета и шрифт для qt-material
+        extra = {
+            'danger': '#dc3545',
+            'warning': '#ffc107',
+            'success': '#17a2b8',
+            'font_family': 'Segoe UI',
+        }
+
+        if theme_pref == 'light':
+            apply_stylesheet(QApplication.instance(), theme='light_blue.xml', invert_secondary=True, extra=extra)
+            self.current_theme = 'light'
         else:
-            self.setStyleSheet(PYDRACULA_DARK)
+            apply_stylesheet(QApplication.instance(), theme='dark_teal.xml', extra=extra)
             self.current_theme = 'dark'
 
-        # Обновляем тему для всех виджетов
         self.update()
 
     def toggle_theme(self):
-        """Переключение темы"""
-        new_theme = 'dark'
+        """Переключение светлой/тёмной темы qt-material"""
+        new_theme = 'light' if self.current_theme == 'dark' else 'dark'
         self.update_settings['theme'] = new_theme
         self.save_update_settings()
         self.apply_theme()
+        self.statusBar().showMessage(f"Тема применена: {self.current_theme}", 2000)
 
     def load_serial_settings(self):
         """Загрузка сохраненных настроек Serial порта"""
@@ -1016,11 +659,12 @@ baudrate = 115200
         self.sidebar.setObjectName("sidebar")
         self.sidebar.setFixedWidth(250)
         self.sidebar.setStyleSheet("""
-            #sidebar {
-                background-color: #16151a;
-                border-right: 3px solid #343b48;
-            }
-        """)
+-            #sidebar {
+-                background-color: #16151a;
+-                border-right: 3px solid #343b48;
+-            }
++            /* Стили боковой панели применяются qt-material */
+         """)
 
         sidebar_layout = QVBoxLayout(self.sidebar)
         sidebar_layout.setContentsMargins(0, 20, 0, 20)
@@ -1083,28 +727,7 @@ baudrate = 115200
             btn.setCheckable(True)
             btn.setChecked(checked)
             btn.setObjectName("nav_button")
-            btn.setStyleSheet("""
-                #nav_button {
-                    background-color: transparent;
-                    border: none;
-                    padding: 15px 20px;
-                    text-align: left;
-                    color: #8a95aa;
-                    font-weight: 500;
-                    font-size: 11pt;
-                    border-radius: 8px;
-                    margin: 2px 5px;
-                }
-                #nav_button:hover {
-                    background-color: #21202e;
-                    color: #dce1ec;
-                }
-                #nav_button:checked {
-                    background-color: #568af2;
-                    color: #fff;
-                    font-weight: 600;
-                }
-            """)
+            # Стилями управляет qt-material
             btn.clicked.connect(lambda checked, k=key: self.switch_page(k))
             self.nav_buttons[key] = btn
             nav_layout.addWidget(btn)
@@ -1117,17 +740,7 @@ baudrate = 115200
         connection_layout = QVBoxLayout()
 
         self.connection_status = QLabel("● Отключено")
-        self.connection_status.setStyleSheet("""
-            QLabel {
-                color: #ff5555;
-                font-weight: 600;
-                font-size: 11pt;
-                padding: 8px;
-                background-color: #2d1b1b;
-                border-radius: 6px;
-                border: 1px solid #ff5555;
-            }
-        """)
+        # Цвета и виджет стилизуются qt-material
         connection_layout.addWidget(self.connection_status)
 
         self.connection_card.addLayout(connection_layout)
@@ -2099,18 +1712,6 @@ baudrate = 115200
 
             # Обновляем статус
             self.connection_status.setText("● Отключено")
-            self.connection_status.setStyleSheet("""
-                QLabel {
-                    color: #ff5555;
-                    font-weight: 600;
-                    font-size: 11pt;
-                    padding: 8px;
-                    background-color: #2d1b1b;
-                    border-radius: 6px;
-                    border: 1px solid #ff5555;
-                }
-            """)
-
             self.add_terminal_message("📴 Устройство отключено", "warning")
             self.statusBar().showMessage("Отключено", 3000)
 
@@ -2305,21 +1906,8 @@ baudrate = 115200
 
             # Обновляем статус подключения
             self.connection_status.setText("● Подключено")
-            self.connection_status.setStyleSheet("""
-                QLabel {
-                    color: #50fa7b;
-                    font-weight: 600;
-                    font-size: 11pt;
-                    padding: 8px;
-                    background-color: #1b2d1b;
-                    border-radius: 6px;
-                    border: 1px solid #50fa7b;
-                }
-            """)
-
-            port_name = self.serial_settings.get('port', 'COM?')
-            self.add_terminal_message(f"🔗 Подключено к порту {port_name}", "response")
-            self.statusBar().showMessage(f"Подключено к порту {port_name}", 3000)
+            self.add_terminal_message(f"🔗 Подключено к порту {self.serial_settings.get('port', 'COM?')}", "response")
+            self.statusBar().showMessage(f"Подключено к порту {self.serial_settings.get('port', 'COM?')}", 3000)
 
         except Exception as e:
             error_msg = f"Не удалось подключиться к порту: {str(e)}"
