@@ -19,8 +19,10 @@ from PySide6.QtCore import (
     Qt,
     Signal,
     Slot,
+    QPropertyAnimation,
+    QRect,
 )
-from PySide6.QtGui import QAction, QColor, QFont, QIntValidator
+from PySide6.QtGui import QAction, QColor, QFont, QIntValidator, QMovie, QPainter, QLinearGradient, QBrush, QPen, QPixmap
 from PySide6.QtMultimedia import QSoundEffect
 from PySide6.QtWidgets import (
     QAbstractItemView,
@@ -47,6 +49,10 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QVBoxLayout,
     QWidget,
+    QToolButton,
+    QMenu,
+    QStackedLayout,
+    QSizePolicy,
 )
 from qt_material import apply_stylesheet  # qt-material must be imported after PySide
 
@@ -356,7 +362,7 @@ class MainWindow(QMainWindow):
         self.apply_theme()
 
         # Переключаемся на главную страницу
-        self.switch_page("sequences")
+        self.switch_page("wizard")
 
         # Автоматическое подключение
         if self.update_settings.get('auto_connect', True):
@@ -461,10 +467,13 @@ class MainWindow(QMainWindow):
             print(f"Ошибка сохранения настроек обновления: {str(e)}")
 
     def auto_connect(self):
-        """Автоматическое подключение к порту из настроек"""
-        # Проверка доступности порта
+        """Автоматическое подключение к порту из настроек/выбора"""
         available_ports = [p.device for p in serial.tools.list_ports.comports()]
-        port = self.serial_settings.get('port', 'COM1')
+        # Если есть combo, используем его текущее значение, иначе сохранённый порт
+        port = self.port_combo.currentText() if hasattr(self, 'port_combo') else self.serial_settings.get('port', 'COM1')
+        # Синхронизируем настройки
+        self.serial_settings['port'] = port
+        self.save_serial_settings()
 
         if port in available_ports:
             self.connect_serial()
@@ -630,7 +639,7 @@ baudrate = 115200
 
     def setup_ui(self):
         """Настройка современного пользовательского интерфейса"""
-        # Создаем центральный виджет
+        # Простой центральный контейнер
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
@@ -642,10 +651,24 @@ baudrate = 115200
         # Создаем боковую панель
         self.setup_sidebar()
 
+        # Узкая левая полоса с верхней кнопкой-ручкой
+        left_strip = QWidget()
+        left_strip.setFixedWidth(36)
+        left_v = QVBoxLayout(left_strip)
+        left_v.setContentsMargins(0, 6, 0, 6)
+        left_v.setSpacing(6)
+        self.sidebar_handle_btn = QToolButton()
+        self.sidebar_handle_btn.setText("≡")
+        self.sidebar_handle_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.sidebar_handle_btn.clicked.connect(self.toggle_sidebar)
+        left_v.addWidget(self.sidebar_handle_btn, 0, Qt.AlignmentFlag.AlignTop)
+        left_v.addStretch()
+
         # Создаем основную область контента
         self.setup_content_area()
 
         # Добавляем в основной layout
+        main_layout.addWidget(left_strip)
         main_layout.addWidget(self.sidebar)
         main_layout.addWidget(self.content_area, 1)
 
@@ -653,98 +676,15 @@ baudrate = 115200
         self.create_menu()
         self.statusBar().showMessage("Готов к работе")
 
-    def setup_sidebar(self):
-        """Настройка современной боковой панели"""
-        self.sidebar = QFrame()
-        self.sidebar.setObjectName("sidebar")
-        self.sidebar.setFixedWidth(250)
-        self.sidebar.setStyleSheet("""
--            #sidebar {
--                background-color: #16151a;
--                border-right: 3px solid #343b48;
--            }
-+            /* Стили боковой панели применяются qt-material */
-         """)
+        # Параметры анимации для боковой панели
+        self._sidebar_expanded_width = 250
+        self._sidebar_collapsed_width = 0
+        # Скрыто по умолчанию
+        self._sidebar_expanded = False
+        self.sidebar.setMinimumWidth(0)
+        self.sidebar.setMaximumWidth(0)
 
-        sidebar_layout = QVBoxLayout(self.sidebar)
-        sidebar_layout.setContentsMargins(0, 20, 0, 20)
-        sidebar_layout.setSpacing(5)
-
-        # Логотип и заголовок
-        header_widget = QWidget()
-        header_layout = QVBoxLayout(header_widget)
-        header_layout.setContentsMargins(20, 0, 20, 20)
-
-        title_label = QLabel("Панель управления")
-        title_label.setStyleSheet("""
-            QLabel {
-                color: #dce1ec;
-                font-size: 16pt;
-                font-weight: 700;
-                margin-bottom: 5px;
-            }
-        """)
-        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        subtitle_label = QLabel("Система контроля")
-        subtitle_label.setStyleSheet("""
-            QLabel {
-                color: #8a95aa;
-                font-size: 10pt;
-                font-weight: 400;
-            }
-        """)
-        subtitle_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        header_layout.addWidget(title_label)
-        header_layout.addWidget(subtitle_label)
-        sidebar_layout.addWidget(header_widget)
-
-        # Разделитель
-        separator = QFrame()
-        separator.setFrameShape(QFrame.Shape.HLine)
-        separator.setStyleSheet("background-color: #343b48; height: 1px; margin: 0 20px;")
-        sidebar_layout.addWidget(separator)
-
-        # Кнопки навигации
-        self.nav_buttons = {}
-        nav_data = [
-            ("wizard", "🪄 Мастер", True),
-            ("sequences", "🏠 Главное меню", False),
-            ("commands", "⚡ Команды", False),
-            ("designer", "🖱️ Конструктор", False),
-            ("settings", "⚙️ Настройки", False),
-            ("firmware", "🔧 Прошивка", False),
-        ]
-
-        nav_widget = QWidget()
-        nav_layout = QVBoxLayout(nav_widget)
-        nav_layout.setContentsMargins(10, 20, 10, 20)
-        nav_layout.setSpacing(5)
-
-        for key, text, checked in nav_data:
-            btn = QPushButton(text)
-            btn.setCheckable(True)
-            btn.setChecked(checked)
-            btn.setObjectName("nav_button")
-            # Стилями управляет qt-material
-            btn.clicked.connect(lambda checked, k=key: self.switch_page(k))
-            self.nav_buttons[key] = btn
-            nav_layout.addWidget(btn)
-
-        sidebar_layout.addWidget(nav_widget)
-        sidebar_layout.addStretch()
-
-        # Информация о подключении
-        self.connection_card = ModernCard()
-        connection_layout = QVBoxLayout()
-
-        self.connection_status = QLabel("● Отключено")
-        # Цвета и виджет стилизуются qt-material
-        connection_layout.addWidget(self.connection_status)
-
-        self.connection_card.addLayout(connection_layout)
-        sidebar_layout.addWidget(self.connection_card)
+        # Фоновая анимация отключена по требованию
 
     def setup_content_area(self):
         """Настройка основной области контента"""
@@ -765,9 +705,11 @@ baudrate = 115200
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(20)
 
-        header = QLabel("🪄 Мастер")
-        header.setStyleSheet("color:#568af2;font-size:18pt;font-weight:700;")
-        layout.addWidget(header)
+        # Убираем заголовок "Мастер" и оставляем только подсказку
+        hint = QLabel("Выберите зоны окраски до начала окраски/промывки")
+        hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        hint.setStyleSheet("color:#8a95aa;font-size:16pt;font-weight:600;")
+        layout.addWidget(hint)
 
         self.wizard_step_title = QLabel()
         self.wizard_step_title.setStyleSheet("color:#dce1ec;font-size:14pt;font-weight:600;")
@@ -777,10 +719,39 @@ baudrate = 115200
         self.wizard_progress.setVisible(False)
         layout.addWidget(self.wizard_progress)
 
-        self.wizard_buttons_layout = QHBoxLayout()
-        layout.addLayout(self.wizard_buttons_layout)
+        # Две панели с изображениями и кнопками (сверху)
+        panels_layout = QHBoxLayout()
+        panels_layout.setContentsMargins(0, 0, 0, 0)
+        panels_layout.setSpacing(20)
+        image_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'back')
+        # Глобальное состояние выбранных зон
+        self.zone_selected = {
+            'left_top': False,
+            'left_bottom': False,
+            'right_top': False,
+            'right_bottom': False,
+        }
+        self.left_panel = OverlayPanel("left", "Верхняя левая", "Нижняя левая", image_dir)
+        self.right_panel = OverlayPanel("right", "Верхняя правая", "Нижняя правая", image_dir)
+        self.left_panel.state_changed.connect(self.on_zone_state_changed)
+        self.right_panel.state_changed.connect(self.on_zone_state_changed)
+        self.left_panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.right_panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        panels_layout.addWidget(self.left_panel, 1)
+        panels_layout.addWidget(self.right_panel, 1)
+        layout.addLayout(panels_layout)
 
+        # Кнопки запуска снизу
+        self.wizard_buttons_layout = QHBoxLayout()
         layout.addStretch()
+        paint_btn = ModernButton("🎨 Начать окраску", "success")
+        paint_btn.clicked.connect(self._start_paint)
+        rinse_btn = ModernButton("🧼 Начать промывку", "warning")
+        rinse_btn.clicked.connect(self._start_rinse)
+        self.wizard_buttons_layout.addStretch()
+        self.wizard_buttons_layout.addWidget(paint_btn)
+        self.wizard_buttons_layout.addWidget(rinse_btn)
+        layout.addLayout(self.wizard_buttons_layout)
 
         self.content_area.addWidget(page)
 
@@ -790,6 +761,23 @@ baudrate = 115200
 
         # initial render
         self.render_wizard_step(self.current_wizard_id)
+
+    def on_zone_state_changed(self, panel_id: str, top_checked: bool, bottom_checked: bool):
+        if panel_id == 'left':
+            self.zone_selected['left_top'] = top_checked
+            self.zone_selected['left_bottom'] = bottom_checked
+        elif panel_id == 'right':
+            self.zone_selected['right_top'] = top_checked
+            self.zone_selected['right_bottom'] = bottom_checked
+        # Также предоставим удобные булевы флаги
+        self.is_left_top_selected = self.zone_selected['left_top']
+        self.is_left_bottom_selected = self.zone_selected['left_bottom']
+        self.is_right_top_selected = self.zone_selected['right_top']
+        self.is_right_bottom_selected = self.zone_selected['right_bottom']
+
+    def get_selected_zones(self) -> dict:
+        """Возвращает словарь с выбранными зонами: left_top, left_bottom, right_top, right_bottom."""
+        return dict(self.zone_selected)
 
     # ---------------- Wizard helpers ----------------
 
@@ -817,6 +805,17 @@ baudrate = 115200
             return
 
         step = self.wizard_steps[step_id]
+
+        # Показ панелей с зонами только на первом шаге мастера
+        try:
+            first_step_id = min(self.wizard_steps.keys()) if self.wizard_steps else step_id
+            show_panels = (step_id == first_step_id)
+            if hasattr(self, 'left_panel'):
+                self.left_panel.setVisible(show_panels)
+            if hasattr(self, 'right_panel'):
+                self.right_panel.setVisible(show_panels)
+        except Exception:
+            pass
 
         # play enter melody
         if step.get('melodyEnter'):
@@ -1337,6 +1336,7 @@ baudrate = 115200
         self.port_combo = QComboBox()
         self.refresh_ports()
         self.port_combo.setCurrentText(self.serial_settings.get('port', 'COM1'))
+        self.port_combo.currentTextChanged.connect(self._on_port_changed)
         connection_layout.addRow("Порт:", self.port_combo)
 
         # Скорость
@@ -1889,15 +1889,43 @@ baudrate = 115200
     def connect_serial(self):
         """Подключение к Serial порту"""
         try:
-            # Создание объекта Serial с параметрами из настроек
-            self.serial_port = serial.Serial(
-                port=self.serial_settings.get('port', 'COM1'),
-                baudrate=self.serial_settings.get('baudrate', 115200),
-                bytesize=self.serial_settings.get('bytesize', 8),
-                parity=self.serial_settings.get('parity', 'N'),
-                stopbits=self.serial_settings.get('stopbits', 1),
-                timeout=self.serial_settings.get('timeout', 1)
-            )
+            # Определяем целевой порт
+            port = self.port_combo.currentText() if hasattr(self, 'port_combo') else self.serial_settings.get('port', 'COM1')
+            available_ports = [p.device for p in serial.tools.list_ports.comports()]
+            if port not in available_ports:
+                raise RuntimeError(f"Порт {port} недоступен. Доступны: {', '.join(available_ports) if available_ports else 'нет'}")
+
+            # Создание объекта Serial с безопасными флагами
+            try:
+                self.serial_port = serial.Serial(
+                    port=port,
+                    baudrate=self.serial_settings.get('baudrate', 115200),
+                    bytesize=self.serial_settings.get('bytesize', 8),
+                    parity=self.serial_settings.get('parity', 'N'),
+                    stopbits=self.serial_settings.get('stopbits', 1),
+                    timeout=self.serial_settings.get('timeout', 1),
+                    xonxoff=False,
+                    rtscts=False,
+                    dsrdtr=False,
+                    write_timeout=2,
+                )
+            except OSError as ose:
+                # Частый случай на Windows: OSError(22, 'Неверная функция.') — пробуем консервативный режим
+                if getattr(ose, 'errno', None) == 22:
+                    self.serial_port = serial.Serial(
+                        port=port,
+                        baudrate=9600,
+                        bytesize=8,
+                        parity='N',
+                        stopbits=1,
+                        timeout=1,
+                        xonxoff=False,
+                        rtscts=False,
+                        dsrdtr=False,
+                        write_timeout=2,
+                    )
+                else:
+                    raise
 
             # Создание и запуск потока для чтения данных
             self.serial_thread = SerialThread(self.serial_port)
@@ -1905,9 +1933,11 @@ baudrate = 115200
             self.serial_thread.start()
 
             # Обновляем статус подключения
+            self.serial_settings['port'] = port
+            self.save_serial_settings()
             self.connection_status.setText("● Подключено")
-            self.add_terminal_message(f"🔗 Подключено к порту {self.serial_settings.get('port', 'COM?')}", "response")
-            self.statusBar().showMessage(f"Подключено к порту {self.serial_settings.get('port', 'COM?')}", 3000)
+            self.add_terminal_message(f"🔗 Подключено к порту {port}", "response")
+            self.statusBar().showMessage(f"Подключено к порту {port}", 3000)
 
         except Exception as e:
             error_msg = f"Не удалось подключиться к порту: {str(e)}"
@@ -1934,56 +1964,8 @@ baudrate = 115200
         logging.info(f"Получены данные: {data}")
 
     def create_menu(self):
-        """Создание современного меню"""
-        menubar = self.menuBar()
-
-        # Меню "Файл"
-        file_menu = menubar.addMenu('📁 Файл')
-
-        reload_action = QAction('🔄 Перезагрузить конфигурацию', self)
-        reload_action.setShortcut('Ctrl+R')
-        reload_action.triggered.connect(self.reload_config)
-        file_menu.addAction(reload_action)
-
-        file_menu.addSeparator()
-
-        exit_action = QAction('❌ Выход', self)
-        exit_action.setShortcut('Ctrl+Q')
-        exit_action.triggered.connect(self.close)
-        file_menu.addAction(exit_action)
-
-        # Меню "Вид"
-        view_menu = menubar.addMenu('👁️ Вид')
-
-        fullscreen_action = QAction('📺 Полноэкранный режим', self)
-        fullscreen_action.setShortcut('F11')
-        fullscreen_action.triggered.connect(self.toggle_fullscreen)
-        view_menu.addAction(fullscreen_action)
-
-        theme_action = QAction('🎨 Переключить тему', self)
-        theme_action.setShortcut('Ctrl+T')
-        theme_action.triggered.connect(self.toggle_theme)
-        view_menu.addAction(theme_action)
-
-        # Меню "Подключение"
-        connection_menu = menubar.addMenu('🔌 Подключение')
-
-        connect_action = QAction('🔗 Подключиться', self)
-        connect_action.setShortcut('Ctrl+Shift+C')
-        connect_action.triggered.connect(self.connect_serial)
-        connection_menu.addAction(connect_action)
-
-        disconnect_action = QAction('📴 Отключиться', self)
-        disconnect_action.setShortcut('Ctrl+Shift+D')
-        disconnect_action.triggered.connect(self.disconnect_serial)
-        connection_menu.addAction(disconnect_action)
-
-        # Меню "Помощь"
-        help_menu = menubar.addMenu('💡 Помощь')
-
-        about_action = QAction('ℹ️ О программе', self)
-        about_action.triggered.connect(self.show_about)
-        help_menu.addAction(about_action)
+        """Отключено: пункты перенесены в меню слева"""
+        self.menuBar().hide()
 
     def toggle_fullscreen(self):
         """Переключение полноэкранного режима"""
@@ -2562,6 +2544,173 @@ baudrate = 115200
         except Exception as e:
             self.add_firmware_message(f"❌ Ошибка коммита/push: {str(e)}", "error")
 
+    def toggle_sidebar(self):
+        """Плавно сворачивает/разворачивает боковую панель"""
+        start = self.sidebar.width()
+        end = self._sidebar_collapsed_width if self._sidebar_expanded else self._sidebar_expanded_width
+        self._sidebar_expanded = not self._sidebar_expanded
+
+        animation = QPropertyAnimation(self.sidebar, b"maximumWidth")
+        animation.setDuration(200)
+        animation.setStartValue(start)
+        animation.setEndValue(end)
+        animation.start()
+        self._sidebar_anim = animation
+        self.sidebar.setMinimumWidth(0)
+        self.sidebar.setMaximumWidth(start)
+
+    def setup_sidebar(self):
+        """Создаёт левую боковую панель с меню и навигацией"""
+        self.sidebar = QFrame()
+        self.sidebar.setObjectName("sidebar")
+        self.sidebar.setFixedWidth(250)
+        self.sidebar.setStyleSheet("""
+            /* Стили боковой панели применяются qt-material */
+        """)
+
+        sidebar_layout = QVBoxLayout(self.sidebar)
+        sidebar_layout.setContentsMargins(0, 8, 0, 20)
+        sidebar_layout.setSpacing(6)
+
+        # Верхняя строка: меню и кнопка сворачивания
+        toprow = QHBoxLayout()
+        toprow.setContentsMargins(8, 0, 8, 0)
+        toprow.setSpacing(6)
+
+        self.menu_button = QToolButton()
+        self.menu_button.setText("⋮")
+        self.menu_button.setPopupMode(QToolButton.InstantPopup)
+        self.menu_button.setToolButtonStyle(Qt.ToolButtonTextOnly)
+
+        menu = QMenu(self)
+        action_reload = QAction('🔄 Перезагрузить конфигурацию', self)
+        action_reload.triggered.connect(self.reload_config)
+        action_fullscreen = QAction('📺 Полноэкранный режим', self)
+        action_fullscreen.triggered.connect(self.toggle_fullscreen)
+        action_theme = QAction('🎨 Переключить тему', self)
+        action_theme.triggered.connect(self.toggle_theme)
+        action_connect = QAction('🔗 Подключиться', self)
+        action_connect.triggered.connect(self.connect_serial)
+        action_disconnect = QAction('📴 Отключиться', self)
+        action_disconnect.triggered.connect(self.disconnect_serial)
+        action_about = QAction('ℹ️ О программе', self)
+        action_about.triggered.connect(self.show_about)
+        action_exit = QAction('❌ Выход', self)
+        action_exit.triggered.connect(self.close)
+        for a in [action_reload, action_fullscreen, action_theme, action_connect, action_disconnect, action_about, action_exit]:
+            menu.addAction(a)
+        self.menu_button.setMenu(menu)
+
+        self.sidebar_toggle_btn = QToolButton()
+        self.sidebar_toggle_btn.setText("≡")
+        self.sidebar_toggle_btn.clicked.connect(self.toggle_sidebar)
+
+        toprow.addWidget(self.menu_button)
+        toprow.addStretch()
+        toprow.addWidget(self.sidebar_toggle_btn)
+        sidebar_layout.addLayout(toprow)
+
+        # Заголовки
+        header_widget = QWidget()
+        header_layout = QVBoxLayout(header_widget)
+        header_layout.setContentsMargins(20, 0, 20, 20)
+
+        title_label = QLabel("Панель управления")
+        title_label.setStyleSheet("""
+            QLabel { color: #dce1ec; font-size: 16pt; font-weight: 700; margin-bottom: 5px; }
+        """)
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        subtitle_label = QLabel("Система контроля")
+        subtitle_label.setStyleSheet("""
+            QLabel { color: #8a95aa; font-size: 10pt; font-weight: 400; }
+        """)
+        subtitle_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        header_layout.addWidget(title_label)
+        header_layout.addWidget(subtitle_label)
+        sidebar_layout.addWidget(header_widget)
+
+        # Разделитель
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setStyleSheet("background-color: #343b48; height: 1px; margin: 0 20px;")
+        sidebar_layout.addWidget(separator)
+
+        # Навигация
+        self.nav_buttons = {}
+        nav_data = [
+            ("wizard", "🪄 Мастер", True),
+            ("sequences", "🏠 Главное меню", False),
+            ("commands", "⚡ Команды", False),
+            ("designer", "🖱️ Конструктор", False),
+            ("settings", "⚙️ Настройки", False),
+            ("firmware", "🔧 Прошивка", False),
+        ]
+
+        nav_widget = QWidget()
+        nav_layout = QVBoxLayout(nav_widget)
+        nav_layout.setContentsMargins(10, 20, 10, 20)
+        nav_layout.setSpacing(5)
+
+        for key, text, checked in nav_data:
+            btn = QPushButton(text)
+            btn.setCheckable(True)
+            btn.setChecked(checked)
+            btn.setObjectName("nav_button")
+            btn.clicked.connect(lambda checked, k=key: self.switch_page(k))
+            self.nav_buttons[key] = btn
+            nav_layout.addWidget(btn)
+
+        sidebar_layout.addWidget(nav_widget)
+        sidebar_layout.addStretch()
+
+        # Информация о подключении
+        self.connection_card = ModernCard()
+        connection_layout = QVBoxLayout()
+        self.connection_status = QLabel("● Отключено")
+        connection_layout.addWidget(self.connection_status)
+        self.connection_card.addLayout(connection_layout)
+        sidebar_layout.addWidget(self.connection_card)
+
+    def _start_sequence_by_keyword(self, keyword: str) -> None:
+        name = ""
+        kw = keyword.lower()
+        for seq in self.sequences.keys():
+            if kw in seq.lower():
+                name = seq
+                break
+        if name:
+            self.start_sequence(name)
+            self.statusBar().showMessage(f"Запуск последовательности: {name}", 3000)
+        else:
+            self.statusBar().showMessage(f"Не найдена последовательность по ключу: {keyword}", 3000)
+
+    def _start_paint(self):
+        self._start_sequence_by_keyword("окраска")
+
+    def _start_rinse(self):
+        self._start_sequence_by_keyword("промыв")
+
+    def _on_port_changed(self, value: str):
+        self.serial_settings['port'] = value
+        self.save_serial_settings()
+
+    def auto_connect(self):
+        """Автоматическое подключение к порту из настроек/выбора"""
+        available_ports = [p.device for p in serial.tools.list_ports.comports()]
+        # Если есть combo, используем его текущее значение, иначе сохранённый порт
+        port = self.port_combo.currentText() if hasattr(self, 'port_combo') else self.serial_settings.get('port', 'COM1')
+        # Синхронизируем настройки
+        self.serial_settings['port'] = port
+        self.save_serial_settings()
+
+        if port in available_ports:
+            self.connect_serial()
+            self.statusBar().showMessage(f"Автоподключение к порту {port}", 3000)
+        else:
+            self.statusBar().showMessage(f"Не удалось автоматически подключиться: порт {port} недоступен", 5000)
+
 
 class SequenceListWidget(QListWidget):
     """QListWidget с умным Drop: внешние перетаскивания копируются, внутренние – переносятся.
@@ -2676,6 +2825,137 @@ def safe_playsound(path: str):  # type: ignore
 
     except Exception as exc:  # noqa: BLE001
         logging.warning(f"Не удалось воспроизвести звук '{abs_path}': {exc}")
+
+
+class OverlayPanel(QWidget):
+	"""Панель с двумя невидимыми кнопками поверх изображения.
+	Ищет изображения: 0.*, 1.*, 2.*, 1_2.*. Кнопки перекрывают верхнюю/нижнюю половины самой картинки (не контейнера)."""
+	state_changed = Signal(str, bool, bool)  # panel_id, top, bottom
+	def __init__(self, panel_id: str, top_title: str, bottom_title: str, image_dir: str, parent=None):
+		super().__init__(parent)
+		self.panel_id = panel_id
+		self._image_dir = image_dir
+		self._pixmaps: dict[str, 'QPixmap'] = {}
+
+		self._stack = QStackedLayout(self)
+		self._stack.setStackingMode(QStackedLayout.StackAll)
+		self._stack.setContentsMargins(0, 0, 0, 0)
+
+		self._image_label = QLabel()
+		self._image_label.setScaledContents(False)
+		self._image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+		self._image_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		self._stack.addWidget(self._image_label)
+
+		self._overlay = QWidget()
+		self._overlay.setStyleSheet("background: transparent;")
+		self._overlay.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+		self._stack.addWidget(self._overlay)
+		# Обеспечим корректный порядок наложения: оверлей над картинкой
+		self._image_label.lower()
+		self._overlay.raise_()
+
+		self.top_btn = QPushButton(self._overlay)
+		self.top_btn.setCheckable(True)
+		self.top_btn.setAutoExclusive(False)
+		self.top_btn.setStyleSheet(
+			"QPushButton{background:transparent;border:2px solid rgba(128,128,128,0.4);}"
+			"QPushButton:checked{border:2px solid #17a2b8;}"
+		)
+		self.bottom_btn = QPushButton(self._overlay)
+		self.bottom_btn.setCheckable(True)
+		self.bottom_btn.setAutoExclusive(False)
+		self.bottom_btn.setStyleSheet(
+			"QPushButton{background:transparent;border:2px solid rgba(128,128,128,0.4);}"
+			"QPushButton:checked{border:2px solid #17a2b8;}"
+		)
+		self.top_btn.toggled.connect(self._on_toggle)
+		self.bottom_btn.toggled.connect(self._on_toggle)
+
+		self._load_images()
+		self.update_image()
+
+		self._overlay.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, False)
+
+	def _load_images(self) -> None:
+		from PySide6.QtGui import QPixmap
+		if not os.path.isdir(self._image_dir):
+			return
+		files = os.listdir(self._image_dir)
+		# Индекс по базовым именам без расширения (lowercase)
+		index: dict[str, str] = {}
+		for f in files:
+			base, ext = os.path.splitext(f)
+			if ext.lower() in (".png", ".jpg", ".jpeg", ".bmp"):
+				index[base.lower()] = os.path.join(self._image_dir, f)
+		for key in ("0", "1", "2", "1_2"):
+			path = index.get(key.lower(), "")
+			if path:
+				self._pixmaps[key] = QPixmap(path)
+
+	def _current_state_key(self) -> str:
+		if self.top_btn.isChecked() and self.bottom_btn.isChecked():
+			return "1_2"
+		if self.top_btn.isChecked():
+			return "1"
+		if self.bottom_btn.isChecked():
+			return "2"
+		return "0"
+
+	def _scaled_for_display(self, pix: 'QPixmap') -> 'QPixmap':
+		if not pix or pix.isNull():
+			return QPixmap()
+		pw, ph = pix.width(), pix.height()
+		sw, sh = self.width(), self.height()
+		if pw <= 0 or ph <= 0 or sw <= 0 or sh <= 0:
+			return pix
+		# Вписываем по высоте (height-fit), сохраняем пропорции, допускаем увеличение
+		scale = (sh / ph)
+		new_w, new_h = int(pw * scale), int(ph * scale)
+		if new_w <= 0 or new_h <= 0:
+			return pix
+		return pix.scaled(new_w, new_h, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+	def _image_rect(self) -> QRect:
+		pix = self._image_label.pixmap()
+		if not pix or pix.isNull():
+			return QRect(0, 0, 0, 0)
+		sw, sh = self.width(), self.height()
+		w, h = pix.width(), pix.height()
+		# Центровка по горизонтали, но ограничение видимой области по ширине/высоте
+		x = (sw - w) // 2
+		y = (sh - h) // 2
+		vis_x = max(0, x)
+		vis_y = max(0, y)
+		vis_w = min(w, sw)
+		vis_h = min(h, sh)
+		return QRect(vis_x, vis_y, vis_w, vis_h)
+
+	def update_image(self):
+		key = self._current_state_key()
+		orig = self._pixmaps.get(key) or self._pixmaps.get("0")
+		scaled = self._scaled_for_display(orig) if orig else QPixmap()
+		self._image_label.setPixmap(scaled)
+		self._position_buttons()
+		self.update()
+		# Эмитим состояние наружу
+		self.state_changed.emit(self.panel_id, self.top_btn.isChecked(), self.bottom_btn.isChecked())
+
+	def _position_buttons(self):
+		rect = self._image_rect()
+		if rect.width() == 0 or rect.height() == 0:
+			self.top_btn.setGeometry(0, 0, 0, 0)
+			self.bottom_btn.setGeometry(0, 0, 0, 0)
+			return
+		self.top_btn.setGeometry(rect.x(), rect.y(), rect.width(), rect.height() // 2)
+		self.bottom_btn.setGeometry(rect.x(), rect.y() + rect.height() // 2, rect.width(), rect.height() - rect.height() // 2)
+
+	def resizeEvent(self, event):  # noqa: N802
+		self.update_image()
+		super().resizeEvent(event)
+
+	def _on_toggle(self, _=None):
+		self.update_image()
 
 
 if __name__ == "__main__":
