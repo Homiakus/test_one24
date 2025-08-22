@@ -1,0 +1,159 @@
+# Конфигурация DI контейнера
+# Этот файл определяет регистрацию сервисов и их зависимости
+
+[di_container]
+# Максимальная глубина разрешения зависимостей
+max_resolution_depth = 50
+# Таймаут для операций с контейнером (в секундах)
+timeout = 30.0
+
+# Регистрация сервисов
+[di_container.services]
+
+# Serial Manager
+[di_container.services.serial_manager]
+interface = "ISerialManager"
+implementation = "SerialManager"
+singleton = true
+dependencies = {}
+
+# Command Executor
+[di_container.services.command_executor]
+interface = "ICommandExecutor"
+implementation = "BasicCommandExecutor"
+singleton = true
+dependencies = { "serial_manager" = "ISerialManager" }
+
+# Interactive Command Executor
+[di_container.services.interactive_command_executor]
+interface = "ICommandExecutor"
+implementation = "InteractiveCommandExecutor"
+singleton = false
+dependencies = { "serial_manager" = "ISerialManager" }
+
+# Sequence Manager
+[di_container.services.sequence_manager]
+interface = "ISequenceManager"
+implementation = "SequenceManager"
+singleton = true
+dependencies = {}
+
+# Config Loader
+[di_container.services.config_loader]
+interface = "IConfigLoader"
+implementation = "ConfigLoader"
+singleton = true
+dependencies = {}
+
+# Settings Manager
+[di_container.services.settings_manager]
+interface = "ISettingsManager"
+implementation = "SettingsManager"
+singleton = true
+dependencies = {}
+
+# Logger
+[di_container.services.logger]
+interface = "ILogger"
+implementation = "Logger"
+singleton = true
+dependencies = {}
+
+# Thread Manager
+[di_container.services.thread_manager]
+interface = "IThreadManager"
+implementation = "ThreadManager"
+singleton = true
+dependencies = {}
+
+# Event Bus
+[di_container.services.event_bus]
+interface = "IEventBus"
+implementation = "EventBus"
+singleton = true
+dependencies = {}
+
+# Connection Manager
+[di_container.services.connection_manager]
+interface = "IConnectionManager"
+implementation = "ConnectionManager"
+singleton = true
+dependencies = { "serial_manager" = "ISerialManager", "event_bus" = "IEventBus" }
+
+# Navigation Manager
+[di_container.services.navigation_manager]
+interface = "INavigationManager"
+implementation = "NavigationManager"
+singleton = true
+dependencies = { "event_bus" = "IEventBus" }
+
+# Page Manager
+[di_container.services.page_manager]
+interface = "IPageManager"
+implementation = "PageManager"
+singleton = true
+dependencies = { "event_bus" = "IEventBus" }
+
+# Фабричные методы для сложных зависимостей
+[di_container.factories]
+
+# Фабрика для CommandExecutor с выбором типа
+[di_container.factories.command_executor_factory]
+name = "create_command_executor"
+type = "basic"  # basic, interactive
+dependencies = { "serial_manager" = "ISerialManager" }
+
+# Фабрика для SequenceManager с конфигурацией
+[di_container.factories.sequence_manager_factory]
+name = "create_sequence_manager"
+dependencies = { "config_loader" = "IConfigLoader" }
+
+# Области видимости (Scopes)
+[di_container.scopes]
+
+# Область видимости для операций с устройством
+[di_container.scopes.device_operation]
+services = [
+    "ISerialManager",
+    "ICommandExecutor",
+    "ISequenceManager"
+]
+
+# Область видимости для UI операций
+[di_container.scopes.ui_operation]
+services = [
+    "INavigationManager",
+    "IPageManager",
+    "IEventBus"
+]
+
+# Область видимости для конфигурации
+[di_container.scopes.configuration]
+services = [
+    "IConfigLoader",
+    "ISettingsManager"
+]
+
+# Валидация зависимостей
+[di_container.validation]
+# Проверять циклические зависимости при запуске
+check_circular_dependencies = true
+# Проверять отсутствующие зависимости
+check_missing_dependencies = true
+# Проверять типы зависимостей
+check_dependency_types = true
+# Максимальное количество предупреждений
+max_warnings = 100
+
+# Логирование DI контейнера
+[di_container.logging]
+# Уровень логирования для DI операций
+level = "INFO"
+# Логировать регистрацию сервисов
+log_registration = true
+# Логировать разрешение зависимостей
+log_resolution = true
+# Логировать ошибки разрешения
+log_resolution_errors = true
+# Логировать время разрешения зависимостей
+log_resolution_time = false

@@ -40,6 +40,7 @@ exclude = [
     "env",
     ".venv",
     ".env",
+    "tests",
 ]
 
 # Сортировка импортов
@@ -58,4 +59,69 @@ inline-quotes = "single"
 quote-style = "single"
 indent-style = "space"
 skip-magic-trailing-comma = false
-line-ending = "auto" 
+line-ending = "auto"
+
+# Test configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=core",
+    "--cov=ui",
+    "--cov=utils",
+    "--cov=config",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+    "--tb=short",
+    "--maxfail=10",
+    "--durations=10",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "ui: UI tests",
+    "slow: Slow running tests",
+    "serial: Serial communication tests",
+    "qt: Qt-specific tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::UserWarning",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["core", "ui", "utils", "config"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/build/*",
+    "*/dist/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov" 
