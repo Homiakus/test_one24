@@ -191,7 +191,8 @@ auto_next = 3
             self.logger.info(
                 f"Конфигурация успешно загружена: "
                 f"{len(self._config.get('buttons', {}))} команд, "
-                f"{len(self._config.get('sequences', {}))} последовательностей"
+                f"{len(self._config.get('sequences', {}))} последовательностей, "
+                f"{len(self._config.get('flags', {}))} флагов"
             )
 
             return self._config
@@ -230,7 +231,7 @@ auto_next = 3
             self.logger.info("Валидация структуры конфигурации...")
             
             # Проверяем обязательные секции и создаем их если отсутствуют
-            required_sections = ['buttons', 'sequences', 'serial_default', 'sequence_keywords']
+            required_sections = ['buttons', 'sequences', 'serial_default', 'sequence_keywords', 'flags']
             
             for section in required_sections:
                 if section not in self._config:
@@ -248,6 +249,14 @@ auto_next = 3
                             'error': ['ERROR'],
                             'complete_line': ['>']
                         }
+                    elif section == 'flags':
+                        self._config[section] = {
+                            'auto_mode': True,
+                            'safety_check': True,
+                            'emergency_stop': False,
+                            'maintenance_mode': False,
+                            'test_mode': False
+                        }
             
             # Валидируем секцию buttons
             self._validate_buttons_section()
@@ -260,6 +269,9 @@ auto_next = 3
             
             # Валидируем секцию sequence_keywords
             self._validate_sequence_keywords_section()
+            
+            # Валидируем секцию flags
+            self._validate_flags_section()
             
             # Валидируем секцию wizard (если есть)
             if 'wizard' in self._config:
@@ -363,6 +375,51 @@ auto_next = 3
             if not isinstance(keywords[keyword_type], list):
                 self.logger.warning(f"Ключевое слово '{keyword_type}' не является списком, исправляем")
                 keywords[keyword_type] = ['OK']
+
+    def _validate_flags_section(self):
+        """Валидация секции flags"""
+        flags = self._config.get('flags', {})
+        
+        if not isinstance(flags, dict):
+            self.logger.warning("Секция 'flags' должна быть словарем, создаем по умолчанию")
+            self._config['flags'] = {
+                'auto_mode': True,
+                'safety_check': True,
+                'emergency_stop': False,
+                'maintenance_mode': False,
+                'test_mode': False
+            }
+            return
+        
+        # Удаляем некорректные записи
+        invalid_keys = []
+        for flag_name, value in flags.items():
+            if not isinstance(flag_name, str):
+                self.logger.warning(f"Неверное имя флага: {flag_name}, удаляем")
+                invalid_keys.append(flag_name)
+            elif not isinstance(value, bool):
+                self.logger.warning(f"Неверное значение флага '{flag_name}': {value}, удаляем")
+                invalid_keys.append(flag_name)
+            elif not flag_name.strip():
+                self.logger.warning(f"Пустое имя флага, удаляем")
+                invalid_keys.append(flag_name)
+        
+        for key in invalid_keys:
+            del flags[key]
+        
+        # Добавляем обязательные флаги если отсутствуют
+        required_flags = {
+            'auto_mode': True,
+            'safety_check': True,
+            'emergency_stop': False,
+            'maintenance_mode': False,
+            'test_mode': False
+        }
+        
+        for flag_name, default_value in required_flags.items():
+            if flag_name not in flags:
+                self.logger.info(f"Добавляем обязательный флаг '{flag_name}' со значением {default_value}")
+                flags[flag_name] = default_value
 
     def _validate_wizard_section(self):
         """Валидация секции wizard"""
@@ -806,3 +863,43 @@ auto_next = 3
         """Перезагрузка конфигурации"""
         self.logger.info("Перезагрузка конфигурации")
         return self.load()
+
+    def get_flags(self) -> Dict[str, bool]:
+        """
+        Получение флагов из конфигурации
+
+        Returns:
+            Словарь с флагами {flag_name: value}
+        """
+        return self._config.get('flags', {})
+
+    def set_flag(self, flag_name: str, value: bool) -> None:
+        """
+        Установка значения флага
+
+        Args:
+            flag_name: Имя флага
+            value: Значение флага
+        """
+        if 'flags' not in self._config:
+            self._config['flags'] = {}
+        self._config['flags'][flag_name] = value
+        self.logger.info(f"Флаг '{flag_name}' установлен в {value}")
+
+    def save_flags(self) -> bool:
+        """
+        Сохранение флагов в файл конфигурации
+
+        Returns:
+            True если сохранение успешно, False в противном случае
+        """
+        try:
+            # Перезаписываем файл с обновленными флагами
+            import tomli_w
+            with open(self.config_path, 'w', encoding='utf-8') as f:
+                tomli_w.dump(self._config, f)
+            self.logger.info("Флаги успешно сохранены")
+            return True
+        except Exception as e:
+            self.logger.error(f"Ошибка сохранения флагов: {e}")
+            return False

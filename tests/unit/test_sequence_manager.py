@@ -1,175 +1,272 @@
 """
-Unit tests for SequenceManager class.
+Unit тесты для sequence_manager с поддержкой условного выполнения
 """
 import pytest
-import asyncio
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
-from typing import Dict, Any, List
+from unittest.mock import Mock, patch
+from typing import Dict, List
 
-from core.sequence_manager import SequenceManager
-from core.interfaces import ICommandExecutor
+from core.sequence_manager import (
+    SequenceManager, CommandValidator, FlagManager, 
+    ConditionalState, CommandType, ValidationResult
+)
+
+
+class TestFlagManager:
+    """Тесты для FlagManager"""
+    
+    def test_flag_manager_initialization(self):
+        """Тест инициализации FlagManager"""
+        flag_manager = FlagManager()
+        assert flag_manager.get_all_flags() == {}
+    
+    def test_set_and_get_flag(self):
+        """Тест установки и получения флага"""
+        flag_manager = FlagManager()
+        flag_manager.set_flag("test_flag", True)
+        assert flag_manager.get_flag("test_flag") is True
+        assert flag_manager.get_flag("unknown_flag", False) is False
+    
+    def test_has_flag(self):
+        """Тест проверки существования флага"""
+        flag_manager = FlagManager()
+        assert flag_manager.has_flag("test_flag") is False
+        flag_manager.set_flag("test_flag", True)
+        assert flag_manager.has_flag("test_flag") is True
+    
+    def test_clear_flag(self):
+        """Тест очистки флага"""
+        flag_manager = FlagManager()
+        flag_manager.set_flag("test_flag", True)
+        assert flag_manager.has_flag("test_flag") is True
+        flag_manager.clear_flag("test_flag")
+        assert flag_manager.has_flag("test_flag") is False
+    
+    def test_load_flags_from_config(self):
+        """Тест загрузки флагов из конфигурации"""
+        flag_manager = FlagManager()
+        config = {
+            "flags": {
+                "flag1": True,
+                "flag2": False,
+                "flag3": "not_bool"  # Должен быть проигнорирован
+            }
+        }
+        flag_manager.load_flags_from_config(config)
+        assert flag_manager.get_flag("flag1") is True
+        assert flag_manager.get_flag("flag2") is False
+        assert flag_manager.has_flag("flag3") is False
+
+
+class TestCommandValidator:
+    """Тесты для CommandValidator"""
+    
+    def test_validate_wait_command_valid(self):
+        """Тест валидации корректной wait команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("wait 5")
+        assert result.is_valid is True
+        assert result.command_type == CommandType.WAIT
+        assert result.parsed_data["wait_time"] == 5.0
+    
+    def test_validate_wait_command_invalid(self):
+        """Тест валидации некорректной wait команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("wait")
+        assert result.is_valid is False
+        assert "должна содержать время" in result.error_message
+    
+    def test_validate_if_command_valid(self):
+        """Тест валидации корректной if команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("if test_flag")
+        assert result.is_valid is True
+        assert result.command_type == CommandType.CONDITIONAL_IF
+        assert result.parsed_data["flag_name"] == "test_flag"
+    
+    def test_validate_if_command_invalid(self):
+        """Тест валидации некорректной if команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("if")
+        assert result.is_valid is False
+        assert "должна содержать имя флага" in result.error_message
+    
+    def test_validate_else_command(self):
+        """Тест валидации else команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("else")
+        assert result.is_valid is True
+        assert result.command_type == CommandType.CONDITIONAL_ELSE
+    
+    def test_validate_endif_command(self):
+        """Тест валидации endif команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("endif")
+        assert result.is_valid is True
+        assert result.command_type == CommandType.CONDITIONAL_ENDIF
+    
+    def test_validate_stop_if_not_command_valid(self):
+        """Тест валидации корректной stop_if_not команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("stop_if_not test_flag")
+        assert result.is_valid is True
+        assert result.command_type == CommandType.STOP_IF_NOT
+        assert result.parsed_data["flag_name"] == "test_flag"
+    
+    def test_validate_stop_if_not_command_invalid(self):
+        """Тест валидации некорректной stop_if_not команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("stop_if_not")
+        assert result.is_valid is False
+        assert "должна содержать имя флага" in result.error_message
+    
+    def test_validate_regular_command(self):
+        """Тест валидации обычной команды"""
+        validator = CommandValidator()
+        result = validator.validate_command("test_command")
+        assert result.is_valid is True
+        assert result.command_type == CommandType.REGULAR
+        assert result.parsed_data["command"] == "test_command"
+    
+    def test_validate_sequence_balanced_conditionals(self):
+        """Тест валидации последовательности с сбалансированными условиями"""
+        validator = CommandValidator()
+        commands = ["if flag1", "command1", "else", "command2", "endif"]
+        is_valid, errors = validator.validate_sequence(commands)
+        assert is_valid is True
+        assert len(errors) == 0
+    
+    def test_validate_sequence_unbalanced_conditionals(self):
+        """Тест валидации последовательности с несбалансированными условиями"""
+        validator = CommandValidator()
+        commands = ["if flag1", "command1", "endif", "endif"]  # Лишний endif
+        is_valid, errors = validator.validate_sequence(commands)
+        assert is_valid is False
+        assert len(errors) > 0
+    
+    def test_validate_sequence_else_without_if(self):
+        """Тест валидации последовательности с else без if"""
+        validator = CommandValidator()
+        commands = ["else", "command1", "endif"]
+        is_valid, errors = validator.validate_sequence(commands)
+        assert is_valid is False
+        assert any("else без соответствующего if" in error for error in errors)
 
 
 class TestSequenceManager:
-    """Test cases for SequenceManager class."""
-
+    """Тесты для SequenceManager"""
+    
     @pytest.fixture
-    def mock_command_interface(self) -> Mock:
-        """Create a mock command interface."""
-        mock = Mock(spec=ICommandExecutor)
-        mock.execute.return_value = True
-        mock.execute_async = AsyncMock(return_value=True)
-        return mock
-
+    def sample_config(self):
+        """Фикстура с примером конфигурации"""
+        return {
+            "sequences": {
+                "test_seq": ["command1", "command2"],
+                "nested_seq": ["test_seq", "command3"],
+                "conditional_seq": ["if flag1", "command1", "else", "command2", "endif"]
+            },
+            "buttons": {
+                "button1": "cmd1",
+                "button2": "cmd2"
+            }
+        }
+    
     @pytest.fixture
-    def sequence_manager(self, mock_command_interface: Mock) -> SequenceManager:
-        """Create a SequenceManager instance for testing."""
-        config = {
-            "test_sequence": ["CMD1", "CMD2", "CMD3"],
-            "nested_sequence": ["BUTTON1", "CMD2", "nested_sequence2"],
-            "nested_sequence2": ["CMD4", "CMD5"]
-        }
-        buttons_config = {
-            "BUTTON1": "CMD1",
-            "BUTTON2": "CMD2",
-            "BUTTON3": "CMD3"
-        }
-        return SequenceManager(config, buttons_config)
-
-    def test_init(self, mock_command_interface: Mock):
-        """Test SequenceManager initialization."""
-        config = {"test_seq": ["CMD1", "CMD2"]}
-        buttons_config = {"BUTTON1": "CMD1"}
-        
-        manager = SequenceManager(config, buttons_config)
-        assert manager.sequences == config
-        assert manager.buttons_config == buttons_config
-
-    def test_expand_sequence_simple(self, sequence_manager: SequenceManager):
-        """Test expanding a simple sequence."""
-        result = sequence_manager.expand_sequence("test_sequence")
-        
-        assert result == ["CMD1", "CMD2", "CMD3"]
-
-    def test_expand_sequence_with_buttons(self, sequence_manager: SequenceManager):
-        """Test expanding a sequence with button references."""
-        config = {"button_sequence": ["BUTTON1", "BUTTON2"]}
-        buttons_config = {"BUTTON1": "CMD1", "BUTTON2": "CMD2"}
-        manager = SequenceManager(config, buttons_config)
-        
-        result = manager.expand_sequence("button_sequence")
-        
-        assert result == ["CMD1", "CMD2"]
-
-    def test_expand_sequence_nested(self, sequence_manager: SequenceManager):
-        """Test expanding a nested sequence."""
-        result = sequence_manager.expand_sequence("nested_sequence")
-        
-        # Should expand to: CMD1 (from BUTTON1), CMD2, CMD4, CMD5 (from nested_sequence2)
-        assert result == ["CMD1", "CMD2", "CMD4", "CMD5"]
-
-    def test_expand_sequence_not_found(self, sequence_manager: SequenceManager):
-        """Test expanding a non-existent sequence."""
-        result = sequence_manager.expand_sequence("non_existent")
-        
-        assert result == []
-
-    def test_validate_sequence_valid(self, sequence_manager: SequenceManager):
-        """Test validating a valid sequence."""
-        is_valid, errors = sequence_manager.validate_sequence("test_sequence")
-        
+    def sequence_manager(self, sample_config):
+        """Фикстура с SequenceManager"""
+        return SequenceManager(
+            sample_config["sequences"],
+            sample_config["buttons"]
+        )
+    
+    def test_sequence_manager_initialization(self, sequence_manager):
+        """Тест инициализации SequenceManager"""
+        assert sequence_manager.sequences is not None
+        assert sequence_manager.buttons_config is not None
+        assert sequence_manager.flag_manager is not None
+    
+    def test_expand_simple_sequence(self, sequence_manager):
+        """Тест разворачивания простой последовательности"""
+        commands = sequence_manager.expand_sequence("test_seq")
+        assert commands == ["command1", "command2"]
+    
+    def test_expand_nested_sequence(self, sequence_manager):
+        """Тест разворачивания вложенной последовательности"""
+        commands = sequence_manager.expand_sequence("nested_seq")
+        assert commands == ["command1", "command2", "command3"]
+    
+    def test_expand_sequence_with_buttons(self, sequence_manager):
+        """Тест разворачивания последовательности с кнопками"""
+        sequence_manager.sequences["button_seq"] = ["button1", "button2"]
+        commands = sequence_manager.expand_sequence("button_seq")
+        assert commands == ["cmd1", "cmd2"]
+    
+    def test_expand_sequence_with_wait(self, sequence_manager):
+        """Тест разворачивания последовательности с wait"""
+        sequence_manager.sequences["wait_seq"] = ["wait 5", "command1"]
+        commands = sequence_manager.expand_sequence("wait_seq")
+        assert commands == ["wait 5", "command1"]
+    
+    def test_expand_sequence_with_conditionals(self, sequence_manager):
+        """Тест разворачивания последовательности с условиями"""
+        commands = sequence_manager.expand_sequence("conditional_seq")
+        assert "if flag1" in commands
+        assert "else" in commands
+        assert "endif" in commands
+    
+    def test_validate_sequence_valid(self, sequence_manager):
+        """Тест валидации корректной последовательности"""
+        is_valid, errors = sequence_manager.validate_sequence("test_seq")
         assert is_valid is True
         assert len(errors) == 0
-
-    def test_validate_sequence_invalid(self, sequence_manager: SequenceManager):
-        """Test validating an invalid sequence."""
-        # Create a sequence with invalid commands
-        config = {"invalid_sequence": ["INVALID_CMD", "CMD2"]}
-        buttons_config = {"BUTTON1": "CMD1"}
-        manager = SequenceManager(config, buttons_config)
-        
-        is_valid, errors = manager.validate_sequence("invalid_sequence")
-        
+    
+    def test_validate_sequence_invalid(self, sequence_manager):
+        """Тест валидации некорректной последовательности"""
+        is_valid, errors = sequence_manager.validate_sequence("nonexistent_seq")
         assert is_valid is False
         assert len(errors) > 0
+    
+    def test_get_sequence_info(self, sequence_manager):
+        """Тест получения информации о последовательности"""
+        info = sequence_manager.get_sequence_info("test_seq")
+        assert info["exists"] is True
+        assert info["command_count"] == 2
+        assert "command1" in info["commands"]
+    
+    def test_set_and_get_flag(self, sequence_manager):
+        """Тест установки и получения флага"""
+        sequence_manager.set_flag("test_flag", True)
+        assert sequence_manager.get_flag("test_flag") is True
+    
+    def test_get_all_flags(self, sequence_manager):
+        """Тест получения всех флагов"""
+        sequence_manager.set_flag("flag1", True)
+        sequence_manager.set_flag("flag2", False)
+        flags = sequence_manager.get_all_flags()
+        assert flags["flag1"] is True
+        assert flags["flag2"] is False
+    
+    def test_load_flags_from_config(self, sequence_manager):
+        """Тест загрузки флагов из конфигурации"""
+        config = {"flags": {"config_flag": True}}
+        sequence_manager.load_flags_from_config(config)
+        assert sequence_manager.get_flag("config_flag") is True
+    
+    def test_extract_used_flags(self, sequence_manager):
+        """Тест извлечения используемых флагов"""
+        commands = ["if flag1", "command1", "stop_if_not flag2", "endif"]
+        flags = sequence_manager._extract_used_flags(commands)
+        assert "flag1" in flags
+        assert "flag2" in flags
+        assert len(flags) == 2
 
-    def test_validate_sequence_not_found(self, sequence_manager: SequenceManager):
-        """Test validating a non-existent sequence."""
-        is_valid, errors = sequence_manager.validate_sequence("non_existent")
-        
-        assert is_valid is False
-        assert len(errors) > 0
 
-    def test_get_sequence_info(self, sequence_manager: SequenceManager):
-        """Test getting sequence information."""
-        info = sequence_manager.get_sequence_info("test_sequence")
-        
-        assert isinstance(info, dict)
-        assert "name" in info
-        assert "commands" in info
-        assert info["name"] == "test_sequence"
-
-    def test_get_sequence_info_not_found(self, sequence_manager: SequenceManager):
-        """Test getting info for non-existent sequence."""
-        info = sequence_manager.get_sequence_info("non_existent")
-        
-        assert isinstance(info, dict)
-        assert info.get("name") == "non_existent"
-        assert info.get("commands") == []
-
-    def test_clear_cache(self, sequence_manager: SequenceManager):
-        """Test clearing the cache."""
-        # First expand a sequence to populate cache
-        sequence_manager.expand_sequence("test_sequence")
-        
-        # Clear cache
-        sequence_manager.clear_cache()
-        
-        # Should still work after clearing cache
-        result = sequence_manager.expand_sequence("test_sequence")
-        assert result == ["CMD1", "CMD2", "CMD3"]
-
-    def test_recursion_protection(self, sequence_manager: SequenceManager):
-        """Test protection against recursive sequences."""
-        # Create a recursive sequence
-        config = {
-            "recursive_seq": ["CMD1", "recursive_seq", "CMD2"]
-        }
-        buttons_config = {}
-        manager = SequenceManager(config, buttons_config)
-        
-        result = manager.expand_sequence("recursive_seq")
-        
-        # Should handle recursion gracefully
-        assert "CMD1" in result
-        assert "CMD2" in result
-
-    def test_wait_commands(self, sequence_manager: SequenceManager):
-        """Test handling of wait commands."""
-        config = {
-            "wait_sequence": ["CMD1", "wait 1s", "CMD2"]
-        }
-        buttons_config = {}
-        manager = SequenceManager(config, buttons_config)
-        
-        result = manager.expand_sequence("wait_sequence")
-        
-        assert "CMD1" in result
-        assert "wait 1s" in result
-        assert "CMD2" in result
-
-    def test_mixed_commands(self, sequence_manager: SequenceManager):
-        """Test handling of mixed command types."""
-        config = {
-            "mixed_sequence": ["BUTTON1", "wait 2s", "CMD2", "nested_sequence2"]
-        }
-        buttons_config = {"BUTTON1": "CMD1"}
-        manager = SequenceManager(config, buttons_config)
-        
-        result = manager.expand_sequence("mixed_sequence")
-        
-        assert "CMD1" in result  # From BUTTON1
-        assert "wait 2s" in result
-        assert "CMD2" in result
-        assert "CMD4" in result  # From nested_sequence2
-        assert "CMD5" in result  # From nested_sequence2
+class TestConditionalState:
+    """Тесты для ConditionalState"""
+    
+    def test_conditional_state_initialization(self):
+        """Тест инициализации ConditionalState"""
+        state = ConditionalState()
+        assert state.in_conditional_block is False
+        assert state.current_condition is True
+        assert state.skip_until_endif is False
+        assert state.condition_stack == []

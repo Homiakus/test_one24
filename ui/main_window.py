@@ -24,6 +24,7 @@ from ui.pages.sequences_page import SequencesPage
 from ui.pages.commands_page import CommandsPage
 from ui.pages.designer_page import DesignerPage
 from ui.pages.firmware_page import FirmwarePage
+from ui.pages.flags_page import FlagsPage
 from ui.widgets.modern_widgets import ModernCard
 from ui.widgets.info_panel import InfoPanel
 
@@ -68,8 +69,15 @@ class MainWindow(QMainWindow):
             self.logger.info("Инициализация SequenceManager...")
             self.sequence_manager = SequenceManager(
                 self.config.get('sequences', {}),
-                self.config.get('buttons', {})
+                self.config.get('buttons', {}),
+                flag_manager=None  # Будет создан автоматически
             )
+            
+            # Загружаем флаги из конфигурации
+            flags = self.config.get('flags', {})
+            for flag_name, value in flags.items():
+                self.sequence_manager.set_flag(flag_name, value)
+            
             self.logger.info("SequenceManager инициализирован")
 
             # Текущий исполнитель последовательности
@@ -289,6 +297,7 @@ class MainWindow(QMainWindow):
             ("wizard", "🪄 Мастер настройки", True),
             ("sequences", "📋 Последовательности", False),
             ("commands", "⚡ Команды управления", False),
+            ("flags", "🚩 Управление флагами", False),
             ("designer", "🔧 Конструктор", False),
             ("settings", "⚙️ Настройки", False),
             ("firmware", "💾 Прошивка", False),
@@ -391,6 +400,10 @@ class MainWindow(QMainWindow):
         self.logger.info("Создание FirmwarePage...")
         self.pages['firmware'] = FirmwarePage()
         self.logger.info("FirmwarePage создана")
+        
+        self.logger.info("Создание FlagsPage...")
+        self.pages['flags'] = FlagsPage(self.sequence_manager)
+        self.logger.info("FlagsPage создана")
 
         for page in self.pages.values():
             self.stacked_widget.addWidget(page)

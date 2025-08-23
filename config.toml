@@ -59,11 +59,60 @@ parity = "N"
 stopbits = 1
 timeout = 1.0
 
+# Глобальные флаги для условного выполнения
+[flags]
+auto_mode = true
+safety_check = true
+emergency_stop = false
+maintenance_mode = false
+test_mode = false
+
 # Последовательности команд для автоматического выполнения
 [sequences]
 load_tubes = ["Clamp → сжать ", "Clamp → разжать", "RRight → предноль", "wait 3", "Хоминг RRight", "RRight → загрузка пробирок"]
 load_samples = ["RRight → загрузка пробирок", "RRight → верх", "wait 10", "RRight → извлечение пробирок"]
 load_slides = ["RRight → верх", "Clamp → разжать"]
+
+# Последовательность с условным выполнением
+conditional_coloring = [
+    "if safety_check",
+    "Clamp → сжать ",
+    "sedimantation",
+    "alco",
+    "gemo",
+    "water",
+    "water",
+    "og",
+    "alco",
+    "ea",
+    "alco",
+    "alco",
+    "alco",
+    "waste_out",
+    "else",
+    "waste",
+    "waste_out",
+    "endif"
+]
+
+# Последовательность с остановкой при условии
+safe_operation = [
+    "stop_if_not safety_check",
+    "RRight → верх",
+    "Multi → OG",
+    "Насос включить",
+    "KL2 включить",
+    "wait 2",
+    "Multi → продувка OG",
+    "wait 3",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "waste_out",
+    "waste"
+]
+
+# Обычные последовательности
 coloring = ["Clamp → сжать ", "sedimantation", "alco", "gemo", "water", "water", "og", "alco", "ea", "alco", "alco", "alco", "waste_out"]
 og = ["RRight → верх", "Multi → OG", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка OG", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "waste_out", "waste"]
 ea = ["RRight → верх", "Multi → EA", "Насос включить", "KL2 включить", "wait 2", "Multi → продувка EA", "wait 3", "KL2 выключить", "Насос выключить", "RRight → экспозиция", "wait 90", "waste_out", "waste"]
