@@ -20,6 +20,10 @@ class CommandType(Enum):
     WAIT = "wait"
     SEQUENCE = "sequence"
     BUTTON = "button"
+    CONDITIONAL_IF = "conditional_if"
+    CONDITIONAL_ELSE = "conditional_else"
+    CONDITIONAL_ENDIF = "conditional_endif"
+    STOP_IF_NOT = "stop_if_not"
     UNKNOWN = "unknown"
 
 
@@ -30,6 +34,15 @@ class ValidationResult:
     error_message: str = ""
     command_type: CommandType = CommandType.UNKNOWN
     parsed_data: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class ConditionalState:
+    """Состояние условного выполнения"""
+    in_conditional_block: bool = False
+    current_condition: bool = True
+    skip_until_endif: bool = False
+    condition_stack: List[bool] = field(default_factory=list)
 
 
 @dataclass
@@ -77,6 +90,47 @@ class CancellationToken:
 class CancellationException(Exception):
     """Исключение при отмене операции"""
     pass
+
+
+class FlagManager:
+    """Менеджер глобальных флагов для условного выполнения"""
+    
+    def __init__(self):
+        self._flags: Dict[str, bool] = {}
+        self._lock = threading.Lock()
+    
+    def set_flag(self, flag_name: str, value: bool) -> None:
+        """Установить значение флага"""
+        with self._lock:
+            self._flags[flag_name] = value
+    
+    def get_flag(self, flag_name: str, default: bool = False) -> bool:
+        """Получить значение флага"""
+        with self._lock:
+            return self._flags.get(flag_name, default)
+    
+    def has_flag(self, flag_name: str) -> bool:
+        """Проверить существование флага"""
+        with self._lock:
+            return flag_name in self._flags
+    
+    def clear_flag(self, flag_name: str) -> None:
+        """Очистить флаг"""
+        with self._lock:
+            self._flags.pop(flag_name, None)
+    
+    def get_all_flags(self) -> Dict[str, bool]:
+        """Получить все флаги"""
+        with self._lock:
+            return self._flags.copy()
+    
+    def load_flags_from_config(self, config: Dict[str, Any]) -> None:
+        """Загрузить флаги из конфигурации"""
+        flags_section = config.get('flags', {})
+        with self._lock:
+            for flag_name, value in flags_section.items():
+                if isinstance(value, bool):
+                    self._flags[flag_name] = value
 
 
 class ThreadSafeResponseCollector:
@@ -254,25 +308,33 @@ class RecursionProtector:
 
 
 class CommandSequenceExecutor(QThread):
-    """Исполнитель последовательности команд с thread-safety"""
+    """Исполнитель последовательности команд с thread-safety и условным выполнением"""
 
     # Сигналы
     progress_updated = Signal(int, int)  # current, total
     command_sent = Signal(str)
     response_received = Signal(str)
     sequence_finished = Signal(bool, str)  # success, message
+    flag_changed = Signal(str, bool)  # flag_name, new_value
+    conditional_entered = Signal(str, bool)  # condition, result
+    conditional_exited = Signal(str)  # condition
 
     def __init__(self, serial_manager, commands: List[str],
                  keywords: Optional[SequenceKeywords] = None,
-                 cancellation_token: Optional[CancellationToken] = None):
+                 cancellation_token: Optional[CancellationToken] = None,
+                 flag_manager: Optional[FlagManager] = None):
         super().__init__()
         self.serial_manager = serial_manager
         self.commands = commands
         self.keywords = keywords or SequenceKeywords()
         self.cancellation_token = cancellation_token or CancellationToken()
+        self.flag_manager = flag_manager or FlagManager()
         self.response_collector = ThreadSafeResponseCollector()
-        self.validator = CommandValidator()
+        self.validator = CommandValidator(self.flag_manager)
         self.logger = logging.getLogger(__name__)
+        
+        # Состояние условного выполнения
+        self.conditional_state = ConditionalState()
         
         # Валидируем команды перед выполнением
         is_valid, errors = self.validator.validate_sequence(self.commands)
@@ -281,20 +343,38 @@ class CommandSequenceExecutor(QThread):
             self.sequence_finished.emit(False, f"Ошибки валидации: {'; '.join(errors)}")
 
     def run(self):
-        """Выполнение последовательности"""
+        """Выполнение последовательности с поддержкой условного выполнения"""
         try:
             if not self.serial_manager.is_connected:
                 self.sequence_finished.emit(False, "Устройство не подключено")
                 return
 
             total_steps = len(self.commands)
+            current_step = 0
 
             for i, command in enumerate(self.commands):
                 # Проверяем отмену
                 self.cancellation_token.throw_if_cancelled()
 
                 # Обновляем прогресс
-                self.progress_updated.emit(i + 1, total_steps)
+                current_step += 1
+                self.progress_updated.emit(current_step, total_steps)
+
+                # Обработка условных команд
+                if self._is_conditional_command(command):
+                    if not self._handle_conditional_command(command):
+                        return
+                    continue
+
+                # Обработка команды остановки
+                if self._is_stop_command(command):
+                    if not self._handle_stop_command(command):
+                        return
+                    continue
+
+                # Пропускаем команды если находимся в условном блоке с false
+                if self.conditional_state.skip_until_endif:
+                    continue
 
                 # Обработка специальных команд
                 if self._is_wait_command(command):
@@ -318,6 +398,132 @@ class CommandSequenceExecutor(QThread):
     def _is_wait_command(self, command: str) -> bool:
         """Проверка, является ли команда командой ожидания"""
         return command.lower().startswith("wait")
+
+    def _is_conditional_command(self, command: str) -> bool:
+        """Проверка, является ли команда условной"""
+        command_lower = command.lower().strip()
+        return (command_lower.startswith("if ") or 
+                command_lower == "else" or 
+                command_lower == "endif")
+
+    def _is_stop_command(self, command: str) -> bool:
+        """Проверка, является ли команда командой остановки"""
+        return command.lower().startswith("stop_if_not")
+
+    def _handle_conditional_command(self, command: str) -> bool:
+        """Обработка условных команд"""
+        try:
+            command_lower = command.lower().strip()
+            
+            if command_lower.startswith("if "):
+                return self._handle_if_command(command)
+            elif command_lower == "else":
+                return self._handle_else_command(command)
+            elif command_lower == "endif":
+                return self._handle_endif_command(command)
+            else:
+                self.logger.error(f"Неизвестная условная команда: {command}")
+                return False
+                
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки условной команды: {e}")
+            return False
+
+    def _handle_if_command(self, command: str) -> bool:
+        """Обработка команды if"""
+        try:
+            validation = self.validator.validate_command(command)
+            if not validation.is_valid:
+                self.logger.error(f"Невалидная if команда: {validation.error_message}")
+                return False
+            
+            flag_name = validation.parsed_data["flag_name"]
+            flag_value = self.flag_manager.get_flag(flag_name, False)
+            
+            # Сохраняем состояние в стек
+            self.conditional_state.condition_stack.append(flag_value)
+            self.conditional_state.in_conditional_block = True
+            
+            # Если условие false, пропускаем команды до endif
+            if not flag_value:
+                self.conditional_state.skip_until_endif = True
+            
+            self.conditional_entered.emit(f"if {flag_name}", flag_value)
+            self.logger.info(f"Вход в условный блок if {flag_name} = {flag_value}")
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки if команды: {e}")
+            return False
+
+    def _handle_else_command(self, command: str) -> bool:
+        """Обработка команды else"""
+        try:
+            if not self.conditional_state.in_conditional_block:
+                self.logger.error("else без соответствующего if")
+                return False
+            
+            # Инвертируем текущее условие
+            if self.conditional_state.condition_stack:
+                current_condition = self.conditional_state.condition_stack[-1]
+                self.conditional_state.skip_until_endif = current_condition
+                self.conditional_state.condition_stack[-1] = not current_condition
+            
+            self.logger.info("Обработка else блока")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки else команды: {e}")
+            return False
+
+    def _handle_endif_command(self, command: str) -> bool:
+        """Обработка команды endif"""
+        try:
+            if not self.conditional_state.in_conditional_block:
+                self.logger.error("endif без соответствующего if")
+                return False
+            
+            # Убираем условие из стека
+            if self.conditional_state.condition_stack:
+                self.conditional_state.condition_stack.pop()
+            
+            # Если стек пуст, выходим из условного блока
+            if not self.conditional_state.condition_stack:
+                self.conditional_state.in_conditional_block = False
+                self.conditional_state.skip_until_endif = False
+            
+            self.conditional_exited.emit("endif")
+            self.logger.info("Выход из условного блока")
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки endif команды: {e}")
+            return False
+
+    def _handle_stop_command(self, command: str) -> bool:
+        """Обработка команды stop_if_not"""
+        try:
+            validation = self.validator.validate_command(command)
+            if not validation.is_valid:
+                self.logger.error(f"Невалидная stop_if_not команда: {validation.error_message}")
+                return False
+            
+            flag_name = validation.parsed_data["flag_name"]
+            flag_value = self.flag_manager.get_flag(flag_name, False)
+            
+            if not flag_value:
+                self.logger.warning(f"Остановка выполнения: флаг {flag_name} = false")
+                self.sequence_finished.emit(False, f"Выполнение остановлено: флаг {flag_name} = false")
+                return False
+            
+            self.logger.info(f"Продолжение выполнения: флаг {flag_name} = true")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки stop_if_not команды: {e}")
+            return False
 
     def _handle_wait_command(self, command: str) -> bool:
         """Обработка команды ожидания"""
@@ -414,25 +620,216 @@ class CommandSequenceExecutor(QThread):
         self.cancellation_token.cancel()
         self.wait()
 
+    def set_flag(self, flag_name: str, value: bool) -> None:
+        """Установить значение флага"""
+        self.flag_manager.set_flag(flag_name, value)
+        self.flag_changed.emit(flag_name, value)
+        self.logger.info(f"Флаг {flag_name} установлен в {value}")
+
+    def get_flag(self, flag_name: str, default: bool = False) -> bool:
+        """Получить значение флага"""
+        return self.flag_manager.get_flag(flag_name, default)
+
+    def get_all_flags(self) -> Dict[str, bool]:
+        """Получить все флаги"""
+        return self.flag_manager.get_all_flags()
+
+
+class CommandValidator:
+    """Валидатор команд с поддержкой условного выполнения"""
+    
+    def __init__(self, flag_manager: Optional[FlagManager] = None):
+        self.flag_manager = flag_manager
+        self.logger = logging.getLogger(__name__)
+    
+    def validate_command(self, command: str) -> ValidationResult:
+        """Валидация отдельной команды"""
+        command = command.strip()
+        
+        # Команда ожидания
+        if command.lower().startswith("wait"):
+            return self._validate_wait_command(command)
+        
+        # Условные команды
+        elif command.lower().startswith("if "):
+            return self._validate_if_command(command)
+        
+        elif command.lower() == "else":
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.CONDITIONAL_ELSE,
+                parsed_data={"command": command}
+            )
+        
+        elif command.lower() == "endif":
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.CONDITIONAL_ENDIF,
+                parsed_data={"command": command}
+            )
+        
+        # Команда остановки
+        elif command.lower().startswith("stop_if_not "):
+            return self._validate_stop_if_not_command(command)
+        
+        # Обычная команда
+        else:
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.REGULAR,
+                parsed_data={"command": command}
+            )
+    
+    def _validate_wait_command(self, command: str) -> ValidationResult:
+        """Валидация команды ожидания"""
+        try:
+            parts = command.split()
+            if len(parts) != 2:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Команда wait должна содержать время в секундах",
+                    command_type=CommandType.WAIT
+                )
+            
+            wait_time = float(parts[1])
+            if wait_time < 0:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Время ожидания должно быть положительным",
+                    command_type=CommandType.WAIT
+                )
+            
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.WAIT,
+                parsed_data={"wait_time": wait_time, "command": command}
+            )
+        
+        except ValueError:
+            return ValidationResult(
+                is_valid=False,
+                error_message="Неверный формат времени ожидания",
+                command_type=CommandType.WAIT
+            )
+    
+    def _validate_if_command(self, command: str) -> ValidationResult:
+        """Валидация условной команды if"""
+        try:
+            parts = command.split()
+            if len(parts) != 2:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Команда if должна содержать имя флага",
+                    command_type=CommandType.CONDITIONAL_IF
+                )
+            
+            flag_name = parts[1]
+            if not flag_name:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Имя флага не может быть пустым",
+                    command_type=CommandType.CONDITIONAL_IF
+                )
+            
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.CONDITIONAL_IF,
+                parsed_data={"flag_name": flag_name, "command": command}
+            )
+        
+        except Exception as e:
+            return ValidationResult(
+                is_valid=False,
+                error_message=f"Ошибка валидации if команды: {e}",
+                command_type=CommandType.CONDITIONAL_IF
+            )
+    
+    def _validate_stop_if_not_command(self, command: str) -> ValidationResult:
+        """Валидация команды stop_if_not"""
+        try:
+            parts = command.split()
+            if len(parts) != 2:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Команда stop_if_not должна содержать имя флага",
+                    command_type=CommandType.STOP_IF_NOT
+                )
+            
+            flag_name = parts[1]
+            if not flag_name:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Имя флага не может быть пустым",
+                    command_type=CommandType.STOP_IF_NOT
+                )
+            
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.STOP_IF_NOT,
+                parsed_data={"flag_name": flag_name, "command": command}
+            )
+        
+        except Exception as e:
+            return ValidationResult(
+                is_valid=False,
+                error_message=f"Ошибка валидации stop_if_not команды: {e}",
+                command_type=CommandType.STOP_IF_NOT
+            )
+    
+    def validate_sequence(self, commands: List[str]) -> Tuple[bool, List[str]]:
+        """Валидация последовательности команд"""
+        errors = []
+        conditional_stack = []
+        
+        for i, command in enumerate(commands):
+            result = self.validate_command(command)
+            
+            if not result.is_valid:
+                errors.append(f"Команда {i+1}: {result.error_message}")
+                continue
+            
+            # Проверяем баланс условных блоков
+            if result.command_type == CommandType.CONDITIONAL_IF:
+                conditional_stack.append("if")
+            elif result.command_type == CommandType.CONDITIONAL_ELSE:
+                if not conditional_stack or conditional_stack[-1] != "if":
+                    errors.append(f"Команда {i+1}: else без соответствующего if")
+                else:
+                    conditional_stack[-1] = "else"
+            elif result.command_type == CommandType.CONDITIONAL_ENDIF:
+                if not conditional_stack:
+                    errors.append(f"Команда {i+1}: endif без соответствующего if")
+                else:
+                    conditional_stack.pop()
+        
+        # Проверяем незакрытые блоки
+        if conditional_stack:
+            errors.append(f"Незакрытые условные блоки: {conditional_stack}")
+        
+        return len(errors) == 0, errors
+
 
 class SequenceManager:
     """Менеджер последовательностей с thread-safety"""
 
     def __init__(self, config: Dict[str, List[str]],
-                 buttons_config: Dict[str, str]):
+                 buttons_config: Dict[str, str],
+                 flag_manager: Optional[FlagManager] = None):
         """
         Инициализация менеджера
 
         Args:
             config: Конфигурация последовательностей
             buttons_config: Конфигурация кнопок/команд
+            flag_manager: Менеджер флагов для условного выполнения
         """
         self.sequences = config
         self.buttons_config = buttons_config
+        self.flag_manager = flag_manager or FlagManager()
         self.logger = logging.getLogger(__name__)
         
         # Thread-safe компоненты
-        self.validator = CommandValidator()
+        self.validator = CommandValidator(self.flag_manager)
         self.recursion_protector = RecursionProtector()
         self._lock = threading.Lock()
 
@@ -568,3 +965,34 @@ class SequenceManager:
     def clear_cache(self):
         """Очистить кеш рекурсии"""
         self.recursion_protector.clear_cache()
+
+    def _extract_used_flags(self, commands: List[str]) -> Set[str]:
+        """Извлечь используемые флаги из команд"""
+        flags = set()
+        for command in commands:
+            command_lower = command.lower().strip()
+            if command_lower.startswith("if "):
+                parts = command.split()
+                if len(parts) >= 2:
+                    flags.add(parts[1])
+            elif command_lower.startswith("stop_if_not "):
+                parts = command.split()
+                if len(parts) >= 2:
+                    flags.add(parts[1])
+        return flags
+
+    def set_flag(self, flag_name: str, value: bool) -> None:
+        """Установить значение флага"""
+        self.flag_manager.set_flag(flag_name, value)
+
+    def get_flag(self, flag_name: str, default: bool = False) -> bool:
+        """Получить значение флага"""
+        return self.flag_manager.get_flag(flag_name, default)
+
+    def get_all_flags(self) -> Dict[str, bool]:
+        """Получить все флаги"""
+        return self.flag_manager.get_all_flags()
+
+    def load_flags_from_config(self, config: Dict[str, Any]) -> None:
+        """Загрузить флаги из конфигурации"""
+        self.flag_manager.load_flags_from_config(config)
