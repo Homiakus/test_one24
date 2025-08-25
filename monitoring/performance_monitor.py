@@ -275,3 +275,4 @@ class PerformanceMonitor:
             self._command_performance = [c for c in self._command_performance if c.timestamp > cutoff_time]
             
         self.logger.info(f"Cleared metrics older than {days} days")
+

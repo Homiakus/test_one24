@@ -13,6 +13,9 @@ from contextlib import contextmanager
 
 from PySide6.QtCore import QThread, Signal
 
+from .multizone_manager import MultizoneManager
+from .tag_manager import TagManager
+
 
 class CommandType(Enum):
     """Типы команд"""
@@ -24,6 +27,8 @@ class CommandType(Enum):
     CONDITIONAL_ELSE = "conditional_else"
     CONDITIONAL_ENDIF = "conditional_endif"
     STOP_IF_NOT = "stop_if_not"
+    MULTIZONE = "multizone"
+    TAGGED = "tagged"
     UNKNOWN = "unknown"
 
 
@@ -322,13 +327,15 @@ class CommandSequenceExecutor(QThread):
     def __init__(self, serial_manager, commands: List[str],
                  keywords: Optional[SequenceKeywords] = None,
                  cancellation_token: Optional[CancellationToken] = None,
-                 flag_manager: Optional[FlagManager] = None):
+                 flag_manager: Optional[FlagManager] = None,
+                 multizone_manager: Optional[MultizoneManager] = None):
         super().__init__()
         self.serial_manager = serial_manager
         self.commands = commands
         self.keywords = keywords or SequenceKeywords()
         self.cancellation_token = cancellation_token or CancellationToken()
         self.flag_manager = flag_manager or FlagManager()
+        self.multizone_manager = multizone_manager or MultizoneManager()
         self.response_collector = ThreadSafeResponseCollector()
         self.validator = CommandValidator(self.flag_manager)
         self.logger = logging.getLogger(__name__)
@@ -376,6 +383,12 @@ class CommandSequenceExecutor(QThread):
                 if self.conditional_state.skip_until_endif:
                     continue
 
+                # Обработка мультизональных команд
+                if self._is_multizone_command(command):
+                    if not self._handle_multizone_command(command):
+                        return
+                    continue
+
                 # Обработка специальных команд
                 if self._is_wait_command(command):
                     if not self._handle_wait_command(command):
@@ -405,6 +418,10 @@ class CommandSequenceExecutor(QThread):
         return (command_lower.startswith("if ") or 
                 command_lower == "else" or 
                 command_lower == "endif")
+    
+    def _is_multizone_command(self, command: str) -> bool:
+        """Проверка, является ли команда мультизональной"""
+        return command.startswith("og_multizone-")
 
     def _is_stop_command(self, command: str) -> bool:
         """Проверка, является ли команда командой остановки"""
@@ -551,6 +568,67 @@ class CommandSequenceExecutor(QThread):
             self.sequence_finished.emit(False, f"Ошибка в команде wait: {e}")
             return False
 
+    def _handle_multizone_command(self, command: str) -> bool:
+        """Обработка мультизональной команды"""
+        try:
+            # Валидируем команду
+            result = self.validator.validate_command(command)
+            if not result.is_valid:
+                self.sequence_finished.emit(False, f"Ошибка в мультизональной команде: {result.error_message}")
+                return False
+            
+            # Получаем активные зоны
+            active_zones = self.multizone_manager.get_active_zones()
+            if not active_zones:
+                self.logger.warning("Нет активных зон для мультизональной команды")
+                self.sequence_finished.emit(False, "Нет активных зон для мультизональной команды")
+                return False
+            
+            base_command = result.parsed_data["base_command"]
+            self.logger.info(f"Выполнение мультизональной команды '{command}' для зон: {active_zones}")
+            
+            # Выполняем команду для каждой активной зоны
+            for zone in active_zones:
+                # Проверяем отмену
+                self.cancellation_token.throw_if_cancelled()
+                
+                # Устанавливаем зону
+                zone_mask = self.multizone_manager._get_zone_bit(zone)
+                zone_command = f"multizone {zone_mask:04b}"
+                
+                self.logger.info(f"Установка зоны {zone}: {zone_command}")
+                if not self.serial_manager.send_command(zone_command):
+                    self.sequence_finished.emit(False, f"Не удалось установить зону {zone}")
+                    return False
+                
+                self.command_sent.emit(zone_command)
+                
+                # Ждем завершения установки зоны
+                if not self._wait_for_completion(zone_command, timeout=5.0):
+                    return False
+                
+                # Выполняем основную команду
+                self.logger.info(f"Выполнение команды '{base_command}' для зоны {zone}")
+                if not self.serial_manager.send_command(base_command):
+                    self.sequence_finished.emit(False, f"Не удалось выполнить команду для зоны {zone}")
+                    return False
+                
+                self.command_sent.emit(base_command)
+                
+                # Ждем завершения выполнения команды
+                if not self._wait_for_completion(base_command):
+                    return False
+            
+            self.logger.info(f"Мультизональная команда '{command}' выполнена успешно для всех зон")
+            return True
+
+        except CancellationException:
+            return False
+        except Exception as e:
+            self.logger.error(f"Ошибка в мультизональной команде: {e}")
+            self.sequence_finished.emit(False, f"Ошибка в мультизональной команде: {e}")
+            return False
+
     def _send_and_wait_command(self, command: str) -> bool:
         """Отправка команды и ожидание ответа"""
         try:
@@ -636,18 +714,23 @@ class CommandSequenceExecutor(QThread):
 
 
 class CommandValidator:
-    """Валидатор команд с поддержкой условного выполнения"""
+    """Валидатор команд с поддержкой условного выполнения и тегов"""
     
-    def __init__(self, flag_manager: Optional[FlagManager] = None):
+    def __init__(self, flag_manager: Optional[FlagManager] = None, tag_manager: Optional['TagManager'] = None):
         self.flag_manager = flag_manager
+        self.tag_manager = tag_manager
         self.logger = logging.getLogger(__name__)
     
     def validate_command(self, command: str) -> ValidationResult:
         """Валидация отдельной команды"""
         command = command.strip()
         
+        # Мультизональные команды
+        if command.startswith("og_multizone-"):
+            return self._validate_multizone_command(command)
+        
         # Команда ожидания
-        if command.lower().startswith("wait"):
+        elif command.lower().startswith("wait"):
             return self._validate_wait_command(command)
         
         # Условные команды
@@ -671,6 +754,10 @@ class CommandValidator:
         # Команда остановки
         elif command.lower().startswith("stop_if_not "):
             return self._validate_stop_if_not_command(command)
+        
+        # Команда с тегами
+        elif self.tag_manager and self._has_tags(command):
+            return self._validate_tagged_command(command)
         
         # Обычная команда
         else:
@@ -744,6 +831,43 @@ class CommandValidator:
                 command_type=CommandType.CONDITIONAL_IF
             )
     
+    def _validate_multizone_command(self, command: str) -> ValidationResult:
+        """Валидация мультизональной команды"""
+        try:
+            # Проверяем формат команды og_multizone-*
+            if not command.startswith("og_multizone-"):
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Мультизональная команда должна начинаться с 'og_multizone-'",
+                    command_type=CommandType.MULTIZONE
+                )
+            
+            # Извлекаем базовую команду
+            base_command = command[13:]  # Убираем "og_multizone-"
+            if not base_command:
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Мультизональная команда должна содержать базовую команду",
+                    command_type=CommandType.MULTIZONE
+                )
+            
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.MULTIZONE,
+                parsed_data={
+                    "command": command,
+                    "base_command": base_command,
+                    "is_multizone": True
+                }
+            )
+        
+        except Exception as e:
+            return ValidationResult(
+                is_valid=False,
+                error_message=f"Ошибка валидации мультизональной команды: {e}",
+                command_type=CommandType.MULTIZONE
+            )
+    
     def _validate_stop_if_not_command(self, command: str) -> ValidationResult:
         """Валидация команды stop_if_not"""
         try:
@@ -774,6 +898,42 @@ class CommandValidator:
                 is_valid=False,
                 error_message=f"Ошибка валидации stop_if_not команды: {e}",
                 command_type=CommandType.STOP_IF_NOT
+            )
+    
+    def _has_tags(self, command: str) -> bool:
+        """Проверить, содержит ли команда теги"""
+        return '_' in command and any(part.startswith('_') for part in command.split())
+    
+    def _validate_tagged_command(self, command: str) -> ValidationResult:
+        """Валидация команды с тегами"""
+        try:
+            # Парсим команду с тегами
+            parsed_command = self.tag_manager.parse_command(command)
+            
+            # Валидируем теги
+            if not self.tag_manager.validate_tags(parsed_command.tags):
+                return ValidationResult(
+                    is_valid=False,
+                    error_message="Ошибка валидации тегов в команде",
+                    command_type=CommandType.TAGGED
+                )
+            
+            return ValidationResult(
+                is_valid=True,
+                command_type=CommandType.TAGGED,
+                parsed_data={
+                    "command": command,
+                    "base_command": parsed_command.base_command,
+                    "tags": parsed_command.tags,
+                    "parsed_command": parsed_command
+                }
+            )
+        
+        except Exception as e:
+            return ValidationResult(
+                is_valid=False,
+                error_message=f"Ошибка валидации команды с тегами: {e}",
+                command_type=CommandType.TAGGED
             )
     
     def validate_sequence(self, commands: List[str]) -> Tuple[bool, List[str]]:

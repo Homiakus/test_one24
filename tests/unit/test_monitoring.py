@@ -483,3 +483,4 @@ class TestMonitoringIntegration:
         session = self.manager.usage_metrics._sessions[session_id]
         assert session.end_time is not None
         assert session.total_duration is not None
+

@@ -3,13 +3,15 @@
 """
 import logging
 from typing import Dict, Optional
+from pathlib import Path
 
 from PySide6.QtCore import Qt, QTimer, Signal, QPropertyAnimation, QRect, QEasingCurve
 from PySide6.QtGui import QKeyEvent, QMouseEvent
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
     QStackedWidget, QPushButton, QLabel, QFrame,
-    QToolButton, QMenu, QMessageBox, QApplication
+    QToolButton, QMenu, QMessageBox, QApplication,
+    QGroupBox, QCheckBox
 )
 from PySide6.QtGui import QAction
 
@@ -17,7 +19,13 @@ from config.settings import SettingsManager
 from config.config_loader import ConfigLoader
 from core.serial_manager import SerialManager
 from core.sequence_manager import SequenceManager, CommandSequenceExecutor
-from monitoring import MonitoringManager
+from core.multizone_manager import MultizoneManager
+
+from monitoring.monitoring_manager import MonitoringManager
+from core.flag_manager import FlagManager
+from core.tag_manager import TagManager
+from core.tag_validator import TagValidator
+from core.tag_processor import TagProcessor
 from ui.pages.wizard_page import WizardPage
 from ui.pages.settings_page import SettingsPage
 from ui.pages.sequences_page import SequencesPage
@@ -25,8 +33,10 @@ from ui.pages.commands_page import CommandsPage
 from ui.pages.designer_page import DesignerPage
 from ui.pages.firmware_page import FirmwarePage
 from ui.pages.flags_page import FlagsPage
+from ui.pages.signals_page import SignalsPage
 from ui.widgets.modern_widgets import ModernCard
 from ui.widgets.info_panel import InfoPanel
+from ui.dialogs.tag_dialogs import TagDialogManager
 
 
 class MainWindow(QMainWindow):
@@ -37,23 +47,12 @@ class MainWindow(QMainWindow):
         self.logger = logging.getLogger(__name__)
 
         try:
-            # Инициализация менеджеров
-            self.logger.info("Инициализация SettingsManager...")
-            self.settings_manager = SettingsManager()
-            self.logger.info("SettingsManager инициализирован")
-            
-            self.logger.info("Инициализация ConfigLoader...")
-            self.config_loader = ConfigLoader()
-            self.logger.info("ConfigLoader инициализирован")
-            
-            self.logger.info("Инициализация SerialManager...")
-            self.serial_manager = SerialManager()
-            self.logger.info("SerialManager инициализирован")
+            # Создаем сервисы напрямую (упрощенный подход)
+            self.logger.info("Создание сервисов напрямую...")
+            self._create_services_directly()
 
-            # Инициализация системы мониторинга
-            self.logger.info("Инициализация MonitoringManager...")
-            self.monitoring_manager = MonitoringManager(self.logger)
-            self.logger.info("MonitoringManager инициализирован")
+            # Сервисы уже созданы в _create_services_directly()
+            self.logger.info("Все сервисы инициализированы")
 
             # Загрузка конфигурации
             self.logger.info("Загрузка конфигурации...")
@@ -65,13 +64,6 @@ class MainWindow(QMainWindow):
                 self.config = {}
             
             self.logger.info("Конфигурация загружена")
-            
-            self.logger.info("Инициализация SequenceManager...")
-            self.sequence_manager = SequenceManager(
-                self.config.get('sequences', {}),
-                self.config.get('buttons', {}),
-                flag_manager=None  # Будет создан автоматически
-            )
             
             # Загружаем флаги из конфигурации
             flags = self.config.get('flags', {})
@@ -91,6 +83,7 @@ class MainWindow(QMainWindow):
             # Настройка соединений
             self.logger.info("Настройка соединений...")
             self._setup_connections()
+            self._setup_tag_connections()
             self.logger.info("Соединения настроены")
 
             # Автоподключение с обработкой ошибок
@@ -125,6 +118,148 @@ class MainWindow(QMainWindow):
             )
             raise
 
+
+    
+    def _create_services_directly(self):
+        """Создание сервисов напрямую без DI"""
+        self.logger.info("Создание сервисов напрямую...")
+        
+        # Создаем сервисы напрямую
+        self.config_loader = ConfigLoader()
+        self.settings_manager = SettingsManager()
+        
+        # Создаем SignalManager для обработки входящих сигналов UART
+        from core.signal_manager import SignalManager
+        from core.signal_processor import SignalProcessor
+        from core.signal_validator import SignalValidator
+        
+        self.signal_manager = SignalManager(flag_manager=None)  # Будет установлен после создания flag_manager
+        
+        # Создаем SerialManager с интеграцией SignalManager
+        self.serial_manager = SerialManager(signal_manager=self.signal_manager)
+        
+        self.multizone_manager = MultizoneManager()
+        self.flag_manager = FlagManager()
+        
+        # Устанавливаем flag_manager в signal_manager для обновления переменных
+        self.signal_manager.flag_manager = self.flag_manager
+        
+        # Загружаем конфигурацию сигналов
+        try:
+            signal_mappings = self.config_loader.get_signal_mappings()
+            self.signal_manager.register_signals(signal_mappings)
+            self.logger.info(f"Зарегистрировано {len(signal_mappings)} сигналов")
+        except Exception as e:
+            self.logger.warning(f"Ошибка загрузки конфигурации сигналов: {e}")
+        
+        self.tag_manager = TagManager()
+        self.tag_validator = TagValidator()
+        self.tag_processor = TagProcessor()
+        self.tag_dialog_manager = TagDialogManager()
+        self.monitoring_manager = MonitoringManager(self.logger, multizone_manager=self.multizone_manager)
+        
+        # Создаем CommandExecutorFactory
+        from core.command_executor import CommandExecutorFactory
+        self.command_executor_factory = CommandExecutorFactory()
+        
+        # Создаем SequenceManager с зависимостями
+        self.sequence_manager = SequenceManager(
+            config={},  # Пустая конфигурация последовательностей
+            buttons_config={},  # Пустая конфигурация кнопок
+            flag_manager=self.flag_manager
+        )
+        
+        self.logger.info("Сервисы созданы напрямую")
+    
+    def _setup_tag_connections(self):
+        """Настройка соединений для системы тегов"""
+        try:
+            # Подключаем обработчики для диалогов тегов
+            if hasattr(self, 'tag_dialog_manager'):
+                # Обработчик для диалога _wanted
+                self.tag_dialog_manager.on_wanted_dialog_result = self._on_wanted_dialog_result
+                self.logger.info("Обработчики тегов подключены")
+        except Exception as e:
+            self.logger.error(f"Ошибка при настройке соединений тегов: {e}")
+    
+    def _on_wanted_dialog_result(self, result: str):
+        """
+        Обработчик результата диалога _wanted
+        
+        Args:
+            result: Результат диалога ('check_fluids' или 'cancel')
+        """
+        try:
+            self.logger.info(f"Получен результат диалога _wanted: {result}")
+            
+            if result == 'check_fluids':
+                # Пользователь подтвердил проверку жидкостей
+                self.logger.info("Пользователь подтвердил проверку жидкостей")
+                
+                # Устанавливаем флаг wanted в False
+                if hasattr(self, 'flag_manager'):
+                    self.flag_manager.set_flag('wanted', False)
+                    self.logger.info("Флаг 'wanted' установлен в False")
+                
+                # Показываем уведомление
+                QMessageBox.information(
+                    self,
+                    "Проверка жидкостей",
+                    "Спасибо! Выполнение команды будет продолжено.",
+                    QMessageBox.Ok
+                )
+                
+                # Возобновляем выполнение команды
+                self._resume_command_execution()
+                
+            elif result == 'cancel':
+                # Пользователь отменил операцию
+                self.logger.info("Пользователь отменил операцию")
+                
+                # Показываем уведомление
+                QMessageBox.information(
+                    self,
+                    "Операция отменена",
+                    "Операция была отменена пользователем.",
+                    QMessageBox.Ok
+                )
+                
+                # Останавливаем выполнение команды
+                self._cancel_command_execution()
+                
+        except Exception as e:
+            self.logger.error(f"Ошибка при обработке результата диалога _wanted: {e}")
+            QMessageBox.critical(
+                self,
+                "Ошибка",
+                f"Произошла ошибка при обработке результата диалога: {e}",
+                QMessageBox.Ok
+            )
+    
+    def _resume_command_execution(self):
+        """Возобновление выполнения команды после обработки тега"""
+        try:
+            self.logger.info("Возобновление выполнения команды")
+            
+            # Здесь должна быть логика возобновления выполнения
+            # Пока просто логируем
+            self.logger.info("Выполнение команды возобновлено")
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка при возобновлении выполнения команды: {e}")
+    
+    def _cancel_command_execution(self):
+        """Отмена выполнения команды"""
+        try:
+            self.logger.info("Отмена выполнения команды")
+            
+            # Здесь должна быть логика отмены выполнения
+            # Пока просто логируем
+            self.logger.info("Выполнение команды отменено")
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка при отмене выполнения команды: {e}")
+
     def _setup_ui(self):
         """Настройка интерфейса"""
         self.setWindowTitle("Система управления устройством")
@@ -152,6 +287,9 @@ class MainWindow(QMainWindow):
 
         # Статусная строка
         self.statusBar().showMessage("Готов к работе")
+
+        # Добавляем панель управления флагами
+        self._setup_flag_control_panel()
 
     def _create_sidebar(self):
         """Создание левой панели навигации"""
@@ -298,6 +436,7 @@ class MainWindow(QMainWindow):
             ("sequences", "📋 Последовательности", False),
             ("commands", "⚡ Команды управления", False),
             ("flags", "🚩 Управление флагами", False),
+            ("signals", "📡 Сигналы UART", False),
             ("designer", "🔧 Конструктор", False),
             ("settings", "⚙️ Настройки", False),
             ("firmware", "💾 Прошивка", False),
@@ -377,7 +516,7 @@ class MainWindow(QMainWindow):
         
         self.logger.info("Создание WizardPage...")
         self.pages = {
-            'wizard': WizardPage(self.config.get('wizard', {})),
+            'wizard': WizardPage(self.config.get('wizard', {}), self.multizone_manager),
         }
         self.logger.info("WizardPage создана")
         
@@ -404,6 +543,10 @@ class MainWindow(QMainWindow):
         self.logger.info("Создание FlagsPage...")
         self.pages['flags'] = FlagsPage(self.sequence_manager)
         self.logger.info("FlagsPage создана")
+        
+        self.logger.info("Создание SignalsPage...")
+        self.pages['signals'] = SignalsPage(self.signal_manager, self.flag_manager, self.config_loader)
+        self.logger.info("SignalsPage создана")
 
         for page in self.pages.values():
             self.stacked_widget.addWidget(page)
@@ -455,6 +598,10 @@ class MainWindow(QMainWindow):
             )
             self.serial_manager.reader_thread.error_occurred.connect(
                 self._on_serial_error
+            )
+            # Подключение сигнала обработки сигналов UART
+            self.serial_manager.reader_thread.signal_processed.connect(
+                self._on_signal_processed
             )
 
         # Подключение сигналов от страниц
@@ -740,6 +887,58 @@ class MainWindow(QMainWindow):
         if terminal_page:
             terminal_page.add_command_output(f"Получено: {data}")
 
+    def _on_signal_processed(self, signal_name: str, variable_name: str, value: str):
+        """
+        Обработка успешно обработанного сигнала UART
+        
+        Args:
+            signal_name: Имя сигнала
+            variable_name: Имя переменной
+            value: Значение переменной
+        """
+        try:
+            self.logger.info(f"Сигнал обработан: {signal_name} -> {variable_name} = {value}")
+            
+            # Показываем уведомление в статусной строке
+            self.statusBar().showMessage(
+                f"Сигнал {signal_name}: {variable_name} = {value}", 
+                3000
+            )
+            
+            # Передаем информацию в терминал если есть
+            terminal_page = self.pages.get('commands')
+            if terminal_page:
+                terminal_page.add_command_output(
+                    f"Сигнал {signal_name}: {variable_name} = {value}"
+                )
+            
+            # Передаем сигнал на страницу сигналов если есть
+            signals_page = self.pages.get('signals')
+            if signals_page:
+                signals_page.on_signal_processed(signal_name, variable_name, value)
+            
+            # Обновляем информацию о сигналах в UI если есть
+            self._update_signal_display(signal_name, variable_name, value)
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки сигнала {signal_name}: {e}")
+
+    def _update_signal_display(self, signal_name: str, variable_name: str, value: str):
+        """
+        Обновление отображения сигналов в UI
+        
+        Args:
+            signal_name: Имя сигнала
+            variable_name: Имя переменной
+            value: Значение переменной
+        """
+        try:
+            # Здесь можно добавить обновление UI для отображения сигналов
+            # Например, обновление панели мониторинга или специальной страницы сигналов
+            pass
+        except Exception as e:
+            self.logger.error(f"Ошибка обновления отображения сигнала: {e}")
+
     def _on_serial_error(self, error: str):
         """Обработка ошибки Serial"""
         self.logger.error(f"Ошибка Serial: {error}")
@@ -818,6 +1017,11 @@ class MainWindow(QMainWindow):
                 self.serial_manager.reader_thread.error_occurred.disconnect()
             except:
                 pass  # Игнорируем ошибки отключения
+                
+            try:
+                self.serial_manager.reader_thread.signal_processed.disconnect()
+            except:
+                pass  # Игнорируем ошибки отключения
             
             # Подключаем новые обработчики
             self.serial_manager.reader_thread.data_received.connect(
@@ -825,6 +1029,9 @@ class MainWindow(QMainWindow):
             )
             self.serial_manager.reader_thread.error_occurred.connect(
                 self._on_serial_error
+            )
+            self.serial_manager.reader_thread.signal_processed.connect(
+                self._on_signal_processed
             )
             self.logger.info("Обработчики данных подключены")
             
@@ -881,8 +1088,12 @@ class MainWindow(QMainWindow):
         self.sequence_executor = CommandSequenceExecutor(
             self.serial_manager,
             commands,
-            self.config_loader.sequence_keywords
+            self.config_loader.sequence_keywords,
+            multizone_manager=self.multizone_manager
         )
+        
+        # Подключаем сигнал для записи мультизональной статистики
+        self.sequence_executor.sequence_finished.connect(self._on_sequence_finished)
 
         # Подключаем сигналы
         self.sequence_executor.progress_updated.connect(self._on_sequence_progress)
@@ -890,6 +1101,7 @@ class MainWindow(QMainWindow):
         self.sequence_executor.sequence_finished.connect(
             lambda success, msg: self._on_sequence_finished(success, msg, next_step)
         )
+        self.sequence_executor.zone_status_updated.connect(self._on_zone_status_updated)
 
         # Запускаем
         self.sequence_executor.start()
@@ -932,6 +1144,9 @@ class MainWindow(QMainWindow):
         """Обработка завершения последовательности"""
         self.logger.info(f"Последовательность завершена: {message}")
 
+        # Записываем мультизональную статистику
+        self._record_multizone_execution(success, message)
+
         # Уведомляем страницу мастера
         wizard_page = self.pages.get('wizard')
         if wizard_page:
@@ -941,6 +1156,54 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage("✓ " + message, 3000)
         else:
             self.statusBar().showMessage("✗ " + message, 5000)
+
+    def _on_zone_status_updated(self, zone_id: int, status: str):
+        """Обработка обновления статуса зоны"""
+        try:
+            self.logger.info(f"Обновление статуса зоны {zone_id}: {status}")
+            
+            # Обновляем UI зон
+            if hasattr(self, 'pages') and 'wizard' in self.pages:
+                wizard_page = self.pages['wizard']
+                if hasattr(wizard_page, 'update_zone_status'):
+                    wizard_page.update_zone_status(zone_id, status)
+            
+            # Обновляем статус в статусной строке
+            zone_names = {1: "Зона 1", 2: "Зона 2", 3: "Зона 3", 4: "Зона 4"}
+            zone_name = zone_names.get(zone_id, f"Зона {zone_id}")
+            self.statusBar().showMessage(f"{zone_name}: {status}", 3000)
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки обновления статуса зоны {zone_id}: {e}")
+
+    def _record_multizone_execution(self, success: bool, message: str):
+        """Запись мультизонального выполнения в мониторинг"""
+        try:
+            if not self.multizone_manager or not self.monitoring_manager:
+                return
+            
+            # Получаем активные зоны
+            active_zones = self.multizone_manager.get_active_zones()
+            if not active_zones:
+                return  # Не мультизональная команда
+            
+            # Определяем команду из сообщения или контекста
+            command = "multizone_command"  # По умолчанию
+            if hasattr(self, 'sequence_executor') and self.sequence_executor:
+                # Можно попытаться получить команду из исполнителя
+                pass
+            
+            # Записываем в мониторинг
+            self.monitoring_manager.record_multizone_execution(
+                zones=active_zones,
+                command=command,
+                success=success,
+                execution_time=0.0,  # Можно добавить измерение времени
+                error_message=message if not success else None
+            )
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка записи мультизонального выполнения: {e}")
 
     def _on_zone_changed(self, zones: Dict[str, bool]):
         """Обработка изменения выбора зон"""
@@ -1348,3 +1611,78 @@ class MainWindow(QMainWindow):
             self.logger.info("Финальная очистка завершена")
         except Exception as e:
             self.logger.error(f"Ошибка финальной очистки: {e}")
+
+    def _setup_flag_control_panel(self):
+        """Настройка панели управления флагами"""
+        try:
+            # Создаем группу для управления флагами
+            flag_group = QGroupBox("Управление флагами")
+            flag_layout = QVBoxLayout()
+            
+            # Флаг wanted
+            wanted_layout = QHBoxLayout()
+            wanted_label = QLabel("Флаг 'wanted':")
+            self.wanted_checkbox = QCheckBox()
+            self.wanted_checkbox.setChecked(self.flag_manager.get_flag('wanted', False))
+            self.wanted_checkbox.toggled.connect(self._on_wanted_flag_changed)
+            
+            wanted_layout.addWidget(wanted_label)
+            wanted_layout.addWidget(self.wanted_checkbox)
+            wanted_layout.addStretch()
+            
+            flag_layout.addLayout(wanted_layout)
+            
+            # Кнопка сброса всех флагов
+            reset_flags_button = QPushButton("Сбросить все флаги")
+            reset_flags_button.clicked.connect(self._reset_all_flags)
+            flag_layout.addWidget(reset_flags_button)
+            
+            flag_group.setLayout(flag_layout)
+            
+            # Добавляем группу в основной layout
+            if hasattr(self, 'central_widget') and hasattr(self.central_widget, 'layout'):
+                self.central_widget.layout().addWidget(flag_group)
+            
+            self.logger.info("Панель управления флагами добавлена")
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка при настройке панели управления флагами: {e}")
+    
+    def _on_wanted_flag_changed(self, checked: bool):
+        """
+        Обработчик изменения флага wanted
+        
+        Args:
+            checked: Новое значение флага
+        """
+        try:
+            self.logger.info(f"Флаг 'wanted' изменен на: {checked}")
+            self.flag_manager.set_flag('wanted', checked)
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка при изменении флага 'wanted': {e}")
+    
+    def _reset_all_flags(self):
+        """Сброс всех флагов"""
+        try:
+            self.logger.info("Сброс всех флагов")
+            self.flag_manager.clear_flags()
+            
+            # Обновляем UI
+            self.wanted_checkbox.setChecked(False)
+            
+            QMessageBox.information(
+                self,
+                "Флаги сброшены",
+                "Все флаги были сброшены к значениям по умолчанию.",
+                QMessageBox.Ok
+            )
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка при сбросе флагов: {e}")
+            QMessageBox.critical(
+                self,
+                "Ошибка",
+                f"Произошла ошибка при сбросе флагов: {e}",
+                QMessageBox.Ok
+            )

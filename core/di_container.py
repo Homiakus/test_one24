@@ -4,6 +4,7 @@ DI контейнер для управления зависимостями
 import logging
 import threading
 import inspect
+import importlib
 from typing import Dict, List, Optional, Any, Type, Callable, Union
 from dataclasses import dataclass, field
 from contextlib import contextmanager
@@ -320,12 +321,65 @@ class DIContainer(IDIContainer):
                     self.logger.warning(f"Пропущена неполная конфигурация сервиса: {service_name}")
                     continue
                 
-                # Здесь должна быть логика загрузки классов по именам
-                # Пока что просто логируем
-                self.logger.info(f"Конфигурация сервиса: {interface_name} -> {implementation_name}")
+                # Загружаем классы по именам
+                interface_class = self._load_class_by_name(interface_name)
+                implementation_class = self._load_class_by_name(implementation_name)
+                
+                if not interface_class or not implementation_class:
+                    self.logger.error(f"Не удалось загрузить классы для сервиса: {service_name}")
+                    continue
+                
+                # Получаем дополнительные параметры
+                singleton = service_config.get('singleton', True)
+                dependencies = service_config.get('dependencies', {})
+                
+                # Регистрируем сервис
+                self.register(interface_class, implementation_class, singleton=singleton, dependencies=dependencies)
+                self.logger.info(f"Зарегистрирован сервис: {interface_name} -> {implementation_name}")
                 
             except Exception as e:
                 self.logger.error(f"Ошибка конфигурации сервиса {service_name}: {e}")
+    
+    def _load_class_by_name(self, class_name: str) -> Optional[Type]:
+        """
+        Загрузка класса по имени
+        
+        Args:
+            class_name: Полное имя класса (например, 'core.multizone_manager.MultizoneManager')
+            
+        Returns:
+            Класс или None при ошибке
+        """
+        try:
+            if '.' in class_name:
+                # Полное имя с модулем
+                module_name, class_name_only = class_name.rsplit('.', 1)
+                module = importlib.import_module(module_name)
+                return getattr(module, class_name_only)
+            else:
+                # Только имя класса - ищем в известных модулях
+                known_modules = [
+                    'core.multizone_manager',
+                    'core.interfaces',
+                    'core.sequence_manager',
+                    'core.serial_manager',
+                    'core.command_executor'
+                ]
+                
+                for module_name in known_modules:
+                    try:
+                        module = importlib.import_module(module_name)
+                        if hasattr(module, class_name):
+                            return getattr(module, class_name)
+                    except ImportError:
+                        continue
+                
+                self.logger.error(f"Класс {class_name} не найден в известных модулях")
+                return None
+                
+        except Exception as e:
+            self.logger.error(f"Ошибка загрузки класса {class_name}: {e}")
+            return None
     
     def validate_registrations(self) -> List[str]:
         """

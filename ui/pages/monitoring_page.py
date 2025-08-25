@@ -387,11 +387,17 @@ class MonitoringPage(BasePage, LayoutMixin):
         
         if cpu:
             avg_cpu = cpu.get("avg", 0)
-            self.cpu_label.setText(f"CPU: {avg_cpu:.1f}%")
+            if avg_cpu is not None:
+                self.cpu_label.setText(f"CPU: {avg_cpu:.1f}%")
+            else:
+                self.cpu_label.setText("CPU: N/A")
             
         if memory:
             avg_memory = memory.get("avg_mb", 0)
-            self.memory_label.setText(f"Память: {avg_memory:.1f} MB")
+            if avg_memory is not None:
+                self.memory_label.setText(f"Память: {avg_memory:.1f} MB")
+            else:
+                self.memory_label.setText("Память: N/A")
             
         # Производительность команд
         command_performance = summary.get("command_performance", {})
@@ -401,8 +407,18 @@ class MonitoringPage(BasePage, LayoutMixin):
         for i, (command, stats) in enumerate(commands.items()):
             self.commands_table.setItem(i, 0, QTableWidgetItem(command))
             self.commands_table.setItem(i, 1, QTableWidgetItem(str(stats.get("count", 0))))
-            self.commands_table.setItem(i, 2, QTableWidgetItem(f"{stats.get('avg_time', 0):.3f}s"))
-            self.commands_table.setItem(i, 3, QTableWidgetItem(f"{stats.get('success_rate', 0)*100:.1f}%"))
+            
+            avg_time = stats.get("avg_time", 0)
+            if avg_time is not None:
+                self.commands_table.setItem(i, 2, QTableWidgetItem(f"{avg_time:.3f}s"))
+            else:
+                self.commands_table.setItem(i, 2, QTableWidgetItem("N/A"))
+                
+            success_rate = stats.get("success_rate", 0)
+            if success_rate is not None:
+                self.commands_table.setItem(i, 3, QTableWidgetItem(f"{success_rate*100:.1f}%"))
+            else:
+                self.commands_table.setItem(i, 3, QTableWidgetItem("N/A"))
             
     def update_alerts_tab(self, summary: Dict[str, Any]):
         """Обновление вкладки уведомлений"""
@@ -439,7 +455,11 @@ class MonitoringPage(BasePage, LayoutMixin):
         
         self.total_events_label.setText(f"Всего событий: {total_events}")
         self.total_sessions_label.setText(f"Сессий: {total_sessions}")
-        self.avg_session_label.setText(f"Средняя сессия: {avg_duration:.1f} мин")
+        
+        if avg_duration is not None:
+            self.avg_session_label.setText(f"Средняя сессия: {avg_duration:.1f} мин")
+        else:
+            self.avg_session_label.setText("Средняя сессия: N/A")
         
         # Популярные страницы
         popular_pages = usage.get("popular_pages", {})

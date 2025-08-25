@@ -130,8 +130,9 @@ class SerialReader(QThread):
 
     data_received = Signal(str)
     error_occurred = Signal(str)
+    signal_processed = Signal(str, str, str)  # signal_name, variable_name, value
 
-    def __init__(self, serial_port: serial.Serial):
+    def __init__(self, serial_port: serial.Serial, signal_manager=None):
         super().__init__()
         self.serial_port = serial_port
         self.running = True
@@ -139,9 +140,10 @@ class SerialReader(QThread):
         self._stop_event = threading.Event()
         self._interrupt_event = threading.Event()
         self._shutdown_timeout = 2.0  # Таймаут для graceful shutdown
+        self.signal_manager = signal_manager  # Менеджер сигналов для обработки входящих данных
 
     def run(self):
-        """Основной цикл чтения с поддержкой прерывания"""
+        """Основной цикл чтения с поддержкой прерывания и обработки сигналов"""
         self.logger.debug("Запуск цикла чтения Serial")
         
         while (self.running and 
@@ -153,8 +155,24 @@ class SerialReader(QThread):
                     data = self.serial_port.readline().decode('utf-8',
                                                               errors='ignore').strip()
                     if data:
+                        # Эмитим сигнал для обычной обработки данных
                         self.data_received.emit(data)
                         self.logger.debug(f"Получено: {data}")
+                        
+                        # Обрабатываем данные как потенциальный сигнал UART
+                        if self.signal_manager:
+                            try:
+                                result = self.signal_manager.process_incoming_data(data)
+                                if result and result.is_success:
+                                    # Эмитим сигнал о успешной обработке сигнала
+                                    self.signal_processed.emit(
+                                        result.signal_name,
+                                        result.variable_name,
+                                        str(result.value)
+                                    )
+                                    self.logger.debug(f"Сигнал обработан: {result.signal_name} = {result.value}")
+                            except Exception as e:
+                                self.logger.warning(f"Ошибка обработки сигнала '{data}': {e}")
             except serial.SerialException as e:
                 self.error_occurred.emit(f"Ошибка чтения: {e}")
                 self.logger.error(f"Ошибка чтения Serial: {e}")
@@ -322,9 +340,9 @@ class ThreadManager:
 
 
 class SerialManager:
-    """Менеджер Serial-соединения с улучшенным управлением потоками"""
+    """Менеджер Serial-соединения с улучшенным управлением потоками и поддержкой обработки сигналов"""
 
-    def __init__(self):
+    def __init__(self, signal_manager=None):
         self.port: Optional[serial.Serial] = None
         self.reader_thread: Optional[SerialReader] = None
         self.logger = logging.getLogger(__name__)
@@ -341,6 +359,9 @@ class SerialManager:
             'operation_timestamp': 0
         }
         
+        # Менеджер сигналов для обработки входящих данных UART
+        self.signal_manager = signal_manager
+        
         # Настройка обработчика сигналов для graceful shutdown
         self._setup_signal_handlers()
 
@@ -355,6 +376,30 @@ class SerialManager:
             signal.signal(signal.SIGTERM, signal_handler)
         except Exception as e:
             self.logger.warning(f"Не удалось настроить обработчики сигналов: {e}")
+
+    def set_signal_manager(self, signal_manager):
+        """
+        Установка менеджера сигналов для обработки входящих данных
+        
+        Args:
+            signal_manager: Экземпляр SignalManager
+        """
+        self.signal_manager = signal_manager
+        self.logger.info("Менеджер сигналов установлен")
+        
+        # Обновляем менеджер сигналов в существующем потоке чтения
+        if self.reader_thread:
+            self.reader_thread.signal_manager = signal_manager
+            self.logger.debug("Менеджер сигналов обновлен в потоке чтения")
+
+    def get_signal_manager(self):
+        """
+        Получение текущего менеджера сигналов
+        
+        Returns:
+            Текущий SignalManager или None
+        """
+        return self.signal_manager
 
     def graceful_shutdown(self, timeout: float = 10.0):
         """
@@ -589,11 +634,11 @@ class SerialManager:
                     self._update_connection_state(connecting=False)
                     return False
 
-                # Запускаем поток чтения
+                # Запускаем поток чтения с поддержкой обработки сигналов
                 self.logger.info("Запуск потока чтения...")
                 try:
                     with self._lock:
-                        self.reader_thread = SerialReader(self.port)
+                        self.reader_thread = SerialReader(self.port, self.signal_manager)
                         self.reader_thread.start()
                     self.logger.info("Поток чтения запущен")
                 except Exception as e:
@@ -843,6 +888,42 @@ class SerialManager:
         for thread_name in thread_info.keys():
             self._thread_manager.interrupt_thread(thread_name)
         self.logger.info("Все потоки прерваны")
+
+    def get_signal_statistics(self) -> Dict[str, Any]:
+        """
+        Получение статистики обработки сигналов
+        
+        Returns:
+            Словарь со статистикой сигналов
+        """
+        if not self.signal_manager:
+            return {'error': 'SignalManager не установлен'}
+        
+        try:
+            return self.signal_manager.get_statistics()
+        except Exception as e:
+            self.logger.error(f"Ошибка получения статистики сигналов: {e}")
+            return {'error': str(e)}
+
+    def process_signal_data(self, data: str) -> bool:
+        """
+        Обработка данных как сигнал UART
+        
+        Args:
+            data: Входящие данные для обработки
+            
+        Returns:
+            True если данные обработаны как сигнал
+        """
+        if not self.signal_manager:
+            return False
+        
+        try:
+            result = self.signal_manager.process_incoming_data(data)
+            return result and result.is_success
+        except Exception as e:
+            self.logger.error(f"Ошибка обработки сигнала '{data}': {e}")
+            return False
 
     @contextmanager
     def connection(self, *args, **kwargs):

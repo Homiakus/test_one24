@@ -427,3 +427,4 @@ class UsageMetrics:
                     "error_counts": dict(self._error_counts.most_common(20))
                 }
             }
+

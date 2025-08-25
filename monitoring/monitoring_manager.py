@@ -18,6 +18,7 @@ from .performance_monitor import PerformanceMonitor
 from .error_alerter import ErrorAlerter, AlertLevel
 from .health_checker import HealthChecker
 from .usage_metrics import UsageMetrics
+from core.multizone_manager import MultizoneManager
 
 
 class MonitoringManager:
@@ -31,7 +32,7 @@ class MonitoringManager:
     - UsageMetrics - статистика использования
     """
     
-    def __init__(self, logger: Optional[Logger] = None):
+    def __init__(self, logger: Optional[Logger] = None, multizone_manager: Optional[MultizoneManager] = None):
         self.logger = logger or Logger(__name__)
         self._lock = threading.Lock()
         self._monitoring_active = False
@@ -43,6 +44,9 @@ class MonitoringManager:
         self.health_checker = HealthChecker(logger)
         self.usage_metrics = UsageMetrics(logger)
         
+        # Мультизональный менеджер
+        self.multizone_manager = multizone_manager
+        
         # Настройки
         self.export_interval_hours = 24
         self.export_directory = Path("logs/monitoring")
@@ -53,6 +57,15 @@ class MonitoringManager:
         
         # Обработчики событий
         self._event_handlers: List[Callable[[str, Dict[str, Any]], None]] = []
+        
+        # Мультизональная статистика
+        self._multizone_stats = {
+            'total_executions': 0,
+            'successful_executions': 0,
+            'failed_executions': 0,
+            'zone_usage': {1: 0, 2: 0, 3: 0, 4: 0},
+            'last_execution': None
+        }
         
     def start_monitoring(self) -> None:
         """Запуск всей системы мониторинга"""
@@ -358,3 +371,103 @@ class MonitoringManager:
                 self.usage_metrics.session_timeout_minutes = um_config["session_timeout_minutes"]
                 
         self.logger.info("Monitoring configuration updated")
+
+    # Мультизональные методы мониторинга
+    
+    def record_multizone_execution(self, zones: List[int], command: str, success: bool, 
+                                  execution_time: float, error_message: Optional[str] = None) -> None:
+        """
+        Запись выполнения мультизональной команды
+        
+        Args:
+            zones: Список зон, для которых выполнялась команда
+            command: Выполненная команда
+            success: Успешность выполнения
+            execution_time: Время выполнения в секундах
+            error_message: Сообщение об ошибке (если есть)
+        """
+        with self._lock:
+            self._multizone_stats['total_executions'] += 1
+            self._multizone_stats['last_execution'] = datetime.now()
+            
+            if success:
+                self._multizone_stats['successful_executions'] += 1
+            else:
+                self._multizone_stats['failed_executions'] += 1
+                if error_message:
+                    self.logger.warning(f"Мультизональная команда '{command}' для зон {zones} завершилась с ошибкой: {error_message}")
+            
+            # Обновляем статистику использования зон
+            for zone_id in zones:
+                if zone_id in self._multizone_stats['zone_usage']:
+                    self._multizone_stats['zone_usage'][zone_id] += 1
+            
+            # Логируем событие
+            self.logger.info(f"Мультизональная команда '{command}' выполнена для зон {zones} за {execution_time:.2f}с")
+    
+    def get_multizone_stats(self) -> Dict[str, Any]:
+        """
+        Получение статистики мультизональных операций
+        
+        Returns:
+            Словарь со статистикой
+        """
+        with self._lock:
+            stats = self._multizone_stats.copy()
+            
+            # Добавляем процент успешности
+            if stats['total_executions'] > 0:
+                stats['success_rate'] = (stats['successful_executions'] / stats['total_executions']) * 100
+            else:
+                stats['success_rate'] = 0.0
+            
+            # Добавляем информацию о мультизональном менеджере
+            if self.multizone_manager:
+                stats['active_zones'] = self.multizone_manager.get_active_zones()
+                stats['zone_mask'] = self.multizone_manager.get_zone_mask()
+                stats['zone_statuses'] = {
+                    zone_id: self.multizone_manager.get_zone_status(zone_id).status.value
+                    for zone_id in range(1, 5)
+                }
+            else:
+                stats['active_zones'] = []
+                stats['zone_mask'] = 0
+                stats['zone_statuses'] = {}
+            
+            return stats
+    
+    def export_multizone_stats(self, file_path: Optional[str] = None) -> None:
+        """
+        Экспорт статистики мультизональных операций
+        
+        Args:
+            file_path: Путь к файлу для экспорта (если None, используется стандартный)
+        """
+        if file_path is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            file_path = self.export_directory / f"multizone_stats_{timestamp}.json"
+        
+        stats = self.get_multizone_stats()
+        
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(stats, f, indent=2, default=str)
+            
+            self.logger.info(f"Мультизональная статистика экспортирована в {file_path}")
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка экспорта мультизональной статистики: {e}")
+    
+    def reset_multizone_stats(self) -> None:
+        """Сброс статистики мультизональных операций"""
+        with self._lock:
+            self._multizone_stats = {
+                'total_executions': 0,
+                'successful_executions': 0,
+                'failed_executions': 0,
+                'zone_usage': {1: 0, 2: 0, 3: 0, 4: 0},
+                'last_execution': None
+            }
+        
+        self.logger.info("Статистика мультизональных операций сброшена")
+

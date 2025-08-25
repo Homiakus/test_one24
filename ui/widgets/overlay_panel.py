@@ -16,15 +16,23 @@ class OverlayPanel(QWidget):
     """Панель с изображением и невидимыми кнопками-зонами"""
 
     state_changed = Signal(str, bool, bool)  # panel_id, top_state, bottom_state
+    zone_status_changed = Signal(int, str)  # zone_id, status
 
     def __init__(self, panel_id: str, top_title: str, bottom_title: str,
-                 image_dir: str, parent=None):
+                 image_dir: str, multizone_manager=None, parent=None):
         super().__init__(parent)
 
         self.panel_id = panel_id
         self.top_title = top_title
         self.bottom_title = bottom_title
         self.image_dir = Path(image_dir)
+        self.multizone_manager = multizone_manager
+
+        # Маппинг зон для панели
+        self.zone_mapping = {
+            'left': {1: 'top', 2: 'bottom'},
+            'right': {3: 'top', 4: 'bottom'}
+        }
 
         self._pixmaps: Dict[str, QPixmap] = {}
         self._setup_ui()
@@ -68,6 +76,69 @@ class OverlayPanel(QWidget):
         # Порядок отображения
         self._image_label.lower()
         self._overlay.raise_()
+
+    def update_zone_status(self, zone_id: int, status: str):
+        """Обновление статуса зоны"""
+        if not self.multizone_manager:
+            return
+            
+        # Определяем, какая кнопка соответствует зоне
+        panel_zones = self.zone_mapping.get(self.panel_id, {})
+        if zone_id not in panel_zones:
+            return
+            
+        button_type = panel_zones[zone_id]
+        button = self.top_btn if button_type == 'top' else self.bottom_btn
+        
+        # Обновляем стиль кнопки в зависимости от статуса
+        if status == 'executing':
+            button.setStyleSheet("""
+                QPushButton {
+                    background: rgba(255, 193, 7, 0.3);
+                    border: 2px solid #ffc107;
+                }
+                QPushButton:hover {
+                    background: rgba(255, 193, 7, 0.4);
+                }
+            """)
+        elif status == 'completed':
+            button.setStyleSheet("""
+                QPushButton {
+                    background: rgba(40, 167, 69, 0.3);
+                    border: 2px solid #28a745;
+                }
+                QPushButton:hover {
+                    background: rgba(40, 167, 69, 0.4);
+                }
+            """)
+        elif status == 'error':
+            button.setStyleSheet("""
+                QPushButton {
+                    background: rgba(220, 53, 69, 0.3);
+                    border: 2px solid #dc3545;
+                }
+                QPushButton:hover {
+                    background: rgba(220, 53, 69, 0.4);
+                }
+            """)
+        else:  # inactive или active
+            button.setStyleSheet("""
+                QPushButton {
+                    background: transparent;
+                    border: 2px solid rgba(128, 128, 128, 0.3);
+                }
+                QPushButton:hover {
+                    border: 2px solid rgba(86, 138, 242, 0.5);
+                    background: rgba(86, 138, 242, 0.1);
+                }
+                QPushButton:checked {
+                    border: 2px solid #17a2b8;
+                    background: rgba(23, 162, 184, 0.2);
+                }
+            """)
+        
+        # Эмитим сигнал об изменении статуса
+        self.zone_status_changed.emit(zone_id, status)
 
     def _create_zone_button(self, title: str) -> QPushButton:
         """Создание кнопки-зоны"""

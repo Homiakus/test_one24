@@ -22,21 +22,21 @@ dependencies = {}
 interface = "ICommandExecutor"
 implementation = "BasicCommandExecutor"
 singleton = true
-dependencies = { "serial_manager" = "ISerialManager" }
+dependencies = { "serial_manager" = "ISerialManager", "tag_manager" = "ITagManager", "tag_dialog_manager" = "ITagDialogManager" }
 
 # Interactive Command Executor
 [di_container.services.interactive_command_executor]
 interface = "ICommandExecutor"
 implementation = "InteractiveCommandExecutor"
 singleton = false
-dependencies = { "serial_manager" = "ISerialManager" }
+dependencies = { "serial_manager" = "ISerialManager", "tag_manager" = "ITagManager", "tag_dialog_manager" = "ITagDialogManager" }
 
 # Sequence Manager
 [di_container.services.sequence_manager]
 interface = "ISequenceManager"
 implementation = "SequenceManager"
 singleton = true
-dependencies = {}
+dependencies = { "flag_manager" = "IFlagManager", "tag_manager" = "ITagManager" }
 
 # Config Loader
 [di_container.services.config_loader]
@@ -70,6 +70,48 @@ dependencies = {}
 [di_container.services.event_bus]
 interface = "IEventBus"
 implementation = "EventBus"
+singleton = true
+dependencies = {}
+
+# Multizone Manager
+[di_container.services.multizone_manager]
+interface = "IMultizoneManager"
+implementation = "MultizoneManager"
+singleton = true
+dependencies = {}
+
+# Flag Manager
+[di_container.services.flag_manager]
+interface = "IFlagManager"
+implementation = "FlagManager"
+singleton = true
+dependencies = {}
+
+# Tag Manager
+[di_container.services.tag_manager]
+interface = "ITagManager"
+implementation = "TagManager"
+singleton = true
+dependencies = {}
+
+# Tag Validator
+[di_container.services.tag_validator]
+interface = "ITagValidator"
+implementation = "TagValidator"
+singleton = true
+dependencies = {}
+
+# Tag Processor
+[di_container.services.tag_processor]
+interface = "ITagProcessor"
+implementation = "TagProcessor"
+singleton = true
+dependencies = {}
+
+# Tag Dialog Manager
+[di_container.services.tag_dialog_manager]
+interface = "ITagDialogManager"
+implementation = "TagDialogManager"
 singleton = true
 dependencies = {}
 

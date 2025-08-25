@@ -9,6 +9,9 @@ from abc import ABC, abstractmethod
 from typing import Dict, List, Optional, Any, Protocol, Callable, Union
 from dataclasses import dataclass
 
+from .tag_types import TagType, TagInfo, TagResult, ParsedCommand
+from .signal_types import SignalType, SignalInfo, SignalMapping, SignalValue, SignalResult
+
 
 class ISerialManager(ABC):
     """
@@ -449,4 +452,417 @@ class IDIContainer(ABC):
         
         Удаляет все зарегистрированные сервисы и экземпляры.
         """
+        pass
+
+
+class IMultizoneManager(ABC):
+    """
+    Интерфейс мультизонального менеджера.
+    
+    Определяет контракт для управления мультизональными операциями,
+    включая установку зон, работу с битовыми масками и валидацию.
+    """
+    
+    @abstractmethod
+    def set_zones(self, zones: List[int]) -> bool:
+        """
+        Установка активных зон.
+        
+        Args:
+            zones: Список номеров зон (1-4)
+            
+        Returns:
+            True если зоны установлены успешно, False в противном случае
+        """
+        pass
+    
+    @abstractmethod
+    def get_zone_mask(self) -> int:
+        """
+        Получение битовой маски зон.
+        
+        Returns:
+            Битовая маска активных зон (0-15)
+        """
+        pass
+    
+    @abstractmethod
+    def get_active_zones(self) -> List[int]:
+        """
+        Получение списка активных зон.
+        
+        Returns:
+            Список номеров активных зон
+        """
+        pass
+    
+    @abstractmethod
+    def is_zone_active(self, zone: int) -> bool:
+        """
+        Проверка активности зоны.
+        
+        Args:
+            zone: Номер зоны для проверки
+            
+        Returns:
+            True если зона активна, False в противном случае
+        """
+        pass
+    
+    @abstractmethod
+    def validate_zones(self, zones: List[int]) -> bool:
+        """
+        Валидация выбора зон.
+        
+        Args:
+            zones: Список зон для валидации
+            
+        Returns:
+            True если зоны корректны, False в противном случае
+        """
+        pass
+
+
+class ITagManager(ABC):
+    """
+    Интерфейс менеджера тегов команд.
+    
+    Определяет контракт для управления тегами команд,
+    включая парсинг, валидацию и обработку тегов.
+    """
+    
+    @abstractmethod
+    def parse_command(self, command: str) -> ParsedCommand:
+        """
+        Парсинг команды с извлечением тегов.
+        
+        Args:
+            command: Команда для парсинга
+            
+        Returns:
+            Распарсенная команда с тегами
+        """
+        pass
+    
+    @abstractmethod
+    def validate_tags(self, tags: List[TagInfo]) -> bool:
+        """
+        Валидация списка тегов.
+        
+        Args:
+            tags: Список тегов для валидации
+            
+        Returns:
+            True если все теги валидны, False в противном случае
+        """
+        pass
+    
+    @abstractmethod
+    def process_tags(self, tags: List[TagInfo], context: Dict[str, Any]) -> List[TagResult]:
+        """
+        Обработка списка тегов.
+        
+        Args:
+            tags: Список тегов для обработки
+            context: Контекст выполнения (переменные, состояние)
+            
+        Returns:
+            Список результатов обработки тегов
+        """
+        pass
+    
+    @abstractmethod
+    def register_tag_processor(self, tag_type: TagType, processor: Callable) -> None:
+        """
+        Регистрация обработчика тега.
+        
+        Args:
+            tag_type: Тип тега
+            processor: Функция обработки тега
+        """
+        pass
+
+
+class ITagProcessor(ABC):
+    """
+    Интерфейс обработчика тегов.
+    
+    Определяет контракт для обработки отдельных тегов,
+    включая валидацию и выполнение логики тега.
+    """
+    
+    @abstractmethod
+    def process_tag(self, tag: TagInfo, context: Dict[str, Any]) -> TagResult:
+        """
+        Обработка отдельного тега.
+        
+        Args:
+            tag: Информация о теге
+            context: Контекст выполнения
+            
+        Returns:
+            Результат обработки тега
+        """
+        pass
+    
+    @abstractmethod
+    def validate_tag(self, tag: TagInfo) -> bool:
+        """
+        Валидация тега.
+        
+        Args:
+            tag: Информация о теге
+            
+        Returns:
+            True если тег валиден, False в противном случае
+        """
+        pass
+    
+    @abstractmethod
+    def get_supported_tag_types(self) -> List[TagType]:
+        """
+        Получение поддерживаемых типов тегов.
+        
+        Returns:
+            Список поддерживаемых типов тегов
+        """
+        pass
+
+
+class IFlagManager(ABC):
+    """
+    Интерфейс менеджера флагов.
+    
+    Определяет контракт для управления глобальными флагами
+    и переменными системы.
+    """
+    
+    @abstractmethod
+    def set_flag(self, flag_name: str, value: Any) -> None:
+        """Установить значение флага"""
+        pass
+    
+    @abstractmethod
+    def get_flag(self, flag_name: str, default: Any = None) -> Any:
+        """Получить значение флага"""
+        pass
+    
+    @abstractmethod
+    def has_flag(self, flag_name: str) -> bool:
+        """Проверить наличие флага"""
+        pass
+    
+    @abstractmethod
+    def remove_flag(self, flag_name: str) -> bool:
+        """Удалить флаг"""
+        pass
+    
+    @abstractmethod
+    def get_all_flags(self) -> Dict[str, Any]:
+        """Получить все флаги"""
+        pass
+    
+    @abstractmethod
+    def clear_flags(self) -> None:
+        """Очистить все флаги"""
+        pass
+    
+    @abstractmethod
+    def toggle_flag(self, flag_name: str) -> bool:
+        """Переключить булевый флаг"""
+        pass
+    
+    @abstractmethod
+    def increment_flag(self, flag_name: str, step: int = 1) -> int:
+        """Увеличить числовой флаг"""
+        pass
+    
+    @abstractmethod
+    def decrement_flag(self, flag_name: str, step: int = 1) -> int:
+        """Уменьшить числовой флаг"""
+        pass
+
+
+class ITagValidator(ABC):
+    """
+    Интерфейс валидатора тегов.
+    
+    Определяет контракт для валидации тегов,
+    включая проверку имен, типов и параметров.
+    """
+    
+    @abstractmethod
+    def validate_tag_name(self, tag_name: str) -> bool:
+        """Валидация имени тега"""
+        pass
+    
+    @abstractmethod
+    def validate_tag_type(self, tag_type: TagType) -> bool:
+        """Валидация типа тега"""
+        pass
+    
+    @abstractmethod
+    def validate_tag(self, tag: TagInfo) -> bool:
+        """Валидация тега"""
+        pass
+    
+    @abstractmethod
+    def validate_tag_parameters(self, tag: TagInfo) -> bool:
+        """Валидация параметров тега"""
+        pass
+    
+    @abstractmethod
+    def validate_tags(self, tags: List[TagInfo]) -> bool:
+        """Валидация списка тегов"""
+        pass
+    
+    @abstractmethod
+    def validate_command_with_tags(self, command: str) -> bool:
+        """Валидация команды с тегами"""
+        pass
+    
+    @abstractmethod
+    def get_supported_tag_types(self) -> List[TagType]:
+        """Получить поддерживаемые типы тегов"""
+        pass
+    
+    @abstractmethod
+    def register_tag_type(self, tag_type: TagType, config: Dict[str, Any]) -> None:
+        """Зарегистрировать новый тип тега"""
+        pass
+
+
+class ITagDialogManager(ABC):
+    """
+    Интерфейс менеджера диалогов тегов.
+    
+    Определяет контракт для управления и отображения
+    диалогов, связанных с тегами команд.
+    """
+    
+    @abstractmethod
+    def show_tag_dialog(self, dialog_type: str, parent=None) -> Optional[str]:
+        """Показать диалог тега"""
+        pass
+    
+    @abstractmethod
+    def get_supported_dialog_types(self) -> List[str]:
+        """Получить поддерживаемые типы диалогов"""
+        pass
+
+
+class ISignalProcessor(ABC):
+    """
+    Интерфейс обработчика сигналов.
+    
+    Определяет контракт для обработки входящих сигналов UART,
+    включая парсинг, валидацию и конвертацию данных.
+    """
+    
+    @abstractmethod
+    def process_signal(self, signal_name: str, value: str, signal_type: SignalType) -> SignalResult:
+        """Обработать сигнал"""
+        pass
+    
+    @abstractmethod
+    def process_uart_data(self, data: str) -> List[SignalResult]:
+        """Обработать данные UART"""
+        pass
+    
+    @abstractmethod
+    def validate_signal(self, signal_name: str, value: str, signal_type: SignalType) -> bool:
+        """Валидировать сигнал"""
+        pass
+    
+    @abstractmethod
+    def convert_signal_value(self, value: str, signal_type: SignalType) -> Any:
+        """Конвертировать значение сигнала"""
+        pass
+
+
+class ISignalValidator(ABC):
+    """
+    Интерфейс валидатора сигналов.
+    
+    Определяет контракт для валидации сигналов,
+    включая проверку имен, типов и значений.
+    """
+    
+    @abstractmethod
+    def validate_signal_name(self, signal_name: str) -> bool:
+        """Валидация имени сигнала"""
+        pass
+    
+    @abstractmethod
+    def validate_signal_type(self, signal_type: SignalType) -> bool:
+        """Валидация типа сигнала"""
+        pass
+    
+    @abstractmethod
+    def validate_signal_value(self, value: Any, signal_type: SignalType) -> bool:
+        """Валидация значения сигнала"""
+        pass
+    
+    @abstractmethod
+    def validate_signal_mapping(self, mapping: SignalMapping) -> bool:
+        """Валидация маппинга сигнала"""
+        pass
+    
+    @abstractmethod
+    def validate_signal_config(self, config: Dict[str, str]) -> bool:
+        """Валидация конфигурации сигналов"""
+        pass
+
+
+class ISignalManager(ABC):
+    """
+    Интерфейс менеджера сигналов.
+    
+    Определяет контракт для управления сигналами,
+    включая регистрацию, обработку и мониторинг.
+    """
+    
+    @abstractmethod
+    def register_signal(self, signal_name: str, mapping: SignalMapping) -> bool:
+        """Зарегистрировать сигнал"""
+        pass
+    
+    @abstractmethod
+    def unregister_signal(self, signal_name: str) -> bool:
+        """Отменить регистрацию сигнала"""
+        pass
+    
+    @abstractmethod
+    def process_incoming_data(self, data: str) -> List[SignalResult]:
+        """Обработать входящие данные"""
+        pass
+    
+    @abstractmethod
+    def get_signal_value(self, signal_name: str) -> Optional[SignalValue]:
+        """Получить значение сигнала"""
+        pass
+    
+    @abstractmethod
+    def get_all_signal_values(self) -> Dict[str, SignalValue]:
+        """Получить все значения сигналов"""
+        pass
+    
+    @abstractmethod
+    def get_signal_mappings(self) -> Dict[str, SignalMapping]:
+        """Получить маппинги сигналов"""
+        pass
+    
+    @abstractmethod
+    def update_variable(self, variable_name: str, value: Any) -> bool:
+        """Обновить переменную"""
+        pass
+    
+    @abstractmethod
+    def get_variable_value(self, variable_name: str) -> Optional[Any]:
+        """Получить значение переменной"""
+        pass
+    
+    @abstractmethod
+    def get_all_variables(self) -> Dict[str, Any]:
+        """Получить все переменные"""
         pass

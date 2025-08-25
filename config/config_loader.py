@@ -55,6 +55,15 @@ received = ["received"]
 error = ["err", "error", "fail"]
 complete_line = ["complete"]
 
+[signals]
+# Сигналы UART для автоматического обновления переменных
+# Формат: "сигнал" = "переменная (тип)"
+"TEMP" = "temperature (float)"
+"STATUS" = "device_status (string)"
+"ERROR" = "error_code (int)"
+"PRESSURE" = "pressure (float)"
+"MODE" = "operation_mode (string)"
+
 [wizard]
 image_dir = "back"
 paint_sequence = "paint"
@@ -192,7 +201,8 @@ auto_next = 3
                 f"Конфигурация успешно загружена: "
                 f"{len(self._config.get('buttons', {}))} команд, "
                 f"{len(self._config.get('sequences', {}))} последовательностей, "
-                f"{len(self._config.get('flags', {}))} флагов"
+                f"{len(self._config.get('flags', {}))} флагов, "
+                f"{len(self._config.get('signals', {}))} сигналов"
             )
 
             return self._config
@@ -231,7 +241,7 @@ auto_next = 3
             self.logger.info("Валидация структуры конфигурации...")
             
             # Проверяем обязательные секции и создаем их если отсутствуют
-            required_sections = ['buttons', 'sequences', 'serial_default', 'sequence_keywords', 'flags']
+            required_sections = ['buttons', 'sequences', 'serial_default', 'sequence_keywords', 'flags', 'signals']
             
             for section in required_sections:
                 if section not in self._config:
@@ -257,6 +267,14 @@ auto_next = 3
                             'maintenance_mode': False,
                             'test_mode': False
                         }
+                    elif section == 'signals':
+                        self._config[section] = {
+                            'TEMP': 'temperature (float)',
+                            'STATUS': 'device_status (string)',
+                            'ERROR': 'error_code (int)',
+                            'PRESSURE': 'pressure (float)',
+                            'MODE': 'operation_mode (string)'
+                        }
             
             # Валидируем секцию buttons
             self._validate_buttons_section()
@@ -272,6 +290,9 @@ auto_next = 3
             
             # Валидируем секцию flags
             self._validate_flags_section()
+            
+            # Валидируем секцию signals
+            self._validate_signals_section()
             
             # Валидируем секцию wizard (если есть)
             if 'wizard' in self._config:
@@ -420,6 +441,62 @@ auto_next = 3
             if flag_name not in flags:
                 self.logger.info(f"Добавляем обязательный флаг '{flag_name}' со значением {default_value}")
                 flags[flag_name] = default_value
+
+    def _validate_signals_section(self):
+        """Валидация секции signals"""
+        signals = self._config.get('signals', {})
+        
+        if not isinstance(signals, dict):
+            self.logger.warning("Секция 'signals' должна быть словарем, создаем по умолчанию")
+            self._config['signals'] = {
+                'TEMP': 'temperature (float)',
+                'STATUS': 'device_status (string)',
+                'ERROR': 'error_code (int)',
+                'PRESSURE': 'pressure (float)',
+                'MODE': 'operation_mode (string)'
+            }
+            return
+        
+        # Удаляем некорректные записи
+        invalid_keys = []
+        for signal_name, mapping_str in signals.items():
+            if not isinstance(signal_name, str):
+                self.logger.warning(f"Неверное имя сигнала: {signal_name}, удаляем")
+                invalid_keys.append(signal_name)
+            elif not isinstance(mapping_str, str):
+                self.logger.warning(f"Неверное значение маппинга для сигнала '{signal_name}': {mapping_str}, удаляем")
+                invalid_keys.append(signal_name)
+            elif not signal_name.strip():
+                self.logger.warning(f"Пустое имя сигнала, удаляем")
+                invalid_keys.append(signal_name)
+            else:
+                # Проверяем формат маппинга: "переменная (тип)"
+                try:
+                    from core.signal_types import SignalParser
+                    mapping = SignalParser.parse_signal_mapping(mapping_str)
+                    if not mapping:
+                        self.logger.warning(f"Неверный формат маппинга для сигнала '{signal_name}': {mapping_str}, удаляем")
+                        invalid_keys.append(signal_name)
+                except Exception as e:
+                    self.logger.warning(f"Ошибка парсинга маппинга для сигнала '{signal_name}': {e}, удаляем")
+                    invalid_keys.append(signal_name)
+        
+        for key in invalid_keys:
+            del signals[key]
+        
+        # Добавляем обязательные сигналы если отсутствуют
+        required_signals = {
+            'TEMP': 'temperature (float)',
+            'STATUS': 'device_status (string)',
+            'ERROR': 'error_code (int)',
+            'PRESSURE': 'pressure (float)',
+            'MODE': 'operation_mode (string)'
+        }
+        
+        for signal_name, default_mapping in required_signals.items():
+            if signal_name not in signals:
+                self.logger.info(f"Добавляем обязательный сигнал '{signal_name}' с маппингом {default_mapping}")
+                signals[signal_name] = default_mapping
 
     def _validate_wizard_section(self):
         """Валидация секции wizard"""
@@ -857,6 +934,68 @@ auto_next = 3
 
         except Exception as e:
             self.logger.error(f"Ошибка сохранения последовательностей: {e}")
+            return False
+
+    def load_signals(self) -> Dict[str, str]:
+        """
+        Загрузка конфигурации сигналов
+
+        Returns:
+            Словарь сигналов в формате {сигнал: маппинг}
+        """
+        try:
+            signals = self._config.get('signals', {})
+            self.logger.info(f"Загружено {len(signals)} сигналов")
+            return signals
+        except Exception as e:
+            self.logger.error(f"Ошибка загрузки сигналов: {e}")
+            return {}
+
+    def get_signal_mappings(self) -> Dict[str, 'SignalMapping']:
+        """
+        Получение маппингов сигналов в структурированном виде
+
+        Returns:
+            Словарь маппингов сигналов
+        """
+        try:
+            from core.signal_types import SignalParser, SignalMapping
+            
+            signals = self._config.get('signals', {})
+            mappings = {}
+            
+            for signal_name, mapping_str in signals.items():
+                try:
+                    mapping = SignalParser.parse_signal_mapping(mapping_str)
+                    if mapping:
+                        mappings[signal_name] = mapping
+                except Exception as e:
+                    self.logger.warning(f"Ошибка парсинга маппинга для сигнала '{signal_name}': {e}")
+                    continue
+            
+            self.logger.info(f"Загружено {len(mappings)} валидных маппингов сигналов")
+            return mappings
+            
+        except Exception as e:
+            self.logger.error(f"Ошибка получения маппингов сигналов: {e}")
+            return {}
+
+    def save_signal_mappings(self) -> bool:
+        """
+        Сохранение маппингов сигналов в файл конфигурации
+
+        Returns:
+            True если сохранение успешно, False в противном случае
+        """
+        try:
+            # Перезаписываем файл с обновленными сигналами
+            import tomli_w
+            with open(self.config_path, 'w', encoding='utf-8') as f:
+                tomli_w.dump(self._config, f)
+            self.logger.info("Сигналы успешно сохранены")
+            return True
+        except Exception as e:
+            self.logger.error(f"Ошибка сохранения сигналов: {e}")
             return False
 
     def reload(self):

@@ -513,3 +513,4 @@ class HealthChecker:
                     for health in self._health_checks[-100:]  # Последние 100 записей
                 ]
             }
+
