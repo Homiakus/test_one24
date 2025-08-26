@@ -2,9 +2,9 @@
 Современные виджеты для интерфейса
 """
 from typing import Optional
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QColor, QIntValidator
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, pyqtSignal as pyqtSignal as Signal
+from PyQt6.QtGui import QFont, QColor, QIntValidator
+from PyQt6.QtWidgets import (
     QFrame, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QDialog, QLineEdit, QGridLayout
 )

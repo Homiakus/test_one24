@@ -1,7 +1,7 @@
 """
 @file: info_panel.py
 @description: Информационная панель справа с консолью и диагностикой
-@dependencies: PySide6, monitoring
+@dependencies: PyQt6, monitoring
 @created: 2024-12-19
 """
 
@@ -9,9 +9,9 @@ import logging
 from typing import Optional, List
 from datetime import datetime
 
-from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QTimer, Signal
-from PySide6.QtGui import QFont, QTextCursor, QColor, QPalette
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QTimer, pyqtSignal as pyqtSignal as Signal
+from PyQt6.QtGui import QFont, QTextCursor, QColor, QPalette
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QFrame, QScrollArea, QSizePolicy, QGraphicsDropShadowEffect,
     QTextEdit, QTabWidget, QSplitter, QGroupBox

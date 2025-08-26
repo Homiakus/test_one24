@@ -1,13 +1,13 @@
 """
-Модуль для обработки ошибок и исключений
+Обработчик ошибок для приложения
 """
-import sys
 import logging
 import traceback
-from typing import Optional, Callable, Any
-from functools import wraps
-from PySide6.QtWidgets import QApplication, QMessageBox
-from PySide6.QtCore import Qt
+import sys
+from typing import Optional, List, Tuple, Callable, Any
+
+from PyQt6.QtWidgets import QApplication, QMessageBox
+from PyQt6.QtCore import Qt
 
 
 class ErrorHandler:

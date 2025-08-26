@@ -1,12 +1,12 @@
 """
-Base classes for UI components
+Базовые классы для UI компонентов
 """
 import logging
 from typing import Optional, Dict, Any
 from abc import ABC, abstractmethod
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QDialog, QMainWindow
-from PySide6.QtCore import Signal, Qt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QDialog, QMainWindow
+from PyQt6.QtCore import pyqtSignal as Signal, Qt
 
 
 class BaseWidget(QWidget):

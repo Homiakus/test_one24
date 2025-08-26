@@ -5,15 +5,15 @@ import logging
 from typing import Dict, Optional
 from pathlib import Path
 
-from PySide6.QtCore import Qt, QTimer, Signal, QPropertyAnimation, QRect, QEasingCurve
-from PySide6.QtGui import QKeyEvent, QMouseEvent
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal as Signal, QPropertyAnimation, QRect, QEasingCurve
+from PyQt6.QtGui import QKeyEvent, QMouseEvent
+from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
     QStackedWidget, QPushButton, QLabel, QFrame,
     QToolButton, QMenu, QMessageBox, QApplication,
     QGroupBox, QCheckBox
 )
-from PySide6.QtGui import QAction
+from PyQt6.QtGui import QAction
 
 from config.settings import SettingsManager
 from config.config_loader import ConfigLoader

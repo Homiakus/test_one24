@@ -1,31 +1,31 @@
 """
-Optimized imports for UI components
+Общие импорты для UI модулей
 """
-# PySide6 imports
-from PySide6.QtWidgets import (
-    # Basic widgets
-    QWidget, QLabel, QPushButton, QLineEdit, QTextEdit,
-    QListWidget, QListWidgetItem, QComboBox, QSpinBox,
-    
-    # Layouts
-    QVBoxLayout, QHBoxLayout, QGridLayout, QFormLayout,
-    
-    # Containers
-    QFrame, QScrollArea, QSplitter, QTabWidget, QGroupBox,
-    QDialog, QMainWindow, QMessageBox, QInputDialog, QProgressDialog,
-    
-    # Other
-    QApplication
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QLabel, QPushButton, QLineEdit, QTextEdit, QComboBox,
+    QSpinBox, QDoubleSpinBox, QCheckBox, QRadioButton,
+    QGroupBox, QFrame, QScrollArea, QTabWidget, QSplitter,
+    QGridLayout, QFormLayout, QStackedWidget, QListWidget,
+    QListWidgetItem, QTableWidget, QTableWidgetItem,
+    QHeaderView, QProgressBar, QSlider, QDial, QMenu,
+    QMenuBar, QToolBar, QStatusBar, QMessageBox, QDialog,
+    QInputDialog, QFileDialog, QColorDialog, QFontDialog
 )
 
-from PySide6.QtCore import (
-    Qt, Signal, QThread, QTimer, QObject, QEvent,
-    QSize, QPoint, QRect, QUrl
+from PyQt6.QtCore import (
+    Qt, QTimer, QThread, QObject, QEvent, QSize, QPoint,
+    QRect, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup,
+    QSequentialAnimationGroup, Signal, Slot, QUrl, QDir, QFile,
+    QFileInfo, QDateTime, QDate, QTime, QLocale, QTranslator
 )
 
-from PySide6.QtGui import (
-    QFont, QColor, QPalette, QIcon, QPixmap,
-    QPainter, QBrush, QPen, QCursor
+from PyQt6.QtGui import (
+    QFont, QFontMetrics, QFontInfo, QPalette, QColor,
+    QPixmap, QIcon, QPainter, QPen, QBrush, QLinearGradient,
+    QRadialGradient, QConicalGradient, QTransform, QMatrix,
+    QKeySequence, QShortcut, QCursor, QDrag, QDropEvent,
+    QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent
 )
 
 # Standard library imports

@@ -3,12 +3,12 @@
 """
 import logging
 from typing import Optional, Callable
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, pyqtSignal as Signal
+from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, 
     QPushButton, QTextEdit, QFrame, QMessageBox
 )
-from PySide6.QtGui import QFont, QIcon
+from PyQt6.QtGui import QFont, QIcon
 
 
 class WantedTagDialog(QDialog):

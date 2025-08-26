@@ -8,9 +8,9 @@
 import logging
 from typing import Optional
 
-from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QTimer, QRect, QPoint
-from PySide6.QtGui import QMouseEvent, QPainter, QColor, QPen, QFont
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QTimer, QRect, QPoint
+from PyQt6.QtGui import QMouseEvent, QPainter, QColor, QPen, QFont
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QFrame, QScrollArea, QSizePolicy, QGraphicsDropShadowEffect
 )

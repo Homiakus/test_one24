@@ -1,14 +1,14 @@
 """
-Utility functions for UI components
+Утилиты для UI компонентов
 """
 from typing import Optional, List, Dict, Any, Callable
-from PySide6.QtWidgets import (
+from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, 
     QWidget, QFrame, QPushButton, QGridLayout,
     QMessageBox, QInputDialog, QSplitter
 )
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QIcon
+from PyQt6.QtCore import Qt, pyqtSignal as Signal
+from PyQt6.QtGui import QFont, QIcon
 
 
 def create_page_layout(widget: QWidget, margins: tuple = (20, 20, 20, 20), spacing: int = 20) -> QVBoxLayout:

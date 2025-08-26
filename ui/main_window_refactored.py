@@ -16,16 +16,18 @@ MainWindow теперь является координатором, а не и�
 """
 
 import logging
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
+from pathlib import Path
 
-from PySide6.QtCore import Qt, QTimer, Signal
-from PySide6.QtGui import QKeyEvent
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal as Signal
+from PyQt6.QtGui import QKeyEvent
+from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
     QStackedWidget, QPushButton, QLabel, QFrame,
-    QToolButton, QMenu, QMessageBox, QApplication
+    QToolButton, QMenu, QMessageBox, QApplication,
+    QGroupBox, QCheckBox
 )
-from PySide6.QtGui import QAction
+from PyQt6.QtGui import QAction
 
 from config.settings import SettingsManager
 from config.config_loader import ConfigLoader

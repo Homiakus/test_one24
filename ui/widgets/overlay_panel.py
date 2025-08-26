@@ -5,9 +5,9 @@ import os
 from pathlib import Path
 from typing import Dict, Optional
 
-from PySide6.QtCore import Qt, Signal, QRect
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import Qt, pyqtSignal as Signal, QRect
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import (
     QWidget, QLabel, QPushButton, QStackedLayout, QSizePolicy
 )
 

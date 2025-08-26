@@ -5,17 +5,18 @@
 @created: 2024-12-19
 """
 
-from typing import Optional, Dict, Any
+import logging
+from typing import Optional, Dict, Any, List
 from datetime import datetime, timedelta
 import json
 
-from PySide6.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, QLabel, 
     QPushButton, QTableWidget, QTableWidgetItem, QTextEdit,
     QProgressBar, QGroupBox, QGridLayout, QSplitter, QFrame
 )
-from PySide6.QtCore import QTimer, Qt, Signal, QThread
-from PySide6.QtGui import QFont, QPalette, QColor
+from PyQt6.QtCore import QTimer, Qt, pyqtSignal as Signal, QThread
+from PyQt6.QtGui import QFont, QPalette, QColor
 
 from ui.shared.base_classes import BasePage
 from ui.shared.mixins import LayoutMixin

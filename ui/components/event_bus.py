@@ -12,7 +12,7 @@
 
 import logging
 from typing import Dict, List, Callable, Any, Optional
-from PySide6.QtCore import QObject, Signal, QTimer
+from PyQt6.QtCore import QObject, pyqtSignal as Signal, QTimer
 
 
 class EventBus(QObject):

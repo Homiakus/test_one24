@@ -4,8 +4,8 @@
 import logging
 from typing import Optional
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout
-from PySide6.QtCore import Signal
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtCore import pyqtSignal as pyqtSignal as Signal
 
 from ..shared.base_classes import BasePage as SharedBasePage
 from ..shared.mixins import (

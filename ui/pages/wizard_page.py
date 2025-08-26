@@ -2,11 +2,11 @@
 Страница мастера настройки
 """
 from typing import Dict, Optional, Any
-from PySide6.QtWidgets import (
+from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QProgressBar,
     QSizePolicy, QStackedLayout, QGroupBox, QCheckBox, QMessageBox
 )
-from PySide6.QtCore import Qt, Signal
+from PyQt6.QtCore import Qt, pyqtSignal as Signal
 
 from .base_page import BasePage
 from ..widgets.modern_widgets import ModernCard, ModernButton
