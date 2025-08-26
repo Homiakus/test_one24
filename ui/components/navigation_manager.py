@@ -12,8 +12,8 @@
 
 import logging
 from typing import Dict, Optional, List, Callable
-from PySide6.QtWidgets import QPushButton, QStackedWidget
-from PySide6.QtCore import QObject, Signal
+from PyQt6.QtWidgets import QPushButton, QStackedWidget
+from PyQt6.QtCore import QObject, pyqtSignal as Signal
 
 from .event_bus import event_bus
 

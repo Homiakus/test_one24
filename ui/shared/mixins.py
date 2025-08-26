@@ -1,12 +1,12 @@
 """
-Mixins for common UI behavior
+Миксины для UI компонентов
 """
 from typing import Optional, List, Dict, Any
-from PySide6.QtWidgets import (
+from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, 
     QWidget, QFrame, QPushButton, QGridLayout, QSplitter
 )
-from PySide6.QtCore import Signal, Qt
+from PyQt6.QtCore import pyqtSignal as Signal, Qt
 
 
 class LayoutMixin:

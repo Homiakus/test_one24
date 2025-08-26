@@ -2,11 +2,11 @@
 Страница настроек
 """
 from typing import List
-from PySide6.QtWidgets import (
+from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QComboBox,
     QCheckBox, QScrollArea, QFormLayout, QWidget
 )
-from PySide6.QtCore import Signal
+from PyQt6.QtCore import pyqtSignal as Signal
 
 from .base_page import BasePage
 from ..widgets.modern_widgets import ModernCard, ModernButton

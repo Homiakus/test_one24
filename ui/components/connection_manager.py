@@ -12,8 +12,8 @@
 
 import logging
 from typing import Optional, Dict, Any
-from PySide6.QtCore import QObject, Signal, QTimer
-from PySide6.QtWidgets import QLabel, QStatusBar
+from PyQt6.QtCore import QObject, pyqtSignal as Signal, QTimer
+from PyQt6.QtWidgets import QLabel, QStatusBar
 
 from core.serial_manager import SerialManager
 from .event_bus import event_bus

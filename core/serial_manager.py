@@ -1,8 +1,5 @@
 """
-Менеджер работы с Serial-портом.
-
-Этот модуль предоставляет функциональность для работы с последовательными портами,
-включая подключение, отправку команд, чтение данных и управление потоками.
+Менеджер последовательного соединения
 """
 import logging
 import threading
@@ -13,7 +10,7 @@ from contextlib import contextmanager
 
 import serial
 import serial.tools.list_ports
-from PySide6.QtCore import QThread, Signal
+from PyQt6.QtCore import QThread, pyqtSignal as Signal
 
 
 class InterruptibleThread(threading.Thread):

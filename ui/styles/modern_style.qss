@@ -1,0 +1,553 @@
+/* Современные стили для PyQt6 приложения */
+
+/* Основные цвета */
+* {
+    --primary-color: #2196F3;
+    --primary-dark: #1976D2;
+    --primary-light: #BBDEFB;
+    --secondary-color: #FF9800;
+    --success-color: #4CAF50;
+    --warning-color: #FFC107;
+    --danger-color: #F44336;
+    --info-color: #00BCD4;
+    
+    --background-color: #FAFAFA;
+    --surface-color: #FFFFFF;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-disabled: #BDBDBD;
+    
+    --border-color: #E0E0E0;
+    --divider-color: #EEEEEE;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Темная тема */
+[theme="dark"] {
+    --background-color: #121212;
+    --surface-color: #1E1E1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --text-disabled: #666666;
+    
+    --border-color: #333333;
+    --divider-color: #2A2A2A;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Главное окно */
+QMainWindow {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+/* Боковая панель */
+#sidebar {
+    background-color: var(--surface-color);
+    border-right: 1px solid var(--border-color);
+    min-width: 250px;
+    max-width: 300px;
+}
+
+#sidebar_title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-primary);
+    padding: 10px;
+}
+
+#sidebar_subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 5px 10px;
+}
+
+/* Кнопки навигации */
+#nav_button {
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 2px 8px;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+#nav_button:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+#nav_button:checked {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+#nav_button:pressed {
+    background-color: var(--primary-dark);
+    transform: scale(0.98);
+}
+
+/* Разделители */
+#separator {
+    background-color: var(--divider-color);
+    border: none;
+    height: 1px;
+    margin: 8px 16px;
+}
+
+/* Статус подключения */
+#connection_status {
+    font-size: 12px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+/* Современные карточки */
+#modern_card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 8px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+#card_title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+/* Кнопки */
+QPushButton {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    min-height: 36px;
+    transition: all 0.2s ease;
+}
+
+QPushButton:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+QPushButton:pressed {
+    background-color: var(--primary-dark);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+QPushButton:disabled {
+    background-color: var(--text-disabled);
+    color: var(--text-secondary);
+}
+
+/* Вторичные кнопки */
+QPushButton[class="secondary"] {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+QPushButton[class="secondary"]:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Кнопки успеха */
+QPushButton[class="success"] {
+    background-color: var(--success-color);
+}
+
+QPushButton[class="success"]:hover {
+    background-color: #388E3C;
+}
+
+/* Кнопки предупреждения */
+QPushButton[class="warning"] {
+    background-color: var(--warning-color);
+    color: #212121;
+}
+
+QPushButton[class="warning"]:hover {
+    background-color: #FFA000;
+}
+
+/* Кнопки опасности */
+QPushButton[class="danger"] {
+    background-color: var(--danger-color);
+}
+
+QPushButton[class="danger"]:hover {
+    background-color: #D32F2F;
+}
+
+/* Поля ввода */
+QLineEdit {
+    background-color: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    min-height: 20px;
+    transition: all 0.2s ease;
+}
+
+QLineEdit:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+QLineEdit:disabled {
+    background-color: var(--divider-color);
+    color: var(--text-disabled);
+}
+
+/* Выпадающие списки */
+QComboBox {
+    background-color: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    min-height: 20px;
+    transition: all 0.2s ease;
+}
+
+QComboBox:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: url(resources/icons/dropdown.png);
+    width: 12px;
+    height: 12px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: var(--surface-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    selection-background-color: var(--primary-light);
+    selection-color: var(--primary-dark);
+}
+
+/* Чекбоксы */
+QCheckBox {
+    spacing: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--surface-color);
+    transition: all 0.2s ease;
+}
+
+QCheckBox::indicator:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    image: url(resources/icons/check.png);
+}
+
+QCheckBox::indicator:hover {
+    border-color: var(--primary-color);
+}
+
+/* Радиокнопки */
+QRadioButton {
+    spacing: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--surface-color);
+    transition: all 0.2s ease;
+}
+
+QRadioButton::indicator:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+QRadioButton::indicator:hover {
+    border-color: var(--primary-color);
+}
+
+/* Группы */
+QGroupBox {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 16px;
+    padding: 0 8px 0 8px;
+    background-color: var(--background-color);
+}
+
+/* Таблицы */
+QTableWidget {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    gridline-color: var(--divider-color);
+    selection-background-color: var(--primary-light);
+    selection-color: var(--primary-dark);
+}
+
+QTableWidget::item {
+    padding: 8px;
+    border: none;
+}
+
+QTableWidget::item:selected {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+QHeaderView::section {
+    background-color: var(--divider-color);
+    color: var(--text-primary);
+    padding: 8px;
+    border: none;
+    font-weight: bold;
+}
+
+/* Прогресс-бары */
+QProgressBar {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--surface-color);
+    text-align: center;
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+QProgressBar::chunk {
+    background-color: var(--primary-color);
+    border-radius: 6px;
+}
+
+/* Слайдеры */
+QSlider::groove:horizontal {
+    border: 1px solid var(--border-color);
+    height: 8px;
+    background-color: var(--surface-color);
+    border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+    background-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    margin: -6px 0;
+}
+
+QSlider::handle:horizontal:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+/* Вкладки */
+QTabWidget::pane {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--surface-color);
+}
+
+QTabBar::tab {
+    background-color: var(--divider-color);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    margin-right: 2px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+QTabBar::tab:selected {
+    background-color: var(--surface-color);
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+QTabBar::tab:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Скроллбары */
+QScrollBar:vertical {
+    background-color: var(--divider-color);
+    width: 12px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: var(--border-color);
+    border-radius: 6px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: var(--text-secondary);
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+/* Диалоги */
+QDialog {
+    background-color: var(--background-color);
+}
+
+QMessageBox {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+QMessageBox QLabel {
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* Меню */
+QMenu {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+QMenu::item {
+    padding: 8px 16px;
+    border-radius: 4px;
+    color: var(--text-primary);
+}
+
+QMenu::item:selected {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+/* Статусная строка */
+QStatusBar {
+    background-color: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* Информационная панель */
+#info_panel {
+    background-color: var(--surface-color);
+    border-left: 1px solid var(--border-color);
+    min-width: 300px;
+    max-width: 400px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Применение анимаций */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    #sidebar {
+        max-width: 200px;
+    }
+    
+    #nav_button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    #modern_card {
+        margin: 4px;
+        padding: 12px;
+    }
+}
+
+/* Высокий DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    * {
+        font-size: 16px;
+    }
+    
+    #nav_button {
+        padding: 14px 18px;
+    }
+    
+    QLineEdit, QComboBox {
+        padding: 12px 14px;
+    }
+}

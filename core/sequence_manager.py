@@ -1,17 +1,16 @@
 """
-Менеджер последовательностей команд с thread-safety и валидацией
+Менеджер последовательностей команд
 """
-import re
-import time
 import logging
+import time
 import threading
-from typing import List, Dict, Optional, Set, Tuple, Any
+from typing import Dict, List, Optional, Any, Callable, Tuple, Set
 from dataclasses import dataclass, field
-from queue import Queue, Empty
 from enum import Enum
-from contextlib import contextmanager
+import json
+import re
 
-from PySide6.QtCore import QThread, Signal
+from PyQt6.QtCore import QThread, pyqtSignal as Signal
 
 from .multizone_manager import MultizoneManager
 from .tag_manager import TagManager

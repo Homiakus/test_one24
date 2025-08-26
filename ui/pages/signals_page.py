@@ -2,16 +2,15 @@
 """
 Страница управления сигналами UART
 """
-
-from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-    QLabel, QLineEdit, QComboBox, QPushButton, QTableWidget,
-    QTableWidgetItem, QHeaderView, QGroupBox, QTextEdit,
-    QSplitter, QFrame, QMessageBox, QSpinBox, QDoubleSpinBox,
-    QCheckBox, QTabWidget, QScrollArea
+from typing import Dict, Optional, Any, List
+from PyQt6.QtWidgets import (
+    QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QGridLayout, QGroupBox, QCheckBox, QLineEdit,
+    QComboBox, QSpinBox, QTextEdit, QMessageBox,
+    QTableWidget, QTableWidgetItem, QHeaderView
 )
-from PySide6.QtCore import Qt, Signal, QTimer
-from PySide6.QtGui import QFont, QColor, QPalette
+from PyQt6.QtCore import Qt, pyqtSignal as Signal, QTimer
+from PyQt6.QtGui import QFont, QColor, QPalette
 
 from core.signal_types import SignalType
 from core.signal_manager import SignalManager

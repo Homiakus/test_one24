@@ -12,11 +12,11 @@ from typing import Optional, NoReturn
 
 # Проверка критических зависимостей
 try:
-    from PySide6.QtWidgets import QApplication, QMessageBox
-    from PySide6.QtCore import Qt
+    from PyQt6.QtWidgets import QApplication, QMessageBox
+    from PyQt6.QtCore import Qt
 except ImportError as e:
-    print(f"Критическая ошибка: Не удалось импортировать PySide6: {e}")
-    print("Убедитесь, что PySide6 установлен: pip install PySide6")
+    print(f"Критическая ошибка: Не удалось импортировать PyQt6: {e}")
+    print("Убедитесь, что PyQt6 установлен: pip install PyQt6")
     sys.exit(1)
 
 # Проверка qt_material с graceful fallback

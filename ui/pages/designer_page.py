@@ -1,13 +1,13 @@
 """
-Страница конструктора
+Страница конструктора последовательностей
 """
 from typing import List, Dict
-from PySide6.QtWidgets import (
-    QVBoxLayout, QHBoxLayout, QLabel, QListWidget,
-    QListWidgetItem, QTextEdit, QSplitter, QInputDialog,
-    QMessageBox, QLineEdit
+from PyQt6.QtWidgets import (
+    QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QGridLayout, QGroupBox, QSizePolicy, QTextEdit,
+    QLineEdit, QComboBox, QSpinBox, QCheckBox
 )
-from PySide6.QtCore import Signal, Qt
+from PyQt6.QtCore import pyqtSignal as Signal, Qt
 
 from .base_page import BasePage
 from ..widgets.modern_widgets import ModernCard, ModernButton

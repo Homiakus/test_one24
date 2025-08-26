@@ -2,11 +2,11 @@
 Страница последовательностей
 """
 from typing import List, Dict
-from PySide6.QtWidgets import (
-    QHBoxLayout, QLabel, QListWidget, QListWidgetItem, 
-    QTextEdit, QSplitter
+from PyQt6.QtWidgets import (
+    QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QGridLayout, QGroupBox, QTextEdit, QMessageBox
 )
-from PySide6.QtCore import Signal, Qt
+from PyQt6.QtCore import pyqtSignal as Signal, Qt
 
 from .base_page import BasePage
 from ..shared.utils import create_input_dialog, create_confirmation_dialog

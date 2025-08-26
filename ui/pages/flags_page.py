@@ -2,14 +2,15 @@
 Страница управления флагами для условного выполнения последовательностей
 """
 import logging
-from typing import Dict, Optional
-from PySide6.QtWidgets import (
+from typing import Dict, Optional, Any
+from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QLabel, QPushButton, QCheckBox, QGroupBox, QScrollArea,
-    QFrame, QSpacerItem, QSizePolicy
+    QFrame, QSpacerItem, QSizePolicy, QLineEdit, QComboBox,
+    QSpinBox, QTextEdit, QMessageBox
 )
-from PySide6.QtCore import Qt, Signal, QTimer
-from PySide6.QtGui import QFont, QPalette, QColor
+from PyQt6.QtCore import Qt, pyqtSignal as Signal, QTimer
+from PyQt6.QtGui import QFont, QPalette, QColor
 
 from ui.widgets.modern_widgets import ModernCard
 from core.sequence_manager import SequenceManager

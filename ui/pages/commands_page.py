@@ -1,11 +1,12 @@
 """
-Страница команд
+Страница команд управления
 """
 from typing import Dict
-from PySide6.QtWidgets import (
-    QHBoxLayout, QLineEdit, QTextEdit, QMessageBox
+from PyQt6.QtWidgets import (
+    QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QGridLayout, QGroupBox, QSizePolicy
 )
-from PySide6.QtCore import Signal
+from PyQt6.QtCore import pyqtSignal as Signal
 
 from .base_page import BasePage
 from ..shared.utils import create_confirmation_dialog

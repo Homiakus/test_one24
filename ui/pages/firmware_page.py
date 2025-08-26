@@ -1,11 +1,12 @@
 """
 Страница прошивки
 """
-from PySide6.QtWidgets import (
-    QVBoxLayout, QHBoxLayout, QLabel, QProgressBar,
-    QTextEdit, QFileDialog, QMessageBox, QComboBox
+from typing import Optional
+from PyQt6.QtWidgets import (
+    QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QProgressBar, QFileDialog, QMessageBox, QGroupBox
 )
-from PySide6.QtCore import Signal
+from PyQt6.QtCore import pyqtSignal as Signal
 
 from .base_page import BasePage
 from ..widgets.modern_widgets import ModernCard, ModernButton
