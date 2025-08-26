@@ -5,7 +5,7 @@ import logging
 from typing import Dict, Optional
 from pathlib import Path
 
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal as Signal, QPropertyAnimation, QRect, QEasingCurve
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QPropertyAnimation, QRect, QEasingCurve
 from PyQt6.QtGui import QKeyEvent, QMouseEvent
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
@@ -340,7 +340,7 @@ class MainWindow(QMainWindow):
         # Кнопка меню
         self.menu_button = QToolButton()
         self.menu_button.setText("☰")
-        self.menu_button.setPopupMode(QToolButton.InstantPopup)
+        self.menu_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
         self.menu_button.clicked.connect(self._toggle_sidebar)
         self.menu_button.setFixedSize(40, 40)
         self.menu_button.setStyleSheet("""

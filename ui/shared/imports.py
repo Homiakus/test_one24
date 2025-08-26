@@ -16,14 +16,14 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import (
     Qt, QTimer, QThread, QObject, QEvent, QSize, QPoint,
     QRect, QPropertyAnimation, QEasingCurve, QParallelAnimationGroup,
-    QSequentialAnimationGroup, Signal, Slot, QUrl, QDir, QFile,
+    QSequentialAnimationGroup, pyqtSignal, pyqtSlot, QUrl, QDir, QFile,
     QFileInfo, QDateTime, QDate, QTime, QLocale, QTranslator
 )
 
 from PyQt6.QtGui import (
     QFont, QFontMetrics, QFontInfo, QPalette, QColor,
     QPixmap, QIcon, QPainter, QPen, QBrush, QLinearGradient,
-    QRadialGradient, QConicalGradient, QTransform, QMatrix,
+    QRadialGradient, QConicalGradient, QTransform,
     QKeySequence, QShortcut, QCursor, QDrag, QDropEvent,
     QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent
 )

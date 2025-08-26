@@ -4,12 +4,12 @@
 """
 from typing import Dict, Optional, Any, List
 from PyQt6.QtWidgets import (
-    QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QGridLayout, QGroupBox, QCheckBox, QLineEdit,
     QComboBox, QSpinBox, QTextEdit, QMessageBox,
-    QTableWidget, QTableWidgetItem, QHeaderView
+    QTableWidget, QTableWidgetItem, QHeaderView, QTabWidget
 )
-from PyQt6.QtCore import Qt, pyqtSignal as Signal, QTimer
+from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtGui import QFont, QColor, QPalette
 
 from core.signal_types import SignalType
@@ -21,7 +21,7 @@ from config.config_loader import ConfigLoader
 class SignalConfigWidget(QWidget):
     """Виджет для настройки конфигурации сигналов"""
     
-    signal_config_changed = Signal()
+    signal_config_changed = pyqtSignal()
     
     def __init__(self, config_loader: ConfigLoader, parent=None):
         super().__init__(parent)
@@ -35,7 +35,7 @@ class SignalConfigWidget(QWidget):
         
         # Заголовок
         title = QLabel("Настройка сигналов UART")
-        title.setFont(QFont("Arial", 14, QFont.Bold))
+        title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         layout.addWidget(title)
         
         # Форма добавления сигнала
@@ -80,7 +80,7 @@ class SignalConfigWidget(QWidget):
         self.signals_table.setHorizontalHeaderLabels([
             "Сигнал", "Переменная", "Тип", "Действия"
         ])
-        self.signals_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.signals_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         table_layout.addWidget(self.signals_table)
         
         # Кнопки управления таблицей
@@ -206,7 +206,7 @@ class SignalMonitorWidget(QWidget):
         
         # Заголовок
         title = QLabel("Мониторинг сигналов UART")
-        title.setFont(QFont("Arial", 14, QFont.Bold))
+        title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         layout.addWidget(title)
         
         # Статистика
@@ -238,7 +238,7 @@ class SignalMonitorWidget(QWidget):
         self.values_table.setHorizontalHeaderLabels([
             "Сигнал", "Переменная", "Значение", "Тип"
         ])
-        self.values_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.values_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         values_layout.addWidget(self.values_table)
         
         # Кнопки

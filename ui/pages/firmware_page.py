@@ -4,7 +4,7 @@
 from typing import Optional
 from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
-    QProgressBar, QFileDialog, QMessageBox, QGroupBox
+    QProgressBar, QFileDialog, QMessageBox, QGroupBox, QComboBox, QTextEdit
 )
 from PyQt6.QtCore import pyqtSignal as Signal
 

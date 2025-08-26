@@ -43,7 +43,7 @@ class OverlayPanel(QWidget):
         """Настройка интерфейса"""
         # Используем stacked layout для наложения
         self._stack = QStackedLayout(self)
-        self._stack.setStackingMode(QStackedLayout.StackAll)
+        self._stack.setStackingMode(QStackedLayout.StackingMode.StackAll)
         self._stack.setContentsMargins(0, 0, 0, 0)
 
         # Изображение
@@ -51,8 +51,8 @@ class OverlayPanel(QWidget):
         self._image_label.setScaledContents(False)
         self._image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._image_label.setSizePolicy(
-            QSizePolicy.Expanding,
-            QSizePolicy.Expanding
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding
         )
         self._stack.addWidget(self._image_label)
 
@@ -60,8 +60,8 @@ class OverlayPanel(QWidget):
         self._overlay = QWidget()
         self._overlay.setStyleSheet("background: transparent;")
         self._overlay.setSizePolicy(
-            QSizePolicy.Expanding,
-            QSizePolicy.Expanding
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding
         )
         self._stack.addWidget(self._overlay)
 

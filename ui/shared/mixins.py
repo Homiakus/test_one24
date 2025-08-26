@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, 
     QWidget, QFrame, QPushButton, QGridLayout, QSplitter
 )
-from PyQt6.QtCore import pyqtSignal as Signal, Qt
+from PyQt6.QtCore import pyqtSignal, Qt
 
 
 class LayoutMixin:
@@ -99,10 +99,15 @@ class CardMixin:
 class SignalMixin:
     """Mixin for common signals"""
     
-    # Common signals that can be used by any widget
-    status_message = Signal(str, int)  # message, timeout
-    terminal_message = Signal(str, str)  # message, type
-    error_occurred = Signal(str, str)  # error_message, error_type
+    def __init__(self):
+        """Initialize signals"""
+        super().__init__()
+        # Common signals that can be used by any widget
+        self.status_message = pyqtSignal(str, int)  # message, timeout
+        self.terminal_message = pyqtSignal(str, str)  # message, type
+        self.error_occurred = pyqtSignal(str, str)  # error_message, error_type
+        self.page_loaded = pyqtSignal(str)  # page_name
+        self.page_closed = pyqtSignal(str)  # page_name
     
     def emit_status(self, message: str, timeout: int = 3000):
         """Emit status message"""
@@ -115,6 +120,14 @@ class SignalMixin:
     def emit_error(self, error_message: str, error_type: str = "error"):
         """Emit error message"""
         self.error_occurred.emit(error_message, error_type)
+    
+    def emit_page_loaded(self, page_name: str):
+        """Emit page loaded signal"""
+        self.page_loaded.emit(page_name)
+    
+    def emit_page_closed(self, page_name: str):
+        """Emit page closed signal"""
+        self.page_closed.emit(page_name)
 
 
 class ButtonMixin:

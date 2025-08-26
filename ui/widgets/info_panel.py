@@ -9,7 +9,7 @@ import logging
 from typing import Optional, List
 from datetime import datetime
 
-from PyQt6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QTimer, pyqtSignal as pyqtSignal as Signal
+from PyQt6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont, QTextCursor, QColor, QPalette
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
@@ -36,8 +36,8 @@ class ConsoleWidget(QTextEdit):
         
         # Настройка цветов
         palette = self.palette()
-        palette.setColor(QPalette.Base, QColor("#1e1e1e"))
-        palette.setColor(QPalette.Text, QColor("#ffffff"))
+        palette.setColor(QPalette.ColorRole.Base, QColor("#1e1e1e"))
+        palette.setColor(QPalette.ColorRole.Text, QColor("#ffffff"))
         self.setPalette(palette)
         
         # Настройка стилей
@@ -73,7 +73,7 @@ class ConsoleWidget(QTextEdit):
         
         # Добавляем сообщение
         cursor = self.textCursor()
-        cursor.movePosition(QTextCursor.End)
+        cursor.movePosition(QTextCursor.MoveOperation.End)
         self.setTextCursor(cursor)
         self.insertHtml(formatted_message)
         
@@ -184,7 +184,7 @@ class DiagnosticsWidget(QWidget):
         formatted_message = f"[{timestamp}] {level}: {message}\n"
         
         cursor = self.diagnostics_area.textCursor()
-        cursor.movePosition(QTextCursor.End)
+        cursor.movePosition(QTextCursor.MoveOperation.End)
         self.diagnostics_area.setTextCursor(cursor)
         self.diagnostics_area.insertPlainText(formatted_message)
         

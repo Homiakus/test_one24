@@ -119,7 +119,7 @@ class MonitoringPage(BasePage, LayoutMixin):
     def create_status_frame(self) -> QFrame:
         """Создание фрейма статуса системы"""
         frame = QFrame()
-        frame.setFrameStyle(QFrame.StyledPanel)
+        frame.setFrameStyle(QFrame.Shape.StyledPanel)
         
         layout = QGridLayout()
         frame.setLayout(layout)

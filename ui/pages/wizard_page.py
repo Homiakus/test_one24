@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QProgressBar,
     QSizePolicy, QStackedLayout, QGroupBox, QCheckBox, QMessageBox
 )
-from PyQt6.QtCore import Qt, pyqtSignal as Signal
+from PyQt6.QtCore import Qt, pyqtSignal
 
 from .base_page import BasePage
 from ..widgets.modern_widgets import ModernCard, ModernButton
@@ -25,8 +25,8 @@ class WizardPage(BasePage):
     """Страница мастера настройки"""
 
     # Сигналы
-    sequence_requested = Signal(str, int)  # sequence_name, next_step_id
-    zone_selection_changed = Signal(dict)  # zones dict
+    sequence_requested = pyqtSignal(str, int)  # sequence_name, next_step_id
+    zone_selection_changed = pyqtSignal(dict)  # zones dict
 
     def __init__(self, wizard_config: Dict, multizone_manager=None, parent=None):
         self.wizard_config = wizard_config
@@ -335,7 +335,7 @@ class WizardPage(BasePage):
             self.multizone_manager
         )
         self.left_panel.state_changed.connect(self._on_zone_changed)
-        self.left_panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.left_panel.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         # Правая панель
         self.right_panel = OverlayPanel(
@@ -344,7 +344,7 @@ class WizardPage(BasePage):
             self.multizone_manager
         )
         self.right_panel.state_changed.connect(self._on_zone_changed)
-        self.right_panel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.right_panel.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         panels_layout.addWidget(self.left_panel, 1)
         panels_layout.addWidget(self.right_panel, 1)

@@ -49,8 +49,8 @@ def safe_import_check() -> bool:
         True если все импорты успешны, False в противном случае
     """
     critical_modules = [
-        ('PySide6.QtWidgets', 'PySide6'),
-        ('PySide6.QtCore', 'PySide6'),
+        ('PyQt6.QtWidgets', 'PyQt6'),
+        ('PyQt6.QtCore', 'PyQt6'),
         ('ui.main_window', 'ui.main_window'),
         ('utils.logger', 'utils.logger'),
     ]

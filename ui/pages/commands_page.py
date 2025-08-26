@@ -4,7 +4,7 @@
 from typing import Dict
 from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
-    QGridLayout, QGroupBox, QSizePolicy
+    QGridLayout, QGroupBox, QSizePolicy, QLineEdit, QTextEdit
 )
 from PyQt6.QtCore import pyqtSignal as Signal
 

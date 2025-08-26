@@ -32,6 +32,7 @@ logs/
 .pytest_cache/
 .coverage
 htmlcov/
+coverage.xml
 
 # Virtual Environment
 venv/
@@ -48,4 +49,20 @@ ENV/
 
 # OS specific
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Benchmark results
+.benchmarks/
+
+# Arduino build artifacts
+.pio/
+.vscode/
+
+# Backup directories
+backups/ 

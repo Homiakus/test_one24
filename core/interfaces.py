@@ -6,7 +6,7 @@
 dependency injection.
 """
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional, Any, Protocol, Callable, Union
+from typing import Dict, List, Optional, Any, Protocol, Callable, Union, Tuple, Set
 from dataclasses import dataclass
 
 from .tag_types import TagType, TagInfo, TagResult, ParsedCommand
@@ -156,6 +156,130 @@ class ISequenceManager(ABC):
     @abstractmethod
     def clear_cache(self) -> None:
         """Очистка кеша"""
+        pass
+
+
+class ISequenceExpander(ABC):
+    """
+    Интерфейс расширителя последовательностей.
+    
+    Определяет контракт для расширения последовательностей команд,
+    включая обработку вложенных последовательностей и оптимизацию.
+    """
+    
+    @abstractmethod
+    def expand_sequence(self, sequence_name: str, sequences: Dict[str, List[str]], 
+                       buttons_config: Dict[str, str], visited: Optional[Set[str]] = None) -> List[str]:
+        """
+        Расширение последовательности в список команд.
+        
+        Args:
+            sequence_name: Имя последовательности для расширения
+            sequences: Словарь всех доступных последовательностей
+            buttons_config: Конфигурация кнопок
+            visited: Множество уже посещенных последовательностей (для предотвращения циклов)
+            
+        Returns:
+            Список команд после расширения последовательности
+        """
+        pass
+    
+    @abstractmethod
+    def clear_cache(self) -> None:
+        """
+        Очистка кеша расширений.
+        """
+        pass
+    
+    @abstractmethod
+    def get_cache_stats(self) -> Dict[str, Any]:
+        """
+        Получение статистики кеша.
+        
+        Returns:
+            Словарь со статистикой использования кеша
+        """
+        pass
+    
+    @abstractmethod
+    def optimize_sequence(self, sequence: List[str]) -> List[str]:
+        """
+        Оптимизация последовательности команд.
+        
+        Args:
+            sequence: Исходная последовательность команд
+            
+        Returns:
+            Оптимизированная последовательность команд
+        """
+        pass
+
+
+class ISequenceSearcher(ABC):
+    """
+    Интерфейс поисковика последовательностей.
+    
+    Определяет контракт для поиска и фильтрации последовательностей,
+    включая индексацию и оптимизированный поиск.
+    """
+    
+    @abstractmethod
+    def build_index(self, sequences: Dict[str, List[str]], buttons_config: Dict[str, str]) -> None:
+        """
+        Построение индекса для быстрого поиска.
+        
+        Args:
+            sequences: Словарь последовательностей
+            buttons_config: Конфигурация кнопок
+        """
+        pass
+    
+    @abstractmethod
+    def search_sequences(self, query: str, search_type: str = "contains", 
+                        max_results: int = 100) -> List[str]:
+        """
+        Поиск последовательностей по запросу.
+        
+        Args:
+            query: Поисковый запрос
+            search_type: Тип поиска (exact, contains, starts_with, ends_with, wildcard, regex)
+            max_results: Максимальное количество результатов
+            
+        Returns:
+            Список найденных последовательностей
+        """
+        pass
+    
+    @abstractmethod
+    def filter_sequences(self, filter_func: Callable[[str, List[str]], bool], 
+                        sequences: Dict[str, List[str]]) -> List[str]:
+        """
+        Фильтрация последовательностей по пользовательской функции.
+        
+        Args:
+            filter_func: Функция фильтрации
+            sequences: Словарь последовательностей
+            
+        Returns:
+            Список отфильтрованных последовательностей
+        """
+        pass
+    
+    @abstractmethod
+    def get_search_stats(self) -> Dict[str, Any]:
+        """
+        Получение статистики поиска.
+        
+        Returns:
+            Словарь со статистикой поиска
+        """
+        pass
+    
+    @abstractmethod
+    def clear_cache(self) -> None:
+        """
+        Очистка кеша поиска.
+        """
         pass
 
 
@@ -811,6 +935,58 @@ class ISignalValidator(ABC):
     @abstractmethod
     def validate_signal_config(self, config: Dict[str, str]) -> bool:
         """Валидация конфигурации сигналов"""
+        pass
+
+
+class ICommandValidator(ABC):
+    """
+    Интерфейс валидатора команд.
+    
+    Определяет контракт для валидации команд,
+    включая проверку синтаксиса, семантики и структуры.
+    """
+    
+    @abstractmethod
+    def validate_command(self, command: str) -> bool:
+        """
+        Валидация отдельной команды.
+        
+        Args:
+            command: Команда для валидации
+            
+        Returns:
+            True если команда валидна, False в противном случае
+        """
+        pass
+    
+    @abstractmethod
+    def validate_sequence(self, sequence: List[str]) -> Tuple[bool, List[str]]:
+        """
+        Валидация последовательности команд.
+        
+        Args:
+            sequence: Список команд для валидации
+            
+        Returns:
+            Кортеж (валидность, список ошибок)
+        """
+        pass
+    
+    @abstractmethod
+    def get_validation_errors(self) -> List[str]:
+        """
+        Получение списка ошибок валидации.
+        
+        Returns:
+            Список сообщений об ошибках
+        """
+        pass
+    
+    @abstractmethod
+    def clear_errors(self) -> None:
+        """
+        Очистка списка ошибок валидации.
+        """
         pass
 
 

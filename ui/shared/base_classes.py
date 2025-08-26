@@ -6,7 +6,7 @@ from typing import Optional, Dict, Any
 from abc import ABC, abstractmethod
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QDialog, QMainWindow
-from PyQt6.QtCore import pyqtSignal as Signal, Qt
+from PyQt6.QtCore import pyqtSignal, Qt
 
 
 class BaseWidget(QWidget):
@@ -34,16 +34,16 @@ class BaseWidget(QWidget):
 class BasePage(BaseWidget):
     """Base class for all application pages"""
     
-    # Common signals for all pages
-    status_message = Signal(str, int)  # message, timeout
-    terminal_message = Signal(str, str)  # message, type
-    page_loaded = Signal(str)  # page_name
-    page_closed = Signal(str)  # page_name
+    # Common signals for all pages - должны быть определены на уровне класса
+    status_message = pyqtSignal(str, int)  # message, timeout
+    terminal_message = pyqtSignal(str, str)  # message, type
+    page_loaded = pyqtSignal(str)  # page_name
+    page_closed = pyqtSignal(str)  # page_name
     
     def __init__(self, page_name: str = "", parent=None):
         self.page_name = page_name or self.__class__.__name__
         super().__init__(parent)
-        self.page_loaded.emit(self.page_name)
+        # Сигналы определены на уровне класса
     
     def closeEvent(self, event):
         """Handle page close event"""
@@ -60,8 +60,8 @@ class BasePage(BaseWidget):
 class BaseDialog(QDialog):
     """Base dialog class with common functionality"""
     
-    dialog_accepted = Signal(dict)  # result_data
-    dialog_rejected = Signal()
+    dialog_accepted = pyqtSignal(dict)  # result_data
+    dialog_rejected = pyqtSignal()
     
     def __init__(self, title: str = "", parent=None):
         super().__init__(parent)

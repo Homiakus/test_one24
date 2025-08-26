@@ -2,7 +2,7 @@
 Современные виджеты для интерфейса
 """
 from typing import Optional
-from PyQt6.QtCore import Qt, pyqtSignal as pyqtSignal as Signal
+from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont, QColor, QIntValidator
 from PyQt6.QtWidgets import (
     QFrame, QVBoxLayout, QHBoxLayout, QLabel,
@@ -72,7 +72,7 @@ class ModernButton(QPushButton):
 class NumericPadDialog(QDialog):
     """Диалог для ввода чисел с виртуальной клавиатурой"""
 
-    value_changed = Signal(int)
+    value_changed = pyqtSignal(int)
 
     def __init__(self, initial_value: int = 0, min_value: int = 0,
                  max_value: int = 9999, parent=None):

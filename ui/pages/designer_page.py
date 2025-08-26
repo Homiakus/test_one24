@@ -5,7 +5,7 @@ from typing import List, Dict
 from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QGridLayout, QGroupBox, QSizePolicy, QTextEdit,
-    QLineEdit, QComboBox, QSpinBox, QCheckBox
+    QLineEdit, QComboBox, QSpinBox, QCheckBox, QSplitter, QListWidget, QListWidgetItem
 )
 from PyQt6.QtCore import pyqtSignal as Signal, Qt
 

@@ -5,7 +5,7 @@ import logging
 from typing import Optional
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout
-from PyQt6.QtCore import pyqtSignal as pyqtSignal as Signal
+from PyQt6.QtCore import pyqtSignal
 
 from ..shared.base_classes import BasePage as SharedBasePage
 from ..shared.mixins import (
@@ -21,6 +21,9 @@ class BasePage(SharedBasePage, LayoutMixin, TitleMixin, ScrollableMixin,
     def __init__(self, page_name: str = "", parent=None):
         super().__init__(page_name, parent)
         self.logger = logging.getLogger(self.__class__.__name__)
+        # Сигналы уже определены в базовом классе
+        # Emit page loaded signal
+        self.page_loaded.emit(self.page_name)
 
     def _setup_ui(self):
         """Настройка интерфейса страницы - использует общие утилиты"""
