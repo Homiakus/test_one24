@@ -1,0 +1,14 @@
+{
+  "documents": [
+    {"path": "docs/overview.md", "type": "overview", "audiences": ["all"], "last_updated": "2025-08-26"},
+    {"path": "docs/architecture/index.md", "type": "architecture", "audiences": ["all"], "last_updated": "2025-08-26"},
+    {"path": "docs/api/index.md", "type": "api_reference", "audiences": ["backend_dev", "qa"], "last_updated": "2025-08-26"},
+    {"path": "docs/how-to/setup.md", "type": "how_to", "audiences": ["all"], "last_updated": "2025-08-26"},
+    {"path": "docs/tutorials/first_run.md", "type": "tutorial", "audiences": ["all"], "last_updated": "2025-08-26"},
+    {"path": "docs/operations/monitoring.md", "type": "operations", "audiences": ["devops", "support"], "last_updated": "2025-08-26"},
+    {"path": "docs/security/threat_model.md", "type": "security", "audiences": ["security", "devops"], "last_updated": "2025-08-26"},
+    {"path": "docs/data/configuration.md", "type": "data", "audiences": ["backend_dev", "devops", "support"], "last_updated": "2025-08-26"},
+    {"path": "docs/migration/index.md", "type": "migration", "audiences": ["backend_dev", "devops"], "last_updated": "2025-08-26"},
+    {"path": "docs/faq.md", "type": "faq", "audiences": ["all"], "last_updated": "2025-08-26"}
+  ]
+}
