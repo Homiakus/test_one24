@@ -295,3 +295,4 @@ class ConditionalProcessor:
     def is_balanced(self) -> bool:
         """Проверить, сбалансированы ли условные блоки"""
         return not self.conditional_state.in_conditional_block
+

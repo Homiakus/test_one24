@@ -424,3 +424,4 @@ class SequenceValidator:
             self.max_sequence_length = max_length
         else:
             self.logger.warning("Максимальная длина последовательности должна быть положительной")
+

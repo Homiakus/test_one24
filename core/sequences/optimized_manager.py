@@ -419,3 +419,4 @@ class OptimizedSequenceManager(ISequenceManager):
                 score += 1  # Обычные команды
         
         return score
+

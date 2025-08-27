@@ -420,3 +420,4 @@ class OptimizedSequenceSearcher(ISequenceSearcher):
                 "cache_size": len(self._search_cache),
                 "max_cache_size": self.max_cache_size
             }
+

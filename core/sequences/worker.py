@@ -371,3 +371,4 @@ class SequenceWorker:
             self.cancellation_token.reset()
         
         self.logger.debug("Состояние воркера сброшено")
+

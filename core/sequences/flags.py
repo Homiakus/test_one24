@@ -58,3 +58,4 @@ class FlagManager:
         """Получить количество флагов"""
         with self._lock:
             return len(self._flags)
+

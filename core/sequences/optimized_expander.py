@@ -366,3 +366,4 @@ class OptimizedSequenceExpander(ISequenceExpander):
             
             # Пересчитываем статистику
             self._stats["expansions"] = len(self._expansion_cache)
+

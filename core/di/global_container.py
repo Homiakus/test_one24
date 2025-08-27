@@ -238,3 +238,4 @@ def scope():
         ...     # Изменения в temp_container не влияют на глобальный контейнер
     """
     return get_container().scope()
+

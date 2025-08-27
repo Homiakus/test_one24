@@ -278,3 +278,4 @@ class DIMetrics:
             return process.memory_info().rss / 1024 / 1024  # В МБ
         except ImportError:
             return None
+

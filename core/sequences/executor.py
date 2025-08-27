@@ -339,3 +339,4 @@ class SequenceExecutor:
         if self.cancellation_token:
             self.cancellation_token.reset()
         self.logger.debug("Состояние исполнителя сброшено")
+

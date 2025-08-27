@@ -82,3 +82,4 @@ class ServiceInstance:
     def can_reuse_instance(self) -> bool:
         """Проверка возможности повторного использования экземпляра"""
         return self.is_singleton() and self.has_instance()
+

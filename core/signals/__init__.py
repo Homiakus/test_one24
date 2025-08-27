@@ -50,3 +50,4 @@ __all__ = [
     'OptimizedSignalProcessor',
     'OptimizedSignalManager'
 ]
+

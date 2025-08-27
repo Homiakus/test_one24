@@ -342,3 +342,4 @@ class ServiceValidator:
                     errors.append(f"Поле 'dependencies' сервиса {service_name} должно быть словарем")
         
         return errors
+

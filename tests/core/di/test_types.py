@@ -241,3 +241,4 @@ class TestServiceInstance:
         )
         
         assert not instance.can_reuse_instance()
+

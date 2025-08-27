@@ -244,3 +244,4 @@ class ResponseAnalyzer:
         
         return (self.response_stats['successful_responses'] / 
                 self.response_stats['total_responses']) * 100.0
+

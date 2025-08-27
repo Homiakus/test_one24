@@ -278,3 +278,4 @@ class ServiceResolver:
         service_instance.created_at = time.time()
         service_instance.last_accessed = time.time()
         service_instance.access_count += 1
+

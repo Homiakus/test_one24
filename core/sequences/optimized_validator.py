@@ -337,3 +337,4 @@ class OptimizedCommandValidator(ICommandValidator):
                 "max_cache_size": self._max_cache_size,
                 "cache_utilization": len(self._validation_cache) / self._max_cache_size * 100
             }
+

@@ -43,3 +43,4 @@ __all__ = [
     'resolve',
     'register'
 ]
+
