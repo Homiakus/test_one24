@@ -1,0 +1,203 @@
+{
+  "main": {
+    "id": "4bcd248d185ae036",
+    "type": "split",
+    "children": [
+      {
+        "id": "492176a8eac68fbd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "588f53c69df79092",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Новая вкладка"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "17b9229b3a96cc85",
+    "type": "split",
+    "children": [
+      {
+        "id": "9f353fd1f50f09af",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "173b3a7741b8f759",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "74a8b38efe770706",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "51998ac6637ff7f3",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5ced6397a1cf270e",
+    "type": "split",
+    "children": [
+      {
+        "id": "11e89077b5f0b395",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c8f62daf61b0c7a0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки"
+            }
+          },
+          {
+            "id": "8ffa6a0981e1949c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки"
+            }
+          },
+          {
+            "id": "ca372b768e379159",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "1d3d999cb7e51643",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "AUDIT_REPORT.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура AUDIT_REPORT"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false
+    }
+  },
+  "active": "173b3a7741b8f759",
+  "lastOpenFiles": [
+    "docs_algoritm/core/serial_communication.md",
+    "docs_algoritm/core/sequence_processing.md",
+    "docs_algoritm/core/command_execution.md",
+    "docs_algoritm/core/initialization.md",
+    "docs_algoritm/core",
+    "docs_algoritm/README.md",
+    "docs_algoritm",
+    "cleanup_final_report.md",
+    "AUDIT_REPORT.md",
+    "README_ALGORITHM.md",
+    "docs/architecture/adr/004-interface-separation.md",
+    "docs/architecture/adr/003-layered-architecture.md",
+    "docs/architecture/adr/002-dependency-injection.md",
+    "docs/architecture/adr/001-pyqt6-framework.md",
+    "docs/architecture/index.md",
+    "docs/_moc/Home.md",
+    "docs/_meta/completion_report.md",
+    "back/0.png",
+    "docs/api/interfaces/command.md",
+    "docs/reports/DOC-011_completion_report.md",
+    "docs/architecture/adr/index.md",
+    "docs/architecture/adr",
+    "docs/reports/DOC-010_completion_report.md",
+    "docs/operations/deployment-guide.md",
+    "docs/api/interfaces/index.md",
+    "docs/guides/contribution-guidelines.md",
+    "docs/guides/performance-optimization.md",
+    "docs/api/interfaces/config.md",
+    "docs/api/interfaces/signal.md",
+    "docs/tutorials/getting-started.md",
+    "docs/api/interfaces",
+    "docs/operations/deployment_config.json",
+    "docs/operations/deployment_scripts.py",
+    "docs/operations"
+  ]
+}

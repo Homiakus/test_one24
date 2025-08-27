@@ -1,0 +1,12 @@
+{
+    "app_name": "pyqt6-app",
+    "app_dir": "/opt/app",
+    "venv_dir": "/opt/app/venv",
+    "config_dir": "/opt/app/config",
+    "log_dir": "/opt/app/logs",
+    "data_dir": "/opt/app/data",
+    "backup_dir": "/opt/backups",
+    "user": "appuser",
+    "port": 8080,
+    "python_version": "3.8"
+}

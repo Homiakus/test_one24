@@ -1,0 +1,142 @@
+project_audit:
+  project_id: "pyqt6-device-control-v3"
+  name: "PyQt6 Device Control Application"
+  version: "3.0"
+  description: "Desktop GUI application for device control with serial communication, multizone management, and sequence execution"
+  
+  stack:
+    languages: ["Python 3.9+"]
+    frameworks: ["PyQt6", "Qt6"]
+    build_tools: ["pip", "pyproject.toml", "ruff", "pytest"]
+    dependencies:
+      core: ["PyQt6==6.9.1", "pyserial>=3.5", "tomli>=2.0.1"]
+      ui: ["qt-material>=2.14"]
+      dev: ["mypy>=1.5.0", "black>=23.0.0", "pytest>=7.4.0"]
+  
+  public_surfaces:
+    apis:
+      - name: "Serial Communication API"
+        path: "core/serial_manager.py"
+        description: "Serial port communication interface"
+      - name: "Command Execution API"
+        path: "core/command_executor.py"
+        description: "Command execution and validation"
+      - name: "Sequence Management API"
+        path: "core/sequences/"
+        description: "Sequence execution and management"
+      - name: "Multizone Management API"
+        path: "core/multizone/"
+        description: "Multi-zone device control"
+      - name: "Tag System API"
+        path: "core/tags/"
+        description: "Tag-based command processing"
+      - name: "Signal Processing API"
+        path: "core/signals/"
+        description: "Signal processing and optimization"
+      - name: "Dependency Injection API"
+        path: "core/di/"
+        description: "DI container and service management"
+    
+    clis: []
+    sdks: []
+    events:
+      - name: "UI Events"
+        path: "ui/shared/event_bus.py"
+        description: "Event bus for UI communication"
+      - name: "Serial Events"
+        path: "core/communication/"
+        description: "Serial communication events"
+    
+    data_schemas:
+      - name: "Configuration Schema"
+        path: "config/"
+        description: "Application configuration"
+      - name: "Tag Types"
+        path: "core/tag_types.py"
+        description: "Tag system data structures"
+      - name: "Signal Types"
+        path: "core/signal_types.py"
+        description: "Signal processing data structures"
+      - name: "Sequence Types"
+        path: "core/sequences/types.py"
+        description: "Sequence execution data structures"
+  
+  docs_found:
+    readmes: ["README.md", "AUDIT_REPORT.md"]
+    guides: []
+    adr: []
+    api_specs: []
+    existing_docs:
+      - path: "AUDIT_REPORT.md"
+        type: "audit_report"
+        status: "complete"
+      - path: "docs/"
+        type: "documentation_folder"
+        status: "empty"
+  
+  gaps:
+    critical:
+      - "Missing comprehensive API documentation"
+      - "No user guides or tutorials"
+      - "No architecture decision records"
+      - "No operational runbooks"
+    high:
+      - "Missing module documentation"
+      - "No code examples"
+      - "No troubleshooting guides"
+    medium:
+      - "No contribution guidelines"
+      - "No deployment documentation"
+    low:
+      - "No internationalization docs"
+      - "No performance optimization guides"
+  
+  audiences:
+    - "backend_dev"
+    - "frontend_dev" 
+    - "devops"
+    - "qa"
+    - "support"
+    - "pm"
+  
+  objectives:
+    - "Create comprehensive API documentation"
+    - "Document architecture and design decisions"
+    - "Provide user guides and tutorials"
+    - "Create operational runbooks"
+    - "Establish documentation maintenance process"
+  
+  risks:
+    - "Complex serial communication protocols"
+    - "Multi-threading and concurrency issues"
+    - "Qt version compatibility"
+    - "Platform-specific serial port handling"
+  
+  success_metrics:
+    doc_coverage_target: ">=85%"
+    freshness_max_days: 30
+    link_health: ">=99%"
+    lint_score: ">=95/100"
+    runnable_examples: ">=20"
+  
+  architecture_overview:
+    pattern: "Layered Architecture with Dependency Injection"
+    layers:
+      - "UI Layer (PyQt6)"
+      - "Business Logic Layer (Core)"
+      - "Communication Layer (Serial)"
+      - "Data Layer (Configuration)"
+    key_components:
+      - "MainWindow - Application entry point"
+      - "DIContainer - Service management"
+      - "SerialManager - Communication"
+      - "CommandExecutor - Business logic"
+      - "SequenceManager - Workflow control"
+      - "TagManager - Command processing"
+      - "MultizoneManager - Device control"
+  
+  testing_strategy:
+    unit_tests: "pytest with 80% coverage target"
+    integration_tests: "Serial communication and UI testing"
+    performance_tests: "Memory and response time monitoring"
+    ui_tests: "PyQt6-specific testing with pytest-qt"

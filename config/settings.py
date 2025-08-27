@@ -48,10 +48,11 @@ class SettingsManager:
         self.serial_settings_file = self.settings_dir / 'serial_settings.json'
         self.update_settings_file = self.settings_dir / 'update_settings.json'
 
+        # Инициализируем logger первым
+        self.logger = logging.getLogger(__name__)
+
         self.serial_settings = self._load_serial_settings()
         self.update_settings = self._load_update_settings()
-
-        self.logger = logging.getLogger(__name__)
 
     def _load_serial_settings(self) -> SerialSettings:
         """Загрузка настроек Serial-порта"""
@@ -86,7 +87,6 @@ class SettingsManager:
         # Создаем настройки по умолчанию
         settings = UpdateSettings()
         settings.platformio_path = str(self.settings_dir / 'arduino')
-        self.save_update_settings()
         return settings
 
     def save_serial_settings(self):

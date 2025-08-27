@@ -1,9 +1,9 @@
 {
     "enable_auto_update": true,
-    "repository_url": "https://github.com/yourusername/yourrepository.git",
+    "repository_url": "",
     "update_check_interval": 3600,
     "auto_connect": true,
-    "platformio_path": "C:/base_2/projects/1pap24/program/test_one24/arduino copy",
+    "platformio_path": "C:\\base_2\\projects\\1pap24\\program\\test_one24\\arduino",
     "upload_port": "",
     "theme": "dark"
 }

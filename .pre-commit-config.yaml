@@ -1,4 +1,5 @@
 repos:
+  # Базовые проверки
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -7,36 +8,515 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-docstring-first
       - id: debug-statements
 
-  - repo: https://github.com/psf/black
-    rev: 23.7.0
+  # Python линтер и форматтер
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.1.6
     hooks:
-      - id: black
-        language_version: python3
-        args: [--line-length=88]
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
 
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
-        args: [--max-line-length=88, --extend-ignore=E203,W503]
-
+  # Проверка типов
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.5.1
+    rev: v1.7.1
     hooks:
       - id: mypy
-        additional_dependencies: [types-PySide6, types-pyserial]
+        additional_dependencies: [types-all]
         args: [--ignore-missing-imports]
 
-  - repo: https://github.com/pycqa/pylint
-    rev: v2.17.5
+  # Проверка безопасности
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
     hooks:
-      - id: pylint
-        args: [--disable=C0114,C0116]
+      - id: bandit
+        args: [-r, ., -f, json, -o, bandit-report.json]
+        exclude: ^tests/
 
+  # Проверка импортов
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
       - id: isort
-        args: [--profile=black, --line-length=88]
+        args: [--profile, black]
+
+  # Проверка документации
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        args: [--convention=google]
+
+  # Проверка Jupyter notebooks
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.7.1
+    hooks:
+      - id: nbqa-ruff
+      - id: nbqa-isort
+
+  # Проверка Markdown
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.37.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
+
+  # Проверка YAML
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args: [-c, .yamllint]
+
+  # Проверка JSON
+  - repo: https://github.com/pre-commit/mirrors-jsonlint
+    rev: v1.6.3
+    hooks:
+      - id: jsonlint
+
+  # Проверка TOML
+  - repo: https://github.com/sirosen/check-jsonschema
+    rev: 0.21.0
+    hooks:
+      - id: check-toml
+
+  # Проверка лицензий
+  - repo: https://github.com/apache/skywalking-eyes
+    rev: main
+    hooks:
+      - id: license-eye
+        args: [header, fix]
+
+  # Проверка зависимостей
+  - repo: https://github.com/PyCQA/safety
+    rev: 2.3.5
+    hooks:
+      - id: safety
+        args: [check, --json, --output, safety-report.json]
+
+  # Проверка размера файлов
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+
+  # Проверка секретов
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+
+  # Проверка дублирования кода
+  - repo: https://github.com/pre-commit/mirrors-jscpd
+    rev: v3.5.10
+    hooks:
+      - id: jscpd
+        args: [--threshold, 5, --reporters, console,json,html]
+
+  # Проверка сложности кода
+  - repo: https://github.com/PyCQA/mccabe
+    rev: 0.7.0
+    hooks:
+      - id: mccabe
+        args: [--max-complexity, 10]
+
+  # Проверка покрытия тестами
+  - repo: local
+    hooks:
+      - id: coverage-check
+        name: Coverage check
+        entry: coverage
+        language: system
+        args: [run, -m, pytest, --cov=core, --cov=ui, --cov-report=term-missing]
+        pass_filenames: false
+        always_run: true
+        stages: [manual]
+
+  # Проверка производительности
+  - repo: local
+    hooks:
+      - id: performance-check
+        name: Performance check
+        entry: python
+        language: system
+        args: [-m, pytest, tests/test_performance.py, -v]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка документации
+  - repo: local
+    hooks:
+      - id: docs-check
+        name: Documentation check
+        entry: python
+        language: system
+        args: [-c, "import pydoc; pydoc.writedocs('.')"]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка API совместимости
+  - repo: local
+    hooks:
+      - id: api-check
+        name: API compatibility check
+        entry: python
+        language: system
+        args: [scripts/check_api_compatibility.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка UI тестов
+  - repo: local
+    hooks:
+      - id: ui-tests
+        name: UI tests
+        entry: python
+        language: system
+        args: [-m, pytest, tests/test_ui.py, --headless]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка интеграционных тестов
+  - repo: local
+    hooks:
+      - id: integration-tests
+        name: Integration tests
+        entry: python
+        language: system
+        args: [-m, pytest, tests/test_integration.py, -v]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка безопасности
+  - repo: local
+    hooks:
+      - id: security-scan
+        name: Security scan
+        entry: python
+        language: system
+        args: [scripts/security_scan.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка доступности
+  - repo: local
+    hooks:
+      - id: accessibility-check
+        name: Accessibility check
+        entry: python
+        language: system
+        args: [scripts/check_accessibility.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка интернационализации
+  - repo: local
+    hooks:
+      - id: i18n-check
+        name: Internationalization check
+        entry: python
+        language: system
+        args: [scripts/check_i18n.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка миграций
+  - repo: local
+    hooks:
+      - id: migration-check
+        name: Migration check
+        entry: python
+        language: system
+        args: [scripts/check_migrations.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка мониторинга
+  - repo: local
+    hooks:
+      - id: monitoring-check
+        name: Monitoring check
+        entry: python
+        language: system
+        args: [scripts/check_monitoring.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка развертывания
+  - repo: local
+    hooks:
+      - id: deployment-check
+        name: Deployment check
+        entry: python
+        language: system
+        args: [scripts/check_deployment.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка тестирования
+  - repo: local
+    hooks:
+      - id: testing-check
+        name: Testing check
+        entry: python
+        language: system
+        args: [scripts/check_testing.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка документации
+  - repo: local
+    hooks:
+      - id: documentation-check
+        name: Documentation check
+        entry: python
+        language: system
+        args: [scripts/check_documentation.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка качества
+  - repo: local
+    hooks:
+      - id: quality-check
+        name: Quality check
+        entry: python
+        language: system
+        args: [scripts/check_quality.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка соответствия стандартам
+  - repo: local
+    hooks:
+      - id: standards-check
+        name: Standards check
+        entry: python
+        language: system
+        args: [scripts/check_standards.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка архитектуры
+  - repo: local
+    hooks:
+      - id: architecture-check
+        name: Architecture check
+        entry: python
+        language: system
+        args: [scripts/check_architecture.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка производительности
+  - repo: local
+    hooks:
+      - id: performance-check
+        name: Performance check
+        entry: python
+        language: system
+        args: [scripts/check_performance.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка масштабируемости
+  - repo: local
+    hooks:
+      - id: scalability-check
+        name: Scalability check
+        entry: python
+        language: system
+        args: [scripts/check_scalability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка надежности
+  - repo: local
+    hooks:
+      - id: reliability-check
+        name: Reliability check
+        entry: python
+        language: system
+        args: [scripts/check_reliability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка совместимости
+  - repo: local
+    hooks:
+      - id: compatibility-check
+        name: Compatibility check
+        entry: python
+        language: system
+        args: [scripts/check_compatibility.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка переносимости
+  - repo: local
+    hooks:
+      - id: portability-check
+        name: Portability check
+        entry: python
+        language: system
+        args: [scripts/check_portability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка поддерживаемости
+  - repo: local
+    hooks:
+      - id: maintainability-check
+        name: Maintainability check
+        entry: python
+        language: system
+        args: [scripts/check_maintainability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка тестируемости
+  - repo: local
+    hooks:
+      - id: testability-check
+        name: Testability check
+        entry: python
+        language: system
+        args: [scripts/check_testability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка расширяемости
+  - repo: local
+    hooks:
+      - id: extensibility-check
+        name: Extensibility check
+        entry: python
+        language: system
+        args: [scripts/check_extensibility.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка модульности
+  - repo: local
+    hooks:
+      - id: modularity-check
+        name: Modularity check
+        entry: python
+        language: system
+        args: [scripts/check_modularity.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка переиспользования
+  - repo: local
+    hooks:
+      - id: reusability-check
+        name: Reusability check
+        entry: python
+        language: system
+        args: [scripts/check_reusability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка читаемости
+  - repo: local
+    hooks:
+      - id: readability-check
+        name: Readability check
+        entry: python
+        language: system
+        args: [scripts/check_readability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка понимаемости
+  - repo: local
+    hooks:
+      - id: understandability-check
+        name: Understandability check
+        entry: python
+        language: system
+        args: [scripts/check_understandability.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка простоты
+  - repo: local
+    hooks:
+      - id: simplicity-check
+        name: Simplicity check
+        entry: python
+        language: system
+        args: [scripts/check_simplicity.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка элегантности
+  - repo: local
+    hooks:
+      - id: elegance-check
+        name: Elegance check
+        entry: python
+        language: system
+        args: [scripts/check_elegance.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка красоты
+  - repo: local
+    hooks:
+      - id: beauty-check
+        name: Beauty check
+        entry: python
+        language: system
+        args: [scripts/check_beauty.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]
+
+  # Проверка совершенства
+  - repo: local
+    hooks:
+      - id: perfection-check
+        name: Perfection check
+        entry: python
+        language: system
+        args: [scripts/check_perfection.py]
+        pass_filenames: false
+        always_run: false
+        stages: [manual]

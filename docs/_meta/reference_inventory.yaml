@@ -1,0 +1,315 @@
+reference_inventory:
+  modules:
+    - name: "core.interfaces"
+      path: "core/interfaces.py"
+      description: "Основные интерфейсы системы"
+      public_apis:
+        - "ISerialManager"
+        - "ICommandExecutor"
+        - "ISequenceManager"
+        - "ISequenceExpander"
+        - "ISequenceSearcher"
+        - "IConfigLoader"
+        - "IDIContainer"
+        - "IMultizoneManager"
+        - "ITagManager"
+        - "ISignalManager"
+        - "ICommandValidator"
+        - "ISettingsManager"
+        - "ILogger"
+        - "IThreadManager"
+        - "IEventBus"
+        - "IConnectionManager"
+        - "INavigationManager"
+        - "IPageManager"
+    
+    - name: "core.di.container"
+      path: "core/di/container.py"
+      description: "Dependency Injection контейнер"
+      public_apis:
+        - "DIContainer"
+        - "register()"
+        - "resolve()"
+        - "get_singleton()"
+    
+    - name: "core.serial_manager"
+      path: "core/serial_manager.py"
+      description: "Менеджер Serial-коммуникации"
+      public_apis:
+        - "SerialManager"
+        - "connect()"
+        - "disconnect()"
+        - "send_command()"
+        - "is_connected()"
+        - "get_available_ports()"
+        - "get_port_info()"
+    
+    - name: "core.command_executor"
+      path: "core/command_executor.py"
+      description: "Исполнитель команд"
+      public_apis:
+        - "CommandExecutor"
+        - "execute()"
+        - "validate_command()"
+        - "get_execution_history()"
+    
+    - name: "core.sequences.manager"
+      path: "core/sequences/manager.py"
+      description: "Менеджер последовательностей"
+      public_apis:
+        - "SequenceManager"
+        - "execute_sequence()"
+        - "add_sequence()"
+        - "remove_sequence()"
+        - "get_sequences()"
+        - "validate_sequence()"
+    
+    - name: "core.tags.manager"
+      path: "core/tags/manager.py"
+      description: "Менеджер системы тегов"
+      public_apis:
+        - "TagManager"
+        - "process_tag()"
+        - "add_tag()"
+        - "remove_tag()"
+        - "get_tags()"
+        - "validate_tag()"
+    
+    - name: "core.multizone.manager"
+      path: "core/multizone/manager.py"
+      description: "Менеджер мультизонального управления"
+      public_apis:
+        - "MultizoneManager"
+        - "set_zone_status()"
+        - "get_zone_status()"
+        - "execute_zone_command()"
+        - "get_all_zones()"
+    
+    - name: "core.signals.manager"
+      path: "core/signals/manager.py"
+      description: "Менеджер обработки сигналов"
+      public_apis:
+        - "SignalManager"
+        - "process_signal()"
+        - "optimize_signal()"
+        - "get_signal_info()"
+        - "validate_signal()"
+    
+    - name: "ui.main_window"
+      path: "ui/main_window.py"
+      description: "Главное окно приложения"
+      public_apis:
+        - "MainWindow"
+        - "show_page()"
+        - "navigate_to()"
+        - "get_current_page()"
+    
+    - name: "ui.shared.event_bus"
+      path: "ui/shared/event_bus.py"
+      description: "Шина событий UI"
+      public_apis:
+        - "EventBus"
+        - "subscribe()"
+        - "unsubscribe()"
+        - "publish()"
+        - "get_subscribers()"
+  
+  classes:
+    - name: "ISerialManager"
+      module: "core.interfaces"
+      type: "interface"
+      description: "Интерфейс для менеджера Serial соединения"
+      methods:
+        - "connect(port: str, baudrate: int = 115200, timeout: float = 1.0, **kwargs: Any) -> bool"
+        - "disconnect() -> None"
+        - "send_command(command: str) -> bool"
+        - "is_connected() -> bool"
+        - "get_available_ports() -> List[str]"
+        - "get_port_info() -> Dict[str, Any]"
+    
+    - name: "ICommandExecutor"
+      module: "core.interfaces"
+      type: "interface"
+      description: "Интерфейс для исполнителя команд"
+      methods:
+        - "execute(command: str, **kwargs: Any) -> bool"
+        - "validate_command(command: str) -> bool"
+        - "get_execution_history() -> List[Dict[str, Any]]"
+    
+    - name: "ISequenceManager"
+      module: "core.interfaces"
+      type: "interface"
+      description: "Интерфейс для менеджера последовательностей"
+      methods:
+        - "execute_sequence(sequence_name: str) -> bool"
+        - "add_sequence(name: str, commands: List[str]) -> bool"
+        - "remove_sequence(name: str) -> bool"
+        - "get_sequences() -> Dict[str, List[str]]"
+        - "validate_sequence(sequence: List[str]) -> bool"
+    
+    - name: "DIContainer"
+      module: "core.di.container"
+      type: "class"
+      description: "Dependency Injection контейнер"
+      methods:
+        - "register(interface: Type, implementation: Type) -> None"
+        - "resolve(interface: Type) -> Any"
+        - "get_singleton(interface: Type) -> Any"
+        - "clear() -> None"
+    
+    - name: "SerialManager"
+      module: "core.serial_manager"
+      type: "class"
+      description: "Реализация менеджера Serial-коммуникации"
+      implements: ["ISerialManager"]
+      methods:
+        - "connect(port: str, baudrate: int = 115200, timeout: float = 1.0, **kwargs: Any) -> bool"
+        - "disconnect() -> None"
+        - "send_command(command: str) -> bool"
+        - "is_connected() -> bool"
+        - "get_available_ports() -> List[str]"
+        - "get_port_info() -> Dict[str, Any]"
+    
+    - name: "CommandExecutor"
+      module: "core.command_executor"
+      type: "class"
+      description: "Реализация исполнителя команд"
+      implements: ["ICommandExecutor"]
+      methods:
+        - "execute(command: str, **kwargs: Any) -> bool"
+        - "validate_command(command: str) -> bool"
+        - "get_execution_history() -> List[Dict[str, Any]]"
+    
+    - name: "MainWindow"
+      module: "ui.main_window"
+      type: "class"
+      description: "Главное окно приложения"
+      methods:
+        - "show_page(page_name: str) -> None"
+        - "navigate_to(page_name: str) -> None"
+        - "get_current_page() -> str"
+        - "setup_ui() -> None"
+        - "setup_connections() -> None"
+  
+  functions:
+    - name: "setup_logging"
+      module: "utils.logger"
+      description: "Настройка системы логирования"
+      signature: "setup_logging(log_level: str = 'INFO', log_file: Optional[str] = None) -> None"
+    
+    - name: "error_handler"
+      module: "utils.error_handler"
+      description: "Обработчик ошибок"
+      signature: "error_handler(func: Callable) -> Callable"
+    
+    - name: "graceful_shutdown"
+      module: "utils.error_handler"
+      description: "Graceful завершение приложения"
+      signature: "graceful_shutdown(signal_received: int, frame: Any) -> None"
+    
+    - name: "check_imports"
+      module: "utils.error_handler"
+      description: "Проверка критических импортов"
+      signature: "check_imports(modules: List[Tuple[str, str]]) -> bool"
+  
+  endpoints: []
+  
+  events:
+    - name: "serial_connected"
+      module: "core.serial_manager"
+      description: "Событие успешного подключения к Serial-порту"
+      data: "Dict[str, Any] - информация о подключении"
+    
+    - name: "serial_disconnected"
+      module: "core.serial_manager"
+      description: "Событие отключения от Serial-порта"
+      data: "Dict[str, Any] - информация об отключении"
+    
+    - name: "command_executed"
+      module: "core.command_executor"
+      description: "Событие выполнения команды"
+      data: "Dict[str, Any] - результат выполнения команды"
+    
+    - name: "sequence_started"
+      module: "core.sequences.manager"
+      description: "Событие начала выполнения последовательности"
+      data: "Dict[str, Any] - информация о последовательности"
+    
+    - name: "sequence_completed"
+      module: "core.sequences.manager"
+      description: "Событие завершения выполнения последовательности"
+      data: "Dict[str, Any] - результат выполнения последовательности"
+    
+    - name: "ui_page_changed"
+      module: "ui.main_window"
+      description: "Событие смены страницы в UI"
+      data: "Dict[str, Any] - информация о новой странице"
+  
+  schemas:
+    - name: "TagType"
+      module: "core.tag_types"
+      description: "Типы тегов"
+      fields:
+        - "name: str"
+        - "description: str"
+        - "category: str"
+    
+    - name: "TagInfo"
+      module: "core.tag_types"
+      description: "Информация о теге"
+      fields:
+        - "tag_type: TagType"
+        - "value: Any"
+        - "metadata: Dict[str, Any]"
+    
+    - name: "TagResult"
+      module: "core.tag_types"
+      description: "Результат обработки тега"
+      fields:
+        - "success: bool"
+        - "data: Any"
+        - "error: Optional[str]"
+    
+    - name: "SignalType"
+      module: "core.signal_types"
+      description: "Типы сигналов"
+      fields:
+        - "name: str"
+        - "type: str"
+        - "parameters: Dict[str, Any]"
+    
+    - name: "SignalInfo"
+      module: "core.signal_types"
+      description: "Информация о сигнале"
+      fields:
+        - "signal_type: SignalType"
+        - "value: Any"
+        - "timestamp: float"
+    
+    - name: "SignalResult"
+      module: "core.signal_types"
+      description: "Результат обработки сигнала"
+      fields:
+        - "success: bool"
+        - "processed_value: Any"
+        - "optimization_applied: bool"
+    
+    - name: "ZoneStatus"
+      module: "core.multizone.types"
+      description: "Статус зоны"
+      fields:
+        - "zone_id: str"
+        - "status: str"
+        - "volume: int"
+        - "muted: bool"
+        - "source: str"
+    
+    - name: "SequenceInfo"
+      module: "core.sequences.types"
+      description: "Информация о последовательности"
+      fields:
+        - "name: str"
+        - "commands: List[str]"
+        - "description: str"
+        - "category: str"
+        - "tags: List[str]"

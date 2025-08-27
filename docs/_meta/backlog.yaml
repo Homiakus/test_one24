@@ -1,0 +1,281 @@
+backlog:
+  - id: "DOC-001"
+    title: "API Examples for all interfaces"
+    type: "api_reference"
+    priority: "High"
+    estimate_hours: 6
+    deps: []
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-20"
+    acceptance_criteria:
+      - "Все интерфейсы имеют исполняемые примеры"
+      - "Примеры покрывают основные сценарии использования"
+      - "Код примеров протестирован и работает"
+      - "Добавлено минимум 3 примера на интерфейс"
+    description: "Создать детальные исполняемые примеры для всех публичных API интерфейсов"
+  
+  - id: "DOC-002"
+    title: "Troubleshooting runbook"
+    type: "runbook"
+    priority: "High"
+    estimate_hours: 6
+    deps: []
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-20"
+    acceptance_criteria:
+      - "Покрыты все типичные проблемы"
+      - "Пошаговые инструкции по решению"
+      - "Диагностические команды и инструменты"
+      - "Ссылки на логи и мониторинг"
+    description: "Создать комплексное руководство по решению проблем и диагностике"
+  
+  - id: "DOC-003"
+    title: "User getting-started guide"
+    type: "tutorial"
+    priority: "High"
+    estimate_hours: 8
+    deps: []
+    status: "completed"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-21"
+    completion_date: "2024-12-20"
+    acceptance_criteria:
+      - "Пошаговое руководство от установки до первого использования"
+      - "Скриншоты интерфейса"
+      - "Примеры базовых операций"
+      - "Ссылки на дополнительные ресурсы"
+    description: "Создать пошаговое руководство для новых пользователей"
+    deliverables:
+      - "docs/tutorials/getting-started.md"
+      - "docs/tutorials/quick-start.md"
+      - "docs/tutorials/setup_wizard.py"
+  
+  - id: "DOC-004"
+    title: "Performance optimization guide"
+    type: "how_to"
+    priority: "Medium"
+    estimate_hours: 4
+    deps: ["DOC-001"]
+    status: "completed"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-22"
+    completion_date: "2024-12-20"
+    acceptance_criteria:
+      - "Метрики производительности"
+      - "Рекомендации по оптимизации"
+      - "Профилирование и мониторинг"
+      - "Примеры оптимизированного кода"
+    description: "Руководство по оптимизации производительности приложения"
+    deliverables:
+      - "docs/guides/performance-optimization.md"
+      - "docs/guides/performance_tools.py"
+  
+  - id: "DOC-005"
+    title: "Contribution guidelines"
+    type: "how_to"
+    priority: "Medium"
+    estimate_hours: 3
+    deps: []
+    status: "completed"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-23"
+    completion_date: "2024-12-20"
+    acceptance_criteria:
+      - "Правила участия в разработке"
+      - "Стандарты кодирования"
+      - "Процесс code review"
+      - "Шаблоны для issues и PR"
+    description: "Создать руководство для участников разработки"
+    deliverables:
+      - "docs/guides/contribution-guidelines.md"
+      - ".github/ISSUE_TEMPLATE/bug_report.md"
+      - ".github/ISSUE_TEMPLATE/feature_request.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".pre-commit-config.yaml"
+      - ".vscode/settings.json"
+  
+  - id: "DOC-006"
+    title: "Deployment documentation"
+    type: "operations"
+    priority: "Medium"
+    estimate_hours: 5
+    deps: []
+    status: "completed"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-24"
+    completion_date: "2024-12-20"
+    acceptance_criteria:
+      - "Инструкции по развертыванию"
+      - "Конфигурация окружения"
+      - "Мониторинг и логирование"
+      - "Процедуры обновления"
+    description: "Документация по развертыванию и эксплуатации"
+    deliverables:
+      - "docs/operations/deployment-guide.md"
+      - "docs/operations/deployment_scripts.py"
+      - "docs/operations/deployment_config.json"
+  
+  - id: "DOC-007"
+    title: "Internationalization guide"
+    type: "how_to"
+    priority: "Low"
+    estimate_hours: 4
+    deps: []
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-26"
+    acceptance_criteria:
+      - "Поддержка многоязычности"
+      - "Локализация интерфейса"
+      - "Форматирование дат и чисел"
+      - "Примеры переводов"
+    description: "Руководство по интернационализации приложения"
+  
+  - id: "DOC-008"
+    title: "Advanced tutorials"
+    type: "tutorial"
+    priority: "Low"
+    estimate_hours: 6
+    deps: ["DOC-001", "DOC-003"]
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-28"
+    acceptance_criteria:
+      - "Продвинутые сценарии использования"
+      - "Интеграция с внешними системами"
+      - "Кастомизация и расширение"
+      - "Практические проекты"
+    description: "Продвинутые обучающие материалы для опытных пользователей"
+  
+  - id: "DOC-009"
+    title: "Video documentation"
+    type: "tutorial"
+    priority: "Low"
+    estimate_hours: 12
+    deps: ["DOC-003"]
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2025-01-05"
+    acceptance_criteria:
+      - "Скринкасты основных функций"
+      - "Демонстрации интерфейса"
+      - "Видео-туториалы"
+      - "Субтитры и транскрипции"
+    description: "Создать видео документацию для визуального обучения"
+  
+  - id: "DOC-010"
+    title: "API Reference detailed pages"
+    type: "api_reference"
+    priority: "Medium"
+    estimate_hours: 8
+    deps: ["DOC-001"]
+    status: "completed"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-25"
+    completion_date: "2024-12-20"
+    acceptance_criteria:
+      - "Отдельные страницы для каждого интерфейса"
+      - "Детальные описания методов"
+      - "Примеры использования"
+      - "Обработка ошибок"
+    description: "Создать детальные страницы для каждого API интерфейса"
+    deliverables:
+      - "docs/api/interfaces/index.md"
+      - "docs/api/interfaces/serial.md"
+      - "docs/api/interfaces/command.md"
+      - "docs/api/interfaces/sequence.md"
+      - "docs/api/interfaces/tag.md"
+      - "docs/api/interfaces/multizone.md"
+      - "docs/api/interfaces/signal.md"
+      - "docs/api/interfaces/config.md"
+      - "docs/reports/DOC-010_completion_report.md"
+  
+  - id: "DOC-011"
+    title: "Architecture Decision Records"
+    type: "adr"
+    priority: "Medium"
+    estimate_hours: 4
+    deps: []
+    status: "completed"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-27"
+    completion_date: "2024-12-20"
+    acceptance_criteria:
+      - "ADR для выбора PyQt6"
+      - "ADR для Dependency Injection"
+      - "ADR для архитектуры слоев"
+      - "ADR для системы событий"
+    description: "Создать записи архитектурных решений (ADR)"
+    deliverables:
+      - "docs/architecture/adr/index.md"
+      - "docs/architecture/adr/001-pyqt6-framework.md"
+      - "docs/architecture/adr/002-dependency-injection.md"
+      - "docs/architecture/adr/003-layered-architecture.md"
+      - "docs/architecture/adr/004-interface-separation.md"
+      - "docs/reports/DOC-011_completion_report.md"
+  
+  - id: "DOC-012"
+    title: "Testing documentation"
+    type: "how_to"
+    priority: "Medium"
+    estimate_hours: 5
+    deps: []
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-29"
+    acceptance_criteria:
+      - "Руководство по написанию тестов"
+      - "Стратегии тестирования"
+      - "Инструменты и фреймворки"
+      - "Примеры тестов"
+    description: "Документация по тестированию приложения"
+  
+  - id: "DOC-013"
+    title: "Security documentation"
+    type: "security"
+    priority: "Medium"
+    estimate_hours: 4
+    deps: []
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2024-12-30"
+    acceptance_criteria:
+      - "Модель угроз"
+      - "Рекомендации по безопасности"
+      - "Обработка уязвимостей"
+      - "Аудит безопасности"
+    description: "Документация по безопасности приложения"
+  
+  - id: "DOC-014"
+    title: "Monitoring and observability"
+    type: "operations"
+    priority: "Medium"
+    estimate_hours: 4
+    deps: ["DOC-006"]
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2025-01-02"
+    acceptance_criteria:
+      - "Метрики и мониторинг"
+      - "Логирование и трейсинг"
+      - "Алерты и уведомления"
+      - "Дашборды"
+    description: "Документация по мониторингу и наблюдаемости"
+  
+  - id: "DOC-015"
+    title: "Migration guides"
+    type: "migration"
+    priority: "Low"
+    estimate_hours: 3
+    deps: []
+    status: "planned"
+    assigned_to: "DocArchitect"
+    due_date: "2025-01-03"
+    acceptance_criteria:
+      - "Миграция между версиями"
+      - "Обновление конфигурации"
+      - "Совместимость"
+      - "Rollback процедуры"
+    description: "Руководства по миграции между версиями"

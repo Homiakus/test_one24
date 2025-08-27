@@ -1,0 +1,191 @@
+ia_spec:
+  personas:
+    - name: "Backend Developer"
+      role: "Core system development"
+      needs:
+        - "API documentation"
+        - "Architecture diagrams"
+        - "Interface specifications"
+        - "Testing guidelines"
+      expertise: "Python, PyQt6, Serial communication"
+    
+    - name: "Frontend Developer"
+      role: "UI development and user experience"
+      needs:
+        - "UI component documentation"
+        - "Event handling guides"
+        - "Styling guidelines"
+        - "User interaction patterns"
+      expertise: "PyQt6, QSS, UI/UX design"
+    
+    - name: "DevOps Engineer"
+      role: "Deployment and infrastructure"
+      needs:
+        - "Deployment guides"
+        - "Configuration management"
+        - "Monitoring setup"
+        - "Troubleshooting runbooks"
+      expertise: "Python packaging, CI/CD, monitoring"
+    
+    - name: "QA Engineer"
+      role: "Testing and quality assurance"
+      needs:
+        - "Testing strategies"
+        - "Test data setup"
+        - "Bug reporting guidelines"
+        - "Performance benchmarks"
+      expertise: "pytest, UI testing, performance testing"
+    
+    - name: "Support Engineer"
+      role: "User support and troubleshooting"
+      needs:
+        - "User guides"
+        - "Troubleshooting guides"
+        - "FAQ"
+        - "Common issues and solutions"
+      expertise: "User support, technical troubleshooting"
+    
+    - name: "Project Manager"
+      role: "Project oversight and planning"
+      needs:
+        - "Project overview"
+        - "Architecture decisions"
+        - "Development guidelines"
+        - "Release notes"
+      expertise: "Project management, technical planning"
+  
+  content_types:
+    - "overview"
+    - "architecture"
+    - "api_reference"
+    - "how_to"
+    - "tutorial"
+    - "operations"
+    - "security"
+    - "data"
+    - "migration"
+    - "faq"
+    - "adr"
+    - "runbook"
+    - "module"
+    - "diagram"
+    - "report"
+  
+  toc:
+    - path: "docs/overview.md"
+      title: "Обзор проекта"
+      type: "overview"
+      audiences: ["all"]
+    
+    - path: "docs/architecture/index.md"
+      title: "Архитектура"
+      type: "architecture"
+      audiences: ["backend_dev", "frontend_dev", "pm"]
+    
+    - path: "docs/api/index.md"
+      title: "API Reference"
+      type: "api_reference"
+      audiences: ["backend_dev", "frontend_dev"]
+    
+    - path: "docs/guides/index.md"
+      title: "Руководства"
+      type: "how_to"
+      audiences: ["backend_dev", "frontend_dev", "support"]
+    
+    - path: "docs/tutorials/index.md"
+      title: "Обучающие материалы"
+      type: "tutorial"
+      audiences: ["backend_dev", "frontend_dev"]
+    
+    - path: "docs/operations/index.md"
+      title: "Эксплуатация"
+      type: "operations"
+      audiences: ["devops", "support"]
+    
+    - path: "docs/security/index.md"
+      title: "Безопасность"
+      type: "security"
+      audiences: ["backend_dev", "devops", "security"]
+    
+    - path: "docs/data/index.md"
+      title: "Данные и схемы"
+      type: "data"
+      audiences: ["backend_dev", "data"]
+    
+    - path: "docs/faq.md"
+      title: "Часто задаваемые вопросы"
+      type: "faq"
+      audiences: ["all"]
+  
+  cross_links: true
+  
+  style_guide:
+    tone: "clear, concise, action-oriented"
+    code_blocks: "runnable when possible"
+    examples: "minimal viable, tested"
+    language: "Russian (primary), English (technical terms)"
+    formatting:
+      headers: "ATX style (# ## ###)"
+      code: "```python for code blocks"
+      links: "[[internal]] for wiki links, [external](url) for external"
+      emphasis: "**bold** for important, *italic* for emphasis"
+  
+  glossary:
+    terms:
+      - term: "DI Container"
+        definition: "Dependency Injection container for service management"
+        context: "core/di/container.py"
+      
+      - term: "Serial Manager"
+        definition: "Interface for serial port communication"
+        context: "core/serial_manager.py"
+      
+      - term: "Command Executor"
+        definition: "Service for executing device commands"
+        context: "core/command_executor.py"
+      
+      - term: "Sequence Manager"
+        definition: "Service for managing command sequences"
+        context: "core/sequences/manager.py"
+      
+      - term: "Tag System"
+        definition: "System for processing tagged commands"
+        context: "core/tags/"
+      
+      - term: "Multizone Manager"
+        definition: "Service for managing multiple device zones"
+        context: "core/multizone/"
+      
+      - term: "Signal Processing"
+        definition: "System for processing and optimizing signals"
+        context: "core/signals/"
+      
+      - term: "Event Bus"
+        definition: "Communication system for UI events"
+        context: "ui/shared/event_bus.py"
+  
+  navigation_patterns:
+    primary: "Hierarchical (Overview → Architecture → API → Guides)"
+    secondary: "Cross-referenced (Wiki-style links)"
+    search: "Full-text search with filters"
+    breadcrumbs: "Context-aware navigation path"
+  
+  content_priorities:
+    critical:
+      - "API documentation for core services"
+      - "Architecture overview and diagrams"
+      - "Getting started guide"
+      - "Troubleshooting runbook"
+    high:
+      - "Module documentation"
+      - "Code examples"
+      - "Configuration guides"
+      - "Testing documentation"
+    medium:
+      - "Performance optimization"
+      - "Deployment guides"
+      - "Contribution guidelines"
+    low:
+      - "Advanced tutorials"
+      - "Internationalization"
+      - "Legacy migration guides"
