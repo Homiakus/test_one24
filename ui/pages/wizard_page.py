@@ -4,7 +4,7 @@
 from typing import Dict, Optional, Any
 from PyQt6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QLabel, QProgressBar,
-    QSizePolicy, QStackedLayout, QGroupBox, QCheckBox, QMessageBox
+    QSizePolicy, QStackedLayout, QGroupBox, QMessageBox
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 
@@ -43,8 +43,7 @@ class WizardPage(BasePage):
             'right_bottom': False,
         }
         
-        # Новое представление зон (1-4)
-        self.zone_checkboxes = {}
+        # Маппинг зон (для обратной совместимости)
         self.zone_mapping = {
             'left_top': 1,
             'left_bottom': 2,
@@ -299,6 +298,7 @@ class WizardPage(BasePage):
 
         # Заголовок шага
         self.step_title = QLabel()
+        self.step_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.step_title.setObjectName("wizard_step_title")
         layout.addWidget(self.step_title)
 
@@ -309,9 +309,6 @@ class WizardPage(BasePage):
 
         # Панели выбора зон
         self._create_zone_panels(layout)
-
-        # Панель управления зонами (мультизональный режим)
-        self._create_zone_control_panel(layout)
 
         # Кнопки действий
         self.buttons_layout = QHBoxLayout()
@@ -350,37 +347,7 @@ class WizardPage(BasePage):
         panels_layout.addWidget(self.right_panel, 1)
         parent_layout.addLayout(panels_layout)
 
-    def _create_zone_control_panel(self, parent_layout):
-        """Создание панели управления зонами для мультизонального режима"""
-        if not self.multizone_manager:
-            return
-            
-        zone_group = QGroupBox("🎯 Управление зонами (мультизональный режим)")
-        zone_group.setObjectName("zone_control_group")
-        
-        zone_layout = QHBoxLayout(zone_group)
-        
-        # Чекбоксы для каждой зоны
-        zone_names = {
-            1: "Зона 1 (Верхняя левая)",
-            2: "Зона 2 (Нижняя левая)", 
-            3: "Зона 3 (Верхняя правая)",
-            4: "Зона 4 (Нижняя правая)"
-        }
-        
-        for zone_id, zone_name in zone_names.items():
-            checkbox = QCheckBox(zone_name)
-            checkbox.setObjectName(f"zone_{zone_id}_checkbox")
-            checkbox.toggled.connect(lambda checked, zid=zone_id: self._on_zone_checkbox_changed(zid, checked))
-            self.zone_checkboxes[zone_id] = checkbox
-            zone_layout.addWidget(checkbox)
-        
-        # Информационная панель
-        self.zone_info_label = QLabel("Выберите зоны для мультизонального режима")
-        self.zone_info_label.setObjectName("zone_info_label")
-        zone_layout.addWidget(self.zone_info_label)
-        
-        parent_layout.addWidget(zone_group)
+
 
     def _create_action_buttons(self):
         """Создание кнопок действий"""
@@ -410,36 +377,7 @@ class WizardPage(BasePage):
         # Синхронизируем с мультизональным менеджером
         self._sync_with_multizone_manager()
 
-    def _on_zone_checkbox_changed(self, zone_id: int, checked: bool):
-        """Обработка изменения чекбокса зоны (мультизональный режим)"""
-        if not self.multizone_manager:
-            return
-            
-        # Получаем текущие активные зоны
-        active_zones = self.multizone_manager.get_active_zones()
-        
-        if checked:
-            if zone_id not in active_zones:
-                active_zones.append(zone_id)
-        else:
-            if zone_id in active_zones:
-                active_zones.remove(zone_id)
-        
-        # Устанавливаем зоны в менеджере
-        if active_zones:
-            success = self.multizone_manager.set_zones(active_zones)
-            if success:
-                self._update_zone_info()
-                self.logger.info(f"Установлены мультизональные зоны: {active_zones}")
-            else:
-                # Откатываем изменение чекбокса
-                self.zone_checkboxes[zone_id].setChecked(not checked)
-                self.logger.warning(f"Не удалось установить зоны: {active_zones}")
-        else:
-            # Если нет активных зон, сбрасываем менеджер
-            self.multizone_manager.reset_zones()
-            self._update_zone_info()
-            self.logger.info("Все зоны сброшены")
+
 
     def _sync_with_multizone_manager(self):
         """Синхронизация с мультизональным менеджером"""
@@ -457,72 +395,10 @@ class WizardPage(BasePage):
             self.multizone_manager.set_zones(active_zones)
         else:
             self.multizone_manager.reset_zones()
-        
-        self._update_zone_info()
 
-    def _update_zone_info(self):
-        """Обновление информационной панели зон"""
-        if not self.multizone_manager or not hasattr(self, 'zone_info_label'):
-            return
-            
-        active_zones = self.multizone_manager.get_active_zones()
-        zone_mask = self.multizone_manager.get_zone_mask()
-        
-        if active_zones:
-            zones_text = ", ".join([f"Зона {z}" for z in active_zones])
-            info_text = f"Активные зоны: {zones_text} (маска: {zone_mask:04b})"
-        else:
-            info_text = "Выберите зоны для мультизонального режима"
-        
-        self.zone_info_label.setText(info_text)
 
-    def update_zone_status(self, zone_id: int, status: str):
-        """Обновление статуса зоны в UI"""
-        try:
-            if not hasattr(self, 'zone_checkboxes') or zone_id not in self.zone_checkboxes:
-                return
-            
-            checkbox = self.zone_checkboxes[zone_id]
-            
-            # Обновляем стиль чекбокса в зависимости от статуса
-            if status == 'executing':
-                checkbox.setStyleSheet("""
-                    QCheckBox {
-                        color: #ffc107;
-                        font-weight: bold;
-                    }
-                    QCheckBox::indicator {
-                        background-color: #ffc107;
-                    }
-                """)
-            elif status == 'completed':
-                checkbox.setStyleSheet("""
-                    QCheckBox {
-                        color: #28a745;
-                        font-weight: bold;
-                    }
-                    QCheckBox::indicator {
-                        background-color: #28a745;
-                    }
-                """)
-            elif status == 'error':
-                checkbox.setStyleSheet("""
-                    QCheckBox {
-                        color: #dc3545;
-                        font-weight: bold;
-                    }
-                    QCheckBox::indicator {
-                        background-color: #dc3545;
-                    }
-                """)
-            else:  # inactive или active
-                checkbox.setStyleSheet("")
-            
-            # Обновляем информационную панель
-            self._update_zone_info()
-            
-        except Exception as e:
-            self.logger.error(f"Ошибка обновления статуса зоны {zone_id}: {e}")
+
+
 
     def _start_sequence(self, sequence_type: str):
         """Запуск последовательности"""

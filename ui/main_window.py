@@ -29,11 +29,10 @@ from core.tag_processor import TagProcessor
 from ui.pages.wizard_page import WizardPage
 from ui.pages.settings_page import SettingsPage
 from ui.pages.sequences_page import SequencesPage
+
 from ui.pages.commands_page import CommandsPage
 from ui.pages.designer_page import DesignerPage
 from ui.pages.firmware_page import FirmwarePage
-from ui.pages.flags_page import FlagsPage
-from ui.pages.signals_page import SignalsPage
 from ui.widgets.modern_widgets import ModernCard
 from ui.widgets.info_panel import InfoPanel
 from ui.dialogs.tag_dialogs import TagDialogManager
@@ -432,13 +431,11 @@ class MainWindow(QMainWindow):
         self.nav_buttons = {}
 
         pages = [
-            ("wizard", "🪄 Мастер настройки", True),
-            ("sequences", "📋 Последовательности", False),
-            ("commands", "⚡ Команды управления", False),
-            ("flags", "🚩 Управление флагами", False),
-            ("signals", "📡 Сигналы UART", False),
-            ("designer", "🔧 Конструктор", False),
-            ("settings", "⚙️ Настройки", False),
+            ("wizard", "🏠 Главное меню", True),
+            ("settings", "🔌 Настройки подключения", False),
+            ("sequences", "⚙️ Настройки методики", False),
+            ("commands", "🧪 Тестовые команды", False),
+            ("designer", "🔧 Конструктор последовательностей", False),
             ("firmware", "💾 Прошивка", False),
         ]
 
@@ -539,14 +536,6 @@ class MainWindow(QMainWindow):
         self.logger.info("Создание FirmwarePage...")
         self.pages['firmware'] = FirmwarePage()
         self.logger.info("FirmwarePage создана")
-        
-        self.logger.info("Создание FlagsPage...")
-        self.pages['flags'] = FlagsPage(self.sequence_manager)
-        self.logger.info("FlagsPage создана")
-        
-        self.logger.info("Создание SignalsPage...")
-        self.pages['signals'] = SignalsPage(self.signal_manager, self.flag_manager, self.config_loader)
-        self.logger.info("SignalsPage создана")
 
         for page in self.pages.values():
             self.stacked_widget.addWidget(page)
@@ -599,10 +588,6 @@ class MainWindow(QMainWindow):
             self.serial_manager.reader_thread.error_occurred.connect(
                 self._on_serial_error
             )
-            # Подключение сигнала обработки сигналов UART
-            self.serial_manager.reader_thread.signal_processed.connect(
-                self._on_signal_processed
-            )
 
         # Подключение сигналов от страниц
         wizard_page = self.pages.get('wizard')
@@ -641,10 +626,10 @@ class MainWindow(QMainWindow):
         # Переключаем страницу
         page_indices = {
             'wizard': 0,
-            'sequences': 1,
-            'commands': 2,
-            'designer': 3,
-            'settings': 4,
+            'settings': 1,
+            'sequences': 2,
+            'commands': 3,
+            'designer': 4,
             'firmware': 5,
         }
 
@@ -886,58 +871,6 @@ class MainWindow(QMainWindow):
         terminal_page = self.pages.get('commands')
         if terminal_page:
             terminal_page.add_command_output(f"Получено: {data}")
-
-    def _on_signal_processed(self, signal_name: str, variable_name: str, value: str):
-        """
-        Обработка успешно обработанного сигнала UART
-        
-        Args:
-            signal_name: Имя сигнала
-            variable_name: Имя переменной
-            value: Значение переменной
-        """
-        try:
-            self.logger.info(f"Сигнал обработан: {signal_name} -> {variable_name} = {value}")
-            
-            # Показываем уведомление в статусной строке
-            self.statusBar().showMessage(
-                f"Сигнал {signal_name}: {variable_name} = {value}", 
-                3000
-            )
-            
-            # Передаем информацию в терминал если есть
-            terminal_page = self.pages.get('commands')
-            if terminal_page:
-                terminal_page.add_command_output(
-                    f"Сигнал {signal_name}: {variable_name} = {value}"
-                )
-            
-            # Передаем сигнал на страницу сигналов если есть
-            signals_page = self.pages.get('signals')
-            if signals_page:
-                signals_page.on_signal_processed(signal_name, variable_name, value)
-            
-            # Обновляем информацию о сигналах в UI если есть
-            self._update_signal_display(signal_name, variable_name, value)
-            
-        except Exception as e:
-            self.logger.error(f"Ошибка обработки сигнала {signal_name}: {e}")
-
-    def _update_signal_display(self, signal_name: str, variable_name: str, value: str):
-        """
-        Обновление отображения сигналов в UI
-        
-        Args:
-            signal_name: Имя сигнала
-            variable_name: Имя переменной
-            value: Значение переменной
-        """
-        try:
-            # Здесь можно добавить обновление UI для отображения сигналов
-            # Например, обновление панели мониторинга или специальной страницы сигналов
-            pass
-        except Exception as e:
-            self.logger.error(f"Ошибка обновления отображения сигнала: {e}")
 
     def _on_serial_error(self, error: str):
         """Обработка ошибки Serial"""
