@@ -88,6 +88,9 @@ class MOTTOParser:
         for name, context_data in contexts_data.items():
             config.contexts[name] = self._parse_context(name, context_data)
         
+        # Команды
+        config.commands = raw_config.get('commands', {})
+        
         # Последовательности
         sequences_data = raw_config.get('sequences', {})
         for name, sequence_data in sequences_data.items():

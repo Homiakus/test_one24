@@ -323,6 +323,7 @@ class MOTTOConfig:
     vars: Dict[str, Any] = field(default_factory=dict)
     profiles: Dict[str, Profile] = field(default_factory=dict)
     contexts: Dict[str, Context] = field(default_factory=dict)
+    commands: Dict[str, str] = field(default_factory=dict)  # Команды для UI
     sequences: Dict[str, Sequence] = field(default_factory=dict)
     conditions: Dict[str, Condition] = field(default_factory=dict)
     guards: Dict[str, Guard] = field(default_factory=dict)
