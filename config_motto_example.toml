@@ -1,0 +1,239 @@
+# MOTTO v1.1 - Пример конфигурации
+version = "1.1"
+
+# Глобальные переменные
+[vars]
+plant = "A1"
+line = "stain-03"
+operator = "auto"
+
+# Профили конфигурации
+[profiles.default]
+env = { zones = "0010", max_temp_C = 42, wash_time_s = 30 }
+
+[profiles.dev]
+extends = "default"
+env = { zones = "0001", wash_time_s = 10 }
+
+[profiles.production]
+extends = "default"
+env = { zones = "1111", max_temp_C = 50, wash_time_s = 60 }
+
+# Контексты выполнения
+[contexts.run_env]
+zones = "0010"
+operator = "auto"
+safety_mode = "strict"
+
+# Условия для проверки
+[conditions.no_alarms]
+expr = 'status("alarm") == 0'
+
+[conditions.temp_ok_pre]
+expr = 'sensor("temp.C") <= profile("max_temp_C")'
+
+[conditions.progress_done]
+expr = 'status("progress") >= 100'
+
+[conditions.pressure_safe]
+expr = 'sensor("press.kPa") >= 30 and sensor("press.kPa") <= 300'
+
+# Гварды для проверки условий
+[guards.no_alarms]
+when = "pre"
+condition = "no_alarms"
+on_fail = { action = "abort", reason = "Active alarms detected" }
+
+[guards.temp_ok_pre]
+when = "pre"
+condition = "temp_ok_pre"
+on_fail = { action = "cooldown_then_retry", cooldown_ms = 5000, max_attempts = 3 }
+
+[guards.progress_done]
+when = "post"
+condition = "progress_done"
+on_fail = { action = "fallback", sequence = "diagnose_progress" }
+
+[guards.pressure_safe]
+when = "pre"
+condition = "pressure_safe"
+on_fail = { action = "abort", reason = "Pressure out of safe range" }
+
+# Политики выполнения
+[policies.safe_retry]
+retry_on = ["timeout", "transient_uart", "pressure_error"]
+max_attempts = 3
+backoff = { type = "exponential", base_ms = 500, factor = 2.0, jitter = "full" }
+step_timeout_ms = 60000
+sequence_timeout_ms = 600000
+idempotency_key = "start_stain:{ctx(run_id)}"
+
+[policies.fast_retry]
+retry_on = ["timeout"]
+max_attempts = 2
+backoff = { type = "linear", base_ms = 1000 }
+step_timeout_ms = 30000
+sequence_timeout_ms = 300000
+
+# Ресурсы и мьютексы
+[resources]
+[resources.pumps]
+type = "mutex"
+members = ["pump_A", "pump_B"]
+scope = "machine"
+
+[resources.reagent_line]
+type = "semaphore"
+capacity = 2
+
+[resources.heater]
+type = "mutex"
+members = ["heater_main", "heater_aux"]
+scope = "zone"
+
+# События системы
+[events]
+[events.estop]
+source = "hardware"
+filter = 'status("estop") == 1'
+
+[events.overtemp]
+source = "sensor"
+filter = 'sensor("temp.C") > 60'
+
+[events.press_drop]
+source = "sensor"
+filter = 'sensor("press.kPa") < 50 for 5s'
+
+[events.sequence_complete]
+source = "system"
+filter = 'status("sequence") == "complete"'
+
+# Обработчики событий
+[handlers]
+[handlers.on_estop]
+on = "estop"
+do = ["CLOSE_ALL_VALVES", "POWER_OFF_HEATERS", "EMERGENCY_STOP"]
+priority = 100
+
+[handlers.on_overtemp]
+on = "overtemp"
+do = ["POWER_OFF_HEATERS", "OPEN_DRAIN", "ALERT_OPERATOR"]
+priority = 80
+
+[handlers.on_pressdrop]
+on = "press_drop"
+do = ["OPEN_DRAIN", "CHECK_PUMP_STATUS"]
+priority = 60
+
+[handlers.on_complete]
+on = "sequence_complete"
+do = ["LOG_COMPLETION", "NOTIFY_OPERATOR"]
+priority = 10
+
+# Последовательности команд
+[sequences.start_stain_v2]
+name = "start_stain_v2"
+description = "Запуск окрашивания с параметрами и гвардами"
+type = "sequence"
+inputs = { zones = "string", mode = "string?" }
+defaults = { mode = "std" }
+outputs = { cycle_id = "string" }
+steps = [
+  "_waste;INIT_STAIN",
+  "LOAD_REAGENT",
+  "SLEEP_2S",
+  "START_STAIN_sector;",
+  "WAIT_STAIN_COMPLETE"
+]
+policy = "safe_retry"
+guards = ["no_alarms", "temp_ok_pre"]
+post_checks = ["progress_done"]
+
+[sequences.wash_and_log]
+name = "wash_and_log"
+description = "Параллельная промывка и логирование"
+type = "parallel"
+branches = [
+  { steps = ["INIT_WASH", "START_WASH", "WAIT_WASH_COMPLETE"] },
+  { steps = ["GET_STATUS", "GET_TEMPERATURE", "GET_PRESSURE", "LOG_DATA"] }
+]
+barrier = "all"
+policy = "fast_retry"
+
+[sequences.transactional_stain]
+name = "transactional_stain"
+description = "Окрашивание с транзакциями"
+type = "sequence"
+steps = ["INIT_STAIN", "LOAD_REAGENT", "START_STAIN", "COMMIT_STAIN"]
+policy = "transactional_stain"
+transaction = { begin = "tx_begin_liquids", commit = "tx_commit_liquids", rollback = "tx_rollback_liquids" }
+
+[sequences.tx_begin_liquids]
+name = "tx_begin_liquids"
+description = "Начало транзакции жидкостей"
+steps = ["valves close all", "check_seals"]
+
+[sequences.tx_commit_liquids]
+name = "tx_commit_liquids"
+description = "Фиксация транзакции жидкостей"
+steps = ["status get", "log_transaction"]
+
+[sequences.tx_rollback_liquids]
+name = "tx_rollback_liquids"
+description = "Откат транзакции жидкостей"
+steps = ["OPEN_DRAIN", "RESET_VALVES", "log_rollback"]
+
+# Шаблоны для генерации
+[templates.commands_fill_zone]
+for = "commands"
+matrix = [
+  { name = "FILL_ZONE_1", send = "zone 1 fill" },
+  { name = "FILL_ZONE_2", send = "zone 2 fill" },
+  { name = "FILL_ZONE_3", send = "zone 3 fill" },
+  { name = "FILL_ZONE_4", send = "zone 4 fill" }
+]
+
+[templates.sequences_sector_start]
+for = "sequences"
+args = ["zone_mask"]
+pattern = { name = "start_sector_{zone_mask}", steps = ["INIT_STAIN", "LOAD_REAGENT", "START_STAIN_sector;"] }
+expand = [
+  { zone_mask = "0001" },
+  { zone_mask = "0010" },
+  { zone_mask = "0100" },
+  { zone_mask = "1000" }
+]
+
+# Юниты измерения
+[units]
+duration = ["ms", "s", "min"]
+temperature = ["C", "K"]
+pressure = ["kPa", "bar"]
+
+# Валидаторы значений
+[validators]
+[validators.temp_work_range]
+key = "sensor(temp.C)"
+range = { min = 5, max = 60 }
+
+[validators.press_safe]
+key = "sensor(press.kPa)"
+range = { min = 30, max = 300 }
+
+[validators.zones_valid]
+key = "ctx(zones)"
+pattern = "^[01]{4}$"
+
+# Runtime конфигурация
+[runtime]
+profile = "default"
+start = "start_stain_v2"
+args = { zones = "0010" }
+
+# Настройки аудита
+[audit]
+log_level = "info"
+trace_context = true
+snapshots = "on_error"
+metrics_enabled = true
