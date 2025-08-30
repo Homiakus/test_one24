@@ -1,0 +1,37 @@
+# Sitemap для документации системы управления лабораторным оборудованием
+# Создан: 2024-12-19
+# Обновлен: 2024-12-19
+
+# Главная страница
+docs/overview.md
+
+# Архитектура
+docs/architecture/index.md
+
+# API документация
+docs/api/index.md
+
+# Модульная документация
+docs/modules/core/di-container.md
+docs/modules/core/serial-manager.md
+
+# Схемы данных
+docs/schemas/commands.md
+
+# Руководства
+docs/runbooks/installation.md
+
+# Maps of Content
+docs/_moc/Overview.md
+docs/_moc/Architecture.md
+docs/_moc/API.md
+
+# Мета-документация
+docs/_meta/DocsPro/_index.md
+docs/_meta/project_audit.yaml
+
+# Отчеты
+docs/Documentation Transformation Report.md
+
+# Индексы
+docs/_meta/doc_index.json
