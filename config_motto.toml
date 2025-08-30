@@ -1,0 +1,855 @@
+version = "1.1"
+
+[vars]
+plant = "LAB-01"
+line = "stain-processor"
+operator = "auto"
+default_port = "COM4"
+default_baudrate = 115200
+
+[profiles.default]
+name = "default"
+extends = ""
+
+[profiles.default.env]
+port = "COM4"
+baudrate = 115200
+timeout = 1.0
+safety_mode = "normal"
+max_retries = 3
+
+[profiles.default.metadata]
+
+[contexts.run_env]
+name = "run_env"
+zones = "0010"
+operator = "auto"
+safety_mode = "normal"
+
+[contexts.run_env.metadata]
+
+[conditions.no_alarms]
+name = "no_alarms"
+expr = "status(\"alarm\") == 0"
+description = "Проверка отсутствия аварий"
+
+[conditions.no_alarms.metadata]
+
+[conditions.serial_connected]
+name = "serial_connected"
+expr = "status(\"serial\") == \"connected\""
+description = "Проверка подключения к UART"
+
+[conditions.serial_connected.metadata]
+
+[conditions.temp_safe]
+name = "temp_safe"
+expr = "sensor(\"temp.C\") >= 5 and sensor(\"temp.C\") <= 60"
+description = "Проверка безопасной температуры"
+
+[conditions.temp_safe.metadata]
+
+[conditions.pressure_safe]
+name = "pressure_safe"
+expr = "sensor(\"press.kPa\") >= 30 and sensor(\"press.kPa\") <= 300"
+description = "Проверка безопасного давления"
+
+[conditions.pressure_safe.metadata]
+
+[conditions.movement_complete]
+name = "movement_complete"
+expr = "status(\"movement\") == \"complete\""
+description = "Проверка завершения движения"
+
+[conditions.movement_complete.metadata]
+
+[conditions.pump_ready]
+name = "pump_ready"
+expr = "status(\"pump\") == \"ready\""
+description = "Проверка готовности насоса"
+
+[conditions.pump_ready.metadata]
+
+[guards.no_alarms]
+name = "no_alarms"
+when = "pre"
+condition = "no_alarms"
+description = "Проверка отсутствия аварий перед выполнением"
+
+[guards.no_alarms.on_fail]
+action = "abort"
+reason = "Active alarms detected"
+
+[guards.no_alarms.metadata]
+
+[guards.serial_connected]
+name = "serial_connected"
+when = "pre"
+condition = "serial_connected"
+description = "Проверка подключения к UART"
+
+[guards.serial_connected.on_fail]
+action = "retry"
+max_attempts = 3
+cooldown_ms = 1000
+
+[guards.serial_connected.metadata]
+
+[guards.temp_safe]
+name = "temp_safe"
+when = "pre"
+condition = "temp_safe"
+description = "Проверка безопасной температуры"
+
+[guards.temp_safe.on_fail]
+action = "cooldown_then_retry"
+cooldown_ms = 5000
+max_attempts = 3
+
+[guards.temp_safe.metadata]
+
+[guards.pressure_safe]
+name = "pressure_safe"
+when = "pre"
+condition = "pressure_safe"
+description = "Проверка безопасного давления"
+
+[guards.pressure_safe.on_fail]
+action = "abort"
+reason = "Pressure out of safe range"
+
+[guards.pressure_safe.metadata]
+
+[guards.movement_complete]
+name = "movement_complete"
+when = "post"
+condition = "movement_complete"
+description = "Проверка завершения движения"
+
+[guards.movement_complete.on_fail]
+action = "retry"
+max_attempts = 2
+
+[guards.movement_complete.metadata]
+
+[guards.pump_ready]
+name = "pump_ready"
+when = "pre"
+condition = "pump_ready"
+description = "Проверка готовности насоса"
+
+[guards.pump_ready.on_fail]
+action = "wait"
+timeout_ms = 10000
+
+[guards.pump_ready.metadata]
+
+[policies.safe_retry]
+name = "safe_retry"
+retry_on = [
+    "timeout",
+    "serial_error",
+    "movement_error",
+]
+max_attempts = 3
+step_timeout_ms = 60000
+sequence_timeout_ms = 600000
+
+[policies.safe_retry.backoff]
+type = "exponential"
+base_ms = 500
+factor = 2.0
+jitter = "full"
+
+[policies.safe_retry.metadata]
+
+[policies.fast_retry]
+name = "fast_retry"
+retry_on = [
+    "timeout",
+]
+max_attempts = 2
+step_timeout_ms = 30000
+sequence_timeout_ms = 300000
+
+[policies.fast_retry.backoff]
+type = "linear"
+base_ms = 1000
+
+[policies.fast_retry.metadata]
+
+[resources.serial_port]
+name = "serial_port"
+type = "mutex"
+members = [
+    "COM3",
+    "COM4",
+    "COM5",
+]
+scope = "machine"
+
+[resources.serial_port.metadata]
+
+[resources.pump]
+name = "pump"
+type = "mutex"
+members = [
+    "pump_main",
+]
+scope = "machine"
+
+[resources.pump.metadata]
+
+[resources.valves]
+name = "valves"
+type = "semaphore"
+capacity = 4
+
+[resources.valves.metadata]
+
+[resources.movement]
+name = "movement"
+type = "mutex"
+members = [
+    "multi",
+    "rright",
+    "clamp",
+]
+scope = "machine"
+
+[resources.movement.metadata]
+
+[events.estop]
+name = "estop"
+source = "hardware"
+filter = "status(\"estop\") == 1"
+description = "Аварийная остановка"
+
+[events.estop.metadata]
+
+[events.overtemp]
+name = "overtemp"
+source = "sensor"
+filter = "sensor(\"temp.C\") > 60"
+description = "Перегрев"
+
+[events.overtemp.metadata]
+
+[events.press_drop]
+name = "press_drop"
+source = "sensor"
+filter = "sensor(\"press.kPa\") < 30 for 3s"
+description = "Падение давления"
+
+[events.press_drop.metadata]
+
+[events.serial_error]
+name = "serial_error"
+source = "system"
+filter = "status(\"serial\") == \"error\""
+description = "Ошибка UART"
+
+[events.serial_error.metadata]
+
+[events.movement_error]
+name = "movement_error"
+source = "system"
+filter = "status(\"movement\") == \"error\""
+description = "Ошибка движения"
+
+[events.movement_error.metadata]
+
+[handlers.on_estop]
+name = "on_estop"
+on = "estop"
+do = [
+    "EMERGENCY_STOP",
+    "CLOSE_ALL_VALVES",
+    "POWER_OFF_PUMP",
+]
+priority = 100
+description = "Обработка аварийной остановки"
+
+[handlers.on_estop.metadata]
+
+[handlers.on_overtemp]
+name = "on_overtemp"
+on = "overtemp"
+do = [
+    "POWER_OFF_HEATERS",
+    "OPEN_DRAIN",
+    "ALERT_OPERATOR",
+]
+priority = 80
+description = "Обработка перегрева"
+
+[handlers.on_overtemp.metadata]
+
+[handlers.on_pressdrop]
+name = "on_pressdrop"
+on = "press_drop"
+do = [
+    "OPEN_DRAIN",
+    "CHECK_PUMP_STATUS",
+    "ALERT_OPERATOR",
+]
+priority = 70
+description = "Обработка падения давления"
+
+[handlers.on_pressdrop.metadata]
+
+[handlers.on_serial_error]
+name = "on_serial_error"
+on = "serial_error"
+do = [
+    "RECONNECT_SERIAL",
+    "RETRY_COMMAND",
+]
+priority = 50
+description = "Обработка ошибки UART"
+
+[handlers.on_serial_error.metadata]
+
+[handlers.on_movement_error]
+name = "on_movement_error"
+on = "movement_error"
+do = [
+    "STOP_MOVEMENT",
+    "HOME_AXIS",
+    "RETRY_MOVEMENT",
+]
+priority = 60
+description = "Обработка ошибки движения"
+
+[handlers.on_movement_error.metadata]
+
+[commands]
+multi_og = "sm -8 * * * *"
+multi_flush_og = "sm -43 * * * *"
+multi_ea = "sm 95 * * * *"
+multi_flush_ea = "sm 61 * * * *"
+multi_gemo = "sm -77 * * * *"
+multi_flush_gemo = "sm -43 * * * *"
+multi_alco = "sm 26 * * * *"
+multi_flush_alco = "sm 61 * * * *"
+multi_water = "sm -111 * * * *"
+multi_flush_water = "sm -145 * * * *"
+multi_chlor = "sm -214 * * * *"
+multi_flush_chlor = "sm -180 * * * *"
+rright_drain = "sm * * 4 * *"
+rright_exposure = "sm * * 53 * *"
+rright_up = "sm * * -53 * *"
+rright_load_tubes = "sm * * 43 * *"
+rright_extract_tubes = "sm * * -3 * *"
+rright_pre_zero = "sm * * 130 * *"
+home_multi = "sh 1 0 0 0 0"
+home_rright = "sh 0 0 1 0 0"
+home_clamp = "clamph"
+clamp_close = "sm * * * 140 140"
+clamp_open = "sm * * * 0 0"
+kl1_on = "pon 1"
+kl1_off = "poff 1"
+kl2_on = "pon 2"
+kl2_off = "poff 2"
+pump_on = "pon 0"
+pump_off = "poff 0"
+test_command = "test"
+system_status = "status"
+
+[sequences.load_tubes]
+name = "load_tubes"
+description = "Последовательность load_tubes"
+type = "sequence"
+steps = [
+    "Clamp → сжать ",
+    "Clamp → разжать",
+    "RRight → предноль",
+    "wait 3",
+    "Хоминг RRight",
+    "RRight → загрузка пробирок",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.load_tubes.metadata]
+
+[sequences.load_samples]
+name = "load_samples"
+description = "Последовательность load_samples"
+type = "sequence"
+steps = [
+    "RRight → загрузка пробирок",
+    "RRight → верх",
+    "wait 10",
+    "RRight → извлечение пробирок",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.load_samples.metadata]
+
+[sequences.load_slides]
+name = "load_slides"
+description = "Последовательность load_slides"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Clamp → разжать",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.load_slides.metadata]
+
+[sequences.coloring]
+name = "coloring"
+description = "Последовательность coloring"
+type = "sequence"
+steps = [
+    "Clamp → сжать ",
+    "sedimantation",
+    "alco",
+    "gemo",
+    "water",
+    "water",
+    "og",
+    "alco",
+    "ea",
+    "alco",
+    "alco",
+    "alco",
+    "waste_out",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.coloring.metadata]
+
+[sequences.og]
+name = "og"
+description = "Последовательность og"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Multi → OG",
+    "Насос включить",
+    "KL2 включить",
+    "wait 2",
+    "Multi → продувка OG",
+    "wait 3",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "waste_out",
+    "waste",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.og.metadata]
+
+[sequences.ea]
+name = "ea"
+description = "Последовательность ea"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Multi → EA",
+    "Насос включить",
+    "KL2 включить",
+    "wait 2",
+    "Multi → продувка EA",
+    "wait 3",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "wait 90",
+    "waste_out",
+    "waste",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.ea.metadata]
+
+[sequences.gemo]
+name = "gemo"
+description = "Последовательность gemo"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Multi → Gemo",
+    "Насос включить",
+    "KL2 включить",
+    "wait 1",
+    "Multi → продувка Gemo",
+    "wait 1",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "wait 50",
+    "waste_out",
+    "waste",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.gemo.metadata]
+
+[sequences.alco]
+name = "alco"
+description = "Последовательность alco"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Multi → Alco",
+    "Насос включить",
+    "KL2 включить",
+    "wait 2",
+    "Multi → продувка Alco",
+    "wait 3",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "waste_out",
+    "waste",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.alco.metadata]
+
+[sequences.water]
+name = "water"
+description = "Последовательность water"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Multi → Water",
+    "Насос включить",
+    "KL2 включить",
+    "wait 1",
+    "Multi → продувка Water",
+    "wait 1",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "wait 30",
+    "waste_out",
+    "waste",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.water.metadata]
+
+[sequences.chlor]
+name = "chlor"
+description = "Последовательность chlor"
+type = "sequence"
+steps = [
+    "RRight → верх",
+    "Multi → Chlor",
+    "KL2 включить",
+    "wait 1",
+    "Multi → продувка Chlor",
+    "wait 1",
+    "KL2 выключить",
+    "Насос выключить",
+    "RRight → экспозиция",
+    "waste_out",
+    "waste",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.chlor.metadata]
+
+[sequences.sedimantation]
+name = "sedimantation"
+description = "Последовательность sedimantation"
+type = "sequence"
+steps = [
+    "Хоминг Multi",
+    "wait 3",
+    "Multi → продувка Alco",
+    "RRight → экспозиция",
+    "wait 300",
+    "RRight → слив",
+    "waste",
+    "waste_out",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.sedimantation.metadata]
+
+[sequences.waste]
+name = "waste"
+description = "Последовательность waste"
+type = "sequence"
+steps = [
+    "RRight → слив",
+    "Насос включить",
+    "wait 1",
+    "KL2 включить",
+    "wait 6",
+    "KL2 выключить",
+    "Насос выключить",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.waste.metadata]
+
+[sequences.waste_out]
+name = "waste_out"
+description = "Последовательность waste_out"
+type = "sequence"
+steps = [
+    "Multi → продувка OG",
+    "KL1 включить",
+    "KL2 включить",
+    "wait 8",
+    "KL1 выключить",
+    "KL2 выключить",
+]
+policy = "safe_retry"
+guards = [
+    "no_alarms",
+    "serial_connected",
+]
+post_checks = [
+    "movement_complete",
+]
+
+[sequences.waste_out.metadata]
+
+[templates]
+
+[units]
+duration = [
+    "ms",
+    "s",
+    "min",
+]
+temperature = [
+    "C",
+    "K",
+]
+pressure = [
+    "kPa",
+    "bar",
+]
+position = [
+    "steps",
+    "mm",
+    "degrees",
+]
+
+[validators.temp_work_range]
+name = "temp_work_range"
+key = "sensor(temp.C)"
+description = "Рабочий диапазон температуры"
+
+[validators.temp_work_range.range]
+min = 5
+max = 60
+
+[validators.temp_work_range.metadata]
+
+[validators.press_safe]
+name = "press_safe"
+key = "sensor(press.kPa)"
+description = "Безопасный диапазон давления"
+
+[validators.press_safe.range]
+min = 30
+max = 300
+
+[validators.press_safe.metadata]
+
+[runtime]
+profile = "default"
+start = "load_tubes"
+
+[runtime.args]
+
+[audit]
+log_level = "info"
+trace_context = true
+snapshots = "on_error"
+metrics_enabled = true
+
+[serial_default]
+port = "COM4"
+baudrate = 115200
+bytesize = 8
+parity = "N"
+stopbits = 1
+timeout = 1.0
+
+[[wizard.step]]
+id = 1
+title = "Главное меню"
+buttons = [
+    { text = "▶ Начать окраску и осаждение", next = 2 },
+    { text = "▶ Начать промывку", next = 7 },
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = ""
+melodyExit = ""
+
+[[wizard.step]]
+id = 2
+title = "Инициализация системы"
+buttons = [
+    { text = "главное меню", next = 1 },
+]
+sequence = "load_tubes"
+autoNext = 3
+showBar = true
+melodyEnter = ""
+melodyExit = ""
+
+[[wizard.step]]
+id = 3
+title = "Загрузите пробирки с образцами"
+buttons = [
+    { text = "▶ Загрузить образцы", next = 4 },
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = "melodies/zvuk-na-trube.wav"
+melodyExit = ""
+
+[[wizard.step]]
+id = 4
+title = "Загрузка образцов"
+buttons = []
+sequence = "load_samples"
+autoNext = 5
+showBar = true
+melodyEnter = ""
+melodyExit = ""
+
+[[wizard.step]]
+id = 5
+title = "Извлеките пробирки"
+buttons = [
+    { text = "▶ Продолжить", next = 6 },
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = "melodies/zvuk-na-trube.wav"
+melodyExit = ""
+
+[[wizard.step]]
+id = 6
+title = "Установите стекла"
+buttons = [
+    { text = "▶ Начать осаждение и окраску", next = 7 },
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = ""
+melodyExit = ""
+
+[[wizard.step]]
+id = 7
+title = "Процесс осаждения и окраски"
+buttons = []
+sequence = "coloring"
+autoNext = 8
+showBar = true
+melodyEnter = ""
+melodyExit = ""
+
+[[wizard.step]]
+id = 8
+title = "Окраска закончена"
+buttons = [
+    { text = "🏠 Главное меню", next = 1 },
+]
+sequence = ""
+autoNext = false
+showBar = false
+melodyEnter = "melodies/zvuk-na-trube.wav"
+melodyExit = ""
