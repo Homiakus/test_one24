@@ -1,0 +1,210 @@
+{
+  "doc_index": {
+    "metadata": {
+      "created": "2024-12-19T10:00:00Z",
+      "version": "1.0",
+      "total_documents": 12,
+      "last_updated": "2024-12-19T10:00:00Z"
+    },
+    "documents": [
+      {
+        "path": "docs/overview.md",
+        "title": "Обзор системы управления лабораторным оборудованием",
+        "type": "overview",
+        "audiences": ["backend_dev", "frontend_dev", "devops", "qa", "support", "pm"],
+        "tags": ["doc", "lab-equipment-system"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 450,
+        "links": {
+          "internal": ["docs/architecture/index", "docs/api/index", "docs/operations/index"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/README.md#L1-L100"]
+        }
+      },
+      {
+        "path": "docs/architecture/index.md",
+        "title": "Архитектура системы",
+        "type": "architecture",
+        "audiences": ["backend_dev", "frontend_dev", "devops", "architect"],
+        "tags": ["doc", "lab-equipment-system", "architecture"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 800,
+        "links": {
+          "internal": ["docs/overview", "docs/api/index", "docs/modules/core"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/README.md#L30-L80"]
+        }
+      },
+      {
+        "path": "docs/api/index.md",
+        "title": "API Reference",
+        "type": "api_reference",
+        "audiences": ["backend_dev", "frontend_dev", "architect"],
+        "tags": ["doc", "lab-equipment-system", "api"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 1200,
+        "links": {
+          "internal": ["docs/architecture/index", "docs/modules/core", "docs/schemas/commands"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/core/interfaces.py#L1-L100"]
+        }
+      },
+      {
+        "path": "docs/_moc/Overview.md",
+        "title": "MOC: Обзор проекта",
+        "type": "moc",
+        "audiences": ["pm", "architect", "devops"],
+        "tags": ["doc", "lab-equipment-system", "moc"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 300,
+        "links": {
+          "internal": ["docs/overview", "docs/architecture/index", "docs/api/index"],
+          "external": []
+        }
+      },
+      {
+        "path": "docs/_moc/Architecture.md",
+        "title": "MOC: Архитектура",
+        "type": "moc",
+        "audiences": ["architect", "backend_dev", "frontend_dev"],
+        "tags": ["doc", "lab-equipment-system", "moc", "architecture"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 400,
+        "links": {
+          "internal": ["docs/architecture/index", "docs/modules/core", "docs/diagrams"],
+          "external": []
+        }
+      },
+      {
+        "path": "docs/_moc/API.md",
+        "title": "MOC: API",
+        "type": "moc",
+        "audiences": ["backend_dev", "frontend_dev", "architect"],
+        "tags": ["doc", "lab-equipment-system", "moc", "api"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 350,
+        "links": {
+          "internal": ["docs/api/index", "docs/schemas"],
+          "external": []
+        }
+      },
+      {
+        "path": "docs/modules/core/di-container.md",
+        "title": "DI Container - Контейнер зависимостей",
+        "type": "module",
+        "audiences": ["backend_dev", "architect"],
+        "tags": ["doc", "lab-equipment-system", "core", "di"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 900,
+        "links": {
+          "internal": ["docs/modules/core/interfaces", "docs/architecture/index"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/core/di_container.py#L1-L100"]
+        }
+      },
+      {
+        "path": "docs/modules/core/serial-manager.md",
+        "title": "Serial Manager - Управление последовательными портами",
+        "type": "module",
+        "audiences": ["backend_dev", "architect"],
+        "tags": ["doc", "lab-equipment-system", "core", "serial"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 1100,
+        "links": {
+          "internal": ["docs/modules/core/interfaces", "docs/api/serial"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/core/serial_manager.py#L1-L100"]
+        }
+      },
+      {
+        "path": "docs/schemas/commands.md",
+        "title": "Схемы команд",
+        "type": "schema",
+        "audiences": ["backend_dev", "architect"],
+        "tags": ["doc", "lab-equipment-system", "schemas", "commands"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 800,
+        "links": {
+          "internal": ["docs/api/commands", "docs/modules/core/command-executor"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/core/interfaces.py#L200-L300"]
+        }
+      },
+      {
+        "path": "docs/runbooks/installation.md",
+        "title": "Установка и настройка",
+        "type": "runbook",
+        "audiences": ["devops", "backend_dev", "support"],
+        "tags": ["doc", "lab-equipment-system", "runbook", "installation"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 1500,
+        "links": {
+          "internal": ["docs/runbooks/quick-start", "docs/operations/deployment"],
+          "external": ["https://github.com/lab-equipment-system/blob/main/README.md#L100-L200"]
+        }
+      },
+      {
+        "path": "docs/_meta/DocsPro/_index.md",
+        "title": "DocsPro - Процесс документации",
+        "type": "report",
+        "audiences": ["pm", "architect", "docs_lead"],
+        "tags": ["doc", "lab-equipment-system", "docspro"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 200,
+        "links": {
+          "internal": ["docs/_meta/DocsPro/00_Charter/goal", "docs/_meta/DocsPro/02_Planning/backlog"],
+          "external": []
+        }
+      },
+      {
+        "path": "docs/_meta/project_audit.yaml",
+        "title": "Project Audit",
+        "type": "audit",
+        "audiences": ["pm", "architect", "docs_lead"],
+        "tags": ["doc", "lab-equipment-system", "audit"],
+        "status": "approved",
+        "last_updated": "2024-12-19",
+        "word_count": 1200,
+        "links": {
+          "internal": ["docs/overview", "docs/architecture/index"],
+          "external": []
+        }
+      }
+    ],
+    "statistics": {
+      "by_type": {
+        "overview": 1,
+        "architecture": 1,
+        "api_reference": 1,
+        "moc": 3,
+        "module": 2,
+        "schema": 1,
+        "runbook": 1,
+        "report": 1,
+        "audit": 1
+      },
+      "by_audience": {
+        "backend_dev": 8,
+        "frontend_dev": 3,
+        "architect": 7,
+        "devops": 4,
+        "qa": 1,
+        "support": 2,
+        "pm": 3,
+        "docs_lead": 2
+      },
+      "by_status": {
+        "approved": 12,
+        "draft": 0,
+        "review": 0
+      },
+      "total_words": 8200,
+      "avg_words_per_doc": 683
+    }
+  }
+}
