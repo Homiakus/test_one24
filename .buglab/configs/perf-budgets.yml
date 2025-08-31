@@ -1,0 +1,160 @@
+# Бюджеты производительности
+# Система Fixer & Orchestrator v3.0
+
+# Общие настройки
+settings:
+  unit: "milliseconds"
+  tolerance: 0.1  # 10% допуск
+
+# Бюджеты для тестов
+test_performance:
+  unit_tests:
+    max_time: 5000  # 5 секунд
+    max_memory: 100  # 100MB
+    max_cpu: 50     # 50% CPU
+
+  integration_tests:
+    max_time: 30000  # 30 секунд
+    max_memory: 500  # 500MB
+    max_cpu: 80     # 80% CPU
+
+  e2e_tests:
+    max_time: 120000  # 2 минуты
+    max_memory: 1000  # 1GB
+    max_cpu: 90      # 90% CPU
+
+# Бюджеты для операций
+operations:
+  # Анализ структуры проекта
+  project_analysis:
+    max_time: 30000  # 30 секунд
+    max_memory: 200  # 200MB
+    max_cpu: 30     # 30% CPU
+
+  # Анализ качества кода
+  code_quality_analysis:
+    max_time: 60000  # 1 минута
+    max_memory: 300  # 300MB
+    max_cpu: 50     # 50% CPU
+
+  # SAST анализ
+  security_analysis:
+    max_time: 120000  # 2 минуты
+    max_memory: 500  # 500MB
+    max_cpu: 70     # 70% CPU
+
+  # Генерация отчётов
+  report_generation:
+    max_time: 30000  # 30 секунд
+    max_memory: 150  # 150MB
+    max_cpu: 20     # 20% CPU
+
+# Бюджеты для модулей
+modules:
+  core:
+    startup_time: 5000    # 5 секунд
+    memory_usage: 100     # 100MB
+    cpu_usage: 20        # 20% CPU
+
+  ui:
+    startup_time: 3000    # 3 секунды
+    memory_usage: 50      # 50MB
+    cpu_usage: 10        # 10% CPU
+
+  monitoring:
+    startup_time: 2000    # 2 секунды
+    memory_usage: 30      # 30MB
+    cpu_usage: 5         # 5% CPU
+
+  arduino:
+    startup_time: 10000   # 10 секунд
+    memory_usage: 80      # 80MB
+    cpu_usage: 15        # 15% CPU
+
+# Бюджеты для API
+api:
+  response_time:
+    p50: 100   # 50% запросов < 100ms
+    p95: 500   # 95% запросов < 500ms
+    p99: 1000  # 99% запросов < 1s
+
+  throughput:
+    requests_per_second: 100
+    concurrent_requests: 50
+
+# Бюджеты для файловых операций
+file_operations:
+  read:
+    small_file: 100    # < 1KB
+    medium_file: 500   # < 1MB
+    large_file: 2000   # < 10MB
+
+  write:
+    small_file: 200    # < 1KB
+    medium_file: 1000  # < 1MB
+    large_file: 5000   # < 10MB
+
+# Бюджеты для сети
+network:
+  latency:
+    local: 10      # 10ms
+    remote: 100    # 100ms
+
+  bandwidth:
+    download: 1000000  # 1MB/s
+    upload: 500000     # 500KB/s
+
+# Бюджеты для базы данных
+database:
+  query_time:
+    simple: 50     # 50ms
+    complex: 500   # 500ms
+    report: 2000   # 2s
+
+  connections:
+    max_pool_size: 20
+    max_wait_time: 5000  # 5s
+
+# Алерты и уведомления
+alerts:
+  warning_threshold: 0.8  # 80% от бюджета
+  critical_threshold: 0.95  # 95% от бюджета
+
+  channels:
+    - email
+    - slack
+    - webhook
+
+# Метрики для отслеживания
+metrics:
+  - name: "test_execution_time"
+    type: "histogram"
+    labels: ["test_type", "module"]
+
+  - name: "operation_duration"
+    type: "histogram"
+    labels: ["operation", "status"]
+
+  - name: "memory_usage"
+    type: "gauge"
+    labels: ["module", "component"]
+
+  - name: "cpu_usage"
+    type: "gauge"
+    labels: ["module", "component"]
+
+# Автоматические действия
+actions:
+  on_warning:
+    - log_warning
+    - send_notification
+
+  on_critical:
+    - log_error
+    - send_alert
+    - scale_up_resources
+
+  on_budget_exceeded:
+    - log_critical
+    - send_emergency_alert
+    - trigger_rollback

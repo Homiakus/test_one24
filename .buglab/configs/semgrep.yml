@@ -1,0 +1,135 @@
+# Semgrep конфигурация для SAST анализа
+# Система Fixer & Orchestrator v3.0
+
+rules:
+  # OWASP Top 10 уязвимости
+  - id: owasp-a1-injection
+    pattern: |
+      eval($VAR)
+      exec($VAR)
+      os.system($VAR)
+    message: "Потенциальная уязвимость инъекции кода"
+    severity: ERROR
+    languages: [python]
+
+  - id: owasp-a2-broken-auth
+    pattern: |
+      if password == "hardcoded":
+      if token == "secret":
+    message: "Хардкодированные секреты в коде"
+    severity: ERROR
+    languages: [python]
+
+  - id: owasp-a3-sensitive-data
+    pattern: |
+      print(password)
+      log.info(secret)
+      debug(token)
+    message: "Логирование чувствительных данных"
+    severity: WARNING
+    languages: [python]
+
+  # Python специфичные уязвимости
+  - id: python-pickle
+    pattern: |
+      pickle.loads($VAR)
+      pickle.load($VAR)
+    message: "Использование pickle может быть небезопасным"
+    severity: WARNING
+    languages: [python]
+
+  - id: python-subprocess-shell
+    pattern: |
+      subprocess.run($CMD, shell=True)
+      subprocess.Popen($CMD, shell=True)
+    message: "Использование shell=True может быть небезопасным"
+    severity: WARNING
+    languages: [python]
+
+  # SQL инъекции
+  - id: sql-injection
+    pattern: |
+      cursor.execute("SELECT * FROM table WHERE id = " + $VAR)
+      cursor.execute(f"SELECT * FROM table WHERE id = {var}")
+    message: "Потенциальная SQL инъекция"
+    severity: ERROR
+    languages: [python]
+
+  # XSS уязвимости
+  - id: xss-reflected
+    pattern: |
+      return request.args.get($VAR)
+      return request.form.get($VAR)
+    message: "Потенциальная XSS уязвимость"
+    severity: WARNING
+    languages: [python]
+
+  # Небезопасные десериализации
+  - id: unsafe-deserialization
+    pattern: |
+      yaml.load($VAR)
+      yaml.load_all($VAR)
+    message: "Небезопасная десериализация YAML"
+    severity: ERROR
+    languages: [python]
+
+  # Небезопасные криптографические функции
+  - id: weak-crypto
+    pattern: |
+      hashlib.md5($VAR)
+      hashlib.sha1($VAR)
+    message: "Использование слабых криптографических функций"
+    severity: WARNING
+    languages: [python]
+
+  # Небезопасные случайные числа
+  - id: weak-random
+    pattern: |
+      random.randint($MIN, $MAX)
+      random.choice($LIST)
+    message: "Использование небезопасных случайных чисел для криптографии"
+    severity: WARNING
+    languages: [python]
+
+  # Отладочная информация
+  - id: debug-info
+    pattern: |
+      print($VAR)
+      print(f"Debug: {var}")
+    message: "Отладочная информация в продакшен коде"
+    severity: INFO
+    languages: [python]
+
+  # Небезопасные файловые операции
+  - id: path-traversal
+    pattern: |
+      open($VAR)
+      with open($VAR) as f:
+    message: "Потенциальная уязвимость path traversal"
+    severity: WARNING
+    languages: [python]
+
+# Исключения
+exclude:
+  - "tests/"
+  - "test_*.py"
+  - "*.test.py"
+  - "docs/"
+  - ".git/"
+  - "node_modules/"
+  - "venv/"
+  - ".venv/"
+  - "__pycache__/"
+  - "*.pyc"
+
+# Настройки
+configs:
+  - python
+  - security
+  - best-practices
+
+# Дополнительные правила
+additional-rules:
+  - rules/python
+  - rules/security
+  - rules/owasp
