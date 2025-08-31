@@ -1,0 +1,239 @@
+# Linters configuration for Fixer & Orchestrator v3.0
+# Defines code quality checks and formatting rules
+
+linters:
+  # Ruff configuration (Python linter)
+  ruff:
+    enabled: true
+    config_file: "pyproject.toml"
+    args:
+      - "--fix"
+      - "--exit-non-zero-on-fix"
+      - "--output-format=text"
+    
+    rules:
+      # Error codes to enable
+      select:
+        - "E"   # pycodestyle errors
+        - "F"   # pyflakes
+        - "I"   # isort
+        - "W"   # pycodestyle warnings
+        - "C90" # mccabe complexity
+        - "N"   # pep8-naming
+        - "B"   # flake8-bugbear
+        - "UP"  # pyupgrade
+      
+      # Error codes to ignore
+      ignore:
+        - "E501"  # line too long
+        - "B008"  # do not perform function calls in argument defaults
+        - "B006"  # do not use mutable data structures for argument defaults
+        - "N802"  # function name should be lowercase
+        - "N803"  # argument name should be lowercase
+        - "N806"  # variable in function should be lowercase
+        - "C901"  # function is too complex
+    
+    exclude:
+      - ".git"
+      - ".eggs"
+      - "__pycache__"
+      - "build"
+      - "dist"
+      - "venv"
+      - "env"
+      - ".venv"
+      - ".env"
+      - "tests"
+
+  # Black configuration (code formatter)
+  black:
+    enabled: true
+    args:
+      - "--line-length=100"
+      - "--target-version=py39"
+      - "--check"
+    
+    exclude:
+      - ".git"
+      - ".eggs"
+      - "__pycache__"
+      - "build"
+      - "dist"
+      - "venv"
+      - "env"
+      - ".venv"
+      - ".env"
+
+  # MyPy configuration (type checker)
+  mypy:
+    enabled: true
+    config_file: "mypy.ini"
+    args:
+      - "--strict"
+      - "--show-error-codes"
+      - "--show-column-numbers"
+    
+    exclude:
+      - "tests"
+      - "docs"
+      - "examples"
+
+  # Bandit configuration (security linter)
+  bandit:
+    enabled: true
+    args:
+      - "-r"
+      - "."
+      - "-f"
+      - "json"
+      - "-o"
+      - ".buglab/logs/bandit-results.json"
+    
+    exclude:
+      - "tests"
+      - "docs"
+      - "examples"
+      - "venv"
+      - ".venv"
+    
+    # Security test profiles
+    profiles:
+      - "B101"  # assert_used
+      - "B102"  # exec_used
+      - "B103"  # set_bad_file_permissions
+      - "B104"  # hardcoded_bind_all_interfaces
+      - "B105"  # hardcoded_password_string
+      - "B106"  # hardcoded_password_funcarg
+      - "B107"  # hardcoded_password_default
+      - "B110"  # try_except_pass
+      - "B112"  # try_except_continue
+      - "B201"  # flask_debug_true
+      - "B301"  # pickle
+      - "B302"  # marshal
+      - "B303"  # md5
+      - "B304"  # md5_unsafe
+      - "B305"  # sha1
+      - "B306"  # mktemp_q
+      - "B307"  # eval
+      - "B308"  # mark_safe
+      - "B309"  # httpsconnection
+      - "B310"  # urllib_urlopen
+      - "B311"  # random
+      - "B312"  # telnetlib
+      - "B313"  # xml_bad_cElementTree
+      - "B314"  # xml_bad_ElementTree
+      - "B315"  # xml_bad_expatreader
+      - "B316"  # xml_bad_expatbuilder
+      - "B317"  # xml_bad_sax
+      - "B318"  # xml_bad_minidom
+      - "B319"  # xml_bad_pulldom
+      - "B320"  # xml_bad_etree
+      - "B321"  # ftplib
+      - "B322"  # input
+      - "B323"  # unverified_context
+      - "B324"  # hashlib_new_insecure_functions
+      - "B325"  # tempnam
+      - "B401"  # import_telnetlib
+      - "B402"  # import_ftplib
+      - "B403"  # import_pickle
+      - "B404"  # import_subprocess
+      - "B405"  # import_xml_etree
+      - "B406"  # import_xml_sax
+      - "B407"  # import_xml_expat
+      - "B408"  # import_xml_minidom
+      - "B409"  # import_xml_pulldom
+      - "B410"  # import_lxml
+      - "B411"  # import_xmlrpclib
+      - "B412"  # import_httpoxy
+      - "B413"  # import_pycrypto
+      - "B501"  # request_with_no_cert_validation
+      - "B601"  # paramiko_calls
+      - "B602"  # subprocess_popen_with_shell_equals_true
+      - "B603"  # subprocess_without_shell_equals_true
+      - "B604"  # any_other_function_with_shell_equals_true
+      - "B605"  # start_process_with_a_shell
+      - "B606"  # start_process_with_no_shell
+      - "B607"  # start_process_with_partial_path
+      - "B608"  # hardcoded_sql_expressions
+      - "B609"  # linux_commands_wildcard_injection
+      - "B701"  # jinja2_autoescape_false
+
+  # Pylint configuration
+  pylint:
+    enabled: false  # Using ruff instead
+    config_file: ".pylintrc"
+    args:
+      - "--rcfile=.pylintrc"
+      - "--output-format=text"
+      - "--reports=y"
+
+  # Flake8 configuration
+  flake8:
+    enabled: false  # Using ruff instead
+    config_file: ".flake8"
+    args:
+      - "--config=.flake8"
+      - "--format=default"
+      - "--statistics"
+
+# Linter execution order
+execution_order:
+  - "black"
+  - "ruff"
+  - "mypy"
+  - "bandit"
+
+# Quality gates
+quality_gates:
+  # Maximum number of errors allowed
+  max_errors:
+    ruff: 0
+    mypy: 0
+    bandit: 0
+  
+  # Maximum number of warnings allowed
+  max_warnings:
+    ruff: 10
+    mypy: 5
+    bandit: 5
+  
+  # Minimum test coverage required
+  min_coverage: 80
+  
+  # Maximum cyclomatic complexity
+  max_complexity: 10
+  
+  # Maximum function length
+  max_function_length: 50
+  
+  # Maximum line length
+  max_line_length: 100
+
+# Reporting configuration
+reporting:
+  # Output formats
+  formats:
+    - "text"
+    - "json"
+    - "html"
+    - "xml"
+  
+  # Output directory
+  output_dir: ".buglab/logs"
+  
+  # Report file names
+  files:
+    ruff: "ruff-report.json"
+    mypy: "mypy-report.json"
+    bandit: "bandit-report.json"
+    coverage: "coverage-report.json"
+    combined: "linter-report.json"
+  
+  # Generate combined report
+  combined_report: true
+  
+  # Include statistics in reports
+  include_stats: true
+  
+  # Include suggestions in reports
+  include_suggestions: true

@@ -1,292 +1,198 @@
-# Архитектура MOTTO
+# Архитектура системы Fixer & Orchestrator v3.0
 
 ## Обзор архитектуры
 
-MOTTO (Machine Orchestration in TOML) расширяет существующую систему управления лабораторным оборудованием, добавляя мощные возможности оркестрации процессов.
+Система построена на принципах модульности, наблюдаемости и безопасности. Основная цель - обеспечить систематическое обнаружение, исправление и предотвращение дефектов.
 
-## Принципы архитектуры
+## Основные модули
 
-### 1. Совместимость
-- Обратная совместимость с существующими конфигурациями v1.0
-- Минимальные изменения в существующем коде
-- Постепенная миграция
+### 1. Core Module (Ядро системы)
+**Назначение**: Основная логика управления последовательностями и командами
 
-### 2. Модульность
-- Каждый компонент MOTTO как отдельный модуль
-- Чёткие интерфейсы между компонентами
-- Dependency Injection для связывания
+**Компоненты**:
+- `sequence_manager.py`: Управление последовательностями операций
+- `serial_manager.py`: Управление UART соединениями
+- `command_executor.py`: Выполнение команд
+- `di_config_loader.py`: Загрузка конфигурации через DI контейнер
 
-### 3. Расширяемость
-- Плагинная архитектура для новых возможностей
-- Конфигурируемые политики и стратегии
-- Поддержка кастомных расширений
+**Ответственности**:
+- Выполнение последовательностей команд
+- Управление потоками и синхронизацией
+- Обработка ошибок и исключений
+- Валидация команд
 
-### 4. Надёжность
-- Thread-safe операции
-- Обработка ошибок и восстановление
-- Аудит и мониторинг
+### 2. UI Module (Пользовательский интерфейс)
+**Назначение**: Веб-интерфейс для управления системой
 
-## Компонентная архитектура
+**Компоненты**:
+- Веб-сервер для отображения интерфейса
+- API для взаимодействия с core модулем
+- Панели мониторинга и управления
+
+**Ответственности**:
+- Отображение состояния системы
+- Управление последовательностями
+- Мониторинг в реальном времени
+- Конфигурация параметров
+
+### 3. Monitoring Module (Мониторинг)
+**Назначение**: Сбор метрик, логов и трейсов
+
+**Компоненты**:
+- Система логирования
+- Сбор метрик производительности
+- Трейсинг операций
+- Алертинг
+
+**Ответственности**:
+- Сбор observability данных
+- Анализ производительности
+- Обнаружение аномалий
+- Генерация отчётов
+
+### 4. Arduino Integration Module
+**Назначение**: Интеграция с Arduino оборудованием
+
+**Компоненты**:
+- Драйверы для Arduino
+- Протоколы связи
+- Обработка команд
+
+**Ответственности**:
+- Управление Arduino устройствами
+- Обработка последовательных портов
+- Валидация команд Arduino
+- Обработка ответов устройств
+
+## Взаимодействие модулей
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    MOTTO Orchestrator                       │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   Parser    │  │  Validator  │  │  Executor   │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   Guards    │  │  Resources  │  │   Events    │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │  Templates  │  │  Policies   │  │   Audit     │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                 Existing System Layer                       │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │ Sequence    │  │   Serial    │  │    DI       │         │
-│  │ Manager     │  │  Manager    │  │ Container   │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## Детальное описание компонентов
-
-### 1. MOTTO Parser
-**Назначение**: Парсинг TOML конфигураций MOTTO v1.1
-
-**Интерфейс**:
-```python
-class MOTTOParser:
-    def parse_config(self, config_path: str) -> MOTTOConfig
-    def parse_sequence(self, sequence_data: dict) -> Sequence
-    def parse_conditions(self, conditions_data: dict) -> List[Condition]
-    def parse_guards(self, guards_data: dict) -> List[Guard]
-```
-
-**Структуры данных**:
-```python
-@dataclass
-class MOTTOConfig:
-    version: str
-    vars: Dict[str, Any]
-    profiles: Dict[str, Profile]
-    contexts: Dict[str, Context]
-    sequences: Dict[str, Sequence]
-    conditions: Dict[str, Condition]
-    guards: Dict[str, Guard]
-    policies: Dict[str, Policy]
-    resources: Dict[str, Resource]
-    events: Dict[str, Event]
-    handlers: Dict[str, Handler]
-    templates: Dict[str, Template]
-    units: Dict[str, List[str]]
-    validators: Dict[str, Validator]
-```
-
-### 2. MOTTO Validator
-**Назначение**: Валидация конфигураций и проверка целостности
-
-**Интерфейс**:
-```python
-class MOTTOValidator:
-    def validate_config(self, config: MOTTOConfig) -> ValidationResult
-    def validate_sequence(self, sequence: Sequence) -> ValidationResult
-    def validate_conditions(self, conditions: List[Condition]) -> ValidationResult
-    def check_circular_dependencies(self, sequences: Dict[str, Sequence]) -> bool
-```
-
-### 3. MOTTO Executor
-**Назначение**: Выполнение последовательностей с поддержкой всех возможностей MOTTO
-
-**Интерфейс**:
-```python
-class MOTTOExecutor:
-    def execute_sequence(self, sequence_name: str, context: ExecutionContext) -> ExecutionResult
-    def execute_step(self, step: Step, context: ExecutionContext) -> StepResult
-    def evaluate_condition(self, condition: Condition, context: ExecutionContext) -> bool
-    def apply_guards(self, guards: List[Guard], context: ExecutionContext) -> GuardResult
-```
-
-### 4. Guards System
-**Назначение**: Проверка условий до и после выполнения шагов
-
-**Интерфейс**:
-```python
-class GuardSystem:
-    def check_pre_guards(self, step: Step, context: ExecutionContext) -> GuardResult
-    def check_post_guards(self, step: Step, context: ExecutionContext) -> GuardResult
-    def handle_guard_failure(self, guard: Guard, context: ExecutionContext) -> GuardAction
-```
-
-### 5. Resource Manager
-**Назначение**: Управление ресурсами, мьютексами и квотами
-
-**Интерфейс**:
-```python
-class ResourceManager:
-    def acquire_resource(self, resource_name: str, timeout: float) -> bool
-    def release_resource(self, resource_name: str) -> None
-    def check_deadlock(self) -> List[str]
-    def get_resource_status(self, resource_name: str) -> ResourceStatus
-```
-
-### 6. Event System
-**Назначение**: Обработка событий и вызов обработчиков
-
-**Интерфейс**:
-```python
-class EventSystem:
-    def register_event(self, event: Event) -> None
-    def register_handler(self, handler: Handler) -> None
-    def trigger_event(self, event_name: str, data: Any) -> None
-    def start_monitoring(self) -> None
-    def stop_monitoring(self) -> None
-```
-
-### 7. Template Engine
-**Назначение**: Генерация команд и последовательностей из шаблонов
-
-**Интерфейс**:
-```python
-class TemplateEngine:
-    def expand_templates(self, config: MOTTOConfig) -> MOTTOConfig
-    def generate_commands(self, template: Template) -> List[Command]
-    def generate_sequences(self, template: Template) -> List[Sequence]
-```
-
-### 8. Policy Manager
-**Назначение**: Управление политиками ретраев, таймаутов и идемпотентности
-
-**Интерфейс**:
-```python
-class PolicyManager:
-    def apply_retry_policy(self, policy: Policy, operation: Callable) -> Any
-    def check_idempotency(self, key: str) -> bool
-    def get_timeout(self, policy: Policy) -> float
-```
-
-### 9. Audit System
-**Назначение**: Аудит операций, логирование и телеметрия
-
-**Интерфейс**:
-```python
-class AuditSystem:
-    def log_operation(self, operation: Operation) -> None
-    def log_context_snapshot(self, context: ExecutionContext) -> None
-    def get_metrics(self) -> Dict[str, Any]
-    def export_traces(self) -> List[Trace]
-```
-
-## Интеграция с существующей системой
-
-### Адаптер совместимости
-```python
-class CompatibilityAdapter:
-    def convert_v1_to_v1_1(self, v1_config: dict) -> MOTTOConfig
-    def convert_sequence(self, old_sequence: List[str]) -> Sequence
-    def convert_buttons(self, buttons: dict) -> Dict[str, Command]
-```
-
-### Расширение Sequence Manager
-```python
-class ExtendedSequenceManager(SequenceManager):
-    def __init__(self, motto_orchestrator: MOTTOOrchestrator):
-        super().__init__()
-        self.motto = motto_orchestrator
-    
-    def execute_motto_sequence(self, sequence_name: str, **kwargs) -> bool:
-        # Интеграция с MOTTO
-        pass
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   UI Module     │    │  Core Module    │    │   Monitoring    │
+│                 │◄──►│                 │◄──►│     Module      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                       ┌─────────────────┐
+                       │   Arduino       │
+                       │ Integration     │
+                       │   Module        │
+                       └─────────────────┘
 ```
 
 ## Потоки данных
 
-### 1. Загрузка конфигурации
-```
-TOML File → MOTTO Parser → MOTTO Validator → MOTTO Config
-```
+### 1. Поток выполнения команд
+1. UI отправляет команду в Core Module
+2. Core Module валидирует команду
+3. Core Module отправляет команду в Arduino Module
+4. Arduino Module выполняет команду
+5. Результат возвращается через цепочку модулей
+6. Monitoring Module логирует операцию
 
-### 2. Выполнение последовательности
-```
-Sequence Request → Context Builder → Guard Check → Step Execution → Result
-```
+### 2. Поток мониторинга
+1. Monitoring Module собирает метрики со всех модулей
+2. Данные агрегируются и анализируются
+3. При обнаружении аномалий генерируются алерты
+4. Отчёты отправляются в UI Module
 
-### 3. Обработка событий
-```
-Hardware Event → Event System → Handler Execution → Action
-```
+## Конфигурация
 
-## Конфигурация и настройка
+### Форматы конфигурации
+- **TOML**: Основной формат конфигурации
+- **MOTTO**: Расширенный стандарт для сложных сценариев
+- **JSON**: Для API взаимодействий
 
-### DI Container Configuration
-```python
-# Регистрация MOTTO компонентов
-container.register_singleton(MOTTOParser)
-container.register_singleton(MOTTOValidator)
-container.register_singleton(MOTTOExecutor)
-container.register_singleton(GuardSystem)
-container.register_singleton(ResourceManager)
-container.register_singleton(EventSystem)
-container.register_singleton(TemplateEngine)
-container.register_singleton(PolicyManager)
-container.register_singleton(AuditSystem)
-```
-
-### Конфигурация логирования
-```python
-# Настройка аудита
-audit_config = {
-    "log_level": "info",
-    "trace_context": True,
-    "snapshots": "on_error",
-    "metrics_enabled": True
-}
-```
+### Управление конфигурацией
+- DI контейнер для инъекции зависимостей
+- Валидация конфигурации при загрузке
+- Hot-reload для изменений конфигурации
+- Версионирование конфигураций
 
 ## Безопасность
 
-### Валидация выражений
-- Sandbox для выполнения условий
-- Ограниченный набор функций
-- Валидация входных данных
+### Принципы безопасности
+- **Defense in Depth**: Многоуровневая защита
+- **Principle of Least Privilege**: Минимальные права
+- **Secure by Default**: Безопасные настройки по умолчанию
+- **Input Validation**: Валидация всех входных данных
 
-### Контроль доступа
-- Проверка прав на ресурсы
-- Аудит всех операций
-- Изоляция контекстов
+### Механизмы безопасности
+- Валидация команд перед выполнением
+- Логирование всех операций
+- Контроль доступа к критическим функциям
+- Шифрование чувствительных данных
 
-## Производительность
+## Наблюдаемость
 
-### Оптимизации
-- Кэширование парсинга конфигураций
-- Ленивая загрузка компонентов
-- Пул потоков для параллельного выполнения
+### Метрики
+- Время выполнения операций
+- Количество ошибок
+- Использование ресурсов
+- Доступность системы
 
-### Мониторинг
-- Метрики производительности
-- Профилирование операций
-- Алерты при деградации
+### Логирование
+- Структурированные логи
+- Различные уровни детализации
+- Ротация логов
+- Централизованный сбор
 
-## Альтернативы
+### Трейсинг
+- Отслеживание операций между модулями
+- Профилирование производительности
+- Анализ узких мест
 
-### Альтернатива 1: Минимальная интеграция
-- Только базовые возможности MOTTO
-- Простая совместимость
-- Быстрое внедрение
+## Масштабируемость
 
-### Альтернатива 2: Полная интеграция
-- Все возможности MOTTO
-- Сложная архитектура
-- Долгое внедрение
+### Горизонтальное масштабирование
+- Независимые модули
+- API-first архитектура
+- Статус-лесс дизайн где возможно
 
-### Альтернатива 3: Гибридный подход
-- Поэтапное внедрение
-- Баланс функциональности и сложности
-- Рекомендуемый вариант
+### Вертикальное масштабирование
+- Оптимизация производительности
+- Кэширование
+- Асинхронная обработка
+
+## Отказоустойчивость
+
+### Механизмы восстановления
+- Автоматические ретраи
+- Circuit breaker паттерн
+- Graceful degradation
+- Health checks
+
+### Резервное копирование
+- Репликация критических данных
+- Backup стратегии
+- Disaster recovery планы
+
+## Технический стек
+
+### Языки и фреймворки
+- **Python**: Основной язык разработки
+- **TOML**: Конфигурация
+- **Web Framework**: Для UI (Flask/FastAPI)
+- **Serial Communication**: Для Arduino
+
+### Инструменты разработки
+- **mypy**: Проверка типов
+- **pytest**: Тестирование
+- **pre-commit**: Git hooks
+- **Coverage**: Измерение покрытия тестами
+
+## Риски архитектуры
+
+### Высокие риски
+- **Сложность интеграции**: Множество модулей
+- **Производительность**: Накладные расходы на мониторинг
+- **Безопасность**: Уязвимости в последовательной связи
+
+### Средние риски
+- **Совместимость**: Изменения в API
+- **Тестирование**: Сложность интеграционных тестов
+- **Документация**: Поддержка актуальности
+
+### Низкие риски
+- **Технологический стек**: Стабильные технологии
+- **Сообщество**: Активная поддержка Python/TOML

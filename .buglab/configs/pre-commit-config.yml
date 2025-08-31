@@ -1,0 +1,74 @@
+# Pre-commit configuration for Fixer & Orchestrator v3.0
+# Ensures code quality before commits
+
+repos:
+  # Python code formatting
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3
+        args: [--line-length=100, --target-version=py39]
+
+  # Import sorting
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.1
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+        args: [--config-file=mypy.ini]
+
+  # Security scanning
+  - repo: https://github.com/returntocorp/semgrep
+    rev: v1.45.0
+    hooks:
+      - id: semgrep
+        args: [--config=.buglab/configs/semgrep.yml]
+
+  # Test coverage check
+  - repo: local
+    hooks:
+      - id: pytest-coverage
+        name: pytest coverage
+        entry: pytest --cov=. --cov-report=term-missing --cov-fail-under=80
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  # Documentation check
+  - repo: local
+    hooks:
+      - id: check-docs
+        name: Check documentation
+        entry: python -c "import os; assert os.path.exists('DocsPro/_index.md')"
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  # Configuration validation
+  - repo: local
+    hooks:
+      - id: validate-configs
+        name: Validate configurations
+        entry: python -c "import tomllib; tomllib.load(open('pyproject.toml', 'rb'))"
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  # Git hooks for .buglab
+  - repo: local
+    hooks:
+      - id: buglab-log
+        name: Log to .buglab
+        entry: echo "$(date): Pre-commit hook executed" >> .buglab/logs/commit_history.log
+        language: system
+        pass_filenames: false
+        always_run: true

@@ -28,6 +28,11 @@ MANIFEST
 *.log
 logs/
 
+# BugLab temporary files
+.buglab/tmp/
+.buglab/logs/*.tmp
+.buglab/logs/*.cache
+
 # Unit tests
 .pytest_cache/
 .coverage
